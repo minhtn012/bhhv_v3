@@ -51,7 +51,7 @@ const User = mongoose.model('User', userSchema);
 async function createAdminUser() {
   try {
     // Connect to MongoDB
-    await mongoose.connect('mongodb://dev:dev123@localhost:27017/bhhv');
+    await mongoose.connect('mongodb://dev:dev123@localhost:27018/bhhv?authSource=admin');
     console.log('Connected to MongoDB');
 
     // Check if admin user already exists
