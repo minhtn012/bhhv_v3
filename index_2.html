@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng dụng Báo giá Bảo hiểm Xe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .upload-box:hover {
+            border-color: #3b82f6;
+            background-color: #f8fafc;
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 95%;
+            max-width: 800px;
+            border-radius: 0.5rem;
+        }
+        optgroup {
+            font-weight: bold;
+            font-style: italic;
+        }
+        /* Custom radio button style */
+        .custom-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: #3b82f6;
+            background-color: #3b82f6;
+        }
+        .disabled-package {
+            background-color: #f3f4f6;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #quote-content-to-download table, #quote-content-to-download th, #quote-content-to-download td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        #quote-content-to-download td {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Công cụ Báo giá Bảo hiểm Xe ô tô</h1>
+            <p class="text-gray-600 mt-2">Tải lên giấy tờ xe để nhận báo giá nhanh chóng và chính xác.</p>
+        </header>
+
+        <!-- Step 1: Upload Documents -->
+        <div id="upload-section" class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Bước 1: Tải lên Giấy tờ Xe</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Cavet Upload -->
+                <div>
+                    <label class="block text-lg font-medium mb-2">Giấy đăng ký (Cà vẹt)</label>
+                    <div id="cavet-upload-box" class="upload-box p-4 text-center rounded-lg cursor-pointer">
+                        <input type="file" id="cavet-input" class="hidden" accept="image/*" onchange="previewImage('cavet')">
+                        <img id="cavet-preview" class="hidden h-40 mx-auto rounded-md mb-2 object-contain" alt="Xem trước Cà vẹt">
+                        <span id="cavet-text">Nhấn để chọn hoặc kéo thả ảnh</span>
+                    </div>
+                </div>
+                <!-- Dang Kiem Upload -->
+                <div>
+                    <label class="block text-lg font-medium mb-2">Giấy đăng kiểm</label>
+                    <div id="dangkiem-upload-box" class="upload-box p-4 text-center rounded-lg cursor-pointer">
+                        <input type="file" id="dangkiem-input" class="hidden" accept="image/*" onchange="previewImage('dangkiem')">
+                        <img id="dangkiem-preview" class="hidden h-40 mx-auto rounded-md mb-2 object-contain" alt="Xem trước Đăng kiểm">
+                        <span id="dangkiem-text">Nhấn để chọn hoặc kéo thả ảnh</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button id="extract-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400" disabled>
+                    Trích xuất Thông tin
+                </button>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="loading-modal" class="modal"><div class="modal-content text-center"><div class="loader mx-auto"></div><p id="loading-text" class="mt-4 text-lg font-medium">Đang trích xuất thông tin...</p></div></div>
+        <div id="error-modal" class="modal"><div class="modal-content text-center"><h3 class="text-xl font-bold text-red-600 mb-2">Đã xảy ra lỗi</h3><p id="error-text" class="mb-4"></p><button onclick="closeModal('error-modal')" class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600">Đóng</button></div></div>
+        
+        <!-- Quote Preview Modal -->
+        <div id="quote-preview-modal" class="modal">
+            <div class="modal-content">
+                <div id="quote-content-to-download" class="p-4 bg-white">
+                    <header class="text-center mb-4">
+                        <h2 class="text-xl font-bold text-red-700">CÔNG TY BẢO HIỂM HÙNG VƯƠNG THÀNH PHỐ HỒ CHÍ MINH</h2>
+                        <p class="font-semibold">BHV TP HCM</p>
+                        <h3 class="text-lg font-bold mt-4">BẢN CHÀO PHÍ BẢO HIỂM XE CƠ GIỚI</h3>
+                    </header>
+                    <table class="w-full text-sm border-collapse">
+                        <tbody>
+                            <tr>
+                                <td class="w-1/4 font-semibold">Chủ xe:</td>
+                                <td colspan="3" id="q-chuXe" class="font-bold"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Địa chỉ:</td>
+                                <td colspan="3" id="q-diaChi"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Biển kiểm soát:</td>
+                                <td id="q-bienSo"></td>
+                                <td class="font-semibold">Năm sản xuất:</td>
+                                <td id="q-namSanXuat"></td>
+                            </tr>
+                             <tr>
+                                <td class="font-semibold">ĐKLĐ:</td>
+                                <td id="q-dkld"></td>
+                                <td class="font-semibold">Số chỗ ngồi:</td>
+                                <td id="q-soChoNgoi"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Hiệu xe:</td>
+                                <td id="q-hieuXe"></td>
+                                <td class="font-semibold">Loại xe:</td>
+                                <td id="q-loaiXe"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Số khung:</td>
+                                <td id="q-soKhung"></td>
+                                <td class="font-semibold">Số máy:</td>
+                                <td id="q-soMay"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Giá trị xe:</td>
+                                <td id="q-giaTriXe"></td>
+                                <td class="font-semibold">Mục đích sử dụng:</td>
+                                <td id="q-mucDich"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Số tiền bảo hiểm:</td>
+                                <td id="q-soTienBH"></td>
+                                <td class="font-semibold">Mức khấu trừ:</td>
+                                <td id="q-mucKhauTru"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Tỷ lệ phí:</td>
+                                <td id="q-tyLePhi"></td>
+                                <td class="font-semibold" rowspan="4">ĐIỀU KHOẢN BỔ SUNG ÁP DỤNG:</td>
+                                <td id="q-dkbs" rowspan="4" class="align-top"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">Vật chất thân xe:</td>
+                                <td id="q-phiVatChat"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">TNDS:</td>
+                                <td id="q-phiTNDS"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">NNTX:</td>
+                                <td id="q-phiNNTX"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold bg-orange-200">Tổng phí (đã VAT):</td>
+                                <td colspan="3" id="q-tongPhi" class="font-bold bg-orange-200"></td>
+                            </tr>
+                             <tr>
+                                <td class="font-semibold bg-yellow-200">Tái Tục/ Cấp Mới</td>
+                                <td colspan="3" id="q-tinhTrang" class="bg-yellow-200">Cấp Mới</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end gap-3">
+                    <button onclick="closeModal('quote-preview-modal')" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600">Đóng</button>
+                    <button onclick="downloadQuote()" class="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700">Tải xuống (PNG)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Verify and Input Info -->
+        <div id="info-section" class="bg-white p-6 rounded-lg shadow-md mb-8 hidden">
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Bước 2: Xác nhận & Bổ sung Thông tin</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                <div class="lg:col-span-3"><label class="font-medium">Chủ xe:</label> <input id="chuXe" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div class="lg:col-span-3"><label class="font-medium">Địa chỉ:</label> <input id="diaChi" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Biển số:</label> <input id="bienSo" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Nhãn hiệu:</label> <input id="nhanHieu" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Số loại:</label> <input id="soLoai" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Số khung:</label> <input id="soKhung" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Số máy:</label> <input id="soMay" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Ngày ĐK lần đầu:</label> <input id="ngayDKLD" placeholder="dd/mm/yyyy" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Năm sản xuất:</label> <input id="namSanXuat" type="number" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                <div><label class="font-medium">Số chỗ ngồi:</label> <input id="soChoNgoi" type="number" class="w-full p-2 border rounded-md mt-1 bg-white"></div>
+                
+                <hr class="lg:col-span-3 my-2">
+
+                <div class="lg:col-span-3">
+                    <label for="giaTriXe" class="font-medium">Định giá xe (VNĐ): <span class="text-red-500">*</span></label>
+                    <input type="text" id="giaTriXe" class="w-full p-2 border rounded-md mt-1" placeholder="Ví dụ: 800,000,000">
+                </div>
+                
+                <div class="lg:col-span-3">
+                    <label for="loaiHinhKinhDoanh" class="font-medium">Loại hình sử dụng: <span class="text-red-500">*</span></label>
+                    <select id="loaiHinhKinhDoanh" class="w-full p-2 border rounded-md mt-1 bg-white">
+                        <optgroup label="XE KHÔNG KINH DOANH">
+                            <option value="khong_kd_cho_nguoi">Xe chở người (xe gia đình)</option>
+                            <option value="khong_kd_cho_hang">Xe chở hàng (không kinh doanh vận tải)</option>
+                            <option value="khong_kd_pickup_van">Xe bán tải / Van (không kinh doanh)</option>
+                        </optgroup>
+                        <optgroup label="XE KINH DOANH VẬN TẢI">
+                            <option value="kd_cho_hang">Xe tải kinh doanh</option>
+                            <option value="kd_dau_keo">Xe đầu kéo</option>
+                            <option value="kd_cho_khach_lien_tinh">Xe khách liên tỉnh, nội tỉnh</option>
+                            <option value="kd_grab_be">Grab, Be, taxi công nghệ (< 9 chỗ)</option>
+                            <option value="kd_taxi_tu_lai">Taxi, xe cho thuê tự lái</option>
+                            <option value="kd_hop_dong_tren_9c">Xe khách hợp đồng (> 9 chỗ)</option>
+                            <option value="kd_bus">Xe bus</option>
+                            <option value="kd_pickup_van">Xe bán tải / Van (kinh doanh)</option>
+                            <option value="kd_chuyen_dung">Xe chuyên dùng khác (xe cứu thương...)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div id="trongTai-wrapper" class="lg:col-span-3 hidden">
+                    <label for="trongTai" class="font-medium">Trọng tải (kg): <span class="text-red-500">*</span></label>
+                    <input type="number" id="trongTai" class="w-full p-2 border rounded-md mt-1" placeholder="Ví dụ: 15000">
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button id="quote-btn" class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">
+                    Tính phí & Lập báo giá
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Build Quote -->
+        <div id="build-quote-section" class="bg-white p-6 rounded-lg shadow-md hidden">
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Bước 3: Xây dựng Báo giá Chi tiết</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Left Column: Options -->
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">A. Bảo hiểm Vật chất Thân vỏ <span class="text-sm font-normal">(Chọn 1 gói)</span></h3>
+                        <div id="vatChat-options" class="space-y-3">
+                            <!-- Radio options will be generated by JS -->
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">B. Các hạng mục khác</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="include-tnds" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked onchange="updateTotalPrice()">
+                                        <label for="include-tnds" class="ml-3 text-gray-700">Bảo hiểm TNDS Bắt buộc</label>
+                                    </div>
+                                    <span id="tnds-fee-display" class="font-semibold text-gray-800"></span>
+                                </div>
+                                <select id="tnds-category-select" class="w-full p-1.5 border rounded-md mt-2 bg-white text-sm" onchange="updateTNDSFee(); updateTotalPrice()"></select>
+                            </div>
+                             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="include-nntx" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked onchange="updateTotalPrice()">
+                                    <label for="include-nntx" class="ml-3 text-gray-700">Bảo hiểm Người ngồi trên xe</label>
+                                </div>
+                                <span id="nntx-fee-display" class="font-semibold text-gray-800"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Summary -->
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="text-xl font-bold text-center text-gray-800 mb-4">BẢNG TỔNG HỢP PHÍ</h3>
+                    <div id="total-price-summary" class="space-y-2 text-sm">
+                        <!-- Summary details will be generated by JS -->
+                    </div>
+                     <button id="generate-quote-pdf-btn" class="w-full mt-4 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Tạo Báo giá Chi tiết</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() { // Start of IIFE to prevent scope conflicts
+        // --- DATA PHÍ BẢO HIỂM ---
+        const physicalDamageRates = {
+            'khong_kd_cho_nguoi': {
+                duoi_500tr: { age_under_3: [1.25, 1.25, 1.3, 1.3], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.54, 1.69, 1.74, null] },
+                tu_500_den_700tr: { age_under_3: [1.1, 1.1, 1.15, 1.15], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.4, 1.55, 1.6, null] },
+                tu_700_den_1ty: { age_under_3: [1.0, 1.0, 1.05, 1.05], age_3_to_6: [1.1, 1.15, 1.2, 1.25], age_6_to_10: [1.25, 1.35, 1.4, 1.5], age_over_10: [1.35, 1.5, 1.55, null] },
+                tren_1ty: { age_under_3: [1.0, 1.0, 1.0, 1.0], age_3_to_6: [1.1, 1.15, 1.2, 1.2], age_6_to_10: [1.21, 1.31, 1.36, 1.46], age_over_10: [1.32, 1.47, 1.52, null] }
+            },
+            'khong_kd_cho_hang': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.5, 1.65, 1.7, null] },
+            'khong_kd_pickup_van': { age_under_3: [1.3, 1.3, 1.35, 1.35], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.55, 1.7, 1.75, null] },
+            'kd_cho_hang': { age_under_3: [1.21, 1.21, 1.26, 1.26], age_3_to_6: [1.32, 1.37, 1.42, 1.47], age_6_to_10: [1.43, 1.53, 1.58, 1.68], age_over_10: [1.55, 1.7, 1.75, null] },
+            'kd_dau_keo': { age_under_3: [1.65, 1.65, 1.65, 1.65], age_3_to_6: [1.76, 1.81, 1.81, 1.86], age_6_to_10: [1.95, 2.05, 2.05, 2.15], age_over_10: [2.2, 2.35, 2.4, null] },
+            'kd_cho_khach_lien_tinh': { age_under_3: [1.5, 1.5, 1.55, 1.55], age_3_to_6: [1.6, 1.65, 1.7, 1.75], age_6_to_10: [1.8, 1.9, 1.95, 2.05], age_over_10: [1.9, 2.05, 2.1, null] },
+            'kd_grab_be': { age_under_3: [1.8, 1.8, 1.85, 1.85], age_3_to_6: [1.9, 1.95, 2.0, 2.05], age_6_to_10: [2.2, 2.3, 2.35, 2.45], age_over_10: [2.4, 2.55, 2.6, null] },
+            'kd_taxi_tu_lai': { age_under_3: [2.4, 2.4, 2.45, 2.45], age_3_to_6: [2.5, 2.55, 2.6, 2.65], age_6_to_10: [2.7, 2.8, 2.85, 2.95], age_over_10: [3.2, 3.35, 3.4, null] },
+            'kd_hop_dong_tren_9c': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.25, 1.3, 1.35, 1.4], age_6_to_10: [1.4, 1.5, 1.55, 1.65], age_over_10: [1.5, 1.65, 1.7, null] },
+            'kd_bus': { age_under_3: [1.25, 1.25, 1.3, 1.3], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.54, 1.69, 1.74, null] },
+            'kd_pickup_van': { age_under_3: [1.3, 1.3, 1.35, 1.35], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.55, 1.7, 1.75, null] },
+            'kd_chuyen_dung': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.5, 1.65, 1.7, null] }
+        };
+        const additionalRateAU009 = 0.10;
+
+        const tndsCategories = {
+            'duoi_6_cho_khong_kd': { label: 'Xe < 6 chỗ (Không KD)', fee: 480700 },
+            '6_den_11_cho_khong_kd': { label: 'Xe 6-11 chỗ (Không KD)', fee: 873400 },
+            '12_den_24_cho_khong_kd': { label: 'Xe 12-24 chỗ (Không KD)', fee: 1397000 },
+            'tren_24_cho_khong_kd': { label: 'Xe > 24 chỗ (Không KD)', fee: 2007500 },
+            'pickup_khong_kd': { label: 'Bán tải, Van (Không KD)', fee: 480700 },
+            'duoi_6_cho_kd': { label: 'Xe < 6 chỗ (Kinh doanh)', fee: 831600 },
+            '6_cho_kd': { label: 'Xe 6 chỗ (Kinh doanh)', fee: 1021900 },
+            '7_cho_kd': { label: 'Xe 7 chỗ (Kinh doanh)', fee: 1188000 },
+            '8_cho_kd': { label: 'Xe 8 chỗ (Kinh doanh)', fee: 1378300 },
+            '9_cho_kd': { label: 'Xe 9 chỗ (Kinh doanh)', fee: 1544400 },
+            '10_cho_kd': { label: 'Xe 10 chỗ (Kinh doanh)', fee: 1663200 },
+            '11_cho_kd': { label: 'Xe 11 chỗ (Kinh doanh)', fee: 1821600 },
+            '12_cho_kd': { label: 'Xe 12 chỗ (Kinh doanh)', fee: 2004200 },
+            '13_cho_kd': { label: 'Xe 13 chỗ (Kinh doanh)', fee: 2253900 },
+            '14_cho_kd': { label: 'Xe 14 chỗ (Kinh doanh)', fee: 2443100 },
+            '15_cho_kd': { label: 'Xe 15 chỗ (Kinh doanh)', fee: 2633400 },
+            '16_cho_kd': { label: 'Xe 16 chỗ (Kinh doanh)', fee: 3359400 },
+            'tren_16_den_24_kd': { label: 'Xe 17-24 chỗ (Kinh doanh)', fee: 5095200 },
+            'tren_24_kd': { label: 'Xe > 24 chỗ (Kinh doanh)', fee: 5294300 },
+            'pickup_kd': { label: 'Bán tải, Van (Kinh doanh)', fee: 1026300 },
+            'tai_duoi_3_tan': { label: 'Xe tải < 3 tấn', fee: 938300 },
+            'tai_3_den_8_tan': { label: 'Xe tải 3-8 tấn', fee: 1826000 },
+            'tai_8_den_15_tan': { label: 'Xe tải 8-15 tấn', fee: 3020600 },
+            'tai_tren_15_tan': { label: 'Xe tải > 15 tấn', fee: 3520000 },
+        };
+        
+        let calculatedNNTXFee = 0;
+        let calculatedDeductible = 0;
+
+        const cavetInput = document.getElementById('cavet-input');
+        const dangkiemInput = document.getElementById('dangkiem-input');
+        const extractBtn = document.getElementById('extract-btn');
+        const quoteBtn = document.getElementById('quote-btn');
+        const loaiHinhSelect = document.getElementById('loaiHinhKinhDoanh');
+        
+        document.getElementById('cavet-upload-box').addEventListener('click', () => cavetInput.click());
+        document.getElementById('dangkiem-upload-box').addEventListener('click', () => dangkiemInput.click());
+        document.getElementById('generate-quote-pdf-btn').addEventListener('click', generateAndShowQuote);
+
+        [cavetInput, dangkiemInput].forEach(input => {
+            input.addEventListener('change', () => {
+                extractBtn.disabled = !cavetInput.files[0] && !dangkiemInput.files[0];
+            });
+        });
+
+        extractBtn.addEventListener('click', extractInformation);
+        quoteBtn.addEventListener('click', calculateAndBuildQuote);
+        loaiHinhSelect.addEventListener('change', toggleTrongTaiInput);
+
+        document.getElementById('giaTriXe').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/[,.]/g, '');
+            if (!isNaN(value) && value.length > 0) {
+                e.target.value = parseInt(value, 10).toLocaleString('vi-VN');
+            } else {
+                e.target.value = '';
+            }
+        });
+        
+        window.showModal = function(id) { document.getElementById(id).style.display = 'block'; }
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function showError(message) {
+            document.getElementById('error-text').textContent = message;
+            showModal('error-modal');
+        }
+
+        function toggleTrongTaiInput() {
+            const loaiHinh = loaiHinhSelect.value;
+            const trongTaiWrapper = document.getElementById('trongTai-wrapper');
+            if (loaiHinh.includes('cho_hang') || loaiHinh.includes('dau_keo')) {
+                trongTaiWrapper.classList.remove('hidden');
+            } else {
+                trongTaiWrapper.classList.add('hidden');
+            }
+        }
+
+        window.previewImage = function(type) {
+            const input = document.getElementById(`${type}-input`);
+            const preview = document.getElementById(`${type}-preview`);
+            const text = document.getElementById(`${type}-text`);
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    text.textContent = file.name;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function extractInformation() {
+            showModal('loading-modal');
+            let extractedData = {};
+
+            try {
+                const files = [ { type: 'cavet', file: cavetInput.files[0] }, { type: 'dangkiem', file: dangkiemInput.files[0] } ];
+                for (const item of files) {
+                    if (item.file) {
+                        const base64Data = await fileToBase64(item.file);
+                        const data = await callGeminiAPI(base64Data);
+                        for (const key in data) { if (data[key]) { extractedData[key] = data[key]; } }
+                    }
+                }
+                if (Object.keys(extractedData).length === 0) { throw new Error("Không thể trích xuất thông tin. Vui lòng dùng ảnh rõ nét hơn."); }
+                populateForm(extractedData);
+                document.getElementById('info-section').classList.remove('hidden');
+                document.getElementById('upload-section').classList.add('opacity-50');
+            } catch (error) {
+                console.error("Lỗi trích xuất:", error);
+                showError(error.message || "Đã có lỗi xảy ra. Vui lòng kiểm tra lại hình ảnh.");
+            } finally {
+                closeModal('loading-modal');
+            }
+        }
+
+        async function callGeminiAPI(base64ImageData) {
+            const apiKey = "AIzaSyDKt6Y5s8XBqrC8s-mXY81GLMDKWpQt4_c";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            const prompt = `Phân tích hình ảnh giấy tờ xe (đăng ký hoặc đăng kiểm) của Việt Nam và trích xuất các thông tin sau dưới dạng JSON. Chỉ trả về JSON, không giải thích gì thêm.
+            - chuXe, diaChi, nhanHieu, soLoai, soKhung, soMay, bienSo, namSanXuat, soChoNgoi, ngayDangKyLanDau (DKLĐ, định dạng dd/mm/yyyy)
+            - trongTaiHangHoa: Khối lượng hàng chuyên chở cho phép (tính bằng kg)
+            - kinhDoanhVanTai: "Có" hoặc "Không". Nếu không tìm thấy thông tin nào, hãy để giá trị là null.`;
+            const payload = { contents: [{ parts: [ { text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64ImageData } } ] }] };
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!response.ok) { throw new Error(`API call failed with status: ${response.status}`); }
+            const result = await response.json();
+            if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                let text = result.candidates[0].content.parts[0].text;
+                text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(text);
+            } else { throw new Error("Phản hồi từ API không hợp lệ hoặc không chứa dữ liệu."); }
+        }
+
+        function populateForm(data) {
+            document.getElementById('chuXe').value = data.chuXe || '';
+            document.getElementById('diaChi').value = data.diaChi || '';
+            document.getElementById('bienSo').value = data.bienSo || '';
+            document.getElementById('nhanHieu').value = data.nhanHieu || '';
+            document.getElementById('soLoai').value = data.soLoai || '';
+            document.getElementById('soKhung').value = data.soKhung || '';
+            document.getElementById('soMay').value = data.soMay || '';
+            document.getElementById('ngayDKLD').value = data.ngayDangKyLanDau || '';
+            document.getElementById('namSanXuat').value = data.namSanXuat || '';
+            document.getElementById('soChoNgoi').value = data.soChoNgoi || '';
+            document.getElementById('trongTai').value = data.trongTaiHangHoa || '';
+            
+            const loaiXeText = (data.loaiXe || '').toLowerCase();
+            if (data.kinhDoanhVanTai && data.kinhDoanhVanTai.toLowerCase() === 'có') {
+                if (loaiXeText.includes('tải')) { loaiHinhSelect.value = 'kd_cho_hang'; } 
+                else if (loaiXeText.includes('bán tải') || loaiXeText.includes('pickup')) { loaiHinhSelect.value = 'kd_pickup_van'; }
+                else { loaiHinhSelect.value = 'kd_cho_khach_lien_tinh'; }
+            } else {
+                 if (loaiXeText.includes('tải')) { loaiHinhSelect.value = 'khong_kd_cho_hang'; } 
+                 else if (loaiXeText.includes('bán tải') || loaiXeText.includes('pickup')) { loaiHinhSelect.value = 'khong_kd_pickup_van'; }
+                 else { loaiHinhSelect.value = 'khong_kd_cho_nguoi'; }
+            }
+            toggleTrongTaiInput();
+        }
+
+        function calculateAndBuildQuote() {
+            const giaTriXeRaw = document.getElementById('giaTriXe').value;
+            if (!giaTriXeRaw) { showError("Vui lòng nhập định giá xe."); return; }
+            const giaTriXe = parseInt(giaTriXeRaw.replace(/[,.]/g, ''), 10);
+            const namSanXuat = parseInt(document.getElementById('namSanXuat').value, 10);
+            const soChoNgoi = parseInt(document.getElementById('soChoNgoi').value, 10) || 0;
+            const loaiHinhKD = loaiHinhSelect.value;
+            const trongTai = parseInt(document.getElementById('trongTai').value, 10) || 0;
+
+            if (!namSanXuat || namSanXuat < 1980) { showError("Vui lòng kiểm tra lại Năm sản xuất."); return; }
+            if ((loaiHinhKD.includes('cho_hang') || loaiHinhKD.includes('dau_keo')) && trongTai <= 0) {
+                 showError("Vui lòng nhập trọng tải cho xe tải."); return;
+            }
+
+            const currentYear = new Date().getFullYear();
+            const carAge = currentYear - namSanXuat;
+            let ageGroup;
+            let ageText = '';
+            if (carAge < 3) { ageGroup = 'age_under_3'; }
+            else if (carAge < 6) { ageGroup = 'age_3_to_6'; }
+            else if (carAge < 10) { ageGroup = 'age_6_to_10'; ageText = 'trên 6 năm'; }
+            else { ageGroup = 'age_over_10'; ageText = 'trên 10 năm'; }
+
+            let baseRates;
+            if (loaiHinhKD === 'khong_kd_cho_nguoi') {
+                let valueCategory;
+                if (giaTriXe < 500000000) valueCategory = 'duoi_500tr';
+                else if (giaTriXe < 700000000) valueCategory = 'tu_500_den_700tr';
+                else if (giaTriXe < 1000000000) valueCategory = 'tu_700_den_1ty';
+                else valueCategory = 'tren_1ty';
+                baseRates = physicalDamageRates[loaiHinhKD][valueCategory][ageGroup];
+            } else {
+                baseRates = physicalDamageRates[loaiHinhKD] ? physicalDamageRates[loaiHinhKD][ageGroup] : [null,null,null,null];
+            }
+
+            const finalRates = [...baseRates];
+            if(baseRates[3] !== null) {
+                finalRates.push(baseRates[3] + additionalRateAU009);
+            } else {
+                finalRates.push(null);
+            }
+            
+            const isKinhDoanh = loaiHinhKD.startsWith('kd_');
+            calculatedDeductible = isKinhDoanh ? 1000000 : 500000;
+            
+            let tndsKey = null;
+            if (loaiHinhKD.includes('pickup_van')) { tndsKey = isKinhDoanh ? 'pickup_kd' : 'pickup_khong_kd'; } 
+            else if (loaiHinhKD.includes('cho_hang') || loaiHinhKD.includes('dau_keo')) {
+                const tan = trongTai / 1000;
+                if (tan < 3) tndsKey = 'tai_duoi_3_tan';
+                else if (tan <= 8) tndsKey = 'tai_3_den_8_tan';
+                else if (tan <= 15) tndsKey = 'tai_8_den_15_tan';
+                else tndsKey = 'tai_tren_15_tan';
+            } else { // Passenger cars
+                if (isKinhDoanh) {
+                    if (soChoNgoi < 6) tndsKey = 'duoi_6_cho_kd';
+                    else if (soChoNgoi <= 16) tndsKey = `${soChoNgoi}_cho_kd`;
+                    else if (soChoNgoi <= 24) tndsKey = 'tren_16_den_24_kd';
+                    else tndsKey = 'tren_24_kd';
+                } else {
+                    if (soChoNgoi < 6) tndsKey = 'duoi_6_cho_khong_kd';
+                    else if (soChoNgoi <= 11) tndsKey = '6_den_11_cho_khong_kd';
+                    else if (soChoNgoi <= 24) tndsKey = '12_den_24_cho_khong_kd';
+                    else tndsKey = 'tren_24_cho_khong_kd';
+                }
+            }
+            calculatedNNTXFee = soChoNgoi * 10000;
+
+            populateQuoteBuilder(finalRates, tndsKey, calculatedNNTXFee, ageText);
+            document.getElementById('build-quote-section').classList.remove('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        
+        function formatCurrency(num) {
+            if (typeof num === 'number') { return num.toLocaleString('vi-VN') + ' ₫'; }
+            return num;
+        }
+
+        function populateQuoteBuilder(rates, tndsKey, nntxFee, ageText) {
+            const optionsContainer = document.getElementById('vatChat-options');
+            const giaTriXe = parseInt(document.getElementById('giaTriXe').value.replace(/[,.]/g, ''), 10);
+            const loaiHinhKD = document.getElementById('loaiHinhKinhDoanh').value;
+            const packageLabels = [
+                { name: 'Gói Cơ bản', details: 'Bảo hiểm cơ bản' },
+                { name: 'Gói + AU001', details: 'Thêm: Thay mới không khấu hao' },
+                { name: 'Gói + AU001 + AU006', details: 'Thêm: Thủy kích' },
+                { name: 'Gói + AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage' },
+                { name: 'Gói + AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' }
+            ];
+
+            optionsContainer.innerHTML = ''; // Clear previous options
+            let firstAvailableIndex = -1;
+
+            rates.forEach((rate, index) => {
+                if (rate !== null) {
+                    if (firstAvailableIndex === -1) firstAvailableIndex = index;
+                    
+                    let fee = (giaTriXe * rate) / 100;
+                    let noteHTML = '';
+                    const isMinFeeApplicable = loaiHinhKD === 'khong_kd_cho_nguoi' && giaTriXe < 500000000;
+                    if (isMinFeeApplicable && fee < 5500000) {
+                        fee = 5500000;
+                        noteHTML = `<p class="text-xs text-red-500 mt-1">Đã áp dụng phí tối thiểu</p>`;
+                    }
+
+                    const isChecked = index === firstAvailableIndex ? 'checked' : '';
+                    const optionHTML = `
+                        <div class="p-3 border rounded-lg">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-center mt-1">
+                                    <input id="vc-package-${index}" name="vatChatPackage" type="radio" ${isChecked} 
+                                           data-original-rate="${rate}"
+                                           class="h-4 w-4 custom-radio focus:ring-blue-500" onchange="updateTotalPrice()">
+                                    <label for="vc-package-${index}" class="ml-3">
+                                        <span class="font-semibold text-gray-800">${packageLabels[index].name}</span>
+                                        <p class="text-xs text-gray-500">${packageLabels[index].details}</p>
+                                    </label>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center gap-1">
+                                        <input type="number" step="0.01" id="vc-rate-${index}" value="${rate.toFixed(2)}" 
+                                               class="w-20 text-right p-1 border rounded-md font-semibold" 
+                                               oninput="updatePackageDetails(${index})">
+                                        <span class="w-4 text-gray-500">%</span>
+                                    </div>
+                                    <div id="vc-fee-${index}" class="font-bold text-sm text-blue-600 mt-1">${formatCurrency(fee)}</div>
+                                </div>
+                            </div>
+                            <div id="vc-diff-${index}" class="text-right text-sm text-gray-600 mt-1 h-5">${noteHTML}</div>
+                        </div>
+                    `;
+                    optionsContainer.innerHTML += optionHTML;
+                } else {
+                     const disabledHTML = `
+                        <div class="p-3 border rounded-lg disabled-package">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-center mt-1">
+                                    <input type="radio" name="vatChatPackage" disabled class="h-4 w-4">
+                                    <label class="ml-3">
+                                        <span class="font-semibold text-gray-500">${packageLabels[index].name}</span>
+                                        <p class="text-xs text-gray-400">Không áp dụng cho xe ${ageText}</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    optionsContainer.innerHTML += disabledHTML;
+                }
+            });
+
+            // Populate TNDS dropdown
+            const tndsSelect = document.getElementById('tnds-category-select');
+            tndsSelect.innerHTML = '';
+            for (const key in tndsCategories) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = tndsCategories[key].label;
+                if (key === tndsKey) {
+                    option.selected = true;
+                }
+                tndsSelect.appendChild(option);
+            }
+            updateTNDSFee();
+            
+            document.getElementById('nntx-fee-display').textContent = formatCurrency(nntxFee);
+            
+            updateTotalPrice();
+        }
+        
+        function updateTNDSFee() {
+            const tndsSelect = document.getElementById('tnds-category-select');
+            const selectedKey = tndsSelect.value;
+            const fee = tndsCategories[selectedKey].fee;
+            document.getElementById('tnds-fee-display').textContent = formatCurrency(fee);
+        }
+
+        function updatePackageDetails(index) {
+            const rateInput = document.getElementById(`vc-rate-${index}`);
+            const diffSpan = document.getElementById(`vc-diff-${index}`);
+            const radio = document.getElementById(`vc-package-${index}`);
+            const feeDisplay = document.getElementById(`vc-fee-${index}`);
+
+            const originalRate = parseFloat(radio.dataset.originalRate);
+            const newRate = parseFloat(rateInput.value) || 0;
+            
+            const giaTriXe = parseInt(document.getElementById('giaTriXe').value.replace(/[,.]/g, ''), 10);
+            const loaiHinhKD = document.getElementById('loaiHinhKinhDoanh').value;
+
+            const originalFee = (giaTriXe * originalRate) / 100;
+            let newFee = (giaTriXe * newRate) / 100;
+            
+            let noteHTML = '';
+            const isMinFeeApplicable = loaiHinhKD === 'khong_kd_cho_nguoi' && giaTriXe < 500000000;
+            if (isMinFeeApplicable && newFee < 5500000) {
+                newFee = 5500000;
+                noteHTML = `<p class="text-xs text-red-500 mt-1">Đã áp dụng phí tối thiểu</p>`;
+            }
+
+            const difference = newFee - originalFee;
+
+            feeDisplay.textContent = formatCurrency(newFee);
+
+            if (Math.abs(difference) > 1) {
+                diffSpan.innerHTML = `(Chênh lệch: <span class="${difference > 0 ? 'text-green-600' : 'text-red-600'} font-semibold">${difference > 0 ? '+' : ''}${formatCurrency(difference)}</span>)${noteHTML}`;
+            } else {
+                diffSpan.innerHTML = noteHTML;
+            }
+
+            if (radio.checked) {
+                updateTotalPrice();
+            }
+        }
+
+        function updateTotalPrice() {
+            const summaryContainer = document.getElementById('total-price-summary');
+            let total = 0;
+            let vatChatFee = 0;
+
+            const selectedRadio = document.querySelector('input[name="vatChatPackage"]:checked');
+            if (selectedRadio) {
+                const index = selectedRadio.id.split('-')[2];
+                const feeDisplay = document.getElementById(`vc-fee-${index}`);
+                vatChatFee = parseInt(feeDisplay.textContent.replace(/[,.₫\s]/g, ''), 10) || 0;
+                total += vatChatFee;
+            }
+
+            let tndsFeeFinal = 0;
+            if (document.getElementById('include-tnds').checked) {
+                const selectedTNDSKey = document.getElementById('tnds-category-select').value;
+                tndsFeeFinal = tndsCategories[selectedTNDSKey].fee;
+                total += tndsFeeFinal;
+            }
+            
+            let nntxFeeFinal = 0;
+            if (document.getElementById('include-nntx').checked) {
+                nntxFeeFinal = calculatedNNTXFee;
+                total += nntxFeeFinal;
+            }
+            
+            summaryContainer.innerHTML = `
+                <div class="flex justify-between py-1 border-b border-dashed">
+                    <span>1. Phí bảo hiểm Vật chất:</span>
+                    <span class="font-semibold">${formatCurrency(vatChatFee)}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-dashed">
+                    <span>2. Phí TNDS Bắt buộc:</span>
+                    <span class="font-semibold">${formatCurrency(tndsFeeFinal)}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-dashed">
+                    <span>3. Phí Người ngồi trên xe:</span>
+                    <span class="font-semibold">${formatCurrency(nntxFeeFinal)}</span>
+                </div>
+                 <div class="flex justify-between py-1">
+                    <span>Mức khấu trừ:</span>
+                    <span class="font-semibold">${formatCurrency(calculatedDeductible)}/vụ</span>
+                </div>
+                <hr class="my-2 border-gray-300">
+                <div class="flex justify-between items-center text-base">
+                    <span class="font-bold">TỔNG CỘNG:</span>
+                    <span class="font-extrabold text-xl text-blue-600">${formatCurrency(total)}</span>
+                </div>
+            `;
+        }
+        
+        function getSelectedPackageDetails() {
+            const packageDetails = {
+                name: '',
+                dkbs: [],
+                tyLePhi: 0,
+                phiVatChat: 0
+            };
+
+            const selectedRadio = document.querySelector('input[name="vatChatPackage"]:checked');
+            if (!selectedRadio) return packageDetails;
+
+            const index = parseInt(selectedRadio.id.split('-')[2], 10);
+            
+            switch(index) {
+                case 0:
+                    packageDetails.dkbs.push('Cơ bản');
+                    break;
+                case 1:
+                    packageDetails.dkbs.push('- AU001: Mới thay cũ');
+                    break;
+                case 2:
+                    packageDetails.dkbs.push('- AU001: Mới thay cũ');
+                    packageDetails.dkbs.push('- AU006: Thủy kích');
+                    break;
+                case 3:
+                    packageDetails.dkbs.push('- AU001: Mới thay cũ');
+                    packageDetails.dkbs.push('- AU002: Lựa chọn cơ sở sửa chữa');
+                    packageDetails.dkbs.push('- AU006: Thủy kích');
+                    break;
+                case 4:
+                    packageDetails.dkbs.push('- AU001: Mới thay cũ');
+                    packageDetails.dkbs.push('- AU002: Lựa chọn cơ sở sửa chữa');
+                    packageDetails.dkbs.push('- AU006: Thủy kích');
+                    packageDetails.dkbs.push('- AU009: Mất cắp bộ phận');
+                    break;
+            }
+            
+            const rateInput = document.getElementById(`vc-rate-${index}`);
+            packageDetails.tyLePhi = parseFloat(rateInput.value) || 0;
+            
+            const feeDisplay = document.getElementById(`vc-fee-${index}`);
+            packageDetails.phiVatChat = parseInt(feeDisplay.textContent.replace(/[,.₫\s]/g, ''), 10) || 0;
+
+            return packageDetails;
+        }
+
+        function generateAndShowQuote() {
+            // Gather all data
+            const selectedPackage = getSelectedPackageDetails();
+            const giaTriXe = document.getElementById('giaTriXe').value + ' đồng';
+            const loaiHinhText = document.getElementById('loaiHinhKinhDoanh').options[document.getElementById('loaiHinhKinhDoanh').selectedIndex].text;
+            
+            let tndsFeeFinal = 0;
+            if (document.getElementById('include-tnds').checked) {
+                const selectedTNDSKey = document.getElementById('tnds-category-select').value;
+                tndsFeeFinal = tndsCategories[selectedTNDSKey].fee;
+            }
+            
+            let nntxFeeFinal = 0;
+            if (document.getElementById('include-nntx').checked) {
+                nntxFeeFinal = calculatedNNTXFee;
+            }
+
+            const total = selectedPackage.phiVatChat + tndsFeeFinal + nntxFeeFinal;
+
+            // Populate modal
+            document.getElementById('q-chuXe').textContent = document.getElementById('chuXe').value;
+            document.getElementById('q-diaChi').textContent = document.getElementById('diaChi').value;
+            document.getElementById('q-bienSo').textContent = document.getElementById('bienSo').value;
+            document.getElementById('q-namSanXuat').textContent = document.getElementById('namSanXuat').value;
+            document.getElementById('q-dkld').textContent = document.getElementById('ngayDKLD').value;
+            document.getElementById('q-soChoNgoi').textContent = document.getElementById('soChoNgoi').value;
+            document.getElementById('q-hieuXe').textContent = document.getElementById('nhanHieu').value;
+            document.getElementById('q-loaiXe').textContent = document.getElementById('soLoai').value;
+            document.getElementById('q-soKhung').textContent = document.getElementById('soKhung').value;
+            document.getElementById('q-soMay').textContent = document.getElementById('soMay').value;
+            document.getElementById('q-giaTriXe').textContent = giaTriXe;
+            document.getElementById('q-mucDich').textContent = loaiHinhText;
+            document.getElementById('q-soTienBH').textContent = giaTriXe;
+            document.getElementById('q-mucKhauTru').textContent = formatCurrency(calculatedDeductible) + '/vụ';
+            document.getElementById('q-tyLePhi').textContent = selectedPackage.tyLePhi.toFixed(2) + '%';
+            document.getElementById('q-dkbs').innerHTML = selectedPackage.dkbs.join('<br>');
+            document.getElementById('q-phiVatChat').textContent = formatCurrency(selectedPackage.phiVatChat);
+            document.getElementById('q-phiTNDS').textContent = formatCurrency(tndsFeeFinal);
+            document.getElementById('q-phiNNTX').textContent = formatCurrency(nntxFeeFinal);
+            document.getElementById('q-tongPhi').textContent = formatCurrency(total);
+            
+            showModal('quote-preview-modal');
+        }
+
+        function downloadQuote() {
+            const quoteElement = document.getElementById('quote-content-to-download');
+            const bienSo = document.getElementById('bienSo').value || 'BaoGia';
+            html2canvas(quoteElement, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `BaoGia_${bienSo.replace(/\s/g, '')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+        
+        // Make functions globally accessible for inline event handlers
+        window.closeModal = closeModal;
+        window.downloadQuote = downloadQuote;
+        window.previewImage = previewImage;
+        window.updateTotalPrice = updateTotalPrice;
+        window.updateTNDSFee = updateTNDSFee;
+        window.updatePackageDetails = updatePackageDetails;
+        
+    })(); // End of IIFE
+    </script>
+</body>
+</html>
