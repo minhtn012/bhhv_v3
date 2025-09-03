@@ -13,6 +13,8 @@ import {
   packageLabels,
   type CalculationResult 
 } from '@/utils/insurance-calculator';
+import { CarSelection, CarRecord, CarSearchResult } from '@/types/car';
+import SearchableSelect from '@/components/SearchableSelect';
 
 interface ExtractedData {
   chuXe?: string;
@@ -92,6 +94,21 @@ export default function NewContractPage() {
     includeNNTX: true
   });
   
+  // Car selection data
+  const [carData, setCarData] = useState<CarSelection>({
+    suggestedCar: null,
+    selectedBrand: '',
+    selectedModel: '',
+    selectedBodyStyle: '',
+    selectedYear: 'Khác',
+    availableBrands: [],
+    availableModels: [],
+    availableBodyStyles: [],
+    availableYears: [],
+    isLoadingModels: false,
+    isLoadingDetails: false
+  });
+  
   // Calculation results
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
   const [availablePackages, setAvailablePackages] = useState<Array<{
@@ -112,6 +129,25 @@ export default function NewContractPage() {
       router.push('/');
     }
   }, [router]);
+
+  // Load all brands on component mount
+  useEffect(() => {
+    const loadBrands = async () => {
+      try {
+        const response = await fetch('/api/car-search/brands');
+        const result = await response.json();
+        
+        if (result.success) {
+          setCarData(prev => ({ ...prev, availableBrands: result.data }));
+        } else {
+          console.error('Error loading brands:', result.error);
+        }
+      } catch (error) {
+        console.error('Error loading brands:', error);
+      }
+    };
+    loadBrands();
+  }, []);
 
   // File to base64
   const fileToBase64 = (file: File): Promise<string> => {
@@ -199,7 +235,7 @@ export default function NewContractPage() {
   };
 
   // Populate form with extracted data
-  const populateForm = (data: ExtractedData) => {
+  const populateForm = async (data: ExtractedData) => {
     const newFormData = { ...formData };
     
     if (data.chuXe) newFormData.chuXe = data.chuXe;
@@ -239,6 +275,74 @@ export default function NewContractPage() {
     }
 
     setFormData(newFormData);
+
+    // Auto-search for car information
+    await searchCarFromExtractedData(data);
+  };
+
+  // Search car from extracted data
+  const searchCarFromExtractedData = async (data: ExtractedData) => {
+    if (!data.nhanHieu) return;
+
+    try {
+      // Use brand + model for search, prioritize đăng kiểm data
+      const brandName = data.nhanHieu;
+      const modelName = data.soLoai; // số loại from inspection certificate
+      
+      const response = await fetch('/api/car-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ brandName, modelName })
+      });
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        console.error('Car search error:', result.error);
+        return;
+      }
+
+      const searchResults: CarSearchResult = result.data;
+      
+      // Try to find the best match
+      let suggestedCar: CarRecord | null = null;
+      
+      // First check exact match
+      if (searchResults.exactMatch) {
+        suggestedCar = searchResults.exactMatch;
+      } 
+      // Then prefix match
+      else if (searchResults.prefixMatch) {
+        suggestedCar = searchResults.prefixMatch;
+      }
+      // Finally try text search results
+      else if (searchResults.textSearch.length > 0) {
+        suggestedCar = searchResults.textSearch[0];
+      }
+
+      if (suggestedCar) {
+        // Load all models for the detected brand
+        const modelsResponse = await fetch(`/api/car-search/models/${encodeURIComponent(suggestedCar.brand_name)}`);
+        const modelsResult = await modelsResponse.json();
+        
+        const allModels = modelsResult.success ? modelsResult.data : [suggestedCar];
+        
+        setCarData(prev => ({
+          ...prev,
+          suggestedCar,
+          selectedBrand: suggestedCar.brand_name,
+          selectedModel: suggestedCar.model_name,
+          availableModels: allModels, // All models for this brand
+          availableBodyStyles: suggestedCar.body_styles || [],
+          availableYears: suggestedCar.years || [],
+          selectedBodyStyle: suggestedCar.body_styles?.[0]?.name || '',
+          selectedYear: suggestedCar.years?.[0]?.name || ''
+        }));
+      }
+
+    } catch (error) {
+      console.error('Error searching car:', error);
+    }
   };
 
   // Handle form input change
@@ -246,11 +350,144 @@ export default function NewContractPage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Handle car selection changes
+  const handleCarInputChange = (field: keyof CarSelection, value: any) => {
+    setCarData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Handle brand selection change
+  const handleBrandChange = async (brandName: string) => {
+    setCarData(prev => ({ 
+      ...prev, 
+      selectedBrand: brandName,
+      selectedModel: '',
+      selectedBodyStyle: '',
+      selectedYear: 'Khác',
+      availableModels: [],
+      availableBodyStyles: [],
+      availableYears: [],
+      isLoadingModels: true
+    }));
+
+    try {
+      const response = await fetch(`/api/car-search/models/${encodeURIComponent(brandName)}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setCarData(prev => ({ 
+          ...prev, 
+          availableModels: result.data,
+          isLoadingModels: false
+        }));
+      } else {
+        console.error('Error loading models:', result.error);
+        setCarData(prev => ({ 
+          ...prev, 
+          isLoadingModels: false
+        }));
+      }
+    } catch (error) {
+      console.error('Error loading models:', error);
+      setCarData(prev => ({ 
+        ...prev, 
+        isLoadingModels: false
+      }));
+    }
+  };
+
+  // Handle model selection change
+  const handleModelChange = async (modelName: string) => {
+    setCarData(prev => ({ 
+      ...prev, 
+      selectedModel: modelName,
+      selectedBodyStyle: '',
+      selectedYear: 'Khác',
+      availableBodyStyles: [],
+      availableYears: [],
+      isLoadingDetails: true
+    }));
+
+    try {
+      const response = await fetch(
+        `/api/car-search/details/${encodeURIComponent(carData.selectedBrand)}/${encodeURIComponent(modelName)}`
+      );
+      const result = await response.json();
+      
+      if (result.success) {
+        setCarData(prev => ({ 
+          ...prev, 
+          availableBodyStyles: result.data.bodyStyles,
+          availableYears: result.data.years || [],
+          selectedBodyStyle: result.data.bodyStyles[0]?.name || '',
+          selectedYear: result.data.years[0]?.name || '',
+          isLoadingDetails: false
+        }));
+      } else {
+        console.error('Error loading car details:', result.error);
+        setCarData(prev => ({ 
+          ...prev, 
+          isLoadingDetails: false
+        }));
+      }
+    } catch (error) {
+      console.error('Error loading car details:', error);
+      setCarData(prev => ({ 
+        ...prev, 
+        isLoadingDetails: false
+      }));
+    }
+  };
+
+  // Accept suggested car
+  const acceptSuggestedCar = async () => {
+    if (carData.suggestedCar) {
+      const car = carData.suggestedCar;
+      
+      // Load all models for this brand to give user full choice
+      try {
+        const modelsResponse = await fetch(`/api/car-search/models/${encodeURIComponent(car.brand_name)}`);
+        const modelsResult = await modelsResponse.json();
+        
+        const allModels = modelsResult.success ? modelsResult.data : [car];
+        
+        setCarData(prev => ({
+          ...prev,
+          selectedBrand: car.brand_name,
+          selectedModel: car.model_name,
+          selectedBodyStyle: car.body_styles?.[0]?.name || '',
+          selectedYear: car.years?.[0]?.name || '',
+          availableModels: allModels, // All models for this brand
+          availableBodyStyles: car.body_styles || [],
+          availableYears: car.years || []
+        }));
+      } catch (error) {
+        console.error('Error loading all models:', error);
+        // Fallback to original behavior
+        setCarData(prev => ({
+          ...prev,
+          selectedBrand: car.brand_name,
+          selectedModel: car.model_name,
+          selectedBodyStyle: car.body_styles?.[0]?.name || '',
+          selectedYear: car.years?.[0]?.name || '',
+          availableModels: [car],
+          availableBodyStyles: car.body_styles || [],
+          availableYears: car.years || []
+        }));
+      }
+    }
+  };
+
   // Calculate insurance rates
   const calculateRates = () => {
     const giaTriXeRaw = formData.giaTriXe;
     if (!giaTriXeRaw || !formData.namSanXuat || !formData.soChoNgoi) {
       setError('Vui lòng nhập đủ thông tin: Giá trị xe, Năm sản xuất, Số chỗ ngồi');
+      return;
+    }
+
+    // Validate car selection
+    if (!carData.selectedBrand || !carData.selectedModel || !carData.selectedBodyStyle || !carData.selectedYear) {
+      setError('Vui lòng chọn đầy đủ thông tin xe: Nhãn hiệu, Dòng xe, Kiểu dáng, Năm/Phiên bản');
       return;
     }
 
@@ -406,6 +643,12 @@ export default function NewContractPage() {
         trongTai: Number(formData.trongTai) || undefined,
         giaTriXe: parseCurrency(formData.giaTriXe),
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
+        
+        // Thông tin xe chi tiết
+        carBrand: carData.selectedBrand,
+        carModel: carData.selectedModel,
+        carBodyStyle: carData.selectedBodyStyle,
+        carYear: carData.selectedYear,
         
         // Gói bảo hiểm
         vatChatPackage: {
@@ -716,6 +959,106 @@ export default function NewContractPage() {
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
                     required
                   />
+                </div>
+
+                {/* Car Selection Section */}
+                <div className="lg:col-span-3 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-4">Thông tin xe tự động</h3>
+                  
+                  {/* Suggested Car Display */}
+                  {carData.suggestedCar && (
+                    <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 mb-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-semibold text-green-400 mb-2">🎯 Xe được đề xuất từ giấy tờ:</h4>
+                          <p className="text-white">
+                            <span className="font-medium">{carData.suggestedCar.brand_name} {carData.suggestedCar.model_name}</span>
+                          </p>
+                          {carData.suggestedCar.body_styles?.length > 0 && (
+                            <p className="text-gray-300 text-sm">
+                              Kiểu dáng: {carData.suggestedCar.body_styles.map(s => s.name).join(', ')}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={acceptSuggestedCar}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                        >
+                          Chấp nhận
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Manual Car Selection */}
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Brand Selection */}
+                    <div>
+                      <label className="block text-white font-medium mb-2">Nhãn hiệu xe *</label>
+                      <SearchableSelect
+                        options={carData.availableBrands.map(brand => ({ id: brand, name: brand }))}
+                        value={carData.selectedBrand}
+                        onChange={handleBrandChange}
+                        placeholder="-- Chọn nhãn hiệu --"
+                        required
+                      />
+                    </div>
+
+                    {/* Model Selection */}
+                    <div>
+                      <label className="block text-white font-medium mb-2">Dòng xe *</label>
+                      <SearchableSelect
+                        options={carData.availableModels.map(model => ({ 
+                          id: model.model_id, 
+                          name: model.model_name 
+                        }))}
+                        value={carData.selectedModel}
+                        onChange={handleModelChange}
+                        placeholder="-- Chọn dòng xe --"
+                        loading={carData.isLoadingModels}
+                        disabled={!carData.selectedBrand}
+                        required
+                      />
+                    </div>
+
+                    {/* Body Style Selection */}
+                    <div>
+                      <label className="block text-white font-medium mb-2">Kiểu dáng *</label>
+                      <select
+                        value={carData.selectedBodyStyle}
+                        onChange={(e) => handleCarInputChange('selectedBodyStyle', e.target.value)}
+                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                        required
+                        disabled={!carData.selectedModel || carData.isLoadingDetails}
+                      >
+                        <option value="">
+                          {carData.isLoadingDetails ? 'Đang tải...' : '-- Chọn kiểu dáng --'}
+                        </option>
+                        {carData.availableBodyStyles.map(style => (
+                          <option key={style.id} value={style.name}>{style.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Year Selection */}
+                    <div>
+                      <label className="block text-white font-medium mb-2">Năm/Phiên bản *</label>
+                      <select
+                        value={carData.selectedYear}
+                        onChange={(e) => handleCarInputChange('selectedYear', e.target.value)}
+                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                        required
+                        disabled={!carData.selectedModel || carData.isLoadingDetails}
+                      >
+                        <option value="">
+                          {carData.isLoadingDetails ? 'Đang tải...' : '-- Chọn năm/phiên bản --'}
+                        </option>
+                        {carData.availableYears.map(year => (
+                          <option key={year.id} value={year.name}>{year.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="lg:col-span-3">

@@ -16912,59 +16912,6 @@
         ]
       },
       {
-        "model_name": "SONIC",
-        "model_id": "e5a5ff5c-a179-4da8-812d-95d36afb423e",
-        "body_styles": [
-          {
-            "id": "b2801e7b-8391-4042-80e6-eccb87238236",
-            "code": "CAR_BODY_STYLES",
-            "name": "SEDAN"
-          },
-          {
-            "id": "061d121b-47fd-4602-bb80-8907358e737b",
-            "code": "CAR_BODY_STYLES",
-            "name": "SUV"
-          }
-        ],
-        "years": [
-          {
-            "id": "bfe39ccd-0ab5-47e4-a67a-e4ad9889d27f",
-            "code": "CAR_MODEL_YEAR",
-            "name": "1.5 AT DELUXE"
-          },
-          {
-            "id": "6ae311db-414a-4c3e-8327-24d1d7331a1d",
-            "code": "CAR_MODEL_YEAR",
-            "name": "1.5 AT LUXURY"
-          },
-          {
-            "id": "f6ee7b02-9d7c-4aeb-8c5a-fa195887aad8",
-            "code": "CAR_MODEL_YEAR",
-            "name": "1.5 AT PREMIUM  "
-          },
-          {
-            "id": "a0c455bc-7943-4d71-b19d-3472f173d7a9",
-            "code": "CAR_MODEL_YEAR",
-            "name": "DELUXE 1.5L CVT"
-          },
-          {
-            "id": "c894564f-6705-4ce4-96d3-124a0c94cc99",
-            "code": "CAR_MODEL_YEAR",
-            "name": "DELUXE 1.5L MT"
-          },
-          {
-            "id": "c511a25a-a5fe-4720-8d65-96770ce4da7d",
-            "code": "CAR_MODEL_YEAR",
-            "name": "LUXURY 1.5L CVT"
-          },
-          {
-            "id": "21505619-04ec-41ee-9016-ff261e4207d2",
-            "code": "CAR_MODEL_YEAR",
-            "name": "PREMIUM 1.5L CVT"
-          }
-        ]
-      },
-      {
         "model_name": "SORENTO",
         "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1004",
         "body_styles": [
