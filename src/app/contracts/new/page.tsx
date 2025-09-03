@@ -883,27 +883,6 @@ export default function NewContractPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-white font-medium mb-2">Nhãn hiệu *</label>
-                  <input 
-                    type="text" 
-                    value={formData.nhanHieu}
-                    onChange={(e) => handleInputChange('nhanHieu', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white font-medium mb-2">Số loại *</label>
-                  <input 
-                    type="text" 
-                    value={formData.soLoai}
-                    onChange={(e) => handleInputChange('soLoai', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
-                    required
-                  />
-                </div>
 
                 <div>
                   <label className="block text-white font-medium mb-2">Số khung *</label>
