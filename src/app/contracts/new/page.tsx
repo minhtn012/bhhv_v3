@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import * as Yup from 'yup';
 import DashboardLayout from '@/components/DashboardLayout';
 import { 
   calculateInsuranceRates, 
@@ -65,6 +66,7 @@ export default function NewContractPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [extracting, setExtracting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   
   // File uploads
   const [cavetFile, setCavetFile] = useState<File | null>(null);
@@ -121,6 +123,132 @@ export default function NewContractPage() {
   }>>([]);
   
   const router = useRouter();
+
+  // Error display component
+  const FieldError = ({ fieldName }: { fieldName: string }) => {
+    const error = fieldErrors[fieldName];
+    if (!error) return null;
+    
+    return (
+      <div className="text-red-400 text-sm mt-1">
+        {error}
+      </div>
+    );
+  };
+
+  // Date parsing utility
+  const parseDate = (dateStr: string): Date | null => {
+    if (!dateStr) return null;
+    
+    const parts = dateStr.split('/');
+    if (parts.length !== 3) return null;
+    
+    const day = parseInt(parts[0]);
+    const month = parseInt(parts[1]);
+    const year = parseInt(parts[2]);
+    
+    if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+    if (day < 1 || day > 31 || month < 1 || month > 12) return null;
+    
+    // Note: JavaScript Date constructor uses 0-based months
+    const date = new Date(year, month - 1, day);
+    
+    // Validate the date is actually correct (handles leap years, etc.)
+    if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
+      return null;
+    }
+    
+    return date;
+  };
+
+  // Yup validation schema
+  const validationSchema = Yup.object().shape({
+    chuXe: Yup.string().required('Vui lòng nhập chủ xe'),
+    diaChi: Yup.string().required('Vui lòng nhập địa chỉ'),
+    bienSo: Yup.string().required('Vui lòng nhập biển số'),
+    soKhung: Yup.string().required('Vui lòng nhập số khung'),
+    soMay: Yup.string().required('Vui lòng nhập số máy'),
+    ngayDKLD: Yup.string()
+      .required('Vui lòng nhập ngày đăng ký lần đầu')
+      .test('valid-date', 'Ngày không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy', function(value) {
+        if (!value) return false;
+        const date = parseDate(value);
+        return date !== null;
+      })
+      .test('not-future', 'Ngày đăng ký lần đầu phải nhỏ hơn ngày hiện tại', function(value) {
+        if (!value) return true;
+        const date = parseDate(value);
+        if (!date) return true;
+        return date < new Date();
+      })
+      .test('after-manufacture', 'Ngày đăng ký không thể trước năm sản xuất', function(value) {
+        if (!value) return true;
+        const namSanXuat = this.parent.namSanXuat;
+        if (!namSanXuat) return true;
+        const date = parseDate(value);
+        if (!date) return true;
+        const manufacturingYear = new Date(Number(namSanXuat), 0, 1);
+        return date >= manufacturingYear;
+      }),
+    namSanXuat: Yup.number()
+      .required('Vui lòng nhập năm sản xuất')
+      .min(1980, 'Năm sản xuất phải từ 1980 trở lên')
+      .max(new Date().getFullYear(), `Năm sản xuất không được lớn hơn năm hiện tại (${new Date().getFullYear()})`),
+    soChoNgoi: Yup.number()
+      .required('Vui lòng nhập số chỗ ngồi')
+      .min(1, 'Số chỗ ngồi phải lớn hơn 0')
+      .max(64, 'Số chỗ ngồi không được lớn hơn 64'),
+    giaTriXe: Yup.string()
+      .required('Vui lòng nhập giá trị xe')
+      .test('valid-price', 'Giá trị xe phải lớn hơn 0', function(value) {
+        if (!value) return false;
+        const price = parseCurrency(value);
+        return !isNaN(price) && price > 0;
+      }),
+    trongTai: Yup.number().when('loaiHinhKinhDoanh', {
+      is: (loaiHinh: string) => loaiHinh?.includes('cho_hang') || loaiHinh?.includes('dau_keo'),
+      then: (schema) => schema.required('Vui lòng nhập trọng tải cho xe tải').min(1, 'Trọng tải phải lớn hơn 0'),
+      otherwise: (schema) => schema.notRequired()
+    })
+  });
+
+  // Car selection validation schema
+  const carValidationSchema = Yup.object().shape({
+    selectedBrand: Yup.string().required('Vui lòng chọn nhãn hiệu xe'),
+    selectedModel: Yup.string().required('Vui lòng chọn dòng xe'),
+    selectedBodyStyle: Yup.string().required('Vui lòng chọn kiểu dáng xe'),
+    selectedYear: Yup.string().required('Vui lòng chọn năm/phiên bản xe')
+  });
+
+  // Validate form and show field-specific errors
+  const validateForm = async (): Promise<boolean> => {
+    try {
+      // Clear previous errors
+      setFieldErrors({});
+      setError('');
+
+      // Validate form data
+      await validationSchema.validate(formData, { abortEarly: false });
+      
+      // Validate car selection
+      await carValidationSchema.validate(carData, { abortEarly: false });
+
+      return true;
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const errors: Record<string, string> = {};
+        
+        err.inner.forEach((error) => {
+          if (error.path) {
+            errors[error.path] = error.message;
+          }
+        });
+        
+        setFieldErrors(errors);
+      }
+      return false;
+    }
+  };
 
   // Check authentication
   useEffect(() => {
@@ -478,33 +606,17 @@ export default function NewContractPage() {
   };
 
   // Calculate insurance rates
-  const calculateRates = () => {
-    const giaTriXeRaw = formData.giaTriXe;
-    if (!giaTriXeRaw || !formData.namSanXuat || !formData.soChoNgoi) {
-      setError('Vui lòng nhập đủ thông tin: Giá trị xe, Năm sản xuất, Số chỗ ngồi');
+  const calculateRates = async () => {
+    // Use comprehensive validation
+    const isValid = await validateForm();
+    if (!isValid) {
       return;
     }
 
-    // Validate car selection
-    if (!carData.selectedBrand || !carData.selectedModel || !carData.selectedBodyStyle || !carData.selectedYear) {
-      setError('Vui lòng chọn đầy đủ thông tin xe: Nhãn hiệu, Dòng xe, Kiểu dáng, Năm/Phiên bản');
-      return;
-    }
-
-    const giaTriXe = parseCurrency(giaTriXeRaw);
+    const giaTriXe = parseCurrency(formData.giaTriXe);
     const namSanXuat = Number(formData.namSanXuat);
     const soChoNgoi = Number(formData.soChoNgoi);
     const trongTai = Number(formData.trongTai) || 0;
-
-    if (namSanXuat < 1980) {
-      setError('Năm sản xuất phải từ 1980 trở lên');
-      return;
-    }
-
-    if ((formData.loaiHinhKinhDoanh.includes('cho_hang') || formData.loaiHinhKinhDoanh.includes('dau_keo')) && trongTai <= 0) {
-      setError('Vui lòng nhập trọng tải cho xe tải');
-      return;
-    }
 
     const result = calculateInsuranceRates(
       giaTriXe,
@@ -856,9 +968,12 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.chuXe}
                     onChange={(e) => handleInputChange('chuXe', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.chuXe ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="chuXe" />
                 </div>
                 
                 <div className="lg:col-span-3">
@@ -867,9 +982,12 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.diaChi}
                     onChange={(e) => handleInputChange('diaChi', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.diaChi ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="diaChi" />
                 </div>
 
                 <div>
@@ -878,9 +996,12 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.bienSo}
                     onChange={(e) => handleInputChange('bienSo', e.target.value.toUpperCase())}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white font-mono"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white font-mono ${
+                      fieldErrors.bienSo ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="bienSo" />
                 </div>
 
 
@@ -890,9 +1011,12 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.soKhung}
                     onChange={(e) => handleInputChange('soKhung', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.soKhung ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="soKhung" />
                 </div>
 
                 <div>
@@ -901,9 +1025,12 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.soMay}
                     onChange={(e) => handleInputChange('soMay', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.soMay ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="soMay" />
                 </div>
 
                 <div>
@@ -912,32 +1039,47 @@ export default function NewContractPage() {
                     type="text" 
                     value={formData.ngayDKLD}
                     onChange={(e) => handleInputChange('ngayDKLD', e.target.value)}
-                    placeholder="dd/mm/yyyy"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    placeholder="dd/mm/yyyy (VD: 15/03/2020)"
+                    pattern="^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$"
+                    title="Vui lòng nhập ngày theo định dạng dd/mm/yyyy"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.ngayDKLD ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="ngayDKLD" />
                 </div>
 
                 <div>
                   <label className="block text-white font-medium mb-2">Năm sản xuất *</label>
                   <input 
                     type="number" 
+                    min="1980"
+                    max={new Date().getFullYear()}
                     value={formData.namSanXuat}
                     onChange={(e) => handleInputChange('namSanXuat', e.target.value ? parseInt(e.target.value) : '')}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.namSanXuat ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="namSanXuat" />
                 </div>
 
                 <div>
                   <label className="block text-white font-medium mb-2">Số chỗ ngồi *</label>
                   <input 
                     type="number" 
+                    min="1"
+                    max="64"
                     value={formData.soChoNgoi}
                     onChange={(e) => handleInputChange('soChoNgoi', e.target.value ? parseInt(e.target.value) : '')}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.soChoNgoi ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="soChoNgoi" />
                 </div>
 
                 {/* Car Selection Section */}
@@ -981,6 +1123,7 @@ export default function NewContractPage() {
                         placeholder="-- Chọn nhãn hiệu --"
                         required
                       />
+                      <FieldError fieldName="selectedBrand" />
                     </div>
 
                     {/* Model Selection */}
@@ -998,6 +1141,7 @@ export default function NewContractPage() {
                         disabled={!carData.selectedBrand}
                         required
                       />
+                      <FieldError fieldName="selectedModel" />
                     </div>
 
                     {/* Body Style Selection */}
@@ -1006,7 +1150,9 @@ export default function NewContractPage() {
                       <select
                         value={carData.selectedBodyStyle}
                         onChange={(e) => handleCarInputChange('selectedBodyStyle', e.target.value)}
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                        className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                          fieldErrors.selectedBodyStyle ? 'border-red-500' : 'border-white/20'
+                        }`}
                         required
                         disabled={!carData.selectedModel || carData.isLoadingDetails}
                       >
@@ -1017,6 +1163,7 @@ export default function NewContractPage() {
                           <option key={style.id} value={style.name}>{style.name}</option>
                         ))}
                       </select>
+                      <FieldError fieldName="selectedBodyStyle" />
                     </div>
 
                     {/* Year Selection */}
@@ -1025,7 +1172,9 @@ export default function NewContractPage() {
                       <select
                         value={carData.selectedYear}
                         onChange={(e) => handleCarInputChange('selectedYear', e.target.value)}
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                        className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                          fieldErrors.selectedYear ? 'border-red-500' : 'border-white/20'
+                        }`}
                         required
                         disabled={!carData.selectedModel || carData.isLoadingDetails}
                       >
@@ -1036,6 +1185,7 @@ export default function NewContractPage() {
                           <option key={year.id} value={year.name}>{year.name}</option>
                         ))}
                       </select>
+                      <FieldError fieldName="selectedYear" />
                     </div>
                   </div>
                 </div>
@@ -1047,9 +1197,12 @@ export default function NewContractPage() {
                     value={formData.giaTriXe}
                     onChange={(e) => handleInputChange('giaTriXe', formatNumberInput(e.target.value))}
                     placeholder="Ví dụ: 800,000,000"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                    className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                      fieldErrors.giaTriXe ? 'border-red-500' : 'border-white/20'
+                    }`}
                     required
                   />
+                  <FieldError fieldName="giaTriXe" />
                 </div>
 
                 <div className="lg:col-span-3">
@@ -1083,12 +1236,16 @@ export default function NewContractPage() {
                     <label className="block text-white font-medium mb-2">Trọng tải (kg) *</label>
                     <input 
                       type="number" 
+                      min="1"
                       value={formData.trongTai}
                       onChange={(e) => handleInputChange('trongTai', e.target.value ? parseInt(e.target.value) : '')}
                       placeholder="Ví dụ: 15000"
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+                      className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                        fieldErrors.trongTai ? 'border-red-500' : 'border-white/20'
+                      }`}
                       required
                     />
+                    <FieldError fieldName="trongTai" />
                   </div>
                 )}
               </div>
