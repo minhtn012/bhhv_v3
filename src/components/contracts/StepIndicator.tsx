@@ -6,7 +6,8 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
   const steps = [
     { number: 1, label: 'Tải ảnh', shortLabel: 'Tải ảnh' },
     { number: 2, label: 'Xác nhận thông tin', shortLabel: 'Xác nhận' },
-    { number: 3, label: 'Chọn gói & Tạo báo giá', shortLabel: 'Tạo báo giá' }
+    { number: 3, label: 'Thông tin xe', shortLabel: 'Thông tin xe' },
+    { number: 4, label: 'Chọn gói & Tạo báo giá', shortLabel: 'Tạo báo giá' }
   ];
 
   const getStepStatus = (stepNumber: number) => {

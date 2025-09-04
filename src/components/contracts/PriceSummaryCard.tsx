@@ -19,6 +19,7 @@ interface FormData {
   includeNNTX: boolean;
   selectedNNTXPackage: string;
   taiTucPercentage: number;
+  mucKhauTru: number;
   customRates?: number[];
 }
 
@@ -40,6 +41,7 @@ export default function PriceSummaryCard({
   onSubmit 
 }: PriceSummaryCardProps) {
   const [nntxFee, setNntxFee] = useState(0);
+  const [actualTotalAmount, setActualTotalAmount] = useState(0);
   
   // Calculate NNTX fee based on selected package
   useEffect(() => {
@@ -65,6 +67,46 @@ export default function PriceSummaryCard({
     
     calculateNNTXFee();
   }, [formData.includeNNTX, formData.selectedNNTXPackage, formData.soChoNgoi]);
+
+  // Calculate actual total amount based on displayed values
+  useEffect(() => {
+    let total = 0;
+
+    // 1. Phí bảo hiểm Vật chất
+    const selectedPackage = availablePackages[formData.selectedPackageIndex];
+    if (selectedPackage?.available) {
+      const fee = selectedPackage.customRate !== undefined && selectedPackage.customRate !== selectedPackage.rate
+        ? selectedPackage.fee // This is already calculated with customRate
+        : selectedPackage.fee;
+      total += fee;
+    }
+
+    // 2. Phí TNDS Bắt buộc
+    if (formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]) {
+      total += tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee;
+    }
+
+    // 3. Phí Người ngồi trên xe
+    if (formData.includeNNTX) {
+      total += nntxFee;
+    }
+
+    // 4. Tái tục/ Cấp mới
+    const vehicleValue = parseCurrency(formData.giaTriXe);
+    const adjustmentAmount = (vehicleValue * formData.taiTucPercentage) / 100;
+    total += adjustmentAmount;
+
+    setActualTotalAmount(total);
+  }, [
+    availablePackages, 
+    formData.selectedPackageIndex, 
+    formData.includeTNDS, 
+    formData.tndsCategory, 
+    formData.includeNNTX, 
+    nntxFee, 
+    formData.giaTriXe, 
+    formData.taiTucPercentage
+  ]);
   return (
     <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6 sticky top-4">
       <h3 className="text-xl font-bold text-center text-white mb-4">BẢNG TỔNG HỢP PHÍ</h3>
@@ -121,7 +163,7 @@ export default function PriceSummaryCard({
         <div className="flex justify-between py-1">
           <span className="text-gray-300">Mức khấu trừ:</span>
           <span className="font-semibold text-white">
-            {formatCurrency(calculationResult.mucKhauTru)}/vụ
+            {formatCurrency(formData.mucKhauTru)}/vụ
           </span>
         </div>
       </div>
@@ -131,7 +173,7 @@ export default function PriceSummaryCard({
       <div className="flex justify-between items-center text-base">
         <span className="font-bold text-white">TỔNG CỘNG:</span>
         <span className="font-extrabold text-xl text-blue-400">
-          {formatCurrency(totalAmount)}
+          {formatCurrency(actualTotalAmount)}
         </span>
       </div>
 

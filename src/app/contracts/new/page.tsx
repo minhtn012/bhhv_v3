@@ -419,7 +419,7 @@ export default function NewContractPage() {
             <div data-step="1">
               <StepWrapper
                 stepNumber={1}
-                title="Bước 1: Tải lên Giấy tờ Xe"
+                title="Bước 1: Tải ảnh"
                 currentStep={currentStep}
                 isCompleted={currentStep > 1}
                 summary={currentStep > 1 ? (
@@ -441,7 +441,7 @@ export default function NewContractPage() {
               <div data-step="2">
                 <StepWrapper
                   stepNumber={2}
-                  title="Bước 2: Thông tin người mua"
+                  title="Bước 2: Xác nhận thông tin"
                   currentStep={currentStep}
                   isCompleted={currentStep > 2}
                   summary={currentStep > 2 ? (
@@ -468,7 +468,7 @@ export default function NewContractPage() {
               <div data-step="3">
                 <StepWrapper
                   stepNumber={3}
-                  title="Bước 3: Xác nhận & Bổ sung Thông tin xe"
+                  title="Bước 3: Thông tin xe"
                   currentStep={currentStep}
                   isCompleted={currentStep > 3}
                   summary={currentStep > 3 ? (
@@ -495,7 +495,7 @@ export default function NewContractPage() {
               <div data-step="4">
                 <StepWrapper
                   stepNumber={4}
-                  title="Bước 4: Lựa chọn Gói bảo hiểm"
+                  title="Bước 4: Chọn gói & Tạo báo giá"
                   currentStep={currentStep}
                   isCompleted={false}
                   summary={undefined}

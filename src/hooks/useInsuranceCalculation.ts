@@ -23,6 +23,7 @@ interface FormData {
   tndsCategory: string;
   includeNNTX: boolean;
   taiTucPercentage: number;
+  mucKhauTru: number;
 }
 
 interface PackageOption {
@@ -133,35 +134,33 @@ export default function useInsuranceCalculation() {
   }, [calculationResult, customRates]);
 
   const calculateTotal = (formData: FormData) => {
-    if (enhancedResult) {
-      // Apply taiTucPercentage to enhanced result
-      const baseTotal = enhancedResult.grandTotal;
-      const adjustment = (baseTotal * formData.taiTucPercentage) / 100;
-      return baseTotal + adjustment;
-    }
-
+    // Always use direct calculation for consistency with displayed values
     if (!calculationResult || availablePackages.length === 0) return 0;
 
     let total = 0;
 
-    // Use the selected package with custom rate if available
+    // 1. Phí bảo hiểm Vật chất
     const selectedPackage = availablePackages[formData.selectedPackageIndex];
     if (selectedPackage && selectedPackage.available) {
       // Always use the fee from availablePackages as it's updated with custom rates
       total += selectedPackage.fee;
     }
 
+    // 2. Phí TNDS Bắt buộc
     if (formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]) {
       total += tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee;
     }
 
-    if (formData.includeNNTX && calculationResult.nntxFee) {
-      total += calculationResult.nntxFee;
-    }
+    // 3. Phí Người ngồi trên xe - skip for now, will be handled by PriceSummaryCard's async calculation
+    // We'll let the parent component handle the NNTX fee calculation to avoid double calculation
+    // The PriceSummaryCard component has its own async NNTX calculation that should be authoritative
 
-    // Apply taiTucPercentage to the total
-    const adjustment = (total * formData.taiTucPercentage) / 100;
-    return total + adjustment;
+    // 4. Tái tục/ Cấp mới - based on vehicle value
+    const vehicleValue = parseCurrency(formData.giaTriXe);
+    const adjustment = (vehicleValue * formData.taiTucPercentage) / 100;
+    total += adjustment;
+
+    return total;
   };
 
   // Update package rate and sync with availablePackages
