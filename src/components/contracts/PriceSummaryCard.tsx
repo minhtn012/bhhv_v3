@@ -1,4 +1,4 @@
-import { formatCurrency, tndsCategories, type CalculationResult } from '@/utils/insurance-calculator';
+import { formatCurrency, tndsCategories, parseCurrency, type CalculationResult } from '@/utils/insurance-calculator';
 
 interface PackageOption {
   index: number;
@@ -11,9 +11,11 @@ interface PackageOption {
 
 interface FormData {
   selectedPackageIndex: number;
+  giaTriXe: string;
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  taiTucPercentage: number;
   customRates?: number[];
 }
 
@@ -72,6 +74,20 @@ export default function PriceSummaryCard({
             {formData.includeNNTX ? formatCurrency(calculationResult.nntxFee) : '0 ₫'}
           </span>
         </div>
+        
+        {formData.taiTucPercentage !== 0 && (
+          <div className="flex justify-between py-1 border-b border-dashed border-white/20">
+            <span className="text-gray-300">4. Tái tục/ Cấp mới:</span>
+            <span className="font-semibold text-white">
+              {(() => {
+                // Calculate adjustment based on vehicle value
+                const vehicleValue = parseCurrency(formData.giaTriXe);
+                const adjustmentAmount = (vehicleValue * formData.taiTucPercentage) / 100;
+                return (adjustmentAmount > 0 ? '+' : '') + formatCurrency(Math.abs(adjustmentAmount));
+              })()}
+            </span>
+          </div>
+        )}
         
         <div className="flex justify-between py-1">
           <span className="text-gray-300">Mức khấu trừ:</span>

@@ -22,6 +22,7 @@ interface FormData {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  taiTucPercentage: number;
 }
 
 interface PackageOption {
@@ -133,7 +134,10 @@ export default function useInsuranceCalculation() {
 
   const calculateTotal = (formData: FormData) => {
     if (enhancedResult) {
-      return enhancedResult.grandTotal;
+      // Apply taiTucPercentage to enhanced result
+      const baseTotal = enhancedResult.grandTotal;
+      const adjustment = (baseTotal * formData.taiTucPercentage) / 100;
+      return baseTotal + adjustment;
     }
 
     if (!calculationResult || availablePackages.length === 0) return 0;
@@ -155,7 +159,9 @@ export default function useInsuranceCalculation() {
       total += calculationResult.nntxFee;
     }
 
-    return total;
+    // Apply taiTucPercentage to the total
+    const adjustment = (total * formData.taiTucPercentage) / 100;
+    return total + adjustment;
   };
 
   // Update package rate and sync with availablePackages

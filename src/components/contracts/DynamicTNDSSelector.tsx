@@ -12,9 +12,14 @@ interface DynamicTNDSSelectorProps {
   includeNNTX: boolean;
   tinhTrang: string;
   mucKhauTru: number;
+  taiTucPercentage: number;
+  adjustmentAmount: number;
   onTNDSChange: (includeTNDS: boolean, tndsCategory: string) => void;
   onNNTXChange: (includeNNTX: boolean) => void;
   onTinhTrangChange: (tinhTrang: string) => void;
+  onSoChoNgoiChange: (soChoNgoi: number) => void;
+  onMucKhauTruChange: (mucKhauTru: number) => void;
+  onTaiTucPercentageChange: (percentage: number) => void;
   onRecalculate?: () => void;
 }
 
@@ -27,9 +32,14 @@ export default function DynamicTNDSSelector({
   includeNNTX,
   tinhTrang,
   mucKhauTru,
+  taiTucPercentage,
+  adjustmentAmount,
   onTNDSChange,
   onNNTXChange,
   onTinhTrangChange,
+  onSoChoNgoiChange,
+  onMucKhauTruChange,
+  onTaiTucPercentageChange,
   onRecalculate
 }: DynamicTNDSSelectorProps) {
   const [suggestedCategory, setSuggestedCategory] = useState<string | null>(null);
@@ -142,51 +152,118 @@ export default function DynamicTNDSSelector({
         </div>
 
         {/* NNTX Section */}
-        <div className="flex items-center justify-between p-3 bg-white/10 border border-white/20 rounded-lg">
-          <div className="flex items-center">
-            <input 
-              type="checkbox" 
-              id="include-nntx"
-              checked={includeNNTX}
-              onChange={(e) => handleNNTXToggle(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <label htmlFor="include-nntx" className="ml-3 text-gray-300">
-              Bảo hiểm Người ngồi trên xe
-            </label>
-          </div>
-          <div className="text-right">
-            <span className="font-semibold text-white">
-              {includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
-            </span>
-            {soChoNgoi > 0 && (
-              <p className="text-xs text-gray-400">
-                {soChoNgoi} chỗ × 10,000 ₫
-              </p>
-            )}
+        <div className="p-4 bg-white/10 border border-white/20 rounded-lg">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center">
+              <input 
+                type="checkbox" 
+                id="include-nntx"
+                checked={includeNNTX}
+                onChange={(e) => handleNNTXToggle(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label htmlFor="include-nntx" className="ml-3 text-gray-300">
+                Bảo hiểm Người ngồi trên xe
+              </label>
+            </div>
+            
+            <div className="text-right">
+              {/* Seat number input */}
+              <div className="flex items-center gap-1 mb-1">
+                <input 
+                  type="number"
+                  value={soChoNgoi || ''}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    if (value >= 0 && value <= 999) {
+                      onSoChoNgoiChange(value);
+                      setTimeout(() => onRecalculate?.(), 50);
+                    }
+                  }}
+                  min="0"
+                  max="999"
+                  className="w-16 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                  disabled={!includeNNTX}
+                />
+                <span className="text-gray-400 text-sm">chỗ</span>
+              </div>
+              
+              {/* Calculated fee */}
+              <div className="font-bold text-blue-400 text-sm">
+                {includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Mức khấu trừ Section */}
-        <div className="flex items-center justify-between p-3 bg-white/10 border border-white/20 rounded-lg">
-          <span className="text-gray-300">Mức khấu trừ:</span>
-          <span className="font-semibold text-white">
-            {formatCurrency(mucKhauTru)}/vụ
-          </span>
+        <div className="p-4 bg-white/10 border border-white/20 rounded-lg">
+          <div className="mb-3">
+            <span className="text-gray-300">Mức khấu trừ:</span>
+          </div>
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center">
+              <input 
+                type="radio" 
+                id="deductible-500k"
+                name="mucKhauTru"
+                value={500000}
+                checked={mucKhauTru === 500000}
+                onChange={(e) => onMucKhauTruChange(parseInt(e.target.value))}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+              />
+              <label htmlFor="deductible-500k" className="ml-2 text-gray-300">
+                500,000 ₫/vụ
+              </label>
+            </div>
+            <div className="flex items-center">
+              <input 
+                type="radio" 
+                id="deductible-1m"
+                name="mucKhauTru"
+                value={1000000}
+                checked={mucKhauTru === 1000000}
+                onChange={(e) => onMucKhauTruChange(parseInt(e.target.value))}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+              />
+              <label htmlFor="deductible-1m" className="ml-2 text-gray-300">
+                1,000,000 ₫/vụ
+              </label>
+            </div>
+          </div>
         </div>
 
         {/* Tái tục / Cấp mới Section */}
-        <div className="p-3 bg-white/10 border border-white/20 rounded-lg">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-300">Tái tục/ Cấp mới:</span>
-            <select 
-              value={tinhTrang}
-              onChange={(e) => onTinhTrangChange(e.target.value)}
-              className="p-1.5 border border-white/20 rounded-md bg-white/5 text-white text-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-white/10"
-            >
-              <option value="cap_moi" className="bg-gray-800 text-white">Cấp Mới</option>
-              <option value="tai_tuc" className="bg-gray-800 text-white">Tái Tục</option>
-            </select>
+        <div className="p-4 bg-white/10 border border-white/20 rounded-lg">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center">
+              <span className="text-gray-300">Tái tục/ Cấp mới:</span>
+            </div>
+            
+            <div className="text-right">
+              {/* Percentage input */}
+              <div className="flex items-center gap-1 mb-1">
+                <input 
+                  type="number"
+                  step="0.01"
+                  value={taiTucPercentage.toFixed(2)}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0;
+                    onTaiTucPercentageChange(value);
+                    setTimeout(() => onRecalculate?.(), 50);
+                  }}
+                  className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                />
+                <span className="text-gray-400 text-sm">%</span>
+              </div>
+              
+              {/* Show calculated adjustment amount */}
+              <div className="font-bold text-blue-400 text-sm">
+                {adjustmentAmount === 0 ? '0 ₫' : (
+                  (adjustmentAmount > 0 ? '+' : '') + formatCurrency(Math.abs(adjustmentAmount))
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

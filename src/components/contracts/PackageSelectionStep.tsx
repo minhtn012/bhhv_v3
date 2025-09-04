@@ -22,6 +22,8 @@ interface FormData {
   tndsCategory: string;
   includeNNTX: boolean;
   tinhTrang: string;
+  mucKhauTru: number;
+  taiTucPercentage: number;
 }
 
 interface PackageSelectionStepProps {
@@ -82,13 +84,22 @@ export default function PackageSelectionStep({
             tndsCategory={formData.tndsCategory}
             includeNNTX={formData.includeNNTX}
             tinhTrang={formData.tinhTrang}
-            mucKhauTru={calculationResult.mucKhauTru}
+            mucKhauTru={formData.mucKhauTru}
+            taiTucPercentage={formData.taiTucPercentage}
+            adjustmentAmount={(() => {
+              // Calculate adjustment based on vehicle value
+              const vehicleValue = parseCurrency(formData.giaTriXe);
+              return (vehicleValue * formData.taiTucPercentage) / 100;
+            })()}
             onTNDSChange={(includeTNDS, tndsCategory) => {
               onFormInputChange('includeTNDS', includeTNDS);
               onFormInputChange('tndsCategory', tndsCategory);
             }}
             onNNTXChange={(includeNNTX) => onFormInputChange('includeNNTX', includeNNTX)}
             onTinhTrangChange={(tinhTrang) => onFormInputChange('tinhTrang', tinhTrang)}
+            onSoChoNgoiChange={(soChoNgoi) => onFormInputChange('soChoNgoi', soChoNgoi)}
+            onMucKhauTruChange={(mucKhauTru) => onFormInputChange('mucKhauTru', mucKhauTru)}
+            onTaiTucPercentageChange={(percentage) => onFormInputChange('taiTucPercentage', percentage)}
             onRecalculate={onRecalculate}
           />
         </div>
