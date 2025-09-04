@@ -21,6 +21,7 @@ interface FormData {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  selectedNNTXPackage: string;
   tinhTrang: string;
   mucKhauTru: number;
   taiTucPercentage: number;
@@ -83,6 +84,7 @@ export default function PackageSelectionStep({
             includeTNDS={formData.includeTNDS}
             tndsCategory={formData.tndsCategory}
             includeNNTX={formData.includeNNTX}
+            selectedNNTXPackage={formData.selectedNNTXPackage}
             tinhTrang={formData.tinhTrang}
             mucKhauTru={formData.mucKhauTru}
             taiTucPercentage={formData.taiTucPercentage}
@@ -95,7 +97,12 @@ export default function PackageSelectionStep({
               onFormInputChange('includeTNDS', includeTNDS);
               onFormInputChange('tndsCategory', tndsCategory);
             }}
-            onNNTXChange={(includeNNTX) => onFormInputChange('includeNNTX', includeNNTX)}
+            onNNTXChange={(includeNNTX, packageValue) => {
+              onFormInputChange('includeNNTX', includeNNTX);
+              if (packageValue !== undefined) {
+                onFormInputChange('selectedNNTXPackage', packageValue);
+              }
+            }}
             onTinhTrangChange={(tinhTrang) => onFormInputChange('tinhTrang', tinhTrang)}
             onSoChoNgoiChange={(soChoNgoi) => onFormInputChange('soChoNgoi', soChoNgoi)}
             onMucKhauTruChange={(mucKhauTru) => onFormInputChange('mucKhauTru', mucKhauTru)}

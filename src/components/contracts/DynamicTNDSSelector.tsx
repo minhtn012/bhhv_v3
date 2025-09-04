@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { formatCurrency, tndsCategories, suggestTNDSCategory, getAvailableTNDSCategories, calculateNNTXFee } from '@/utils/insurance-calculator';
+import { formatCurrency, tndsCategories, suggestTNDSCategory, getAvailableTNDSCategories, calculateNNTXFee, loadNNTXPackages } from '@/utils/insurance-calculator';
+
+interface NNTXPackage {
+  name: string;
+  price: number;
+  value: string;
+}
 
 interface DynamicTNDSSelectorProps {
   loaiHinhKinhDoanh: string;
@@ -10,12 +16,13 @@ interface DynamicTNDSSelectorProps {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  selectedNNTXPackage?: string;
   tinhTrang: string;
   mucKhauTru: number;
   taiTucPercentage: number;
   adjustmentAmount: number;
   onTNDSChange: (includeTNDS: boolean, tndsCategory: string) => void;
-  onNNTXChange: (includeNNTX: boolean) => void;
+  onNNTXChange: (includeNNTX: boolean, packageValue?: string) => void;
   onTinhTrangChange: (tinhTrang: string) => void;
   onSoChoNgoiChange: (soChoNgoi: number) => void;
   onMucKhauTruChange: (mucKhauTru: number) => void;
@@ -30,6 +37,7 @@ export default function DynamicTNDSSelector({
   includeTNDS,
   tndsCategory,
   includeNNTX,
+  selectedNNTXPackage,
   tinhTrang,
   mucKhauTru,
   taiTucPercentage,
@@ -43,7 +51,17 @@ export default function DynamicTNDSSelector({
   onRecalculate
 }: DynamicTNDSSelectorProps) {
   const [suggestedCategory, setSuggestedCategory] = useState<string | null>(null);
+  const [nntxPackages, setNntxPackages] = useState<NNTXPackage[]>([]);
   const [nntxFee, setNntxFee] = useState(0);
+
+  // Load NNTX packages on component mount
+  useEffect(() => {
+    const loadPackages = async () => {
+      const packages = await loadNNTXPackages();
+      setNntxPackages(packages);
+    };
+    loadPackages();
+  }, []);
 
   // Auto-suggest TNDS category when vehicle info changes
   useEffect(() => {
@@ -56,10 +74,19 @@ export default function DynamicTNDSSelector({
     }
   }, [loaiHinhKinhDoanh, soChoNgoi, trongTai]);
 
-  // Update NNTX fee when số chỗ ngồi changes
+  // Update NNTX fee when package or số chỗ ngồi changes
   useEffect(() => {
-    setNntxFee(calculateNNTXFee(soChoNgoi));
-  }, [soChoNgoi]);
+    if (selectedNNTXPackage && nntxPackages.length > 0) {
+      const selectedPackage = nntxPackages.find(pkg => pkg.value === selectedNNTXPackage);
+      if (selectedPackage) {
+        setNntxFee(calculateNNTXFee(selectedPackage.price, soChoNgoi));
+      } else {
+        setNntxFee(0);
+      }
+    } else {
+      setNntxFee(0);
+    }
+  }, [selectedNNTXPackage, soChoNgoi, nntxPackages]);
 
   // Get available categories for dropdown
   const availableCategories = getAvailableTNDSCategories();
@@ -81,8 +108,15 @@ export default function DynamicTNDSSelector({
 
   // Handle NNTX toggle
   const handleNNTXToggle = (checked: boolean) => {
-    onNNTXChange(checked);
+    onNNTXChange(checked, checked ? selectedNNTXPackage : undefined);
     // Trigger recalculation after NNTX change
+    setTimeout(() => onRecalculate?.(), 50);
+  };
+
+  // Handle NNTX package change
+  const handleNNTXPackageChange = (packageValue: string) => {
+    onNNTXChange(includeNNTX, packageValue);
+    // Trigger recalculation after package change
     setTimeout(() => onRecalculate?.(), 50);
   };
 
@@ -153,7 +187,8 @@ export default function DynamicTNDSSelector({
 
         {/* NNTX Section */}
         <div className="p-4 bg-white/10 border border-white/20 rounded-lg">
-          <div className="flex items-start justify-between gap-3">
+          {/* Row 1: Checkbox and Total Amount */}
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <input 
                 type="checkbox" 
@@ -166,32 +201,50 @@ export default function DynamicTNDSSelector({
                 Bảo hiểm Người ngồi trên xe
               </label>
             </div>
+            <span className="font-semibold text-white">
+              {includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
+            </span>
+          </div>
+          
+          {/* Row 2: Package Selector and Seat Count */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1">
+              <select 
+                value={selectedNNTXPackage || ''}
+                onChange={(e) => handleNNTXPackageChange(e.target.value)}
+                className="w-full p-1.5 border border-white/20 rounded-md bg-white/5 text-white text-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-white/10"
+                disabled={!includeNNTX}
+              >
+                <option value="" className="bg-gray-800 text-white">Chọn loại bảo hiểm</option>
+                {nntxPackages.map(pkg => (
+                  <option 
+                    key={pkg.value} 
+                    value={pkg.value}
+                    className="bg-gray-800 text-white"
+                  >
+                    {pkg.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             
-            <div className="text-right">
-              {/* Seat number input */}
-              <div className="flex items-center gap-1 mb-1">
-                <input 
-                  type="number"
-                  value={soChoNgoi || ''}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value) || 0;
-                    if (value >= 0 && value <= 999) {
-                      onSoChoNgoiChange(value);
-                      setTimeout(() => onRecalculate?.(), 50);
-                    }
-                  }}
-                  min="0"
-                  max="999"
-                  className="w-16 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
-                  disabled={!includeNNTX}
-                />
-                <span className="text-gray-400 text-sm">chỗ</span>
-              </div>
-              
-              {/* Calculated fee */}
-              <div className="font-bold text-blue-400 text-sm">
-                {includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
-              </div>
+            <div className="flex items-center gap-1">
+              <input 
+                type="number"
+                value={soChoNgoi || ''}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value) || 0;
+                  if (value >= 0 && value <= 999) {
+                    onSoChoNgoiChange(value);
+                    setTimeout(() => onRecalculate?.(), 50);
+                  }
+                }}
+                min="0"
+                max="999"
+                className="w-16 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                disabled={!includeNNTX}
+              />
+              <span className="text-gray-400 text-sm">chỗ</span>
             </div>
           </div>
         </div>

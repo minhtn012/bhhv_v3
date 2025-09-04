@@ -44,6 +44,8 @@ interface FormData {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  selectedNNTXPackage: string;
+  tinhTrang: string;
   mucKhauTru: number; // 500000 or 1000000
   taiTucPercentage: number; // percentage for renewal discount/markup
 }
@@ -78,6 +80,8 @@ export default function NewContractPage() {
     includeTNDS: true,
     tndsCategory: '',
     includeNNTX: true,
+    selectedNNTXPackage: '',
+    tinhTrang: 'cap_moi',
     mucKhauTru: 500000, // Default to 500K
     taiTucPercentage: 0 // Default to 0% (Cấp mới)
   });
@@ -267,6 +271,13 @@ export default function NewContractPage() {
     setError('');
 
     try {
+      // Calculate NNTX fee dynamically based on selected package
+      let nntxFee = 0;
+      if (formData.includeNNTX && formData.selectedNNTXPackage) {
+        const { calculateNNTXFeeByPackage } = await import('@/utils/insurance-calculator');
+        nntxFee = await calculateNNTXFeeByPackage(formData.selectedNNTXPackage, Number(formData.soChoNgoi));
+      }
+      
       const totalFee = totalAmount;
       
       const getDKBS = (index: number): string[] => {
@@ -310,7 +321,8 @@ export default function NewContractPage() {
           ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
           : 0,
         includeNNTX: formData.includeNNTX,
-        phiNNTX: formData.includeNNTX ? calculationResult.nntxFee : 0,
+        selectedNNTXPackage: formData.selectedNNTXPackage,
+        phiNNTX: nntxFee,
         mucKhauTru: formData.mucKhauTru,
         taiTucPercentage: formData.taiTucPercentage,
         tongPhi: totalFee

@@ -1,4 +1,5 @@
 import { formatCurrency, tndsCategories, parseCurrency, type CalculationResult } from '@/utils/insurance-calculator';
+import { useState, useEffect } from 'react';
 
 interface PackageOption {
   index: number;
@@ -12,9 +13,11 @@ interface PackageOption {
 interface FormData {
   selectedPackageIndex: number;
   giaTriXe: string;
+  soChoNgoi: number | '';
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  selectedNNTXPackage: string;
   taiTucPercentage: number;
   customRates?: number[];
 }
@@ -36,6 +39,32 @@ export default function PriceSummaryCard({
   loading, 
   onSubmit 
 }: PriceSummaryCardProps) {
+  const [nntxFee, setNntxFee] = useState(0);
+  
+  // Calculate NNTX fee based on selected package
+  useEffect(() => {
+    const calculateNNTXFee = async () => {
+      if (formData.includeNNTX && formData.selectedNNTXPackage && formData.soChoNgoi) {
+        try {
+          const response = await fetch('/car_package.json');
+          const packages = await response.json();
+          const selectedPackage = packages.find((pkg: any) => pkg.value === formData.selectedNNTXPackage);
+          if (selectedPackage) {
+            setNntxFee(selectedPackage.price * Number(formData.soChoNgoi));
+          } else {
+            setNntxFee(0);
+          }
+        } catch (error) {
+          console.error('Error calculating NNTX fee:', error);
+          setNntxFee(0);
+        }
+      } else {
+        setNntxFee(0);
+      }
+    };
+    
+    calculateNNTXFee();
+  }, [formData.includeNNTX, formData.selectedNNTXPackage, formData.soChoNgoi]);
   return (
     <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6 sticky top-4">
       <h3 className="text-xl font-bold text-center text-white mb-4">BẢNG TỔNG HỢP PHÍ</h3>
@@ -71,7 +100,7 @@ export default function PriceSummaryCard({
         <div className="flex justify-between py-1 border-b border-dashed border-white/20">
           <span className="text-gray-300">3. Phí Người ngồi trên xe:</span>
           <span className="font-semibold text-white">
-            {formData.includeNNTX ? formatCurrency(calculationResult.nntxFee) : '0 ₫'}
+            {formData.includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
           </span>
         </div>
         

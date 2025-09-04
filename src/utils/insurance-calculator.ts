@@ -148,8 +148,8 @@ export function calculateInsuranceRates(
     }
   }
 
-  // Tính NNTX fee
-  const nntxFee = soChoNgoi * 10000;
+  // Tính NNTX fee - now just placeholder, actual calculation done separately
+  const nntxFee = 0;
 
   return {
     baseRates,
@@ -234,8 +234,42 @@ export function suggestTNDSCategory(
 }
 
 // Calculate NNTX fee based on số chỗ ngồi
-export function calculateNNTXFee(soChoNgoi: number): number {
+// Load NNTX package data
+export async function loadNNTXPackages() {
+  try {
+    const response = await fetch('/car_package.json');
+    const packages = await response.json();
+    return packages;
+  } catch (error) {
+    console.error('Failed to load NNTX packages:', error);
+    return [];
+  }
+}
+
+export function calculateNNTXFee(packagePrice: number, soChoNgoi: number): number {
+  return packagePrice * soChoNgoi;
+}
+
+// Legacy function for backward compatibility
+export function calculateNNTXFeeSimple(soChoNgoi: number): number {
   return soChoNgoi * 10000;
+}
+
+// Calculate NNTX fee based on selected package
+export async function calculateNNTXFeeByPackage(selectedPackageValue: string, soChoNgoi: number): Promise<number> {
+  if (!selectedPackageValue || !soChoNgoi) return 0;
+  
+  try {
+    const packages = await loadNNTXPackages();
+    const selectedPackage = packages.find((pkg: any) => pkg.value === selectedPackageValue);
+    if (selectedPackage) {
+      return calculateNNTXFee(selectedPackage.price, soChoNgoi);
+    }
+    return 0;
+  } catch (error) {
+    console.error('Error calculating NNTX fee:', error);
+    return 0;
+  }
 }
 
 // Get available TNDS categories for dropdown

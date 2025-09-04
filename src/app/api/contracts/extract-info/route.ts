@@ -40,7 +40,7 @@ Các trường thông tin cần trích xuất:
 - bienSo: Biển số xe (license plate)
 - namSanXuat: Năm sản xuất xe (chỉ số năm, ví dụ: 2020)
 - soChoNgoi: Số chỗ ngồi (chỉ số, ví dụ: 5)
-- ngayDangKyLanDau: Ngày đăng ký lần đầu (định dạng dd/mm/yyyy)
+- ngayDangKyLanDau: Ngày đăng ký lần đầu, nếu không có thì lấy ngày cấp ở đăng ký (định dạng dd/mm/yyyy)
 - trongTaiHangHoa: Khối lượng hàng chuyên chở cho phép (tính bằng kg, chỉ áp dụng cho xe tải)
 - kinhDoanhVanTai: "Có" hoặc "Không" - xe có được sử dụng để kinh doanh vận tải không
 - loaiXe: Loại xe (xe con, xe tải, xe khách, bán tải...)
