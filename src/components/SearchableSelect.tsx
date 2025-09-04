@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Spinner from '@/components/ui/Spinner';
 
 interface Option {
   id: string;
@@ -139,16 +140,20 @@ export default function SearchableSelect({
         autoComplete="off"
       />
       
-      {/* Dropdown Arrow */}
+      {/* Loading Spinner or Dropdown Arrow */}
       <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-        <svg
-          className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        {loading ? (
+          <Spinner size="small" className="!m-0 !w-4 !h-4 !max-w-4" />
+        ) : (
+          <svg
+            className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        )}
       </div>
 
       {/* Dropdown Options */}

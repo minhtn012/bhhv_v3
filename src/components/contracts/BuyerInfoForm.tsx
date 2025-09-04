@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import FieldError from './FieldError';
 import useBuyerLocation from '@/hooks/useBuyerLocation';
+import Spinner from '@/components/ui/Spinner';
 
 interface BuyerFormData {
   chuXe: string;
@@ -245,7 +246,10 @@ export default function BuyerInfoForm({
             ))}
           </select>
           {loadingProvinces && (
-            <p className="text-xs text-blue-400 mt-1">Đang tải danh sách tỉnh/thành...</p>
+            <div className="flex items-center gap-2 mt-2">
+              <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
+              <p className="text-xs text-blue-400">Đang tải danh sách tỉnh/thành...</p>
+            </div>
           )}
           {errorProvinces && (
             <p className="text-xs text-red-400 mt-1">{errorProvinces}</p>
@@ -273,7 +277,10 @@ export default function BuyerInfoForm({
             ))}
           </select>
           {loadingDistrictsWards && (
-            <p className="text-xs text-blue-400 mt-1">Đang tải danh sách quận/huyện/xã...</p>
+            <div className="flex items-center gap-2 mt-2">
+              <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
+              <p className="text-xs text-blue-400">Đang tải danh sách quận/huyện/xã...</p>
+            </div>
           )}
           {errorDistrictsWards && (
             <p className="text-xs text-red-400 mt-1">{errorDistrictsWards}</p>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import '@/components/ui/spinner.css';
 
 interface User {
   id: string;

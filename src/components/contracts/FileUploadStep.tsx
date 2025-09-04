@@ -1,4 +1,5 @@
 import useFileUpload from '@/hooks/useFileUpload';
+import Spinner from '@/components/ui/Spinner';
 
 interface FileUploadStepProps {
   onExtractSuccess: (data: any) => void;
@@ -27,8 +28,15 @@ export default function FileUploadStep({ onExtractSuccess, error }: FileUploadSt
   const displayError = error || uploadError;
 
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-      <h2 className="text-xl font-semibold text-white mb-4">Bước 1: Tải lên Giấy tờ Xe</h2>
+    <>
+      {extracting && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <Spinner size="large" />
+        </div>
+      )}
+      
+      <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">Bước 1: Tải lên Giấy tờ Xe</h2>
       
       {displayError && (
         <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm mb-6">
@@ -110,11 +118,15 @@ export default function FileUploadStep({ onExtractSuccess, error }: FileUploadSt
         <button
           onClick={handleExtract}
           disabled={extracting || (!cavetFile && !dangkiemFile)}
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium py-3 px-8 rounded-xl transition-colors"
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium py-3 px-8 rounded-xl transition-colors flex items-center justify-center gap-3"
         >
-          {extracting ? 'Đang trích xuất...' : 'Trích xuất thông tin'}
+          {extracting && (
+            <Spinner size="small" className="!m-0 !w-4 !h-4 !max-w-4" />
+          )}
+          <span>{extracting ? 'Đang trích xuất...' : 'Trích xuất thông tin'}</span>
         </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

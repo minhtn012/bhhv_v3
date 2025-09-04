@@ -1,5 +1,6 @@
 import { formatCurrency, tndsCategories, parseCurrency, type CalculationResult } from '@/utils/insurance-calculator';
 import { useState, useEffect } from 'react';
+import Spinner from '@/components/ui/Spinner';
 
 interface PackageOption {
   index: number;
@@ -180,9 +181,12 @@ export default function PriceSummaryCard({
       <button
         onClick={onSubmit}
         disabled={loading}
-        className="w-full mt-6 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl transition-colors"
+        className="w-full mt-6 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-3"
       >
-        {loading ? 'Đang tạo...' : 'Tạo Hợp đồng'}
+        {loading && (
+          <Spinner size="small" className="!m-0 !w-4 !h-4 !max-w-4" />
+        )}
+        <span>{loading ? 'Đang tạo...' : 'Tạo Hợp đồng'}</span>
       </button>
     </div>
   );

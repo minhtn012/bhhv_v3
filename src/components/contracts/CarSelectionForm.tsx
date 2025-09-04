@@ -1,6 +1,7 @@
 import { CarSelection } from '@/types/car';
 import SearchableSelect from '@/components/SearchableSelect';
 import FieldError from './FieldError';
+import Spinner from '@/components/ui/Spinner';
 import CarSuggestionCard from './CarSuggestionCard';
 
 interface CarSelectionFormProps {
@@ -84,6 +85,12 @@ export default function CarSelectionForm({
               <option key={style.id} value={style.name}>{style.name}</option>
             ))}
           </select>
+          {carData.isLoadingDetails && (
+            <div className="flex items-center gap-2 mt-2">
+              <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
+              <p className="text-xs text-blue-400">Đang tải danh sách kiểu dáng...</p>
+            </div>
+          )}
           <FieldError fieldName="selectedBodyStyle" errors={fieldErrors} />
         </div>
 
