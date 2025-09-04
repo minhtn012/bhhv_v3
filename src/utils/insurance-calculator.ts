@@ -181,3 +181,122 @@ export function formatNumberInput(value: string): string {
   }
   return '';
 }
+
+// Calculate fee with custom rate and minimum fee logic
+export function calculateCustomFee(
+  giaTriXe: number,
+  rate: number,
+  loaiHinhKinhDoanh: string
+): { fee: number; hasMinFee: boolean } {
+  let fee = (giaTriXe * rate) / 100;
+  let hasMinFee = false;
+
+  // Apply minimum fee logic for xe gia đình < 500M (from index_2.html)
+  const isMinFeeApplicable = loaiHinhKinhDoanh === 'khong_kd_cho_nguoi' && giaTriXe < 500000000;
+  if (isMinFeeApplicable && fee < 5500000) {
+    fee = 5500000;
+    hasMinFee = true;
+  }
+
+  return { fee, hasMinFee };
+}
+
+// Auto-suggest TNDS category based on vehicle info
+export function suggestTNDSCategory(
+  loaiHinhKinhDoanh: string,
+  soChoNgoi: number,
+  trongTai?: number
+): string | null {
+  const isKinhDoanh = loaiHinhKinhDoanh.startsWith('kd_');
+  
+  if (loaiHinhKinhDoanh.includes('pickup_van')) {
+    return isKinhDoanh ? 'pickup_kd' : 'pickup_khong_kd';
+  } else if (loaiHinhKinhDoanh.includes('cho_hang') || loaiHinhKinhDoanh.includes('dau_keo')) {
+    const tan = (trongTai || 0) / 1000;
+    if (tan < 3) return 'tai_duoi_3_tan';
+    else if (tan <= 8) return 'tai_3_den_8_tan';
+    else if (tan <= 15) return 'tai_8_den_15_tan';
+    else return 'tai_tren_15_tan';
+  } else {
+    // Passenger cars
+    if (isKinhDoanh) {
+      if (soChoNgoi < 6) return 'duoi_6_cho_kd';
+      else if (soChoNgoi <= 16) return `${soChoNgoi}_cho_kd`;
+      else if (soChoNgoi <= 24) return 'tren_16_den_24_kd';
+      else return 'tren_24_kd';
+    } else {
+      if (soChoNgoi < 6) return 'duoi_6_cho_khong_kd';
+      else if (soChoNgoi <= 11) return '6_den_11_cho_khong_kd';
+      else if (soChoNgoi <= 24) return '12_den_24_cho_khong_kd';
+      else return 'tren_24_cho_khong_kd';
+    }
+  }
+}
+
+// Calculate NNTX fee based on số chỗ ngồi
+export function calculateNNTXFee(soChoNgoi: number): number {
+  return soChoNgoi * 10000;
+}
+
+// Get available TNDS categories for dropdown
+export function getAvailableTNDSCategories(): Array<{ key: string; label: string; fee: number }> {
+  return Object.entries(tndsCategories).map(([key, data]) => ({
+    key,
+    label: data.label,
+    fee: data.fee
+  }));
+}
+
+// Enhanced calculation result interface for real-time updates
+export interface EnhancedCalculationResult extends CalculationResult {
+  customRates?: number[];
+  customFees?: number[];
+  totalVatChatFee: number;
+  totalTNDSFee: number;
+  totalNNTXFee: number;
+  grandTotal: number;
+}
+
+// Real-time calculation with custom rates
+export function calculateWithCustomRates(
+  giaTriXe: number,
+  namSanXuat: number,
+  soChoNgoi: number,
+  loaiHinhKinhDoanh: string,
+  selectedPackageIndex: number,
+  customRates: number[],
+  includeTNDS: boolean,
+  tndsCategory: string,
+  includeNNTX: boolean,
+  trongTai?: number
+): EnhancedCalculationResult {
+  // Get base calculation
+  const baseResult = calculateInsuranceRates(
+    giaTriXe,
+    namSanXuat, 
+    soChoNgoi,
+    loaiHinhKinhDoanh,
+    trongTai
+  );
+
+  // Calculate custom fees
+  const customFees = customRates.map(rate => 
+    rate !== null ? calculateCustomFee(giaTriXe, rate, loaiHinhKinhDoanh).fee : 0
+  );
+
+  // Calculate totals
+  const totalVatChatFee = customFees[selectedPackageIndex] || 0;
+  const totalTNDSFee = includeTNDS && tndsCategory ? tndsCategories[tndsCategory]?.fee || 0 : 0;
+  const totalNNTXFee = includeNNTX ? baseResult.nntxFee : 0;
+  const grandTotal = totalVatChatFee + totalTNDSFee + totalNNTXFee;
+
+  return {
+    ...baseResult,
+    customRates,
+    customFees,
+    totalVatChatFee,
+    totalTNDSFee,
+    totalNNTXFee,
+    grandTotal
+  };
+}

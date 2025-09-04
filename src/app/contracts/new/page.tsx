@@ -8,9 +8,11 @@ import {
   tndsCategories
 } from '@/utils/insurance-calculator';
 import StepIndicator from '@/components/contracts/StepIndicator';
+import StepWrapper from '@/components/contracts/StepWrapper';
 import FileUploadStep from '@/components/contracts/FileUploadStep';
 import VehicleInfoForm from '@/components/contracts/VehicleInfoForm';
 import PackageSelectionStep from '@/components/contracts/PackageSelectionStep';
+import { FileUploadSummary, VehicleInfoSummary, PackageSelectionSummary } from '@/components/contracts/CompletedStepSummary';
 import useCarSelection from '@/hooks/useCarSelection';
 import useInsuranceCalculation from '@/hooks/useInsuranceCalculation';
 import useFormValidation from '@/hooks/useFormValidation';
@@ -42,12 +44,19 @@ interface FormData {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  mucKhauTru: number; // 500000 or 1000000
+  taiTucPercentage: number; // percentage for renewal discount/markup
 }
 
 export default function NewContractPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [editMode, setEditMode] = useState<number | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState({
+    cavetFileName: '',
+    dangkiemFileName: ''
+  });
   
   // Form data
   const [formData, setFormData] = useState<FormData>({
@@ -68,14 +77,27 @@ export default function NewContractPage() {
     customRates: [],
     includeTNDS: true,
     tndsCategory: '',
-    includeNNTX: true
+    includeNNTX: true,
+    mucKhauTru: 500000, // Default to 500K
+    taiTucPercentage: 0 // Default to 0% (Cấp mới)
   });
   
   const router = useRouter();
   
   // Custom hooks
   const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, searchCarFromExtractedData } = useCarSelection();
-  const { calculationResult, availablePackages, calculateRates, calculateTotal } = useInsuranceCalculation();
+  const { 
+    calculationResult, 
+    enhancedResult,
+    availablePackages, 
+    customRates,
+    calculateRates, 
+    calculateEnhanced,
+    calculateTotal,
+    updatePackageRate,
+    syncPackageFee,
+    autoSuggestTNDS
+  } = useInsuranceCalculation();
   const { fieldErrors, validateForm } = useFormValidation();
 
 
@@ -145,6 +167,21 @@ export default function NewContractPage() {
   const handleExtractSuccess = (data: any) => {
     populateForm(data);
     setCurrentStep(2);
+    setEditMode(null);
+  };
+
+  // Handle edit mode
+  const handleEditStep = (stepNumber: number) => {
+    setEditMode(stepNumber);
+    setCurrentStep(stepNumber);
+  };
+
+  // Track uploaded files
+  const handleFileUpload = (files: { cavet?: File; dangkiem?: File }) => {
+    setUploadedFiles({
+      cavetFileName: files.cavet?.name || uploadedFiles.cavetFileName,
+      dangkiemFileName: files.dangkiem?.name || uploadedFiles.dangkiemFileName
+    });
   };
 
   // Calculate insurance rates
@@ -160,16 +197,58 @@ export default function NewContractPage() {
       setFormData(prev => ({ ...prev, tndsCategory: defaultTndsCategory }));
     }
 
+    // Initialize custom rates with base rates
     setFormData(prev => ({ 
       ...prev, 
-      customRates: result.finalRates.map(r => r || 0) 
+      customRates: result?.finalRates.map(r => r || 0) || []
     }));
+
+    // Calculate enhanced results with initial custom rates
+    setTimeout(() => {
+      calculateEnhanced(formData);
+    }, 100);
 
     setCurrentStep(3);
     setError('');
   };
 
-  const totalAmount = calculateTotal(formData);
+  // Handle package selection changes
+  const handlePackageSelection = (packageIndex: number) => {
+    setFormData(prev => ({ ...prev, selectedPackageIndex: packageIndex }));
+    
+    // Sync package fee to ensure correct calculation
+    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh);
+    
+    // Trigger enhanced calculation after package selection
+    setTimeout(() => {
+      const newFormData = { ...formData, selectedPackageIndex: packageIndex };
+      calculateEnhanced(newFormData);
+    }, 50);
+  };
+
+  // Handle recalculate
+  const handleRecalculate = () => {
+    setTimeout(() => {
+      calculateEnhanced(formData);
+    }, 50);
+  };
+
+  // Handle package rate changes
+  const handleRateChange = (packageIndex: number, newRate: number, newFee: number) => {
+    updatePackageRate(packageIndex, newRate, newFee);
+    
+    // Update custom rates in form data
+    setFormData(prev => {
+      const newCustomRates = [...(prev.customRates || [])];
+      newCustomRates[packageIndex] = newRate;
+      return { ...prev, customRates: newCustomRates };
+    });
+
+    // Trigger enhanced calculation
+    handleRecalculate();
+  };
+
+  const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
   // Submit contract
   const submitContract = async () => {
@@ -232,8 +311,9 @@ export default function NewContractPage() {
           : 0,
         includeNNTX: formData.includeNNTX,
         phiNNTX: formData.includeNNTX ? calculationResult.nntxFee : 0,
-        tongPhi: totalFee,
-        mucKhauTru: calculationResult.mucKhauTru
+        mucKhauTru: formData.mucKhauTru,
+        taiTucPercentage: formData.taiTucPercentage,
+        tongPhi: totalFee
       };
 
       const response = await fetch('/api/contracts', {
@@ -273,41 +353,78 @@ export default function NewContractPage() {
             </div>
           )}
 
-          {/* Step 1: Upload Images */}
-          {currentStep === 1 && (
-            <FileUploadStep 
-              onExtractSuccess={handleExtractSuccess}
-              error={error}
-            />
-          )}
+          {/* Progressive Steps */}
+          <div className="space-y-6">
+            {/* Step 1: Upload Images */}
+            <StepWrapper
+              stepNumber={1}
+              title="Bước 1: Tải lên Giấy tờ Xe"
+              currentStep={currentStep}
+              isCompleted={currentStep > 1}
+              onEdit={() => handleEditStep(1)}
+              summary={currentStep > 1 ? (
+                <FileUploadSummary 
+                  cavetFileName={uploadedFiles.cavetFileName}
+                  dangkiemFileName={uploadedFiles.dangkiemFileName}
+                />
+              ) : undefined}
+            >
+              <FileUploadStep 
+                onExtractSuccess={handleExtractSuccess}
+                error={error}
+              />
+            </StepWrapper>
 
-          {/* Step 2: Verify Information */}
-          {currentStep === 2 && (
-            <VehicleInfoForm
-              formData={formData}
-              carData={carData}
-              fieldErrors={fieldErrors}
-              onFormInputChange={handleInputChange}
-              onBrandChange={handleBrandChange}
-              onModelChange={handleModelChange}
-              onCarInputChange={handleCarInputChange}
-              onAcceptSuggestion={acceptSuggestedCar}
-              onCalculateRates={handleCalculateRates}
-            />
-          )}
+            {/* Step 2: Verify Information */}
+            {currentStep >= 2 && (
+              <StepWrapper
+                stepNumber={2}
+                title="Bước 2: Xác nhận & Bổ sung Thông tin"
+                currentStep={currentStep}
+                isCompleted={currentStep > 2}
+                onEdit={() => handleEditStep(2)}
+                summary={currentStep > 2 ? (
+                  <VehicleInfoSummary formData={formData} />
+                ) : undefined}
+              >
+                <VehicleInfoForm
+                  formData={formData}
+                  carData={carData}
+                  fieldErrors={fieldErrors}
+                  onFormInputChange={handleInputChange}
+                  onBrandChange={handleBrandChange}
+                  onModelChange={handleModelChange}
+                  onCarInputChange={handleCarInputChange}
+                  onAcceptSuggestion={acceptSuggestedCar}
+                  onCalculateRates={handleCalculateRates}
+                />
+              </StepWrapper>
+            )}
 
-          {/* Step 3: Package Selection */}
-          {currentStep === 3 && calculationResult && availablePackages.length > 0 && (
-            <PackageSelectionStep
-              availablePackages={availablePackages}
-              calculationResult={calculationResult}
-              formData={formData}
-              totalAmount={totalAmount}
-              loading={loading}
-              onFormInputChange={handleInputChange}
-              onSubmit={submitContract}
-            />
-          )}
+            {/* Step 3: Package Selection */}
+            {currentStep >= 3 && calculationResult && availablePackages.length > 0 && (
+              <StepWrapper
+                stepNumber={3}
+                title="Bước 3: Lựa chọn Gói bảo hiểm"
+                currentStep={currentStep}
+                isCompleted={false}
+                summary={undefined}
+              >
+                <PackageSelectionStep
+                  availablePackages={availablePackages}
+                  calculationResult={calculationResult}
+                  formData={formData}
+                  totalAmount={totalAmount}
+                  loading={loading}
+                  onFormInputChange={handleInputChange}
+                  onPackageSelect={handlePackageSelection}
+                  onSubmit={submitContract}
+                  onRateChange={handleRateChange}
+                  onRecalculate={handleRecalculate}
+                />
+              </StepWrapper>
+            )}
+          </div>
         </div>
       </div>
     </DashboardLayout>

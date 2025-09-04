@@ -1,4 +1,5 @@
 import { formatCurrency } from '@/utils/insurance-calculator';
+import EditablePackageCard from './EditablePackageCard';
 
 interface PackageOption {
   index: number;
@@ -13,9 +14,40 @@ interface PackageCardProps {
   package: PackageOption;
   isSelected: boolean;
   onSelect: () => void;
+  editable?: boolean;
+  giaTriXe?: number;
+  loaiHinhKinhDoanh?: string;
+  onRateChange?: (index: number, newRate: number, newFee: number) => void;
 }
 
-export default function PackageCard({ package: pkg, isSelected, onSelect }: PackageCardProps) {
+export default function PackageCard({ 
+  package: pkg, 
+  isSelected, 
+  onSelect,
+  editable = false,
+  giaTriXe = 0,
+  loaiHinhKinhDoanh = '',
+  onRateChange
+}: PackageCardProps) {
+  // Use EditablePackageCard when in editable mode
+  if (editable && giaTriXe > 0 && loaiHinhKinhDoanh && onRateChange) {
+    return (
+      <EditablePackageCard
+        package={{
+          ...pkg,
+          originalRate: pkg.rate,
+          currentRate: pkg.rate
+        }}
+        isSelected={isSelected}
+        giaTriXe={giaTriXe}
+        loaiHinhKinhDoanh={loaiHinhKinhDoanh}
+        onSelect={onSelect}
+        onRateChange={onRateChange}
+      />
+    );
+  }
+
+  // Regular PackageCard for backward compatibility
   return (
     <div 
       className={`p-4 border rounded-xl ${

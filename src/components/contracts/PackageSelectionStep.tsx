@@ -1,5 +1,6 @@
-import { tndsCategories, type CalculationResult } from '@/utils/insurance-calculator';
+import { tndsCategories, type CalculationResult, parseCurrency } from '@/utils/insurance-calculator';
 import PackageCard from './PackageCard';
+import DynamicTNDSSelector from './DynamicTNDSSelector';
 import PriceSummaryCard from './PriceSummaryCard';
 
 interface PackageOption {
@@ -12,10 +13,15 @@ interface PackageOption {
 }
 
 interface FormData {
+  giaTriXe: string;
+  soChoNgoi: number | '';
+  trongTai: number | '';
+  loaiHinhKinhDoanh: string;
   selectedPackageIndex: number;
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  tinhTrang: string;
 }
 
 interface PackageSelectionStepProps {
@@ -25,7 +31,10 @@ interface PackageSelectionStepProps {
   totalAmount: number;
   loading: boolean;
   onFormInputChange: (field: keyof FormData, value: any) => void;
+  onPackageSelect: (packageIndex: number) => void;
   onSubmit: () => void;
+  onRateChange?: (index: number, newRate: number, newFee: number) => void;
+  onRecalculate?: () => void;
 }
 
 export default function PackageSelectionStep({
@@ -35,7 +44,10 @@ export default function PackageSelectionStep({
   totalAmount,
   loading,
   onFormInputChange,
-  onSubmit
+  onPackageSelect,
+  onSubmit,
+  onRateChange,
+  onRecalculate
 }: PackageSelectionStepProps) {
   return (
     <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
@@ -52,66 +64,33 @@ export default function PackageSelectionStep({
                   key={pkg.index}
                   package={pkg}
                   isSelected={formData.selectedPackageIndex === pkg.index}
-                  onSelect={() => pkg.available && onFormInputChange('selectedPackageIndex', pkg.index)}
+                  onSelect={() => pkg.available && onPackageSelect(pkg.index)}
+                  editable={true}
+                  giaTriXe={parseCurrency(formData.giaTriXe)}
+                  loaiHinhKinhDoanh={formData.loaiHinhKinhDoanh}
+                  onRateChange={onRateChange}
                 />
               ))}
             </div>
           </div>
 
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-4">B. Các hạng mục khác</h3>
-            <div className="space-y-3">
-              {/* TNDS */}
-              <div className="p-4 bg-white/5 rounded-xl">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.includeTNDS}
-                      onChange={(e) => onFormInputChange('includeTNDS', e.target.checked)}
-                      className="h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
-                    />
-                    <label className="ml-3 text-white">Bảo hiểm TNDS Bắt buộc</label>
-                  </div>
-                  <span className="font-semibold text-white">
-                    {formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory] 
-                      ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(tndsCategories[formData.tndsCategory].fee)
-                      : '0 ₫'
-                    }
-                  </span>
-                </div>
-                {formData.includeTNDS && (
-                  <select 
-                    value={formData.tndsCategory}
-                    onChange={(e) => onFormInputChange('tndsCategory', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white text-sm"
-                  >
-                    {Object.entries(tndsCategories).map(([key, category]) => (
-                      <option key={key} value={key}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-
-              {/* NNTX */}
-              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                <div className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    checked={formData.includeNNTX}
-                    onChange={(e) => onFormInputChange('includeNNTX', e.target.checked)}
-                    className="h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
-                  />
-                  <label className="ml-3 text-white">Bảo hiểm Người ngồi trên xe</label>
-                </div>
-                <span className="font-semibold text-white">
-                  {formData.includeNNTX ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(calculationResult.nntxFee) : '0 ₫'}
-                </span>
-              </div>
-            </div>
-          </div>
+          <DynamicTNDSSelector
+            loaiHinhKinhDoanh={formData.loaiHinhKinhDoanh}
+            soChoNgoi={Number(formData.soChoNgoi) || 0}
+            trongTai={Number(formData.trongTai) || 0}
+            includeTNDS={formData.includeTNDS}
+            tndsCategory={formData.tndsCategory}
+            includeNNTX={formData.includeNNTX}
+            tinhTrang={formData.tinhTrang}
+            mucKhauTru={calculationResult.mucKhauTru}
+            onTNDSChange={(includeTNDS, tndsCategory) => {
+              onFormInputChange('includeTNDS', includeTNDS);
+              onFormInputChange('tndsCategory', tndsCategory);
+            }}
+            onNNTXChange={(includeNNTX) => onFormInputChange('includeNNTX', includeNNTX)}
+            onTinhTrangChange={(tinhTrang) => onFormInputChange('tinhTrang', tinhTrang)}
+            onRecalculate={onRecalculate}
+          />
         </div>
 
         {/* Right: Summary */}

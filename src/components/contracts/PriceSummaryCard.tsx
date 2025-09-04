@@ -14,6 +14,7 @@ interface FormData {
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
+  customRates?: number[];
 }
 
 interface PriceSummaryCardProps {
@@ -41,10 +42,17 @@ export default function PriceSummaryCard({
         <div className="flex justify-between py-1 border-b border-dashed border-white/20">
           <span className="text-gray-300">1. Phí bảo hiểm Vật chất:</span>
           <span className="font-semibold text-white">
-            {availablePackages[formData.selectedPackageIndex]?.available 
-              ? formatCurrency(availablePackages[formData.selectedPackageIndex].fee)
-              : '0 ₫'
-            }
+            {(() => {
+              const selectedPackage = availablePackages[formData.selectedPackageIndex];
+              if (!selectedPackage?.available) return '0 ₫';
+              
+              // Use custom fee if available, otherwise use default fee
+              const fee = selectedPackage.customRate !== undefined && selectedPackage.customRate !== selectedPackage.rate
+                ? selectedPackage.fee // This is already calculated with customRate in the hook
+                : selectedPackage.fee;
+              
+              return formatCurrency(fee);
+            })()}
           </span>
         </div>
         
