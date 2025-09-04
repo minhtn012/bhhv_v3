@@ -21,7 +21,6 @@ interface StepWrapperProps {
   currentStep: number;
   isCompleted: boolean;
   isCollapsible?: boolean;
-  onEdit?: () => void;
   children: React.ReactNode;
   summary?: React.ReactNode;
 }
@@ -32,7 +31,6 @@ export default function StepWrapper({
   currentStep,
   isCompleted,
   isCollapsible = true,
-  onEdit,
   children,
   summary
 }: StepWrapperProps) {
@@ -90,16 +88,8 @@ export default function StepWrapper({
     }
   };
 
-  const handleEdit = () => {
-    if (onEdit && (isCompleted || stepNumber < currentStep)) {
-      setIsExpanded(true);
-      onEdit();
-    }
-  };
-
   const status = getStepStatus();
   const canExpand = isCollapsible && (isCompleted || stepNumber < currentStep || stepNumber === currentStep);
-  const canEdit = onEdit && (isCompleted || stepNumber < currentStep);
 
   return (
     <div className={`rounded-2xl p-6 transition-all duration-300 ${getStepStyles()}`}>
@@ -123,16 +113,6 @@ export default function StepWrapper({
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Edit Button */}
-          {canEdit && (
-            <button
-              onClick={handleEdit}
-              className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-            >
-              Chỉnh sửa
-            </button>
-          )}
-
           {/* Expand/Collapse Button */}
           {canExpand && (
             <button

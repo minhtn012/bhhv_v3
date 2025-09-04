@@ -10,6 +10,7 @@ import {
 import StepIndicator from '@/components/contracts/StepIndicator';
 import StepWrapper from '@/components/contracts/StepWrapper';
 import FileUploadStep from '@/components/contracts/FileUploadStep';
+import BuyerInfoForm from '@/components/contracts/BuyerInfoForm';
 import VehicleInfoForm from '@/components/contracts/VehicleInfoForm';
 import PackageSelectionStep from '@/components/contracts/PackageSelectionStep';
 import { FileUploadSummary, VehicleInfoSummary, PackageSelectionSummary } from '@/components/contracts/CompletedStepSummary';
@@ -22,6 +23,17 @@ interface FormData {
   // Thông tin khách hàng
   chuXe: string;
   diaChi: string;
+  
+  // Thông tin người mua (buyer information)
+  buyerEmail: string;
+  buyerPhone: string;
+  buyerGender: 'nam' | 'nu' | 'khac';
+  buyerCitizenId: string;
+  selectedProvince: string; // province_code
+  selectedProvinceText: string; // province_name for display
+  selectedDistrictWard: string; // district/ward id
+  selectedDistrictWardText: string; // district/ward name for display
+  specificAddress: string;
   
   // Thông tin xe
   bienSo: string;
@@ -54,7 +66,6 @@ export default function NewContractPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [editMode, setEditMode] = useState<number | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState({
     cavetFileName: '',
     dangkiemFileName: ''
@@ -64,6 +75,16 @@ export default function NewContractPage() {
   const [formData, setFormData] = useState<FormData>({
     chuXe: '',
     diaChi: '',
+    // Buyer information defaults
+    buyerEmail: '',
+    buyerPhone: '',
+    buyerGender: 'nam',
+    buyerCitizenId: '',
+    selectedProvince: '',
+    selectedProvinceText: '',
+    selectedDistrictWard: '',
+    selectedDistrictWardText: '',
+    specificAddress: '',
     bienSo: '',
     nhanHieu: '',
     soLoai: '',
@@ -87,6 +108,20 @@ export default function NewContractPage() {
   });
   
   const router = useRouter();
+  
+  // Scroll utility function
+  const scrollToStep = (stepNumber: number, delay: number = 500) => {
+    setTimeout(() => {
+      const stepElement = document.querySelector(`[data-step="${stepNumber}"]`);
+      if (stepElement) {
+        stepElement.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest' 
+        });
+      }
+    }, delay);
+  };
   
   // Custom hooks
   const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, searchCarFromExtractedData } = useCarSelection();
@@ -171,14 +206,15 @@ export default function NewContractPage() {
   const handleExtractSuccess = (data: any) => {
     populateForm(data);
     setCurrentStep(2);
-    setEditMode(null);
+    scrollToStep(2);
   };
 
-  // Handle edit mode
-  const handleEditStep = (stepNumber: number) => {
-    setEditMode(stepNumber);
-    setCurrentStep(stepNumber);
+  // Handle buyer info completion
+  const handleBuyerInfoNext = () => {
+    setCurrentStep(3);
+    scrollToStep(3);
   };
+
 
   // Track uploaded files
   const handleFileUpload = (files: { cavet?: File; dangkiem?: File }) => {
@@ -212,8 +248,9 @@ export default function NewContractPage() {
       calculateEnhanced(formData);
     }, 100);
 
-    setCurrentStep(3);
+    setCurrentStep(4);
     setError('');
+    scrollToStep(4);
   };
 
   // Handle package selection changes
@@ -294,6 +331,17 @@ export default function NewContractPage() {
       const contractData = {
         chuXe: formData.chuXe,
         diaChi: formData.diaChi,
+        // Buyer information
+        buyerEmail: formData.buyerEmail,
+        buyerPhone: formData.buyerPhone,
+        buyerGender: formData.buyerGender,
+        buyerCitizenId: formData.buyerCitizenId,
+        selectedProvince: formData.selectedProvince,
+        selectedProvinceText: formData.selectedProvinceText,
+        selectedDistrictWard: formData.selectedDistrictWard,
+        selectedDistrictWardText: formData.selectedDistrictWardText,
+        specificAddress: formData.specificAddress,
+        // Vehicle information
         bienSo: formData.bienSo,
         nhanHieu: formData.nhanHieu,
         soLoai: formData.soLoai,
@@ -368,73 +416,104 @@ export default function NewContractPage() {
           {/* Progressive Steps */}
           <div className="space-y-6">
             {/* Step 1: Upload Images */}
-            <StepWrapper
-              stepNumber={1}
-              title="Bước 1: Tải lên Giấy tờ Xe"
-              currentStep={currentStep}
-              isCompleted={currentStep > 1}
-              onEdit={() => handleEditStep(1)}
-              summary={currentStep > 1 ? (
-                <FileUploadSummary 
-                  cavetFileName={uploadedFiles.cavetFileName}
-                  dangkiemFileName={uploadedFiles.dangkiemFileName}
-                />
-              ) : undefined}
-            >
-              <FileUploadStep 
-                onExtractSuccess={handleExtractSuccess}
-                error={error}
-              />
-            </StepWrapper>
-
-            {/* Step 2: Verify Information */}
-            {currentStep >= 2 && (
+            <div data-step="1">
               <StepWrapper
-                stepNumber={2}
-                title="Bước 2: Xác nhận & Bổ sung Thông tin"
+                stepNumber={1}
+                title="Bước 1: Tải lên Giấy tờ Xe"
                 currentStep={currentStep}
-                isCompleted={currentStep > 2}
-                onEdit={() => handleEditStep(2)}
-                summary={currentStep > 2 ? (
-                  <VehicleInfoSummary formData={formData} />
+                isCompleted={currentStep > 1}
+                summary={currentStep > 1 ? (
+                  <FileUploadSummary 
+                    cavetFileName={uploadedFiles.cavetFileName}
+                    dangkiemFileName={uploadedFiles.dangkiemFileName}
+                  />
                 ) : undefined}
               >
-                <VehicleInfoForm
-                  formData={formData}
-                  carData={carData}
-                  fieldErrors={fieldErrors}
-                  onFormInputChange={handleInputChange}
-                  onBrandChange={handleBrandChange}
-                  onModelChange={handleModelChange}
-                  onCarInputChange={handleCarInputChange}
-                  onAcceptSuggestion={acceptSuggestedCar}
-                  onCalculateRates={handleCalculateRates}
+                <FileUploadStep 
+                  onExtractSuccess={handleExtractSuccess}
+                  error={error}
                 />
               </StepWrapper>
+            </div>
+
+            {/* Step 2: Buyer Information */}
+            {currentStep >= 2 && (
+              <div data-step="2">
+                <StepWrapper
+                  stepNumber={2}
+                  title="Bước 2: Thông tin người mua"
+                  currentStep={currentStep}
+                  isCompleted={currentStep > 2}
+                  summary={currentStep > 2 ? (
+                    <div className="text-sm text-white/70 space-y-1">
+                      <p><strong>Họ tên:</strong> {formData.chuXe}</p>
+                      <p><strong>Email:</strong> {formData.buyerEmail}</p>
+                      <p><strong>Điện thoại:</strong> {formData.buyerPhone}</p>
+                      <p><strong>Địa chỉ:</strong> {formData.selectedProvinceText}, {formData.selectedDistrictWardText}</p>
+                    </div>
+                  ) : undefined}
+                >
+                  <BuyerInfoForm
+                    formData={formData}
+                    fieldErrors={fieldErrors}
+                    onFormInputChange={handleInputChange}
+                    onNext={handleBuyerInfoNext}
+                  />
+                </StepWrapper>
+              </div>
             )}
 
-            {/* Step 3: Package Selection */}
-            {currentStep >= 3 && calculationResult && availablePackages.length > 0 && (
-              <StepWrapper
-                stepNumber={3}
-                title="Bước 3: Lựa chọn Gói bảo hiểm"
-                currentStep={currentStep}
-                isCompleted={false}
-                summary={undefined}
-              >
-                <PackageSelectionStep
-                  availablePackages={availablePackages}
-                  calculationResult={calculationResult}
-                  formData={formData}
-                  totalAmount={totalAmount}
-                  loading={loading}
-                  onFormInputChange={handleInputChange}
-                  onPackageSelect={handlePackageSelection}
-                  onSubmit={submitContract}
-                  onRateChange={handleRateChange}
-                  onRecalculate={handleRecalculate}
-                />
-              </StepWrapper>
+            {/* Step 3: Verify Vehicle Information */}
+            {currentStep >= 3 && (
+              <div data-step="3">
+                <StepWrapper
+                  stepNumber={3}
+                  title="Bước 3: Xác nhận & Bổ sung Thông tin xe"
+                  currentStep={currentStep}
+                  isCompleted={currentStep > 3}
+                  summary={currentStep > 3 ? (
+                    <VehicleInfoSummary formData={formData} />
+                  ) : undefined}
+                >
+                  <VehicleInfoForm
+                    formData={formData}
+                    carData={carData}
+                    fieldErrors={fieldErrors}
+                    onFormInputChange={handleInputChange}
+                    onBrandChange={handleBrandChange}
+                    onModelChange={handleModelChange}
+                    onCarInputChange={handleCarInputChange}
+                    onAcceptSuggestion={acceptSuggestedCar}
+                    onCalculateRates={handleCalculateRates}
+                  />
+                </StepWrapper>
+              </div>
+            )}
+
+            {/* Step 4: Package Selection */}
+            {currentStep >= 4 && calculationResult && availablePackages.length > 0 && (
+              <div data-step="4">
+                <StepWrapper
+                  stepNumber={4}
+                  title="Bước 4: Lựa chọn Gói bảo hiểm"
+                  currentStep={currentStep}
+                  isCompleted={false}
+                  summary={undefined}
+                >
+                  <PackageSelectionStep
+                    availablePackages={availablePackages}
+                    calculationResult={calculationResult}
+                    formData={formData}
+                    totalAmount={totalAmount}
+                    loading={loading}
+                    onFormInputChange={handleInputChange}
+                    onPackageSelect={handlePackageSelection}
+                    onSubmit={submitContract}
+                    onRateChange={handleRateChange}
+                    onRecalculate={handleRecalculate}
+                  />
+                </StepWrapper>
+              </div>
             )}
           </div>
         </div>

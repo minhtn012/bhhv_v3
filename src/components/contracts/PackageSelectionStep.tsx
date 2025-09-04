@@ -54,7 +54,6 @@ export default function PackageSelectionStep({
 }: PackageSelectionStepProps) {
   return (
     <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-      <h2 className="text-xl font-semibold text-white mb-4">Bước 3: Lựa chọn Gói bảo hiểm</h2>
       
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: Package Options */}

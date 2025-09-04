@@ -41,38 +41,8 @@ export default function VehicleInfoForm({
   onCalculateRates
 }: VehicleInfoFormProps) {
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-      <h2 className="text-xl font-semibold text-white mb-4">Bước 2: Xác nhận & Bổ sung Thông tin</h2>
-      
+    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">      
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-3">
-          <label className="block text-white font-medium mb-2">Chủ xe *</label>
-          <input 
-            type="text" 
-            value={formData.chuXe}
-            onChange={(e) => onFormInputChange('chuXe', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.chuXe ? 'border-red-500' : 'border-white/20'
-            }`}
-            required
-          />
-          <FieldError fieldName="chuXe" errors={fieldErrors} />
-        </div>
-        
-        <div className="lg:col-span-3">
-          <label className="block text-white font-medium mb-2">Địa chỉ *</label>
-          <input 
-            type="text" 
-            value={formData.diaChi}
-            onChange={(e) => onFormInputChange('diaChi', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.diaChi ? 'border-red-500' : 'border-white/20'
-            }`}
-            required
-          />
-          <FieldError fieldName="diaChi" errors={fieldErrors} />
-        </div>
-
         <div>
           <label className="block text-white font-medium mb-2">Biển số *</label>
           <input 

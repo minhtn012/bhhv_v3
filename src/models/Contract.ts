@@ -8,6 +8,17 @@ export interface IContract extends Document {
   chuXe: string;
   diaChi: string;
   
+  // Thông tin người mua (buyer information)
+  buyerEmail?: string;
+  buyerPhone?: string;
+  buyerGender?: 'nam' | 'nu' | 'khac';
+  buyerCitizenId?: string;
+  selectedProvince?: string; // province_code
+  selectedProvinceText?: string; // province_name for display
+  selectedDistrictWard?: string; // district/ward id
+  selectedDistrictWardText?: string; // district/ward name for display
+  specificAddress?: string;
+  
   // Thông tin xe
   bienSo: string;
   nhanHieu: string;
@@ -86,6 +97,44 @@ const contractSchema = new Schema<IContract>({
   diaChi: {
     type: String,
     required: [true, 'Địa chỉ là bắt buộc'],
+    trim: true
+  },
+  
+  // Thông tin người mua (buyer information)
+  buyerEmail: {
+    type: String,
+    trim: true
+  },
+  buyerPhone: {
+    type: String,
+    trim: true
+  },
+  buyerGender: {
+    type: String,
+    enum: ['nam', 'nu', 'khac']
+  },
+  buyerCitizenId: {
+    type: String,
+    trim: true
+  },
+  selectedProvince: {
+    type: String,
+    trim: true
+  },
+  selectedProvinceText: {
+    type: String,
+    trim: true
+  },
+  selectedDistrictWard: {
+    type: String,
+    trim: true
+  },
+  selectedDistrictWardText: {
+    type: String,
+    trim: true
+  },
+  specificAddress: {
+    type: String,
     trim: true
   },
   

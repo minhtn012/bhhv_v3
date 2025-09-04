@@ -5,6 +5,17 @@ import { CarSelection } from '@/types/car';
 interface FormData {
   chuXe: string;
   diaChi: string;
+  // Buyer information
+  buyerEmail: string;
+  buyerPhone: string;
+  buyerGender: 'nam' | 'nu' | 'khac';
+  buyerCitizenId: string;
+  selectedProvince: string;
+  selectedProvinceText: string;
+  selectedDistrictWard: string;
+  selectedDistrictWardText: string;
+  specificAddress: string;
+  // Vehicle information
   bienSo: string;
   soKhung: string;
   soMay: string;
@@ -48,6 +59,20 @@ export default function useFormValidation() {
   const validationSchema = Yup.object().shape({
     chuXe: Yup.string().required('Vui lòng nhập chủ xe'),
     diaChi: Yup.string().required('Vui lòng nhập địa chỉ'),
+    
+    // Buyer information validation
+    buyerEmail: Yup.string()
+      .email('Vui lòng nhập email hợp lệ')
+      .required('Vui lòng nhập email'),
+    buyerPhone: Yup.string()
+      .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
+      .required('Vui lòng nhập số điện thoại'),
+    buyerCitizenId: Yup.string()
+      .matches(/^[0-9]{12}$/, 'Căn cước công dân phải có đúng 12 chữ số')
+      .required('Vui lòng nhập căn cước công dân'),
+    selectedProvince: Yup.string().required('Vui lòng chọn tỉnh/thành phố'),
+    selectedDistrictWard: Yup.string().required('Vui lòng chọn quận/huyện/xã'),
+    specificAddress: Yup.string().required('Vui lòng nhập địa chỉ cụ thể'),
     bienSo: Yup.string().required('Vui lòng nhập biển số'),
     soKhung: Yup.string().required('Vui lòng nhập số khung'),
     soMay: Yup.string().required('Vui lòng nhập số máy'),
