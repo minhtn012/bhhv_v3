@@ -10,6 +10,18 @@ interface Contract {
   contractNumber: string;
   chuXe: string;
   diaChi: string;
+  
+  // Buyer information
+  buyerEmail?: string;
+  buyerPhone?: string;
+  buyerGender?: 'nam' | 'nu' | 'khac';
+  buyerCitizenId?: string;
+  selectedProvince?: string;
+  selectedProvinceText?: string;
+  selectedDistrictWard?: string;
+  selectedDistrictWardText?: string;
+  specificAddress?: string;
+  
   bienSo: string;
   nhanHieu: string;
   soLoai: string;
@@ -21,6 +33,12 @@ interface Contract {
   trongTai?: number;
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
+  
+  // Car selection data
+  carBrand?: string;
+  carModel?: string;
+  carBodyStyle?: string;
+  carYear?: number;
   
   vatChatPackage: {
     name: string;
@@ -322,13 +340,55 @@ export default function ContractDetailPage() {
               {/* Customer Info */}
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Thông tin khách hàng</h2>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-gray-300 text-sm mb-1">Chủ xe</label>
                     <p className="text-white font-medium">{contract.chuXe}</p>
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-gray-300 text-sm mb-1">Địa chỉ</label>
+                  {contract.buyerEmail && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Email</label>
+                      <p className="text-white">{contract.buyerEmail}</p>
+                    </div>
+                  )}
+                  {contract.buyerPhone && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Số điện thoại</label>
+                      <p className="text-white">{contract.buyerPhone}</p>
+                    </div>
+                  )}
+                  {contract.buyerGender && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Giới tính</label>
+                      <p className="text-white">{contract.buyerGender === 'nam' ? 'Nam' : contract.buyerGender === 'nu' ? 'Nữ' : 'Khác'}</p>
+                    </div>
+                  )}
+                  {contract.buyerCitizenId && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Số CCCD</label>
+                      <p className="text-white font-mono">{contract.buyerCitizenId}</p>
+                    </div>
+                  )}
+                  {contract.selectedProvinceText && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Tỉnh/Thành phố</label>
+                      <p className="text-white">{contract.selectedProvinceText}</p>
+                    </div>
+                  )}
+                  {contract.selectedDistrictWardText && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Quận/Huyện</label>
+                      <p className="text-white">{contract.selectedDistrictWardText}</p>
+                    </div>
+                  )}
+                  {contract.specificAddress && (
+                    <div className="md:col-span-2 lg:col-span-3">
+                      <label className="block text-gray-300 text-sm mb-1">Địa chỉ cụ thể</label>
+                      <p className="text-white">{contract.specificAddress}</p>
+                    </div>
+                  )}
+                  <div className="md:col-span-2 lg:col-span-3">
+                    <label className="block text-gray-300 text-sm mb-1">Địa chỉ gốc</label>
                     <p className="text-white">{contract.diaChi}</p>
                   </div>
                 </div>
@@ -342,14 +402,24 @@ export default function ContractDetailPage() {
                     <label className="block text-gray-300 text-sm mb-1">Biển số</label>
                     <p className="text-white font-mono font-medium">{contract.bienSo}</p>
                   </div>
-                  <div>
-                    <label className="block text-gray-300 text-sm mb-1">Nhãn hiệu</label>
-                    <p className="text-white">{contract.nhanHieu}</p>
-                  </div>
-                  <div>
-                    <label className="block text-gray-300 text-sm mb-1">Số loại</label>
-                    <p className="text-white">{contract.soLoai}</p>
-                  </div>
+                  {contract.carBrand && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Thương hiệu xe</label>
+                      <p className="text-white">{contract.carBrand}</p>
+                    </div>
+                  )}
+                  {contract.carModel && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Dòng xe</label>
+                      <p className="text-white">{contract.carModel}</p>
+                    </div>
+                  )}
+                  {contract.carBodyStyle && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Kiểu dáng</label>
+                      <p className="text-white">{contract.carBodyStyle}</p>
+                    </div>
+                  )}
                   <div>
                     <label className="block text-gray-300 text-sm mb-1">Số khung</label>
                     <p className="text-white font-mono text-sm">{contract.soKhung}</p>
@@ -366,6 +436,12 @@ export default function ContractDetailPage() {
                     <label className="block text-gray-300 text-sm mb-1">Năm SX</label>
                     <p className="text-white">{contract.namSanXuat}</p>
                   </div>
+                  {contract.carYear && contract.carYear !== contract.namSanXuat && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Năm xe (hệ thống)</label>
+                      <p className="text-white">{contract.carYear}</p>
+                    </div>
+                  )}
                   <div>
                     <label className="block text-gray-300 text-sm mb-1">Số chỗ ngồi</label>
                     <p className="text-white">{contract.soChoNgoi}</p>

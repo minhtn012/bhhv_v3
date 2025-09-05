@@ -32,6 +32,12 @@ export interface IContract extends Document {
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
   
+  // Thông tin xe từ car selection
+  carBrand?: string;
+  carModel?: string;
+  carBodyStyle?: string;
+  carYear?: number;
+  
   // Gói bảo hiểm
   vatChatPackage: {
     name: string;
@@ -206,6 +212,23 @@ const contractSchema = new Schema<IContract>({
       'kd_pickup_van',
       'kd_chuyen_dung'
     ]
+  },
+  
+  // Thông tin xe từ car selection
+  carBrand: {
+    type: String,
+    trim: true
+  },
+  carModel: {
+    type: String,
+    trim: true
+  },
+  carBodyStyle: {
+    type: String,
+    trim: true
+  },
+  carYear: {
+    type: String
   },
   
   // Gói bảo hiểm
