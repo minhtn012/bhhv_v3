@@ -82,6 +82,14 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     
+    console.log('Contract API received body:', body);
+    console.log('Car fields in body:', {
+      carBrand: body.carBrand,
+      carModel: body.carModel,
+      carBodyStyle: body.carBodyStyle,
+      carYear: body.carYear
+    });
+    
     // Validate required fields
     const requiredFields = [
       'chuXe', 'diaChi', 'bienSo', 'nhanHieu', 'soLoai', 'soKhung', 

@@ -3,11 +3,12 @@ import { carSearchService } from '@/lib/carSearchService';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { brand: string; model: string } }
+  { params }: { params: Promise<{ brand: string; model: string }> }
 ) {
   try {
-    const brandName = decodeURIComponent(params.brand);
-    const modelName = decodeURIComponent(params.model);
+    const { brand, model } = await params;
+    const brandName = decodeURIComponent(brand);
+    const modelName = decodeURIComponent(model);
 
     if (!brandName || !modelName) {
       return NextResponse.json(
