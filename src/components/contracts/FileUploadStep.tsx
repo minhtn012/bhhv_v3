@@ -1,5 +1,6 @@
 import useFileUpload from '@/hooks/useFileUpload';
 import Spinner from '@/components/ui/Spinner';
+import { createPortal } from 'react-dom';
 
 interface FileUploadStepProps {
   onExtractSuccess: (data: any) => void;
@@ -29,10 +30,11 @@ export default function FileUploadStep({ onExtractSuccess, error }: FileUploadSt
 
   return (
     <>
-      {extracting && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+      {extracting && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]" style={{ zIndex: 9999 }}>
           <Spinner size="large" />
-        </div>
+        </div>,
+        document.body
       )}
       
       <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
