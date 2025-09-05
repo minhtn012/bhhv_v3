@@ -73,12 +73,12 @@ export default function StepWrapper({
     switch (status) {
       case 'completed':
         return isExpanded 
-          ? 'bg-white/10 backdrop-blur-xl border border-green-500/30'
-          : 'bg-white/5 backdrop-blur-sm border border-green-500/20 opacity-80';
+          ? 'bg-slate-800/90 border border-green-500/40'
+          : 'bg-slate-800/60 border border-green-500/20 opacity-90';
       case 'current':
-        return 'bg-white/10 backdrop-blur-xl border border-blue-500/30';
+        return 'bg-slate-800/90 border border-blue-500/40';
       case 'upcoming':
-        return 'bg-white/5 backdrop-blur-sm border border-gray-500/20 opacity-60';
+        return 'bg-slate-800/40 border border-slate-600/30 opacity-70';
     }
   };
 
@@ -92,22 +92,22 @@ export default function StepWrapper({
   const canExpand = isCollapsible && (isCompleted || stepNumber < currentStep || stepNumber === currentStep);
 
   return (
-    <div className={`rounded-2xl p-6 transition-all duration-300 ${getStepStyles()}`}>
+    <div className={`rounded-2xl p-6 lg:p-5 transition-all duration-200 ${getStepStyles()}`}>
       {/* Step Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6 lg:mb-4">
         <div className="flex items-center gap-4">
           {getStepIcon()}
           <div>
-            <h2 className={`text-xl font-semibold ${
-              status === 'upcoming' ? 'text-gray-400' : 'text-white'
+            <h2 className={`text-xl lg:text-lg font-semibold ${
+              status === 'upcoming' ? 'text-slate-400' : 'text-white'
             }`}>
               {title}
             </h2>
             {status === 'completed' && (
-              <p className="text-sm text-green-400">Đã hoàn thành</p>
+              <p className="text-sm text-green-400 mt-1">Đã hoàn thành</p>
             )}
             {status === 'current' && (
-              <p className="text-sm text-blue-400">Đang thực hiện</p>
+              <p className="text-sm text-blue-400 mt-1">Đang thực hiện</p>
             )}
           </div>
         </div>
@@ -117,12 +117,12 @@ export default function StepWrapper({
           {canExpand && (
             <button
               onClick={handleToggle}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="p-3 hover:bg-slate-700 rounded-xl transition-all duration-200 min-h-[48px] min-w-[48px] flex items-center justify-center"
             >
               {isExpanded ? (
-                <ChevronUpIcon className="w-5 h-5 text-white" />
+                <ChevronUpIcon className="w-6 h-6 text-white" />
               ) : (
-                <ChevronDownIcon className="w-5 h-5 text-white" />
+                <ChevronDownIcon className="w-6 h-6 text-white" />
               )}
             </button>
           )}
@@ -138,7 +138,7 @@ export default function StepWrapper({
 
       {/* Step Summary (when collapsed) */}
       {!isExpanded && summary && (
-        <div className="mt-4 p-3 bg-white/5 rounded-lg">
+        <div className="mt-4 p-4 bg-slate-700/30 rounded-xl border border-slate-600/20">
           {summary}
         </div>
       )}

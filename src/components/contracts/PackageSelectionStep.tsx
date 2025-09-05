@@ -53,7 +53,7 @@ export default function PackageSelectionStep({
   onRecalculate
 }: PackageSelectionStepProps) {
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+    <div>
       
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left: Package Options */}

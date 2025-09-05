@@ -41,7 +41,7 @@ export default function VehicleInfoForm({
   onCalculateRates
 }: VehicleInfoFormProps) {
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">      
+    <div>      
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <label className="block text-white font-medium mb-2">Biển số *</label>
@@ -49,8 +49,8 @@ export default function VehicleInfoForm({
             type="text" 
             value={formData.bienSo}
             onChange={(e) => onFormInputChange('bienSo', e.target.value.toUpperCase())}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white font-mono ${
-              fieldErrors.bienSo ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white font-mono min-h-[48px] ${
+              fieldErrors.bienSo ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           />
@@ -63,8 +63,8 @@ export default function VehicleInfoForm({
             type="text" 
             value={formData.soKhung}
             onChange={(e) => onFormInputChange('soKhung', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.soKhung ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.soKhung ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           />
@@ -77,8 +77,8 @@ export default function VehicleInfoForm({
             type="text" 
             value={formData.soMay}
             onChange={(e) => onFormInputChange('soMay', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.soMay ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.soMay ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           />
@@ -94,8 +94,8 @@ export default function VehicleInfoForm({
             placeholder="dd/mm/yyyy (VD: 15/03/2020)"
             pattern="^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$"
             title="Vui lòng nhập ngày theo định dạng dd/mm/yyyy"
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.ngayDKLD ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.ngayDKLD ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           />

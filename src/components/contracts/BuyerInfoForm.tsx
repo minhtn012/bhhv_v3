@@ -142,8 +142,8 @@ export default function BuyerInfoForm({
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-      <h2 className="text-xl font-semibold text-white mb-6">Thông tin người mua</h2>
+    <div>
+      <h2 className="text-xl lg:text-lg font-semibold text-white mb-6 lg:mb-4">Thông tin người mua</h2>
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Họ tên (editable, pre-filled from extracted data) */}
@@ -153,8 +153,8 @@ export default function BuyerInfoForm({
             type="text" 
             value={formData.chuXe}
             onChange={(e) => onFormInputChange('chuXe', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.chuXe ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.chuXe ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="Nhập họ và tên"
             required
@@ -170,8 +170,8 @@ export default function BuyerInfoForm({
             type="email" 
             value={formData.buyerEmail}
             onChange={(e) => onFormInputChange('buyerEmail', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.buyerEmail ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.buyerEmail ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="email@example.com"
             required
@@ -185,7 +185,7 @@ export default function BuyerInfoForm({
           <select 
             value={formData.buyerGender}
             onChange={(e) => onFormInputChange('buyerGender', e.target.value as 'nam' | 'nu' | 'khac')}
-            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+            className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-3 text-white min-h-[48px]"
           >
             <option value="nam">Nam</option>
             <option value="nu">Nữ</option>
@@ -200,8 +200,8 @@ export default function BuyerInfoForm({
             type="tel" 
             value={formData.buyerPhone}
             onChange={(e) => onFormInputChange('buyerPhone', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.buyerPhone ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.buyerPhone ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="0123456789"
             required
@@ -216,8 +216,8 @@ export default function BuyerInfoForm({
             type="text" 
             value={formData.buyerCitizenId}
             onChange={(e) => onFormInputChange('buyerCitizenId', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.buyerCitizenId ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.buyerCitizenId ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="123456789012"
             maxLength={12}
@@ -232,8 +232,8 @@ export default function BuyerInfoForm({
           <select 
             value={formData.selectedProvince}
             onChange={(e) => handleProvinceChange(e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.selectedProvince ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.selectedProvince ? 'border-red-500' : 'border-slate-500/30'
             }`}
             disabled={loadingProvinces}
             required
@@ -263,8 +263,8 @@ export default function BuyerInfoForm({
           <select 
             value={formData.selectedDistrictWard}
             onChange={(e) => handleDistrictWardChange(e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              combinedErrors.selectedDistrictWard ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.selectedDistrictWard ? 'border-red-500' : 'border-slate-500/30'
             }`}
             disabled={!formData.selectedProvince || loadingDistrictsWards}
             required
@@ -294,8 +294,8 @@ export default function BuyerInfoForm({
           <textarea 
             value={formData.specificAddress}
             onChange={(e) => onFormInputChange('specificAddress', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white h-20 resize-none ${
-              combinedErrors.specificAddress ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white h-20 resize-none min-h-[80px] ${
+              combinedErrors.specificAddress ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="Số nhà, tên đường, khu vực..."
             required
@@ -309,7 +309,7 @@ export default function BuyerInfoForm({
         <button
           type="button"
           onClick={handleNext}
-          className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium"
+          className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium min-h-[48px] flex items-center justify-center"
         >
           Tiếp theo
         </button>
