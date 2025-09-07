@@ -345,11 +345,20 @@ contractSchema.index({ createdAt: -1 });
 // Middleware để tự động thêm vào statusHistory khi thay đổi trạng thái
 contractSchema.pre('save', function(next) {
   if (this.isModified('status') && !this.isNew) {
+    const statusMap: { [key: string]: string } = {
+      'nhap': 'Nháp',
+      'cho_duyet': 'Chờ duyệt', 
+      'khach_duyet': 'Khách duyệt',
+      'ra_hop_dong': 'Ra hợp đồng',
+      'huy': 'Đã hủy'
+    };
+    const statusText = statusMap[this.status] || this.status;
+    
     this.statusHistory.push({
       status: this.status,
-      changedBy: this.createdBy, // Sẽ được update từ API
+      changedBy: this.get('_statusChangedBy') || this.createdBy,
       changedAt: new Date(),
-      note: `Trạng thái chuyển sang: ${this.status}`
+      note: this.get('_statusChangeNote') || `Trạng thái chuyển sang: ${statusText}`
     });
   } else if (this.isNew) {
     // Thêm trạng thái ban đầu

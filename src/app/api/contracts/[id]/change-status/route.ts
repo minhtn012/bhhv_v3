@@ -51,14 +51,9 @@ export async function POST(
     const oldStatus = contract.status;
     contract.status = status;
 
-    // Thêm vào lịch sử (sẽ được thực hiện tự động bởi pre-save middleware)
-    // Nhưng ta cần update changedBy trong statusHistory
-    contract.statusHistory.push({
-      status: status,
-      changedBy: user.userId,
-      changedAt: new Date(),
-      note: note || `Chuyển từ ${Contract.getStatusText(oldStatus)} sang ${Contract.getStatusText(status)}`
-    });
+    // Set custom note và changedBy cho middleware
+    contract.set('_statusChangeNote', note || `Chuyển từ ${Contract.getStatusText(oldStatus)} sang ${Contract.getStatusText(status)}`);
+    contract.set('_statusChangedBy', user.userId);
 
     await contract.save();
 

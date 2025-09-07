@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
-import { formatCurrency } from '@/utils/insurance-calculator';
+import { formatCurrency, tndsCategories } from '@/utils/insurance-calculator';
 
 interface Contract {
   _id: string;
@@ -106,6 +106,10 @@ const getLoaiHinhText = (loaiHinh: string): string => {
     'kd_chuyen_dung': 'Xe chuyên dùng khác (xe cứu thương...)'
   };
   return mapping[loaiHinh] || loaiHinh;
+};
+
+const getTNDSText = (tndsCategory: string): string => {
+  return tndsCategories[tndsCategory]?.label || tndsCategory;
 };
 
 export default function ContractDetailPage() {
@@ -493,7 +497,7 @@ export default function ContractDetailPage() {
                       <h3 className="text-lg font-medium text-white mb-2">TNDS Bắt buộc</h3>
                       <div className="bg-white/5 rounded-xl p-4">
                         <div className="flex justify-between items-center">
-                          <p className="text-white">{contract.tndsCategory}</p>
+                          <p className="text-white">{getTNDSText(contract.tndsCategory)}</p>
                           <p className="text-blue-400 font-bold">{formatCurrency(contract.phiTNDS)}</p>
                         </div>
                       </div>
