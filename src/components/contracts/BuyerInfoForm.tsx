@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import FieldError from './FieldError';
 import useBuyerLocation from '@/hooks/useBuyerLocation';
 import Spinner from '@/components/ui/Spinner';
+import SearchableSelect from '@/components/SearchableSelect';
 
 interface BuyerFormData {
   chuXe: string;
@@ -229,22 +230,25 @@ export default function BuyerInfoForm({
         {/* Tỉnh/Thành phố */}
         <div>
           <label className="block text-white font-medium mb-2">Tỉnh/Thành phố *</label>
-          <select 
-            value={formData.selectedProvince}
-            onChange={(e) => handleProvinceChange(e.target.value)}
-            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.selectedProvince ? 'border-red-500' : 'border-slate-500/30'
-            }`}
-            disabled={loadingProvinces}
-            required
-          >
-            <option value="">Chọn tỉnh/thành phố</option>
-            {provinces.map((province) => (
-              <option key={province.province_code} value={province.province_code}>
-                {province.province_name}
-              </option>
-            ))}
-          </select>
+          <div className={`${combinedErrors.selectedProvince ? 'border border-red-500 rounded-xl' : ''}`}>
+            <SearchableSelect
+              options={provinces.map(province => ({ 
+                id: province.province_code, 
+                name: province.province_name 
+              }))}
+              value={formData.selectedProvinceText}
+              onChange={(value) => {
+                const selectedProvince = provinces.find(p => p.province_name === value);
+                if (selectedProvince) {
+                  handleProvinceChange(selectedProvince.province_code);
+                }
+              }}
+              placeholder="Chọn tỉnh/thành phố"
+              loading={loadingProvinces}
+              disabled={loadingProvinces}
+              required
+            />
+          </div>
           {loadingProvinces && (
             <div className="flex items-center gap-2 mt-2">
               <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
@@ -260,22 +264,25 @@ export default function BuyerInfoForm({
         {/* Quận/Huyện/Xã */}
         <div>
           <label className="block text-white font-medium mb-2">Quận/Huyện/Xã *</label>
-          <select 
-            value={formData.selectedDistrictWard}
-            onChange={(e) => handleDistrictWardChange(e.target.value)}
-            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.selectedDistrictWard ? 'border-red-500' : 'border-slate-500/30'
-            }`}
-            disabled={!formData.selectedProvince || loadingDistrictsWards}
-            required
-          >
-            <option value="">Chọn quận/huyện/xã</option>
-            {districtsWards.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name}
-              </option>
-            ))}
-          </select>
+          <div className={`${combinedErrors.selectedDistrictWard ? 'border border-red-500 rounded-xl' : ''}`}>
+            <SearchableSelect
+              options={districtsWards.map(district => ({ 
+                id: district.id, 
+                name: district.name 
+              }))}
+              value={formData.selectedDistrictWardText}
+              onChange={(value) => {
+                const selectedDistrict = districtsWards.find(d => d.name === value);
+                if (selectedDistrict) {
+                  handleDistrictWardChange(selectedDistrict.id);
+                }
+              }}
+              placeholder="Chọn quận/huyện/xã"
+              loading={loadingDistrictsWards}
+              disabled={!formData.selectedProvince || loadingDistrictsWards}
+              required
+            />
+          </div>
           {loadingDistrictsWards && (
             <div className="flex items-center gap-2 mt-2">
               <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />

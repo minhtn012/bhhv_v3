@@ -18,6 +18,37 @@ interface SearchableSelectProps {
   required?: boolean;
 }
 
+interface HighlightedTextProps {
+  text: string;
+  searchTerm: string;
+  removeDiacritics: (text: string) => string;
+}
+
+function HighlightedText({ text, searchTerm, removeDiacritics }: HighlightedTextProps) {
+  if (!searchTerm.trim()) return <>{text}</>;
+  
+  const normalizedSearch = removeDiacritics(searchTerm);
+  const normalizedText = removeDiacritics(text);
+  
+  // Find the position of the match in the normalized text
+  const matchIndex = normalizedText.indexOf(normalizedSearch);
+  
+  if (matchIndex === -1) return <>{text}</>;
+  
+  // Get the actual substring from the original text that corresponds to the match
+  const beforeMatch = text.substring(0, matchIndex);
+  const match = text.substring(matchIndex, matchIndex + normalizedSearch.length);
+  const afterMatch = text.substring(matchIndex + normalizedSearch.length);
+  
+  return (
+    <>
+      {beforeMatch}
+      <mark className="bg-yellow-400 text-black px-1 rounded">{match}</mark>
+      {afterMatch}
+    </>
+  );
+}
+
 export default function SearchableSelect({
   options,
   value,
@@ -33,15 +64,27 @@ export default function SearchableSelect({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Remove Vietnamese diacritics/accents for search
+  const removeDiacritics = (text: string) => {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove combining diacritical marks
+      .replace(/đ/g, 'd')
+      .replace(/Đ/g, 'D')
+      .toLowerCase();
+  };
+
   // Escape regex special characters
   const escapeRegExp = (string: string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
-  // Filter options based on search term
-  const filteredOptions = options.filter(option =>
-    option.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter options based on search term (diacritic-insensitive)
+  const filteredOptions = options.filter(option => {
+    const searchNormalized = removeDiacritics(searchTerm);
+    const optionNormalized = removeDiacritics(option.name);
+    return optionNormalized.includes(searchNormalized);
+  });
 
   // Get display value
   const displayValue = value ? options.find(opt => opt.name === value)?.name || value : '';
@@ -172,14 +215,7 @@ export default function SearchableSelect({
               >
                 {/* Highlight search term */}
                 {searchTerm ? (
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: option.name.replace(
-                        new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi'),
-                        '<mark class="bg-yellow-400 text-black px-1 rounded">$1</mark>'
-                      )
-                    }}
-                  />
+                  <HighlightedText text={option.name} searchTerm={searchTerm} removeDiacritics={removeDiacritics} />
                 ) : (
                   option.name
                 )}
