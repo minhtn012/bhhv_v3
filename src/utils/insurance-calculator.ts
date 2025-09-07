@@ -16,7 +16,8 @@ export const physicalDamageRates = {
   'kd_hop_dong_tren_9c': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.25, 1.3, 1.35, 1.4], age_6_to_10: [1.4, 1.5, 1.55, 1.65], age_over_10: [1.5, 1.65, 1.7, null] },
   'kd_bus': { age_under_3: [1.25, 1.25, 1.3, 1.3], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.54, 1.69, 1.74, null] },
   'kd_pickup_van': { age_under_3: [1.3, 1.3, 1.35, 1.35], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.55, 1.7, 1.75, null] },
-  'kd_chuyen_dung': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.5, 1.65, 1.7, null] }
+  'kd_chuyen_dung': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.5, 1.65, 1.7, null] },
+  'kd_romooc_ben': { age_under_3: [1.25, 1.25, 1.30, 1.30], age_3_to_6: [1.35, 1.40, 1.45, 1.50], age_6_to_10: [1.40, 1.50, 1.55, 1.65], age_over_10: [1.50, 1.65, 1.70, null] }
 };
 
 export const additionalRateAU009 = 0.10;
@@ -50,10 +51,10 @@ export const tndsCategories = {
 
 export const packageLabels = [
   { name: 'Gói Cơ bản', details: 'Bảo hiểm cơ bản' },
-  { name: 'Gói + AU001', details: 'Thêm: Thay mới không khấu hao' },
-  { name: 'Gói + AU001 + AU006', details: 'Thêm: Thủy kích' },
-  { name: 'Gói + AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage' },
-  { name: 'Gói + AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' }
+  { name: 'Gói AU001', details: 'Thêm: Thay mới không khấu hao' },
+  { name: 'Gói AU001 + AU006', details: 'Thêm: Thủy kích' },
+  { name: 'Gói AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage' },
+  { name: 'Gói AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' }
 ];
 
 export const loaiHinhKinhDoanhOptions = [
@@ -68,7 +69,8 @@ export const loaiHinhKinhDoanhOptions = [
   { value: 'kd_hop_dong_tren_9c', label: 'Xe khách hợp đồng (> 9 chỗ)', group: 'Xe kinh doanh vận tải' },
   { value: 'kd_bus', label: 'Xe bus', group: 'Xe kinh doanh vận tải' },
   { value: 'kd_pickup_van', label: 'Xe bán tải / Van (kinh doanh)', group: 'Xe kinh doanh vận tải' },
-  { value: 'kd_chuyen_dung', label: 'Xe chuyên dùng khác (xe cứu thương...)', group: 'Xe kinh doanh vận tải' }
+  { value: 'kd_chuyen_dung', label: 'Xe chuyên dùng khác (xe cứu thương...)', group: 'Xe kinh doanh vận tải' },
+  { value: 'kd_romooc_ben', label: 'Rơ moóc ben; Rơ mooc gắn thiết bị chuyên dùng', group: 'Xe kinh doanh vận tải' }
 ];
 
 // Interface cho dữ liệu tính toán
@@ -127,7 +129,7 @@ export function calculateInsuranceRates(
   let tndsKey: string | null = null;
   if (loaiHinhKinhDoanh.includes('pickup_van')) {
     tndsKey = isKinhDoanh ? 'pickup_kd' : 'pickup_khong_kd';
-  } else if (loaiHinhKinhDoanh.includes('cho_hang') || loaiHinhKinhDoanh.includes('dau_keo')) {
+  } else if (loaiHinhKinhDoanh.includes('cho_hang') || loaiHinhKinhDoanh.includes('dau_keo') || loaiHinhKinhDoanh.includes('romooc_ben')) {
     const tan = (trongTai || 0) / 1000;
     if (tan < 3) tndsKey = 'tai_duoi_3_tan';
     else if (tan <= 8) tndsKey = 'tai_3_den_8_tan';
@@ -211,7 +213,7 @@ export function suggestTNDSCategory(
   
   if (loaiHinhKinhDoanh.includes('pickup_van')) {
     return isKinhDoanh ? 'pickup_kd' : 'pickup_khong_kd';
-  } else if (loaiHinhKinhDoanh.includes('cho_hang') || loaiHinhKinhDoanh.includes('dau_keo')) {
+  } else if (loaiHinhKinhDoanh.includes('cho_hang') || loaiHinhKinhDoanh.includes('dau_keo') || loaiHinhKinhDoanh.includes('romooc_ben')) {
     const tan = (trongTai || 0) / 1000;
     if (tan < 3) return 'tai_duoi_3_tan';
     else if (tan <= 8) return 'tai_3_den_8_tan';

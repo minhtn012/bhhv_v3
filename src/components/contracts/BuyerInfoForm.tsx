@@ -164,7 +164,7 @@ export default function BuyerInfoForm({
         </div>
 
         {/* Email */}
-        <div className="lg:col-span-2">
+        <div>
           <label className="block text-white font-medium mb-2">Email *</label>
           <input 
             type="email" 

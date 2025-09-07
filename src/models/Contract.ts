@@ -210,7 +210,8 @@ const contractSchema = new Schema<IContract>({
       'kd_hop_dong_tren_9c',
       'kd_bus',
       'kd_pickup_van',
-      'kd_chuyen_dung'
+      'kd_chuyen_dung',
+      'kd_romooc_ben'
     ]
   },
   
