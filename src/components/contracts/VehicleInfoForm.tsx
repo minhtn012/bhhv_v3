@@ -2,6 +2,7 @@ import { formatNumberInput, loaiHinhKinhDoanhOptions } from '@/utils/insurance-c
 import { CarSelection } from '@/types/car';
 import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
+import carEngineTypes from '../../../bd_json/car_type_engine.json';
 
 interface FormData {
   chuXe: string;
@@ -15,6 +16,8 @@ interface FormData {
   trongTai: number | '';
   giaTriXe: string;
   loaiHinhKinhDoanh: string;
+  loaiDongCo: string;
+  giaTriPin: string;
 }
 
 interface VehicleInfoFormProps {
@@ -40,6 +43,9 @@ export default function VehicleInfoForm({
   onAcceptSuggestion,
   onCalculateRates
 }: VehicleInfoFormProps) {
+  const selectedEngine = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
+  const isElectricOrHybrid = selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
+
   return (
     <div>      
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -160,6 +166,43 @@ export default function VehicleInfoForm({
         </div>
 
         <div className="lg:col-span-3">
+          <label className="block text-white font-medium mb-2">Loại động cơ *</label>
+          <select 
+            value={formData.loaiDongCo}
+            onChange={(e) => onFormInputChange('loaiDongCo', e.target.value)}
+            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+              fieldErrors.loaiDongCo ? 'border-red-500' : 'border-white/20'
+            }`}
+            required
+          >
+            <option value="">-- Chọn loại động cơ --</option>
+            {carEngineTypes.map(engine => (
+              <option key={engine.value} value={engine.value}>
+                {engine.name}
+              </option>
+            ))}
+          </select>
+          <FieldError fieldName="loaiDongCo" errors={fieldErrors} />
+        </div>
+
+        {isElectricOrHybrid && (
+          <div className="lg:col-span-3">
+            <label className="block text-white font-medium mb-2">Giá trị Pin (VNĐ) *</label>
+            <input 
+              type="text" 
+              value={formData.giaTriPin}
+              onChange={(e) => onFormInputChange('giaTriPin', formatNumberInput(e.target.value))}
+              placeholder="Ví dụ: 200,000,000"
+              className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+                fieldErrors.giaTriPin ? 'border-red-500' : 'border-white/20'
+              }`}
+              required
+            />
+            <FieldError fieldName="giaTriPin" errors={fieldErrors} />
+          </div>
+        )}
+
+        <div className="lg:col-span-3">
           <label className="block text-white font-medium mb-2">Loại hình sử dụng *</label>
           <select 
             value={formData.loaiHinhKinhDoanh}
@@ -184,6 +227,7 @@ export default function VehicleInfoForm({
             ))}
           </select>
         </div>
+
 
         {(formData.loaiHinhKinhDoanh.includes('cho_hang') || formData.loaiHinhKinhDoanh.includes('dau_keo')) && (
           <div className="lg:col-span-3">

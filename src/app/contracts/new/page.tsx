@@ -47,6 +47,8 @@ interface FormData {
   trongTai: number | '';
   giaTriXe: string;
   loaiHinhKinhDoanh: string;
+  loaiDongCo: string;
+  giaTriPin: string;
   
   // Gói bảo hiểm
   selectedPackageIndex: number;
@@ -96,6 +98,8 @@ export default function NewContractPage() {
     trongTai: '',
     giaTriXe: '',
     loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
+    loaiDongCo: '',
+    giaTriPin: '',
     selectedPackageIndex: 0,
     customRates: [],
     includeTNDS: true,

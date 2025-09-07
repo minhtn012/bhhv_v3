@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { CarSelection } from '@/types/car';
+import carEngineTypes from '../../bd_json/car_type_engine.json';
 
 interface FormData {
   chuXe: string;
@@ -25,6 +26,8 @@ interface FormData {
   trongTai: number | '';
   giaTriXe: string;
   loaiHinhKinhDoanh: string;
+  loaiDongCo: string;
+  giaTriPin: string;
 }
 
 export default function useFormValidation() {
@@ -116,6 +119,22 @@ export default function useFormValidation() {
     trongTai: Yup.number().when('loaiHinhKinhDoanh', {
       is: (loaiHinh: string) => loaiHinh?.includes('cho_hang') || loaiHinh?.includes('dau_keo'),
       then: (schema) => schema.required('Vui lòng nhập trọng tải cho xe tải').min(1, 'Trọng tải phải lớn hơn 0'),
+      otherwise: (schema) => schema.notRequired()
+    }),
+    loaiDongCo: Yup.string().required('Vui lòng chọn loại động cơ'),
+    giaTriPin: Yup.string().when('loaiDongCo', {
+      is: (loaiDongCo: string) => {
+        if (!loaiDongCo) return false;
+        const selectedEngine = carEngineTypes.find(engine => engine.value === loaiDongCo);
+        return selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
+      },
+      then: (schema) => schema
+        .required('Vui lòng nhập giá trị pin khi chọn động cơ hybrid hoặc điện')
+        .test('valid-battery-price', 'Giá trị pin phải lớn hơn 0', function(value) {
+          if (!value) return false;
+          const price = parseCurrency(value);
+          return !isNaN(price) && price > 0;
+        }),
       otherwise: (schema) => schema.notRequired()
     })
   });
