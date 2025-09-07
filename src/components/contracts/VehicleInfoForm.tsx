@@ -30,6 +30,7 @@ interface VehicleInfoFormProps {
   onCarInputChange: (field: keyof CarSelection, value: any) => void;
   onAcceptSuggestion: () => void;
   onCalculateRates: () => void;
+  hideCalculateButton?: boolean;
 }
 
 export default function VehicleInfoForm({
@@ -41,7 +42,8 @@ export default function VehicleInfoForm({
   onModelChange,
   onCarInputChange,
   onAcceptSuggestion,
-  onCalculateRates
+  onCalculateRates,
+  hideCalculateButton = false
 }: VehicleInfoFormProps) {
   const selectedEngine = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
   const isElectricOrHybrid = selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
@@ -248,14 +250,16 @@ export default function VehicleInfoForm({
         )}
       </div>
 
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={onCalculateRates}
-          className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors"
-        >
-          Tính phí & Lập báo giá
-        </button>
-      </div>
+      {!hideCalculateButton && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={onCalculateRates}
+            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors"
+          >
+            Tính phí & Lập báo giá
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -31,6 +31,7 @@ interface PriceSummaryCardProps {
   totalAmount: number;
   loading: boolean;
   onSubmit: () => void;
+  submitButtonText?: string;
 }
 
 export default function PriceSummaryCard({ 
@@ -39,7 +40,8 @@ export default function PriceSummaryCard({
   formData, 
   totalAmount, 
   loading, 
-  onSubmit 
+  onSubmit,
+  submitButtonText = "Tạo Hợp đồng"
 }: PriceSummaryCardProps) {
   const [nntxFee, setNntxFee] = useState(0);
   const [actualTotalAmount, setActualTotalAmount] = useState(0);
@@ -186,7 +188,7 @@ export default function PriceSummaryCard({
         {loading && (
           <Spinner size="small" className="!m-0 !w-4 !h-4 !max-w-4" />
         )}
-        <span>{loading ? 'Đang tạo...' : 'Tạo Hợp đồng'}</span>
+        <span>{loading ? 'Đang xử lý...' : submitButtonText}</span>
       </button>
     </div>
   );

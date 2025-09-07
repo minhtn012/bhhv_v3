@@ -22,13 +22,15 @@ interface BuyerInfoFormProps {
   fieldErrors: Record<string, string>;
   onFormInputChange: (field: keyof BuyerFormData, value: string) => void;
   onNext: () => void;
+  hideNextButton?: boolean;
 }
 
 export default function BuyerInfoForm({
   formData,
   fieldErrors,
   onFormInputChange,
-  onNext
+  onNext,
+  hideNextButton = false
 }: BuyerInfoFormProps) {
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
   const {
@@ -312,15 +314,17 @@ export default function BuyerInfoForm({
       </div>
 
       {/* Next Button */}
-      <div className="flex justify-end mt-6">
-        <button
-          type="button"
-          onClick={handleNext}
-          className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium min-h-[48px] flex items-center justify-center"
-        >
-          Tiếp theo
-        </button>
-      </div>
+      {!hideNextButton && (
+        <div className="flex justify-end mt-6">
+          <button
+            type="button"
+            onClick={handleNext}
+            className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium min-h-[48px] flex items-center justify-center"
+          >
+            Tiếp theo
+          </button>
+        </div>
+      )}
     </div>
   );
 }

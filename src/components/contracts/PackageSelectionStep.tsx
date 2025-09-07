@@ -38,6 +38,7 @@ interface PackageSelectionStepProps {
   onSubmit: () => void;
   onRateChange?: (index: number, newRate: number, newFee: number) => void;
   onRecalculate?: () => void;
+  submitButtonText?: string;
 }
 
 export default function PackageSelectionStep({
@@ -50,7 +51,8 @@ export default function PackageSelectionStep({
   onPackageSelect,
   onSubmit,
   onRateChange,
-  onRecalculate
+  onRecalculate,
+  submitButtonText = "Tạo báo giá"
 }: PackageSelectionStepProps) {
   return (
     <div>
@@ -119,6 +121,7 @@ export default function PackageSelectionStep({
             totalAmount={totalAmount}
             loading={loading}
             onSubmit={onSubmit}
+            submitButtonText={submitButtonText}
           />
         </div>
       </div>
