@@ -88,12 +88,13 @@ interface Contract {
   trongTai?: number;
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
+  loaiDongCo?: string;
   
   // Car selection data
   carBrand?: string;
   carModel?: string;
   carBodyStyle?: string;
-  carYear?: number;
+  carYear?: string;
   
   vatChatPackage: {
     name: string;
@@ -125,6 +126,7 @@ export default function EditContractPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [initializingCarData, setInitializingCarData] = useState(false);
   
   // Form data
   const [formData, setFormData] = useState<FormData>({
@@ -168,7 +170,7 @@ export default function EditContractPage() {
   const contractId = params.id as string;
   
   // Custom hooks
-  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar } = useCarSelection();
+  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, initializeFromExistingContract } = useCarSelection();
   const { 
     calculationResult, 
     enhancedResult,
@@ -209,7 +211,7 @@ export default function EditContractPage() {
 
       if (response.ok) {
         setContract(data.contract);
-        populateFormFromContract(data.contract);
+        await populateFormFromContract(data.contract);
         setError('');
       } else {
         setError(data.error || 'Lỗi khi tải thông tin hợp đồng');
@@ -225,7 +227,8 @@ export default function EditContractPage() {
     }
   };
 
-  const populateFormFromContract = (contractData: Contract) => {
+  const populateFormFromContract = async (contractData: Contract) => {
+    // Set basic form data first
     setFormData({
       chuXe: contractData.chuXe,
       diaChi: contractData.diaChi,
@@ -249,7 +252,7 @@ export default function EditContractPage() {
       trongTai: contractData.trongTai || '',
       giaTriXe: formatCurrency(contractData.giaTriXe),
       loaiHinhKinhDoanh: contractData.loaiHinhKinhDoanh,
-      loaiDongCo: '',
+      loaiDongCo: contractData.loaiDongCo || '',
       giaTriPin: '',
       selectedPackageIndex: 0, // Will be determined after calculation
       customRates: [],
@@ -262,18 +265,25 @@ export default function EditContractPage() {
       taiTucPercentage: 0
     });
 
-    // Set car data if available
-    if (contractData.carBrand) {
-      handleBrandChange(contractData.carBrand);
-      if (contractData.carModel) {
-        handleModelChange(contractData.carModel);
+    // Initialize car data if available
+    if (contractData.carBrand && contractData.carModel) {
+      setInitializingCarData(true);
+      try {
+        await initializeFromExistingContract({
+          carBrand: contractData.carBrand,
+          carModel: contractData.carModel,
+          carBodyStyle: contractData.carBodyStyle,
+          carYear: contractData.carYear
+        });
+      } catch (error) {
+        console.error('Error initializing car data:', error);
+      } finally {
+        setInitializingCarData(false);
       }
     }
 
-    // Calculate initial rates
-    setTimeout(() => {
-      calculateInitialRates(contractData);
-    }, 500);
+    // Calculate initial rates after car data is loaded
+    calculateInitialRates(contractData);
   };
 
   const calculateInitialRates = (contractData: Contract) => {
@@ -354,6 +364,11 @@ export default function EditContractPage() {
       return;
     }
 
+    if (initializingCarData) {
+      setError('Đang tải dữ liệu xe, vui lòng chờ...');
+      return;
+    }
+
     const selectedPackage = availablePackages[formData.selectedPackageIndex];
     if (!selectedPackage || !selectedPackage.available) {
       setError('Vui lòng chọn gói bảo hiểm hợp lệ');
@@ -415,6 +430,7 @@ export default function EditContractPage() {
         trongTai: Number(formData.trongTai) || undefined,
         giaTriXe: parseCurrency(formData.giaTriXe),
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
+        loaiDongCo: formData.loaiDongCo,
         carBrand: carData.selectedBrand,
         carModel: carData.selectedModel,
         carBodyStyle: carData.selectedBodyStyle,
@@ -591,13 +607,13 @@ export default function EditContractPage() {
                     calculationResult={calculationResult}
                     formData={formData}
                     totalAmount={totalAmount}
-                    loading={submitting}
+                    loading={submitting || initializingCarData}
                     onFormInputChange={handleInputChange}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={updateContract}
                     onRateChange={handleRateChange}
                     onRecalculate={handleRecalculate}
-                    submitButtonText="Cập nhật hợp đồng"
+                    submitButtonText={initializingCarData ? "Đang tải dữ liệu xe..." : "Cập nhật hợp đồng"}
                   />
                 </div>
               )}
@@ -647,16 +663,17 @@ export default function EditContractPage() {
                 <div className="space-y-3">
                   <button
                     onClick={handleRecalculate}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-colors"
+                    disabled={initializingCarData}
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition-colors"
                   >
-                    Tính lại phí
+                    {initializingCarData ? 'Đang tải...' : 'Tính lại phí'}
                   </button>
                   <button
                     onClick={updateContract}
-                    disabled={submitting || !calculationResult}
+                    disabled={submitting || !calculationResult || initializingCarData}
                     className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition-colors"
                   >
-                    {submitting ? 'Đang cập nhật...' : 'Cập nhật hợp đồng'}
+                    {submitting ? 'Đang cập nhật...' : initializingCarData ? 'Đang tải dữ liệu xe...' : 'Cập nhật hợp đồng'}
                   </button>
                 </div>
               </div>

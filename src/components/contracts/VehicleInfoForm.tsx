@@ -2,7 +2,7 @@ import { formatNumberInput, loaiHinhKinhDoanhOptions } from '@/utils/insurance-c
 import { CarSelection } from '@/types/car';
 import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
-import carEngineTypes from '../../../bd_json/car_type_engine.json';
+import carEngineTypes from '@db/car_type_engine.json';
 
 interface FormData {
   chuXe: string;

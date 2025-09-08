@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { formatCurrency, tndsCategories } from '@/utils/insurance-calculator';
+import carEngineTypes from '@db/car_type_engine.json';
 
 // Type declaration for html2canvas
 declare global {
@@ -40,6 +41,7 @@ interface Contract {
   trongTai?: number;
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
+  loaiDongCo?: string;
   
   // Car selection data
   carBrand?: string;
@@ -117,6 +119,11 @@ const getLoaiHinhText = (loaiHinh: string): string => {
 
 const getTNDSText = (tndsCategory: string): string => {
   return tndsCategories[tndsCategory]?.label || tndsCategory;
+};
+
+const getEngineTypeText = (engineTypeId: string): string => {
+  const engineType = carEngineTypes.find(engine => engine.value === engineTypeId);
+  return engineType?.name || engineTypeId;
 };
 
 export default function ContractDetailPage() {
@@ -568,6 +575,12 @@ export default function ContractDetailPage() {
                     <label className="block text-gray-300 text-sm mb-1">Giá trị xe</label>
                     <p className="text-white font-medium">{formatCurrency(contract.giaTriXe)}</p>
                   </div>
+                  {contract.loaiDongCo && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Loại động cơ</label>
+                      <p className="text-white">{getEngineTypeText(contract.loaiDongCo)}</p>
+                    </div>
+                  )}
                   <div className="md:col-span-3">
                     <label className="block text-gray-300 text-sm mb-1">Mục đích sử dụng</label>
                     <p className="text-white">{getLoaiHinhText(contract.loaiHinhKinhDoanh)}</p>

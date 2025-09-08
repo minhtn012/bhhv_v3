@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { CarSelection } from '@/types/car';
-import carEngineTypes from '../../bd_json/car_type_engine.json';
+import carEngineTypes from '@db/car_type_engine.json';
 
 interface FormData {
   chuXe: string;

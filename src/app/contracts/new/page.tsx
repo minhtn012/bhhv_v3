@@ -357,6 +357,7 @@ export default function NewContractPage() {
         trongTai: Number(formData.trongTai) || undefined,
         giaTriXe: parseCurrency(formData.giaTriXe),
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
+        loaiDongCo: formData.loaiDongCo,
         carBrand: carData.selectedBrand,
         carModel: carData.selectedModel,
         carBodyStyle: carData.selectedBodyStyle,

@@ -31,12 +31,13 @@ export interface IContract extends Document {
   trongTai?: number;
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
+  loaiDongCo?: string;
   
   // Thông tin xe từ car selection
   carBrand?: string;
   carModel?: string;
   carBodyStyle?: string;
-  carYear?: number;
+  carYear?: string;
   
   // Gói bảo hiểm
   vatChatPackage: {
@@ -213,6 +214,11 @@ const contractSchema = new Schema<IContract>({
       'kd_chuyen_dung',
       'kd_romooc_ben'
     ]
+  },
+  loaiDongCo: {
+    type: String,
+    required: [true, 'Loại động cơ là bắt buộc'],
+    trim: true
   },
   
   // Thông tin xe từ car selection

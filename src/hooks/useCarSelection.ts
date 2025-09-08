@@ -217,12 +217,73 @@ export default function useCarSelection() {
     }
   };
 
+  const initializeFromExistingContract = async (contractData: {
+    carBrand?: string;
+    carModel?: string;
+    carBodyStyle?: string;
+    carYear?: string;
+  }) => {
+    if (!contractData.carBrand || !contractData.carModel) {
+      return;
+    }
+
+    try {
+      // Set loading state
+      setCarData(prev => ({ 
+        ...prev, 
+        isLoadingModels: true, 
+        isLoadingDetails: true 
+      }));
+
+      // Step 1: Load models for the brand
+      const modelsResponse = await fetch(`/api/car-search/models/${encodeURIComponent(contractData.carBrand)}`);
+      const modelsResult = await modelsResponse.json();
+      
+      if (!modelsResult.success) {
+        throw new Error('Failed to load models');
+      }
+
+      // Step 2: Load details for the specific model
+      const detailsResponse = await fetch(
+        `/api/car-search/details/${encodeURIComponent(contractData.carBrand)}/${encodeURIComponent(contractData.carModel)}`
+      );
+      const detailsResult = await detailsResponse.json();
+      
+      if (!detailsResult.success) {
+        throw new Error('Failed to load car details');
+      }
+
+      // Step 3: Set all data at once
+      setCarData(prev => ({
+        ...prev,
+        selectedBrand: contractData.carBrand!,
+        selectedModel: contractData.carModel!,
+        selectedBodyStyle: contractData.carBodyStyle || '',
+        selectedYear: contractData.carYear || '',
+        availableModels: modelsResult.data,
+        availableBodyStyles: detailsResult.data.bodyStyles || [],
+        availableYears: detailsResult.data.years || [],
+        isLoadingModels: false,
+        isLoadingDetails: false
+      }));
+
+    } catch (error) {
+      console.error('Error initializing car data from contract:', error);
+      setCarData(prev => ({
+        ...prev,
+        isLoadingModels: false,
+        isLoadingDetails: false
+      }));
+    }
+  };
+
   return {
     carData,
     handleInputChange,
     handleBrandChange,
     handleModelChange,
     acceptSuggestedCar,
-    searchCarFromExtractedData
+    searchCarFromExtractedData,
+    initializeFromExistingContract
   };
 }
