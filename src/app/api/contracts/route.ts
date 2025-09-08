@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
     const requiredFields = [
       'chuXe', 'diaChi', 'bienSo', 'nhanHieu', 'soLoai', 'soKhung', 
       'soMay', 'ngayDKLD', 'namSanXuat', 'soChoNgoi', 'giaTriXe', 
-      'loaiHinhKinhDoanh', 'vatChatPackage', 'tongPhi', 'mucKhauTru'
+      'loaiHinhKinhDoanh', 'loaiDongCo', 'vatChatPackage', 'tongPhi', 'mucKhauTru'
     ];
 
     for (const field of requiredFields) {

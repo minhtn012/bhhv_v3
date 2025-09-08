@@ -32,6 +32,7 @@ export interface IContract extends Document {
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
   loaiDongCo?: string;
+  giaTriPin?: number;
   
   // Thông tin xe từ car selection
   carBrand?: string;
@@ -219,6 +220,10 @@ const contractSchema = new Schema<IContract>({
     type: String,
     required: [true, 'Loại động cơ là bắt buộc'],
     trim: true
+  },
+  giaTriPin: {
+    type: Number,
+    min: [0, 'Giá trị pin không được âm']
   },
   
   // Thông tin xe từ car selection

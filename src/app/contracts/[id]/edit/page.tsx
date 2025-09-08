@@ -89,6 +89,7 @@ interface Contract {
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
   loaiDongCo?: string;
+  giaTriPin?: number;
   
   // Car selection data
   carBrand?: string;
@@ -253,7 +254,7 @@ export default function EditContractPage() {
       giaTriXe: formatCurrency(contractData.giaTriXe),
       loaiHinhKinhDoanh: contractData.loaiHinhKinhDoanh,
       loaiDongCo: contractData.loaiDongCo || '',
-      giaTriPin: '',
+      giaTriPin: contractData.giaTriPin ? formatCurrency(contractData.giaTriPin) : '',
       selectedPackageIndex: 0, // Will be determined after calculation
       customRates: [],
       includeTNDS: contractData.includeTNDS,
@@ -431,6 +432,7 @@ export default function EditContractPage() {
         giaTriXe: parseCurrency(formData.giaTriXe),
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
         loaiDongCo: formData.loaiDongCo,
+        giaTriPin: formData.giaTriPin ? parseCurrency(formData.giaTriPin) : undefined,
         carBrand: carData.selectedBrand,
         carModel: carData.selectedModel,
         carBodyStyle: carData.selectedBodyStyle,
@@ -542,9 +544,9 @@ export default function EditContractPage() {
             </div>
           )}
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="space-y-6">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="space-y-6">
               {/* Buyer Information */}
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Thông tin khách hàng</h2>
@@ -619,65 +621,6 @@ export default function EditContractPage() {
               )}
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Summary */}
-              <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-center text-white mb-4">TỔNG HỢP PHÍ</h3>
-                
-                {enhancedResult && (
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-                      <span className="text-gray-300">Vật chất:</span>
-                      <span className="font-semibold text-white">{formatCurrency(enhancedResult.vatChatFee)}</span>
-                    </div>
-                    
-                    <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-                      <span className="text-gray-300">TNDS:</span>
-                      <span className="font-semibold text-white">{formatCurrency(enhancedResult.tndsFee)}</span>
-                    </div>
-                    
-                    <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-                      <span className="text-gray-300">NNTX:</span>
-                      <span className="font-semibold text-white">{formatCurrency(enhancedResult.nntxFee)}</span>
-                    </div>
-                    
-                    <div className="flex justify-between py-1">
-                      <span className="text-gray-300">Khấu trừ:</span>
-                      <span className="font-semibold text-white">{formatCurrency(formData.mucKhauTru)}/vụ</span>
-                    </div>
-                  </div>
-                )}
-
-                <hr className="border-white/20 my-4" />
-                
-                <div className="flex justify-between items-center text-base">
-                  <span className="font-bold text-white">TỔNG CỘNG:</span>
-                  <span className="font-extrabold text-xl text-blue-400">{formatCurrency(totalAmount)}</span>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Thao tác</h3>
-                <div className="space-y-3">
-                  <button
-                    onClick={handleRecalculate}
-                    disabled={initializingCarData}
-                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition-colors"
-                  >
-                    {initializingCarData ? 'Đang tải...' : 'Tính lại phí'}
-                  </button>
-                  <button
-                    onClick={updateContract}
-                    disabled={submitting || !calculationResult || initializingCarData}
-                    className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl transition-colors"
-                  >
-                    {submitting ? 'Đang cập nhật...' : initializingCarData ? 'Đang tải dữ liệu xe...' : 'Cập nhật hợp đồng'}
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

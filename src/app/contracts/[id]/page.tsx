@@ -42,6 +42,7 @@ interface Contract {
   giaTriXe: number;
   loaiHinhKinhDoanh: string;
   loaiDongCo?: string;
+  giaTriPin?: number;
   
   // Car selection data
   carBrand?: string;
@@ -579,6 +580,12 @@ export default function ContractDetailPage() {
                     <div>
                       <label className="block text-gray-300 text-sm mb-1">Loại động cơ</label>
                       <p className="text-white">{getEngineTypeText(contract.loaiDongCo)}</p>
+                    </div>
+                  )}
+                  {contract.giaTriPin && (
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-1">Giá trị pin</label>
+                      <p className="text-white font-medium">{formatCurrency(contract.giaTriPin)}</p>
                     </div>
                   )}
                   <div className="md:col-span-3">

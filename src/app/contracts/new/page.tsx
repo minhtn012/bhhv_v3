@@ -358,6 +358,7 @@ export default function NewContractPage() {
         giaTriXe: parseCurrency(formData.giaTriXe),
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
         loaiDongCo: formData.loaiDongCo,
+        giaTriPin: formData.giaTriPin ? parseCurrency(formData.giaTriPin) : undefined,
         carBrand: carData.selectedBrand,
         carModel: carData.selectedModel,
         carBodyStyle: carData.selectedBodyStyle,
