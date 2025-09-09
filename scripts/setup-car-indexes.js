@@ -78,6 +78,13 @@ async function setupCarIndexes() {
       { name: 'model_id_search' }
     );
     
+    // Create index for electronic field
+    console.log('⚡ Creating electronic field index...');
+    await collection.createIndex(
+      { electronic: 1 },
+      { name: 'electronic_search' }
+    );
+    
     // Create index for date fields
     console.log('📅 Creating date indexes...');
     await collection.createIndex(
@@ -109,7 +116,29 @@ async function setupCarIndexes() {
     console.log(`🔍 Test search for 'bmw' found ${testResults.length} results:`);
     testResults.forEach((result, index) => {
       const score = result.score ? result.score.toFixed(2) : 'N/A';
-      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} (score: ${score})`);
+      const isElectric = result.electronic ? '⚡' : '';
+      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} ${isElectric} (score: ${score})`);
+    });
+    
+    // Test electronic vehicle search
+    console.log('🧪 Testing electronic vehicle search...');
+    const electronicResults = await collection.find({ electronic: true }).limit(5).toArray();
+    console.log(`⚡ Found ${electronicResults.length} electric vehicles (showing first 5):`);
+    electronicResults.forEach((result, index) => {
+      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name}`);
+    });
+    
+    // Test electric text search
+    const electricTextResults = await collection.find(
+      { $text: { $search: 'electric điện ev' } },
+      { score: { $meta: 'textScore' } }
+    ).sort({ score: { $meta: 'textScore' } }).limit(3).toArray();
+    
+    console.log(`🔍 Test search for 'electric điện ev' found ${electricTextResults.length} results:`);
+    electricTextResults.forEach((result, index) => {
+      const score = result.score ? result.score.toFixed(2) : 'N/A';
+      const isElectric = result.electronic ? '⚡' : '';
+      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} ${isElectric} (score: ${score})`);
     });
     
   } catch (error) {

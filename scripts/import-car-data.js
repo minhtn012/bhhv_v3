@@ -11,7 +11,7 @@ const DB_NAME = process.env.DB_NAME || 'bhhv';
 const COLLECTION_NAME = 'cars';
 
 // Path to car data file
-const CAR_DATA_PATH = path.join(__dirname, '../bd_json/all_car_details.json');
+const CAR_DATA_PATH = path.join(__dirname, '../db_json/all_car_details.json');
 
 async function importCarData() {
   let client;
@@ -45,7 +45,7 @@ async function importCarData() {
       const { brand_name, brand_id, models } = brand;
       
       for (const model of models) {
-        const { model_name, model_id, body_styles, years } = model;
+        const { model_name, model_id, body_styles, years, electronic } = model;
         
         // Create search keywords for text search
         const searchKeywords = [
@@ -72,6 +72,11 @@ async function importCarData() {
           });
         }
         
+        // Add electronic keyword for electric vehicles
+        if (electronic) {
+          searchKeywords.push('electric', 'điện', 'ev', 'electronic');
+        }
+        
         const carRecord = {
           brand_name,
           brand_id,
@@ -79,6 +84,7 @@ async function importCarData() {
           model_id,
           body_styles: body_styles || [],
           years: years || [],
+          electronic: electronic || false, // Add electronic field
           search_keywords: [...new Set(searchKeywords)], // Remove duplicates
           created_at: new Date(),
           updated_at: new Date()

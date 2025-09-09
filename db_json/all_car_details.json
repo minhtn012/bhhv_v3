@@ -2136,6 +2136,7 @@
       {
         "model_name": "ATTO 3",
         "model_id": "72037d3e-9b38-4b9a-bab9-0e3746afe07b",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -2159,6 +2160,7 @@
       {
         "model_name": "DOLPHIN",
         "model_id": "8f74b8e3-dcb7-4a4e-a72a-49575eb7662a",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -30978,6 +30980,7 @@
       {
         "model_name": "HERIO GREEN",
         "model_id": "feb06b38-c08a-427b-b0c1-b6f7bec7002d",
+        "electronic": true,
         "body_styles": [
           {
             "id": "8059d203-3049-4267-954e-c45a83d98eff",
@@ -31110,6 +31113,7 @@
       {
         "model_name": "VF3",
         "model_id": "df037dcf-3ed9-4ac5-bda5-0e6979cce0b3",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -31128,6 +31132,7 @@
       {
         "model_name": "VF5",
         "model_id": "c8101418-4038-47ef-9f4f-3b35f627db9a",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -31151,6 +31156,7 @@
       {
         "model_name": "VF5 PLUS",
         "model_id": "d1d0eef0-7ada-45e2-bfe3-0cffadca8b35",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -31174,6 +31180,7 @@
       {
         "model_name": "VF6",
         "model_id": "9bef51a0-e601-4f59-94d9-af2368512f5b",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -31207,6 +31214,7 @@
       {
         "model_name": "VF6 PLUS",
         "model_id": "5731b9f6-8319-4b07-a493-0f9dff14dc4f",
+        "electronic": true,
         "body_styles": [
           {
             "id": "8059d203-3049-4267-954e-c45a83d98eff",
@@ -31225,6 +31233,7 @@
       {
         "model_name": "VF7",
         "model_id": "a9a12eea-76ef-46e1-96fe-8bff02a93ccb",
+        "electronic": true,
         "body_styles": [
           {
             "id": "ccae4bde-5944-44a9-a86c-b1fed4aadfd1",
@@ -31248,6 +31257,7 @@
       {
         "model_name": "VF7 PLUS",
         "model_id": "9a4347ad-7644-4e13-afed-f9fb476880c0",
+        "electronic": true,
         "body_styles": [
           {
             "id": "8059d203-3049-4267-954e-c45a83d98eff",
@@ -31266,6 +31276,7 @@
       {
         "model_name": "VF8",
         "model_id": "51bfa9f2-7c07-4f7f-bd95-8109be85968b",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
@@ -31294,24 +31305,28 @@
       {
         "model_name": "VF8 PLUS",
         "model_id": "441927ca-f372-4cad-b554-bbe32e6dd0fa",
+        "electronic": true,
         "body_styles": [],
         "years": []
       },
       {
         "model_name": "VF9",
         "model_id": "f479bc53-8e9f-4744-8544-c05c308b697d",
+        "electronic": true,
         "body_styles": [],
         "years": []
       },
       {
         "model_name": "VF9 PLUS",
         "model_id": "c27de0a8-54db-4828-811b-bb5a95cfa9f1",
+        "electronic": true,
         "body_styles": [],
         "years": []
       },
       {
         "model_name": "VF E34",
         "model_id": "db364674-5fcb-4ea0-bccc-dcd41409b926",
+        "electronic": true,
         "body_styles": [
           {
             "id": "061d121b-47fd-4602-bb80-8907358e737b",
