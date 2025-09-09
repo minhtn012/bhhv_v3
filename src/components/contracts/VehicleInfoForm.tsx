@@ -3,6 +3,8 @@ import { CarSelection } from '@/types/car';
 import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
+import { getEngineTypeFromCarType, requiresBatteryValue } from '@/utils/car-engine-mapping';
+import { useEffect } from 'react';
 
 interface FormData {
   chuXe: string;
@@ -47,6 +49,23 @@ export default function VehicleInfoForm({
 }: VehicleInfoFormProps) {
   const selectedEngine = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
   const isElectricOrHybrid = selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
+
+  // Auto-set engine type based on selected car
+  useEffect(() => {
+    if (carData.selectedBrand && carData.selectedModel && carData.availableModels.length > 0) {
+      // Find the selected car model in available models
+      const selectedCar = carData.availableModels.find(model => 
+        model.model_name === carData.selectedModel
+      );
+      
+      if (selectedCar && selectedCar.car_type) {
+        const engineType = getEngineTypeFromCarType(selectedCar.car_type);
+        if (engineType && formData.loaiDongCo !== engineType) {
+          onFormInputChange('loaiDongCo', engineType);
+        }
+      }
+    }
+  }, [carData.selectedBrand, carData.selectedModel, carData.availableModels, formData.loaiDongCo, onFormInputChange]);
 
   return (
     <div>      

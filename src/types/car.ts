@@ -18,6 +18,7 @@ export interface CarRecord {
   model_id: string;
   body_styles: CarBodyStyle[];
   years: CarYear[];
+  car_type?: string;
   search_keywords: string[];
   created_at: Date;
   updated_at: Date;
