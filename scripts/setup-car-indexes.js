@@ -78,11 +78,11 @@ async function setupCarIndexes() {
       { name: 'model_id_search' }
     );
     
-    // Create index for electronic field
-    console.log('⚡ Creating electronic field index...');
+    // Create index for car_type field
+    console.log('🚗 Creating car_type field index...');
     await collection.createIndex(
-      { electronic: 1 },
-      { name: 'electronic_search' }
+      { car_type: 1 },
+      { name: 'car_type_search' }
     );
     
     // Create index for date fields
@@ -120,13 +120,26 @@ async function setupCarIndexes() {
       console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} ${isElectric} (score: ${score})`);
     });
     
-    // Test electronic vehicle search
-    console.log('🧪 Testing electronic vehicle search...');
-    const electronicResults = await collection.find({ electronic: true }).limit(5).toArray();
-    console.log(`⚡ Found ${electronicResults.length} electric vehicles (showing first 5):`);
-    electronicResults.forEach((result, index) => {
+    // Test car type searches
+    console.log('🧪 Testing car type searches...');
+    
+    // Test EV search
+    const evResults = await collection.find({ car_type: 'EV' }).limit(5).toArray();
+    console.log(`⚡ Found ${evResults.length} electric vehicles (showing first 5):`);
+    evResults.forEach((result, index) => {
       console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name}`);
     });
+    
+    // Test Hybrid search
+    const hybridResults = await collection.find({ car_type: 'Hybrid' }).limit(3).toArray();
+    console.log(`🔋 Found ${hybridResults.length} hybrid vehicles (showing first 3):`);
+    hybridResults.forEach((result, index) => {
+      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name}`);
+    });
+    
+    // Test ICE search (show count only)
+    const iceCount = await collection.countDocuments({ car_type: 'ICE' });
+    console.log(`⛽ Found ${iceCount} ICE (gasoline/diesel) vehicles`);
     
     // Test electric text search
     const electricTextResults = await collection.find(
@@ -137,8 +150,8 @@ async function setupCarIndexes() {
     console.log(`🔍 Test search for 'electric điện ev' found ${electricTextResults.length} results:`);
     electricTextResults.forEach((result, index) => {
       const score = result.score ? result.score.toFixed(2) : 'N/A';
-      const isElectric = result.electronic ? '⚡' : '';
-      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} ${isElectric} (score: ${score})`);
+      const typeEmoji = result.car_type === 'EV' ? '⚡' : result.car_type === 'Hybrid' ? '🔋' : '⛽';
+      console.log(`  ${index + 1}. ${result.brand_name} ${result.model_name} ${typeEmoji} (score: ${score})`);
     });
     
   } catch (error) {

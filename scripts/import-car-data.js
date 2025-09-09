@@ -45,7 +45,7 @@ async function importCarData() {
       const { brand_name, brand_id, models } = brand;
       
       for (const model of models) {
-        const { model_name, model_id, body_styles, years, electronic } = model;
+        const { model_name, model_id, body_styles, years, car_type } = model;
         
         // Create search keywords for text search
         const searchKeywords = [
@@ -72,9 +72,13 @@ async function importCarData() {
           });
         }
         
-        // Add electronic keyword for electric vehicles
-        if (electronic) {
+        // Add keywords based on car type
+        if (car_type === 'EV') {
           searchKeywords.push('electric', 'điện', 'ev', 'electronic');
+        } else if (car_type === 'Hybrid') {
+          searchKeywords.push('hybrid', 'lai', 'hev', 'phev');
+        } else if (car_type === 'ICE') {
+          searchKeywords.push('gasoline', 'petrol', 'diesel', 'xăng', 'dầu');
         }
         
         const carRecord = {
@@ -84,7 +88,7 @@ async function importCarData() {
           model_id,
           body_styles: body_styles || [],
           years: years || [],
-          electronic: electronic || false, // Add electronic field
+          car_type: car_type || 'ICE', // Add car_type field (EV, Hybrid, ICE)
           search_keywords: [...new Set(searchKeywords)], // Remove duplicates
           created_at: new Date(),
           updated_at: new Date()
