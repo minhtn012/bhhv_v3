@@ -102,10 +102,11 @@ export default function SearchableSelect({
     if (dropdownRef.current && dropdownRef.current.contains(e.relatedTarget as Node)) {
       return;
     }
+    // Increased timeout to prevent race condition with click
     setTimeout(() => {
       setIsOpen(false);
       setSearchTerm('');
-    }, 150);
+    }, 200);
   };
 
   // Handle option selection
@@ -162,6 +163,7 @@ export default function SearchableSelect({
       }
     };
 
+    // Use mousedown instead of click for better timing
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -206,7 +208,11 @@ export default function SearchableSelect({
             filteredOptions.map((option, index) => (
               <div
                 key={option.id}
-                onClick={() => handleSelect(option.name)}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevent blur from happening
+                  handleSelect(option.name);
+                }}
+                onClick={() => handleSelect(option.name)} // Fallback for accessibility
                 className={`px-4 py-2 cursor-pointer transition-colors ${
                   index === highlightedIndex
                     ? 'bg-blue-600 text-white'

@@ -3,7 +3,13 @@ import { CarSelection } from '@/types/car';
 import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
-import { getEngineTypeFromCarType, requiresBatteryValue } from '@/utils/car-engine-mapping';
+
+interface EngineType {
+  name: string;
+  value: string;
+  code: string;
+}
+import { getEngineTypeFromCarType } from '@/utils/car-engine-mapping';
 import { useEffect } from 'react';
 
 interface FormData {
@@ -47,8 +53,9 @@ export default function VehicleInfoForm({
   onCalculateRates,
   hideCalculateButton = false
 }: VehicleInfoFormProps) {
-  const selectedEngine = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
-  const isElectricOrHybrid = selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
+  const selectedEngine: EngineType | undefined = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
+  const isElectricOrHybrid = selectedEngine && (selectedEngine.code === 'HYBRID' || selectedEngine.code === 'EV');
+  
 
   // Auto-set engine type based on selected car
   useEffect(() => {
@@ -60,12 +67,15 @@ export default function VehicleInfoForm({
       
       if (selectedCar && selectedCar.car_type) {
         const engineType = getEngineTypeFromCarType(selectedCar.car_type);
-        if (engineType && formData.loaiDongCo !== engineType) {
+        if (engineType) {
+          const carType = selectedCar.car_type.toUpperCase();
+          
+          // Always update engine type when car model changes
           onFormInputChange('loaiDongCo', engineType);
         }
       }
     }
-  }, [carData.selectedBrand, carData.selectedModel, carData.availableModels, formData.loaiDongCo, onFormInputChange]);
+  }, [carData.selectedBrand, carData.selectedModel, carData.availableModels]);
 
   return (
     <div>      

@@ -328,7 +328,7 @@ export default function EditContractPage() {
   const handlePackageSelection = (packageIndex: number) => {
     setFormData(prev => ({ ...prev, selectedPackageIndex: packageIndex }));
     
-    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh);
+    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
     
     setTimeout(() => {
       const newFormData = { ...formData, selectedPackageIndex: packageIndex };
@@ -450,6 +450,7 @@ export default function EditContractPage() {
           : 0,
         includeNNTX: formData.includeNNTX,
         phiNNTX: nntxFee,
+        phiPin: enhancedResult?.totalBatteryFee || 0,
         mucKhauTru: formData.mucKhauTru,
         tongPhi: totalFee
       };
@@ -607,6 +608,7 @@ export default function EditContractPage() {
                   <PackageSelectionStep
                     availablePackages={availablePackages}
                     calculationResult={calculationResult}
+                    enhancedResult={enhancedResult || undefined}
                     formData={formData}
                     totalAmount={totalAmount}
                     loading={submitting || initializingCarData}

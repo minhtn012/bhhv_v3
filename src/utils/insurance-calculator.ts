@@ -1,3 +1,5 @@
+import { ENGINE_TYPE_VALUES } from './car-engine-mapping';
+
 // Data phí bảo hiểm từ index_2.html
 export const physicalDamageRates = {
   'khong_kd_cho_nguoi': {
@@ -21,6 +23,7 @@ export const physicalDamageRates = {
 };
 
 export const additionalRateAU009 = 0.10;
+export const HYBRID_EV_SURCHARGE = 0.10; // 0.1% surcharge for hybrid/electric vehicles
 
 export const tndsCategories = {
   'duoi_6_cho_khong_kd': { label: 'Xe < 6 chỗ (Không KD)', fee: 480700 },
@@ -82,13 +85,59 @@ export interface CalculationResult {
   nntxFee: number;
 }
 
+// Helper functions for hybrid/electric vehicles
+export function isElectricOrHybridEngine(loaiDongCo?: string): boolean {
+  if (!loaiDongCo) return false;
+  return loaiDongCo === ENGINE_TYPE_VALUES.HYBRID || loaiDongCo === ENGINE_TYPE_VALUES.EV;
+}
+
+export function calculateTotalVehicleValue(giaTriXe: number, giaTriPin?: string | number, loaiDongCo?: string): number {
+  if (!isElectricOrHybridEngine(loaiDongCo)) {
+    return giaTriXe;
+  }
+  
+  const batteryValue = typeof giaTriPin === 'string' ? parseCurrency(giaTriPin) : (giaTriPin || 0);
+  return giaTriXe + batteryValue;
+}
+
+export function applyElectricSurcharge(rate: number | null, loaiDongCo?: string): number | null {
+  if (rate === null) return null;
+  if (!isElectricOrHybridEngine(loaiDongCo)) return rate;
+  return rate + HYBRID_EV_SURCHARGE;
+}
+
+export function calculateBatterySurchargeFee(
+  giaTriXe: number,
+  giaTriPin: string | number,
+  rate: number,
+  loaiHinhKinhDoanh: string,
+  loaiDongCo?: string
+): number {
+  if (!isElectricOrHybridEngine(loaiDongCo)) {
+    return 0;
+  }
+  
+  const batteryValue = typeof giaTriPin === 'string' ? parseCurrency(giaTriPin) : (giaTriPin || 0);
+  if (batteryValue <= 0) {
+    return 0;
+  }
+  
+  // Calculate surcharge: battery value * 0.1% + battery value * rate%
+  const surchargeFee = (batteryValue * HYBRID_EV_SURCHARGE) / 100;
+  const batteryBaseFee = (batteryValue * rate) / 100;
+  
+  return surchargeFee + batteryBaseFee;
+}
+
 // Tính toán phí bảo hiểm
 export function calculateInsuranceRates(
   giaTriXe: number,
   namSanXuat: number,
   soChoNgoi: number,
   loaiHinhKinhDoanh: string,
-  trongTai?: number
+  trongTai?: number,
+  loaiDongCo?: string,
+  giaTriPin?: string | number
 ): CalculationResult {
   const currentYear = new Date().getFullYear();
   const carAge = currentYear - namSanXuat;
@@ -113,6 +162,7 @@ export function calculateInsuranceRates(
     baseRates = physicalDamageRates[loaiHinhKinhDoanh]?.[ageGroup] || [null, null, null, null];
   }
 
+  // Keep original base rates for separate display
   // Tạo finalRates với AU009 addition
   const finalRates = [...baseRates];
   if (baseRates[3] !== null) {
@@ -184,12 +234,15 @@ export function formatNumberInput(value: string): string {
   return '';
 }
 
-// Calculate fee with custom rate and minimum fee logic
+// Calculate base fee only (vehicle value, excluding battery surcharge)
 export function calculateCustomFee(
   giaTriXe: number,
   rate: number,
-  loaiHinhKinhDoanh: string
-): { fee: number; hasMinFee: boolean } {
+  loaiHinhKinhDoanh: string,
+  loaiDongCo?: string,
+  giaTriPin?: string | number
+): { fee: number; hasMinFee: boolean; batteryFee: number } {
+  // Calculate base fee using only vehicle value
   let fee = (giaTriXe * rate) / 100;
   let hasMinFee = false;
 
@@ -200,7 +253,10 @@ export function calculateCustomFee(
     hasMinFee = true;
   }
 
-  return { fee, hasMinFee };
+  // Calculate battery surcharge fee separately
+  const batteryFee = calculateBatterySurchargeFee(giaTriXe, giaTriPin || 0, rate, loaiHinhKinhDoanh, loaiDongCo);
+
+  return { fee, hasMinFee, batteryFee };
 }
 
 // Auto-suggest TNDS category based on vehicle info
@@ -287,7 +343,9 @@ export function getAvailableTNDSCategories(): Array<{ key: string; label: string
 export interface EnhancedCalculationResult extends CalculationResult {
   customRates?: number[];
   customFees?: number[];
+  batteryFees?: number[];
   totalVatChatFee: number;
+  totalBatteryFee: number;
   totalTNDSFee: number;
   totalNNTXFee: number;
   grandTotal: number;
@@ -304,7 +362,9 @@ export function calculateWithCustomRates(
   includeTNDS: boolean,
   tndsCategory: string,
   includeNNTX: boolean,
-  trongTai?: number
+  trongTai?: number,
+  loaiDongCo?: string,
+  giaTriPin?: string | number
 ): EnhancedCalculationResult {
   // Get base calculation
   const baseResult = calculateInsuranceRates(
@@ -312,25 +372,33 @@ export function calculateWithCustomRates(
     namSanXuat, 
     soChoNgoi,
     loaiHinhKinhDoanh,
-    trongTai
+    trongTai,
+    loaiDongCo,
+    giaTriPin
   );
 
-  // Calculate custom fees
-  const customFees = customRates.map(rate => 
-    rate !== null ? calculateCustomFee(giaTriXe, rate, loaiHinhKinhDoanh).fee : 0
+  // Calculate custom fees and battery fees
+  const customFeeResults = customRates.map(rate => 
+    rate !== null ? calculateCustomFee(giaTriXe, rate, loaiHinhKinhDoanh, loaiDongCo, giaTriPin) : { fee: 0, hasMinFee: false, batteryFee: 0 }
   );
+  
+  const customFees = customFeeResults.map(result => result.fee);
+  const batteryFees = customFeeResults.map(result => result.batteryFee);
 
   // Calculate totals
   const totalVatChatFee = customFees[selectedPackageIndex] || 0;
+  const totalBatteryFee = batteryFees[selectedPackageIndex] || 0;
   const totalTNDSFee = includeTNDS && tndsCategory ? tndsCategories[tndsCategory]?.fee || 0 : 0;
   const totalNNTXFee = includeNNTX ? baseResult.nntxFee : 0;
-  const grandTotal = totalVatChatFee + totalTNDSFee + totalNNTXFee;
+  const grandTotal = totalVatChatFee + totalBatteryFee + totalTNDSFee + totalNNTXFee;
 
   return {
     ...baseResult,
     customRates,
     customFees,
+    batteryFees,
     totalVatChatFee,
+    totalBatteryFee,
     totalTNDSFee,
     totalNNTXFee,
     grandTotal

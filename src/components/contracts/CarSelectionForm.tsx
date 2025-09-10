@@ -109,8 +109,8 @@ export default function CarSelectionForm({
             <option value="">
               {carData.isLoadingDetails ? 'Đang tải...' : '-- Chọn năm/phiên bản --'}
             </option>
-            {carData.availableYears.map(year => (
-              <option key={year.id} value={year.name}>{year.name}</option>
+            {carData.availableYears.map((year, index) => (
+              <option key={`year-${index}-${year.id}`} value={year.name}>{year.name}</option>
             ))}
           </select>
           <FieldError fieldName="selectedYear" errors={fieldErrors} />

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { 
@@ -202,9 +202,9 @@ export default function NewContractPage() {
 
 
   // Handle form input change
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  const handleInputChange = useCallback((field: keyof FormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   // Handle extract success
   const handleExtractSuccess = (data: any) => {
@@ -237,20 +237,18 @@ export default function NewContractPage() {
 
     const { result, packages, defaultTndsCategory } = calculateRates(formData);
     
-    if (defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories]) {
-      setFormData(prev => ({ ...prev, tndsCategory: defaultTndsCategory }));
-    }
-
-    // Initialize custom rates with base rates
-    setFormData(prev => ({ 
-      ...prev, 
+    // Create updated form data with new values
+    const updatedFormData = {
+      ...formData,
+      tndsCategory: defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories] 
+        ? defaultTndsCategory 
+        : formData.tndsCategory,
       customRates: result?.finalRates.map(r => r || 0) || []
-    }));
+    };
 
-    // Calculate enhanced results with initial custom rates
-    setTimeout(() => {
-      calculateEnhanced(formData);
-    }, 100);
+    // Update state and calculate enhanced results with updated data immediately
+    setFormData(updatedFormData);
+    calculateEnhanced(updatedFormData);
 
     setCurrentStep(4);
     setError('');
@@ -259,38 +257,37 @@ export default function NewContractPage() {
 
   // Handle package selection changes
   const handlePackageSelection = (packageIndex: number) => {
-    setFormData(prev => ({ ...prev, selectedPackageIndex: packageIndex }));
+    // Create updated form data with new package selection
+    const updatedFormData = { ...formData, selectedPackageIndex: packageIndex };
+    
+    // Update state
+    setFormData(updatedFormData);
     
     // Sync package fee to ensure correct calculation
-    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh);
+    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
     
-    // Trigger enhanced calculation after package selection
-    setTimeout(() => {
-      const newFormData = { ...formData, selectedPackageIndex: packageIndex };
-      calculateEnhanced(newFormData);
-    }, 50);
+    // Trigger enhanced calculation with updated data immediately
+    calculateEnhanced(updatedFormData);
   };
 
   // Handle recalculate
   const handleRecalculate = () => {
-    setTimeout(() => {
-      calculateEnhanced(formData);
-    }, 50);
+    calculateEnhanced(formData);
   };
 
   // Handle package rate changes
   const handleRateChange = (packageIndex: number, newRate: number, newFee: number) => {
+    // Update package rate in hook
     updatePackageRate(packageIndex, newRate, newFee);
     
-    // Update custom rates in form data
-    setFormData(prev => {
-      const newCustomRates = [...(prev.customRates || [])];
-      newCustomRates[packageIndex] = newRate;
-      return { ...prev, customRates: newCustomRates };
-    });
-
-    // Trigger enhanced calculation
-    handleRecalculate();
+    // Create updated form data with new custom rates
+    const newCustomRates = [...(formData.customRates || [])];
+    newCustomRates[packageIndex] = newRate;
+    const updatedFormData = { ...formData, customRates: newCustomRates };
+    
+    // Update state and trigger enhanced calculation with updated data immediately
+    setFormData(updatedFormData);
+    calculateEnhanced(updatedFormData);
   };
 
   const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
@@ -377,6 +374,7 @@ export default function NewContractPage() {
         includeNNTX: formData.includeNNTX,
         selectedNNTXPackage: formData.selectedNNTXPackage,
         phiNNTX: nntxFee,
+        phiPin: enhancedResult?.totalBatteryFee || 0,
         mucKhauTru: formData.mucKhauTru,
         taiTucPercentage: formData.taiTucPercentage,
         tongPhi: totalFee
@@ -509,6 +507,7 @@ export default function NewContractPage() {
                   <PackageSelectionStep
                     availablePackages={availablePackages}
                     calculationResult={calculationResult}
+                    enhancedResult={enhancedResult || undefined}
                     formData={formData}
                     totalAmount={totalAmount}
                     loading={loading}

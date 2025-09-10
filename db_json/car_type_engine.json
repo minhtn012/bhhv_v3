@@ -1,14 +1,17 @@
 [
   {
     "name": "Động cơ đốt trong (Xăng, dầu)",
-    "value": "31cd6b1d-39a6-42d5-9c5f-13f44ad1a8a9"
+    "value": "31cd6b1d-39a6-42d5-9c5f-13f44ad1a8a9",
+    "code": "ICE"
   },
   {
     "name": "Động cơ Hybrid (Xăng, điện)",
-    "value": "2cdc787a-207b-4e8c-b56d-ae016f1c2c94"
+    "value": "2cdc787a-207b-4e8c-b56d-ae016f1c2c94",
+    "code": "HYBRID"
   },
   {
     "name": "Động cơ điện",
-    "value": "5d3e3af7-ab75-4e57-a952-c815e40adf31"
+    "value": "5d3e3af7-ab75-4e57-a952-c815e40adf31",
+    "code": "EV"
   }
 ]
