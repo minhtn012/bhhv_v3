@@ -34,6 +34,12 @@ export default function EditablePackageCard({
   const [calculatedFee, setCalculatedFee] = useState(pkg.fee);
   const [showDifference, setShowDifference] = useState(false);
 
+  // Sync customRate when package currentRate changes (e.g., when loaiHinhKinhDoanh changes)
+  useEffect(() => {
+    setCustomRate(pkg.currentRate);
+    setCalculatedFee(pkg.fee);
+  }, [pkg.currentRate, pkg.fee]);
+
   // Calculate fee with minimum fee logic from index_2.html
   const calculateFee = (rate: number): { fee: number; hasMinFee: boolean } => {
     let fee = (giaTriXe * rate) / 100;

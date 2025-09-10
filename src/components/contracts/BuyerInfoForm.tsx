@@ -192,7 +192,6 @@ export default function BuyerInfoForm({
           >
             <option value="nam">Nam</option>
             <option value="nu">Nữ</option>
-            <option value="khac">Khác</option>
           </select>
         </div>
 

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { 
   calculateInsuranceRates, 
   calculateWithCustomRates,
+  calculateCustomFee,
   suggestTNDSCategory,
   calculateNNTXFee,
   formatCurrency,
@@ -18,6 +19,9 @@ interface FormData {
   soChoNgoi: number | '';
   trongTai: number | '';
   loaiHinhKinhDoanh: string;
+  loaiDongCo: string;
+  giaTriPin: string;
+  ngayDKLD: string;
   selectedPackageIndex: number;
   includeTNDS: boolean;
   tndsCategory: string;
@@ -61,7 +65,10 @@ export default function useInsuranceCalculation() {
       namSanXuat,
       soChoNgoi,
       formData.loaiHinhKinhDoanh,
-      trongTai
+      trongTai,
+      formData.loaiDongCo,
+      formData.giaTriPin,
+      formData.ngayDKLD
     );
 
     setCalculationResult(result);
@@ -72,12 +79,8 @@ export default function useInsuranceCalculation() {
       let available = rate !== null;
 
       if (available && rate !== null) {
-        fee = (giaTriXe * rate) / 100;
-        
-        const isMinFeeApplicable = formData.loaiHinhKinhDoanh === 'khong_kd_cho_nguoi' && giaTriXe < 500000000;
-        if (isMinFeeApplicable && fee < 5500000) {
-          fee = 5500000;
-        }
+        const { fee: calculatedFee, batteryFee } = calculateCustomFee(giaTriXe, rate, formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
+        fee = calculatedFee + batteryFee; // Total fee for display in package list
       }
 
       return {
@@ -126,7 +129,10 @@ export default function useInsuranceCalculation() {
       formData.includeTNDS,
       formData.tndsCategory,
       formData.includeNNTX,
-      trongTai
+      trongTai,
+      formData.loaiDongCo,
+      formData.giaTriPin,
+      formData.ngayDKLD
     );
 
     setEnhancedResult(enhanced);
@@ -181,21 +187,16 @@ export default function useInsuranceCalculation() {
   }, []);
 
   // Ensure selected package fee is accurate
-  const syncPackageFee = useCallback((packageIndex: number, giaTriXe: number, loaiHinhKinhDoanh: string) => {
+  const syncPackageFee = useCallback((packageIndex: number, giaTriXe: number, loaiHinhKinhDoanh: string, loaiDongCo?: string, giaTriPin?: string) => {
     setAvailablePackages(prev => 
       prev.map(pkg => {
         if (pkg.index !== packageIndex) return pkg;
         
         const rate = pkg.customRate !== undefined ? pkg.customRate : pkg.rate;
-        let fee = (giaTriXe * rate) / 100;
+        const { fee: baseFee, batteryFee } = calculateCustomFee(giaTriXe, rate, loaiHinhKinhDoanh, loaiDongCo, giaTriPin);
+        const totalFee = baseFee + batteryFee;
         
-        // Apply minimum fee logic
-        const isMinFeeApplicable = loaiHinhKinhDoanh === 'khong_kd_cho_nguoi' && giaTriXe < 500000000;
-        if (isMinFeeApplicable && fee < 5500000) {
-          fee = 5500000;
-        }
-        
-        return { ...pkg, fee };
+        return { ...pkg, fee: totalFee };
       })
     );
   }, []);

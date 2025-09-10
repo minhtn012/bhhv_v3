@@ -1,0 +1,12 @@
+  1. Surcharge 0.1%: Cộng thêm 0.1% vào tất cả các gói bảo hiểm (gói 1-5) hay chỉ áp dụng cho một số gói cụ thể?
+  A: đúng, nếu có pin thì mặc định + 0.1 vào các gói chọn
+  2. Calculation base: Khi là xe hybrid/EV, công thức tính sẽ là:
+    - phí = (giaTriXe + giaTriPin) * (rate + 0.1%) / 100
+    - Đúng không?
+    A: đúng
+  3. Edit page: Bạn có đường dẫn đến trang edit contract không? Tôi cần xem để đảm bảo logic tương tự được áp dụng.
+  A:/data/per/bhhv_v3/src/app/contracts/[id]/edit/page.tsx
+  4. Validation: Khi là EV/Hybrid mà không nhập giaTriPin, có cần báo lỗi không hay để giá trị 0?
+  A: nếu chọn xe có pin thì bắt buộc phải nhập, UI đã có 
+  5. Minimum fee: Logic minimum fee 5.5M cho xe gia đình <500M có áp dụng với tổng giá trị (xe + pin) không?
+  A: phần này t chưa confirm dc, mà cứ làm theo logic + 0.1%

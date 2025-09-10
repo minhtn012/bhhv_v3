@@ -1,0 +1,77 @@
+interface Contract {
+  chuXe: string;
+  diaChi: string;
+  buyerEmail?: string;
+  buyerPhone?: string;
+  buyerGender?: 'nam' | 'nu' | 'khac';
+  buyerCitizenId?: string;
+  selectedProvince?: string;
+  selectedProvinceText?: string;
+  selectedDistrictWard?: string;
+  selectedDistrictWardText?: string;
+  specificAddress?: string;
+}
+
+interface CustomerInfoSectionProps {
+  contract: Contract;
+}
+
+export default function CustomerInfoSection({ contract }: CustomerInfoSectionProps) {
+  return (
+    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+      <h2 className="text-xl font-semibold text-white mb-4">Thông tin khách hàng</h2>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">Chủ xe</label>
+          <p className="text-white font-medium">{contract.chuXe}</p>
+        </div>
+        {contract.buyerEmail && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Email</label>
+            <p className="text-white">{contract.buyerEmail}</p>
+          </div>
+        )}
+        {contract.buyerPhone && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Số điện thoại</label>
+            <p className="text-white">{contract.buyerPhone}</p>
+          </div>
+        )}
+        {contract.buyerGender && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Giới tính</label>
+            <p className="text-white">{contract.buyerGender === 'nam' ? 'Nam' : contract.buyerGender === 'nu' ? 'Nữ' : 'Khác'}</p>
+          </div>
+        )}
+        {contract.buyerCitizenId && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Số CCCD</label>
+            <p className="text-white font-mono">{contract.buyerCitizenId}</p>
+          </div>
+        )}
+        {contract.selectedProvinceText && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Tỉnh/Thành phố</label>
+            <p className="text-white">{contract.selectedProvinceText}</p>
+          </div>
+        )}
+        {contract.selectedDistrictWardText && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Quận/Huyện</label>
+            <p className="text-white">{contract.selectedDistrictWardText}</p>
+          </div>
+        )}
+        {contract.specificAddress && (
+          <div className="md:col-span-2 lg:col-span-3">
+            <label className="block text-gray-300 text-sm mb-1">Địa chỉ cụ thể</label>
+            <p className="text-white">{contract.specificAddress}</p>
+          </div>
+        )}
+        <div className="md:col-span-2 lg:col-span-3">
+          <label className="block text-gray-300 text-sm mb-1">Địa chỉ gốc</label>
+          <p className="text-white">{contract.diaChi}</p>
+        </div>
+      </div>
+    </div>
+  );
+}

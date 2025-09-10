@@ -1,4 +1,4 @@
-import { tndsCategories, type CalculationResult, parseCurrency } from '@/utils/insurance-calculator';
+import { tndsCategories, type CalculationResult, type EnhancedCalculationResult, parseCurrency } from '@/utils/insurance-calculator';
 import PackageCard from './PackageCard';
 import DynamicTNDSSelector from './DynamicTNDSSelector';
 import PriceSummaryCard from './PriceSummaryCard';
@@ -17,6 +17,8 @@ interface FormData {
   soChoNgoi: number | '';
   trongTai: number | '';
   loaiHinhKinhDoanh: string;
+  loaiDongCo: string;
+  giaTriPin: string;
   selectedPackageIndex: number;
   includeTNDS: boolean;
   tndsCategory: string;
@@ -30,6 +32,7 @@ interface FormData {
 interface PackageSelectionStepProps {
   availablePackages: PackageOption[];
   calculationResult: CalculationResult;
+  enhancedResult?: EnhancedCalculationResult;
   formData: FormData;
   totalAmount: number;
   loading: boolean;
@@ -44,6 +47,7 @@ interface PackageSelectionStepProps {
 export default function PackageSelectionStep({
   availablePackages,
   calculationResult,
+  enhancedResult,
   formData,
   totalAmount,
   loading,
@@ -117,6 +121,7 @@ export default function PackageSelectionStep({
           <PriceSummaryCard
             availablePackages={availablePackages}
             calculationResult={calculationResult}
+            enhancedResult={enhancedResult}
             formData={formData}
             totalAmount={totalAmount}
             loading={loading}

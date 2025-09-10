@@ -56,6 +56,9 @@ export interface IContract extends Document {
   includeNNTX: boolean;
   phiNNTX: number;
   
+  // Phí pin xe điện (chỉ cho HYBRID/EV)
+  phiPin?: number;
+  
   // Tổng phí
   tongPhi: number;
   mucKhauTru: number;
@@ -289,6 +292,13 @@ const contractSchema = new Schema<IContract>({
     type: Number,
     default: 0,
     min: [0, 'Phí NNTX không được âm']
+  },
+  
+  // Phí pin xe điện
+  phiPin: {
+    type: Number,
+    min: [0, 'Phí pin không được âm'],
+    default: 0
   },
   
   // Tổng phí
