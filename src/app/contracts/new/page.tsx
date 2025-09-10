@@ -68,6 +68,7 @@ export default function NewContractPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [nntxFee, setNntxFee] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState({
     cavetFileName: '',
     dangkiemFileName: ''
@@ -299,6 +300,11 @@ export default function NewContractPage() {
 
   const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
+  // Handle NNTX fee changes from DynamicTNDSSelector
+  const handleNNTXFeeChange = (fee: number) => {
+    setNntxFee(fee);
+  };
+
   // Submit contract
   const submitContract = async () => {
     if (!calculationResult || availablePackages.length === 0) {
@@ -316,14 +322,8 @@ export default function NewContractPage() {
     setError('');
 
     try {
-      // Calculate NNTX fee dynamically based on selected package
-      let nntxFee = 0;
-      if (formData.includeNNTX && formData.selectedNNTXPackage) {
-        const { calculateNNTXFeeByPackage } = await import('@/utils/insurance-calculator');
-        nntxFee = await calculateNNTXFeeByPackage(formData.selectedNNTXPackage, Number(formData.soChoNgoi));
-      }
-      
-      const totalFee = totalAmount;
+      // Use NNTX fee from state (already calculated by DynamicTNDSSelector)
+      const totalFee = totalAmount + (formData.includeNNTX ? nntxFee : 0);
       
       const getDKBS = (index: number): string[] => {
         switch(index) {
@@ -380,7 +380,7 @@ export default function NewContractPage() {
           : 0,
         includeNNTX: formData.includeNNTX,
         selectedNNTXPackage: formData.selectedNNTXPackage,
-        phiNNTX: nntxFee,
+        phiNNTX: formData.includeNNTX ? nntxFee : 0,
         phiPin: enhancedResult?.totalBatteryFee || 0,
         mucKhauTru: formData.mucKhauTru,
         taiTucPercentage: formData.taiTucPercentage,
@@ -517,12 +517,14 @@ export default function NewContractPage() {
                     enhancedResult={enhancedResult || undefined}
                     formData={formData}
                     totalAmount={totalAmount}
+                    nntxFee={nntxFee}
                     loading={loading}
                     onFormInputChange={handleInputChange}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={submitContract}
                     onRateChange={handleRateChange}
                     onRecalculate={handleRecalculate}
+                    onNNTXFeeChange={handleNNTXFeeChange}
                   />
                 </StepWrapper>
               </div>

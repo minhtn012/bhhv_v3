@@ -35,12 +35,14 @@ interface PackageSelectionStepProps {
   enhancedResult?: EnhancedCalculationResult;
   formData: FormData;
   totalAmount: number;
+  nntxFee: number;
   loading: boolean;
   onFormInputChange: (field: keyof FormData, value: any) => void;
   onPackageSelect: (packageIndex: number) => void;
   onSubmit: () => void;
   onRateChange?: (index: number, newRate: number, newFee: number) => void;
   onRecalculate?: () => void;
+  onNNTXFeeChange: (fee: number) => void;
   submitButtonText?: string;
 }
 
@@ -50,12 +52,14 @@ export default function PackageSelectionStep({
   enhancedResult,
   formData,
   totalAmount,
+  nntxFee,
   loading,
   onFormInputChange,
   onPackageSelect,
   onSubmit,
   onRateChange,
   onRecalculate,
+  onNNTXFeeChange,
   submitButtonText = "Tạo báo giá"
 }: PackageSelectionStepProps) {
   return (
@@ -108,6 +112,7 @@ export default function PackageSelectionStep({
                 onFormInputChange('selectedNNTXPackage', packageValue);
               }
             }}
+            onNNTXFeeChange={onNNTXFeeChange}
             onTinhTrangChange={(tinhTrang) => onFormInputChange('tinhTrang', tinhTrang)}
             onSoChoNgoiChange={(soChoNgoi) => onFormInputChange('soChoNgoi', soChoNgoi)}
             onMucKhauTruChange={(mucKhauTru) => onFormInputChange('mucKhauTru', mucKhauTru)}
@@ -119,11 +124,10 @@ export default function PackageSelectionStep({
         {/* Right: Summary */}
         <div>
           <PriceSummaryCard
-            availablePackages={availablePackages}
-            calculationResult={calculationResult}
             enhancedResult={enhancedResult}
             formData={formData}
             totalAmount={totalAmount}
+            nntxFee={nntxFee}
             loading={loading}
             onSubmit={onSubmit}
             submitButtonText={submitButtonText}

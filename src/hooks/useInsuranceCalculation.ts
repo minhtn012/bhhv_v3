@@ -4,8 +4,6 @@ import {
   calculateWithCustomRates,
   calculateCustomFee,
   suggestTNDSCategory,
-  calculateNNTXFee,
-  formatCurrency,
   parseCurrency,
   packageLabels,
   tndsCategories,
@@ -132,7 +130,8 @@ export default function useInsuranceCalculation() {
       trongTai,
       formData.loaiDongCo,
       formData.giaTriPin,
-      formData.ngayDKLD
+      formData.ngayDKLD,
+      formData.taiTucPercentage
     );
 
     setEnhancedResult(enhanced);

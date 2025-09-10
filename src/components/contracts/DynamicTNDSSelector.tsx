@@ -23,6 +23,7 @@ interface DynamicTNDSSelectorProps {
   adjustmentAmount: number;
   onTNDSChange: (includeTNDS: boolean, tndsCategory: string) => void;
   onNNTXChange: (includeNNTX: boolean, packageValue?: string) => void;
+  onNNTXFeeChange: (fee: number) => void;
   onTinhTrangChange: (tinhTrang: string) => void;
   onSoChoNgoiChange: (soChoNgoi: number) => void;
   onMucKhauTruChange: (mucKhauTru: number) => void;
@@ -44,6 +45,7 @@ export default function DynamicTNDSSelector({
   adjustmentAmount,
   onTNDSChange,
   onNNTXChange,
+  onNNTXFeeChange,
   onTinhTrangChange,
   onSoChoNgoiChange,
   onMucKhauTruChange,
@@ -76,17 +78,16 @@ export default function DynamicTNDSSelector({
 
   // Update NNTX fee when package or số chỗ ngồi changes
   useEffect(() => {
+    let fee = 0;
     if (selectedNNTXPackage && nntxPackages.length > 0) {
       const selectedPackage = nntxPackages.find(pkg => pkg.value === selectedNNTXPackage);
       if (selectedPackage) {
-        setNntxFee(calculateNNTXFee(selectedPackage.price, soChoNgoi));
-      } else {
-        setNntxFee(0);
+        fee = calculateNNTXFee(selectedPackage.price, soChoNgoi);
       }
-    } else {
-      setNntxFee(0);
     }
-  }, [selectedNNTXPackage, soChoNgoi, nntxPackages]);
+    setNntxFee(fee);
+    onNNTXFeeChange(fee); // Notify parent about fee change
+  }, [selectedNNTXPackage, soChoNgoi, nntxPackages, onNNTXFeeChange]);
 
   // Get available categories for dropdown
   const availableCategories = getAvailableTNDSCategories();
