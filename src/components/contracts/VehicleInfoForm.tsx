@@ -146,7 +146,10 @@ export default function VehicleInfoForm({
             min="1980"
             max={new Date().getFullYear()}
             value={formData.namSanXuat}
-            onChange={(e) => onFormInputChange('namSanXuat', e.target.value ? parseInt(e.target.value) : '')}
+            onChange={(e) => {
+              const newValue = e.target.value ? parseInt(e.target.value) : '';
+              onFormInputChange('namSanXuat', newValue);
+            }}
             className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
               fieldErrors.namSanXuat ? 'border-red-500' : 'border-white/20'
             }`}
@@ -237,7 +240,9 @@ export default function VehicleInfoForm({
           <label className="block text-white font-medium mb-2">Loại hình sử dụng *</label>
           <select 
             value={formData.loaiHinhKinhDoanh}
-            onChange={(e) => onFormInputChange('loaiHinhKinhDoanh', e.target.value)}
+            onChange={(e) => {
+              onFormInputChange('loaiHinhKinhDoanh', e.target.value);
+            }}
             className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
             required
           >

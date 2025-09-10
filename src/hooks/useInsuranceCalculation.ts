@@ -21,6 +21,7 @@ interface FormData {
   loaiHinhKinhDoanh: string;
   loaiDongCo: string;
   giaTriPin: string;
+  ngayDKLD: string;
   selectedPackageIndex: number;
   includeTNDS: boolean;
   tndsCategory: string;
@@ -66,7 +67,8 @@ export default function useInsuranceCalculation() {
       formData.loaiHinhKinhDoanh,
       trongTai,
       formData.loaiDongCo,
-      formData.giaTriPin
+      formData.giaTriPin,
+      formData.ngayDKLD
     );
 
     setCalculationResult(result);
@@ -129,7 +131,8 @@ export default function useInsuranceCalculation() {
       formData.includeNNTX,
       trongTai,
       formData.loaiDongCo,
-      formData.giaTriPin
+      formData.giaTriPin,
+      formData.ngayDKLD
     );
 
     setEnhancedResult(enhanced);

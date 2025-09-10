@@ -137,17 +137,20 @@ export function calculateInsuranceRates(
   loaiHinhKinhDoanh: string,
   trongTai?: number,
   loaiDongCo?: string,
-  giaTriPin?: string | number
+  giaTriPin?: string | number,
+  ngayDKLD?: string
 ): CalculationResult {
-  const currentYear = new Date().getFullYear();
-  const carAge = currentYear - namSanXuat;
+  // Calculate car age from registration date, fallback to manufacturing year if not provided
+  const carAge = ngayDKLD 
+    ? calculateCarAgeFromRegistrationDate(ngayDKLD)
+    : new Date().getFullYear() - namSanXuat;
   
   let ageGroup: string;
   if (carAge < 3) ageGroup = 'age_under_3';
   else if (carAge < 6) ageGroup = 'age_3_to_6';
   else if (carAge < 10) ageGroup = 'age_6_to_10';
   else ageGroup = 'age_over_10';
-
+  
   let baseRates: (number | null)[];
   
   if (loaiHinhKinhDoanh === 'khong_kd_cho_nguoi') {
@@ -157,9 +160,18 @@ export function calculateInsuranceRates(
     else if (giaTriXe < 1000000000) valueCategory = 'tu_700_den_1ty';
     else valueCategory = 'tren_1ty';
     
-    baseRates = physicalDamageRates[loaiHinhKinhDoanh][valueCategory][ageGroup];
+    const categoryData = physicalDamageRates[loaiHinhKinhDoanh as keyof typeof physicalDamageRates];
+    if (typeof categoryData === 'object' && categoryData !== null && valueCategory in categoryData) {
+      const valueData = (categoryData as any)[valueCategory];
+      baseRates = valueData?.[ageGroup] || [null, null, null, null];
+    } else {
+      baseRates = [null, null, null, null];
+    }
   } else {
-    baseRates = physicalDamageRates[loaiHinhKinhDoanh]?.[ageGroup] || [null, null, null, null];
+    const categoryData = physicalDamageRates[loaiHinhKinhDoanh as keyof typeof physicalDamageRates];
+    baseRates = typeof categoryData === 'object' && categoryData !== null && ageGroup in categoryData
+      ? (categoryData as any)[ageGroup] || [null, null, null, null]
+      : [null, null, null, null];
   }
 
   // Keep original base rates for separate display
@@ -232,6 +244,28 @@ export function formatNumberInput(value: string): string {
     return parseInt(cleanValue, 10).toLocaleString('vi-VN');
   }
   return '';
+}
+
+// Calculate car age from registration date (ngayDKLD)
+export function calculateCarAgeFromRegistrationDate(ngayDKLD: string): number {
+  if (!ngayDKLD || !ngayDKLD.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+    console.warn('Invalid ngayDKLD format:', ngayDKLD, 'Expected: dd/mm/yyyy');
+    return 0;
+  }
+  
+  const [day, month, year] = ngayDKLD.split('/').map(Number);
+  const registrationDate = new Date(year, month - 1, day); // month is 0-indexed
+  const currentDate = new Date();
+  
+  let age = currentDate.getFullYear() - registrationDate.getFullYear();
+  
+  // Adjust for month/day if current date hasn't reached the anniversary yet
+  const monthDiff = currentDate.getMonth() - registrationDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < registrationDate.getDate())) {
+    age--;
+  }
+  
+  return Math.max(0, age); // Ensure age is not negative
 }
 
 // Calculate base fee only (vehicle value, excluding battery surcharge)
@@ -364,7 +398,8 @@ export function calculateWithCustomRates(
   includeNNTX: boolean,
   trongTai?: number,
   loaiDongCo?: string,
-  giaTriPin?: string | number
+  giaTriPin?: string | number,
+  ngayDKLD?: string
 ): EnhancedCalculationResult {
   // Get base calculation
   const baseResult = calculateInsuranceRates(
@@ -374,7 +409,8 @@ export function calculateWithCustomRates(
     loaiHinhKinhDoanh,
     trongTai,
     loaiDongCo,
-    giaTriPin
+    giaTriPin,
+    ngayDKLD // Now pass the registration date for accurate car age calculation
   );
 
   // Calculate custom fees and battery fees
@@ -388,7 +424,7 @@ export function calculateWithCustomRates(
   // Calculate totals
   const totalVatChatFee = customFees[selectedPackageIndex] || 0;
   const totalBatteryFee = batteryFees[selectedPackageIndex] || 0;
-  const totalTNDSFee = includeTNDS && tndsCategory ? tndsCategories[tndsCategory]?.fee || 0 : 0;
+  const totalTNDSFee = includeTNDS && tndsCategory ? tndsCategories[tndsCategory as keyof typeof tndsCategories]?.fee || 0 : 0;
   const totalNNTXFee = includeNNTX ? baseResult.nntxFee : 0;
   const grandTotal = totalVatChatFee + totalBatteryFee + totalTNDSFee + totalNNTXFee;
 

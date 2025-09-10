@@ -139,6 +139,7 @@ export default function NewContractPage() {
     calculateTotal,
     updatePackageRate,
     syncPackageFee,
+    refreshPackageFees,
     autoSuggestTNDS
   } = useInsuranceCalculation();
   const { fieldErrors, validateForm } = useFormValidation();
@@ -203,8 +204,12 @@ export default function NewContractPage() {
 
   // Handle form input change
   const handleInputChange = useCallback((field: keyof FormData, value: any) => {
+    if (field === 'loaiHinhKinhDoanh') {
+    }
+    if (field === 'namSanXuat') {
+    }
     setFormData(prev => ({ ...prev, [field]: value }));
-  }, []);
+  }, [formData.loaiHinhKinhDoanh, formData.namSanXuat]);
 
   // Handle extract success
   const handleExtractSuccess = (data: any) => {
@@ -230,6 +235,7 @@ export default function NewContractPage() {
 
   // Calculate insurance rates
   const handleCalculateRates = async () => {
+    
     const isValid = await validateForm(formData, carData);
     if (!isValid) {
       return;
@@ -248,6 +254,8 @@ export default function NewContractPage() {
 
     // Update state and calculate enhanced results with updated data immediately
     setFormData(updatedFormData);
+    
+    // Note: No need for refreshPackageFees here - calculateRates already created packages with correct fees
     calculateEnhanced(updatedFormData);
 
     setCurrentStep(4);
@@ -272,6 +280,9 @@ export default function NewContractPage() {
 
   // Handle recalculate
   const handleRecalculate = () => {
+    // First refresh package fees with current formData to ensure fees reflect any changes
+    refreshPackageFees(formData);
+    // Then calculate enhanced results
     calculateEnhanced(formData);
   };
 
