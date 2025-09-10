@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { formatCurrency, parseCurrency, packageLabels } from '@/utils/insurance-calculator';
+import { formatCurrency } from '@/utils/insurance-calculator';
 
 interface PackageOption {
   index: number;
@@ -56,16 +56,6 @@ export default function EditablePackageCard({
     onRateChange(pkg.index, customRate, fee);
   }, [customRate, giaTriXe, loaiHinhKinhDoanh]);
 
-  // Handle rate input change with validation
-  const handleRateChange = (value: string) => {
-    const newRate = parseFloat(value) || 0;
-    
-    // Validation: rate cannot be negative
-    if (newRate < 0) return;
-    
-    setCustomRate(newRate);
-    setShowDifference(Math.abs(newRate - pkg.originalRate) > 0.01);
-  };
 
   // Calculate difference for display
   const originalFee = calculateFee(pkg.originalRate).fee;
@@ -120,15 +110,15 @@ export default function EditablePackageCard({
         </div>
         
         <div className="text-right">
-          {/* Editable rate input */}
+          {/* Disabled rate input */}
           <div className="flex items-center gap-1 mb-1">
             <input 
               type="number" 
               step="0.01"
               min="0"
               value={customRate.toFixed(2)}
-              onChange={(e) => handleRateChange(e.target.value)}
-              className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+              disabled
+              className="w-20 text-right p-1 border border-gray-600 rounded-md bg-gray-700 text-gray-400 font-semibold cursor-not-allowed"
             />
             <span className="text-gray-400 text-sm">%</span>
           </div>
