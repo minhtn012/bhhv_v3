@@ -139,8 +139,6 @@ export default function NewContractPage() {
     calculateTotal,
     updatePackageRate,
     syncPackageFee,
-    refreshPackageFees,
-    autoSuggestTNDS
   } = useInsuranceCalculation();
   const { fieldErrors, validateForm } = useFormValidation();
 
@@ -280,8 +278,6 @@ export default function NewContractPage() {
 
   // Handle recalculate
   const handleRecalculate = () => {
-    // First refresh package fees with current formData to ensure fees reflect any changes
-    refreshPackageFees(formData);
     // Then calculate enhanced results
     calculateEnhanced(formData);
   };
