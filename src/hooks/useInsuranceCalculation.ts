@@ -17,7 +17,6 @@ interface PackageOption {
   name: string;
   details: string;
   rate: number;
-  customRate?: number;
   fee: number;
   available: boolean;
 }
@@ -152,22 +151,6 @@ export default function useInsuranceCalculation() {
     return total;
   };
 
-  // Update package rate and sync with availablePackages
-  const updatePackageRate = useCallback((packageIndex: number, newRate: number, newFee: number) => {
-    setCustomRates(prev => {
-      const updated = [...prev];
-      updated[packageIndex] = newRate;
-      return updated;
-    });
-
-    setAvailablePackages(prev => 
-      prev.map(pkg => 
-        pkg.index === packageIndex 
-          ? { ...pkg, customRate: newRate, fee: newFee }
-          : pkg
-      )
-    );
-  }, []);
 
   // Ensure selected package fee is accurate
   const syncPackageFee = useCallback((packageIndex: number, giaTriXe: number, loaiHinhKinhDoanh: string, loaiDongCo?: string, giaTriPin?: string) => {
@@ -204,7 +187,6 @@ export default function useInsuranceCalculation() {
     calculateRates,
     calculateEnhanced,
     calculateTotal,
-    updatePackageRate,
     syncPackageFee,
     autoSuggestTNDS
   };

@@ -185,7 +185,6 @@ export default function EditContractPage() {
     calculateRates, 
     calculateEnhanced,
     calculateTotal,
-    updatePackageRate,
     syncPackageFee
   } = useInsuranceCalculation();
   const { fieldErrors, validateForm } = useFormValidation();
@@ -370,18 +369,6 @@ export default function EditContractPage() {
     }, 50);
   };
 
-  // Handle package rate changes
-  const handleRateChange = (packageIndex: number, newRate: number, newFee: number) => {
-    updatePackageRate(packageIndex, newRate, newFee);
-    
-    setFormData(prev => {
-      const newCustomRates = [...(prev.customRates || [])];
-      newCustomRates[packageIndex] = newRate;
-      return { ...prev, customRates: newCustomRates };
-    });
-
-    handleRecalculate();
-  };
 
   const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
@@ -643,7 +630,6 @@ export default function EditContractPage() {
                     onFormInputChange={handleInputChange}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={updateContract}
-                    onRateChange={handleRateChange}
                     onRecalculate={handleRecalculate}
                     submitButtonText={initializingCarData ? "Đang tải dữ liệu xe..." : "Cập nhật hợp đồng"}
                   />

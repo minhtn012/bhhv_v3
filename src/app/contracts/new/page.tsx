@@ -135,7 +135,6 @@ export default function NewContractPage() {
     calculateRates, 
     calculateEnhanced,
     calculateTotal,
-    updatePackageRate,
     syncPackageFee,
   } = useInsuranceCalculation();
   const { fieldErrors, validateForm } = useFormValidation();
@@ -277,20 +276,6 @@ export default function NewContractPage() {
     calculateEnhanced(formData);
   };
 
-  // Handle package rate changes
-  const handleRateChange = (packageIndex: number, newRate: number, newFee: number) => {
-    // Update package rate in hook
-    updatePackageRate(packageIndex, newRate, newFee);
-    
-    // Create updated form data with new custom rates
-    const newCustomRates = [...(formData.customRates || [])];
-    newCustomRates[packageIndex] = newRate;
-    const updatedFormData = { ...formData, customRates: newCustomRates };
-    
-    // Update state and trigger enhanced calculation with updated data immediately
-    setFormData(updatedFormData);
-    calculateEnhanced(updatedFormData);
-  };
 
   const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
@@ -517,7 +502,6 @@ export default function NewContractPage() {
                     onFormInputChange={handleInputChange}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={submitContract}
-                    onRateChange={handleRateChange}
                     onRecalculate={handleRecalculate}
                     onNNTXFeeChange={handleNNTXFeeChange}
                   />

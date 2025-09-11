@@ -30,7 +30,6 @@ interface PackageSelectionStepProps {
   onFormInputChange: (field: keyof ExtendedPackageFormData, value: string | number | boolean) => void;
   onPackageSelect: (packageIndex: number) => void;
   onSubmit: () => void;
-  onRateChange?: (index: number, newRate: number, newFee: number) => void;
   onRecalculate?: () => void;
   onNNTXFeeChange: (fee: number) => void;
   submitButtonText?: string;
@@ -47,7 +46,6 @@ export default function PackageSelectionStep({
   onFormInputChange,
   onPackageSelect,
   onSubmit,
-  onRateChange,
   onRecalculate,
   onNNTXFeeChange,
   submitButtonText = "Tạo báo giá"
@@ -67,10 +65,6 @@ export default function PackageSelectionStep({
                   package={pkg}
                   isSelected={formData.selectedPackageIndex === pkg.index}
                   onSelect={() => pkg.available && onPackageSelect(pkg.index)}
-                  editable={true}
-                  giaTriXe={parseCurrency(formData.giaTriXe)}
-                  loaiHinhKinhDoanh={formData.loaiHinhKinhDoanh}
-                  onRateChange={onRateChange}
                 />
               ))}
             </div>
