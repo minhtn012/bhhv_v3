@@ -3,13 +3,10 @@ import FieldError from './FieldError';
 import useBuyerLocation from '@/hooks/useBuyerLocation';
 import Spinner from '@/components/ui/Spinner';
 import SearchableSelect from '@/components/SearchableSelect';
+import { BuyerFormData } from '@/types/contract';
 
-interface BuyerFormData {
-  chuXe: string;
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerGender: 'nam' | 'nu' | 'khac';
-  buyerCitizenId: string;
+// Extended form data for local UI state management
+interface ExtendedBuyerFormData extends BuyerFormData {
   selectedProvince: string;
   selectedProvinceText: string;
   selectedDistrictWard: string;
@@ -18,9 +15,9 @@ interface BuyerFormData {
 }
 
 interface BuyerInfoFormProps {
-  formData: BuyerFormData;
+  formData: ExtendedBuyerFormData;
   fieldErrors: Record<string, string>;
-  onFormInputChange: (field: keyof BuyerFormData, value: string) => void;
+  onFormInputChange: (field: keyof ExtendedBuyerFormData, value: string) => void;
   onNext: () => void;
   hideNextButton?: boolean;
 }
@@ -82,7 +79,7 @@ export default function BuyerInfoForm({
   // Clear local errors when field values change
   useEffect(() => {
     setLocalErrors({});
-  }, [formData.chuXe, formData.buyerEmail, formData.buyerPhone, formData.buyerCitizenId, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress]);
+  }, [formData.chuXe, formData.email, formData.soDienThoai, formData.cccd, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress]);
 
   // Get combined errors (prioritize local errors over global)
   const getCombinedErrors = () => {
@@ -103,22 +100,22 @@ export default function BuyerInfoForm({
       errors.chuXe = 'Họ và tên phải có ít nhất 2 ký tự';
     }
     
-    if (!formData.buyerEmail) {
-      errors.buyerEmail = 'Vui lòng nhập email';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.buyerEmail)) {
-      errors.buyerEmail = 'Vui lòng nhập email hợp lệ';
+    if (!formData.email) {
+      errors.email = 'Vui lòng nhập email';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Vui lòng nhập email hợp lệ';
     }
     
-    if (!formData.buyerPhone) {
-      errors.buyerPhone = 'Vui lòng nhập số điện thoại';
-    } else if (!/^(0[3-9])[0-9]{8}$/.test(formData.buyerPhone)) {
-      errors.buyerPhone = 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09';
+    if (!formData.soDienThoai) {
+      errors.soDienThoai = 'Vui lòng nhập số điện thoại';
+    } else if (!/^(0[3-9])[0-9]{8}$/.test(formData.soDienThoai)) {
+      errors.soDienThoai = 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09';
     }
     
-    if (!formData.buyerCitizenId) {
-      errors.buyerCitizenId = 'Vui lòng nhập căn cước công dân';
-    } else if (!/^[0-9]{12}$/.test(formData.buyerCitizenId)) {
-      errors.buyerCitizenId = 'Căn cước công dân phải có đúng 12 chữ số';
+    if (!formData.cccd) {
+      errors.cccd = 'Vui lòng nhập căn cước công dân';
+    } else if (!/^[0-9]{12}$/.test(formData.cccd)) {
+      errors.cccd = 'Căn cước công dân phải có đúng 12 chữ số';
     }
     
     if (!formData.selectedProvince) {
@@ -171,23 +168,23 @@ export default function BuyerInfoForm({
           <label className="block text-white font-medium mb-2">Email *</label>
           <input 
             type="email" 
-            value={formData.buyerEmail}
-            onChange={(e) => onFormInputChange('buyerEmail', e.target.value)}
+            value={formData.email}
+            onChange={(e) => onFormInputChange('email', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.buyerEmail ? 'border-red-500' : 'border-slate-500/30'
+              combinedErrors.email ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="email@example.com"
             required
           />
-          <FieldError fieldName="buyerEmail" errors={combinedErrors} />
+          <FieldError fieldName="email" errors={combinedErrors} />
         </div>
 
         {/* Giới tính */}
         <div>
           <label className="block text-white font-medium mb-2">Giới tính *</label>
           <select 
-            value={formData.buyerGender}
-            onChange={(e) => onFormInputChange('buyerGender', e.target.value as 'nam' | 'nu' | 'khac')}
+            value={formData.gioiTinh}
+            onChange={(e) => onFormInputChange('gioiTinh', e.target.value as 'nam' | 'nu' | 'khac')}
             className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-3 text-white min-h-[48px]"
           >
             <option value="nam">Nam</option>
@@ -200,15 +197,15 @@ export default function BuyerInfoForm({
           <label className="block text-white font-medium mb-2">Số điện thoại *</label>
           <input 
             type="tel" 
-            value={formData.buyerPhone}
-            onChange={(e) => onFormInputChange('buyerPhone', e.target.value)}
+            value={formData.soDienThoai}
+            onChange={(e) => onFormInputChange('soDienThoai', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.buyerPhone ? 'border-red-500' : 'border-slate-500/30'
+              combinedErrors.soDienThoai ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="0123456789"
             required
           />
-          <FieldError fieldName="buyerPhone" errors={combinedErrors} />
+          <FieldError fieldName="soDienThoai" errors={combinedErrors} />
         </div>
 
         {/* Số căn cước công dân */}
@@ -216,16 +213,16 @@ export default function BuyerInfoForm({
           <label className="block text-white font-medium mb-2">Căn cước công dân *</label>
           <input 
             type="text" 
-            value={formData.buyerCitizenId}
-            onChange={(e) => onFormInputChange('buyerCitizenId', e.target.value)}
+            value={formData.cccd}
+            onChange={(e) => onFormInputChange('cccd', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.buyerCitizenId ? 'border-red-500' : 'border-slate-500/30'
+              combinedErrors.cccd ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="123456789012"
             maxLength={12}
             required
           />
-          <FieldError fieldName="buyerCitizenId" errors={combinedErrors} />
+          <FieldError fieldName="cccd" errors={combinedErrors} />
         </div>
 
         {/* Tỉnh/Thành phố */}

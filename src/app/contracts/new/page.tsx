@@ -13,55 +13,25 @@ import FileUploadStep from '@/components/contracts/FileUploadStep';
 import BuyerInfoForm from '@/components/contracts/BuyerInfoForm';
 import VehicleInfoForm from '@/components/contracts/VehicleInfoForm';
 import PackageSelectionStep from '@/components/contracts/PackageSelectionStep';
-import { FileUploadSummary, VehicleInfoSummary, PackageSelectionSummary } from '@/components/contracts/CompletedStepSummary';
+import { FileUploadSummary, VehicleInfoSummary } from '@/components/contracts/CompletedStepSummary';
 import useCarSelection from '@/hooks/useCarSelection';
 import useInsuranceCalculation from '@/hooks/useInsuranceCalculation';
 import useFormValidation from '@/hooks/useFormValidation';
+import { type BaseContractFormData } from '@/types/contract';
 
-
-interface FormData {
-  // Thông tin khách hàng
-  chuXe: string;
-  diaChi: string;
-  
-  // Thông tin người mua (buyer information)
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerGender: 'nam' | 'nu' | 'khac';
-  buyerCitizenId: string;
+// Extended interface for additional fields specific to new contract page
+interface FormData extends BaseContractFormData {
+  // Additional UI-specific fields not in BaseContractFormData
   selectedProvince: string; // province_code
   selectedProvinceText: string; // province_name for display
   selectedDistrictWard: string; // district/ward id
   selectedDistrictWardText: string; // district/ward name for display
   specificAddress: string;
-  
-  // Thông tin xe
-  bienSo: string;
   nhanHieu: string;
   soLoai: string;
-  soKhung: string;
-  soMay: string;
-  ngayDKLD: string;
-  namSanXuat: number | '';
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  giaTriXe: string;
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-  
-  // Gói bảo hiểm
-  selectedPackageIndex: number;
   customRates: number[];
-  
-  // Các loại phí
-  includeTNDS: boolean;
-  tndsCategory: string;
-  includeNNTX: boolean;
   selectedNNTXPackage: string;
   tinhTrang: string;
-  mucKhauTru: number; // 500000 or 1000000
-  taiTucPercentage: number; // percentage for renewal discount/markup
 }
 
 export default function NewContractPage() {
@@ -76,24 +46,27 @@ export default function NewContractPage() {
   
   // Form data
   const [formData, setFormData] = useState<FormData>({
+    // Customer/Owner Information (consolidated)
     chuXe: '',
+    email: '',
+    soDienThoai: '',
+    cccd: '',
+    gioiTinh: 'nam',
+    userType: 'ca_nhan',
+    
+    // Enhanced Address Structure
+    tinhThanh: '',
+    tinhThanhText: '',
+    quanHuyen: '',
+    quanHuyenText: '',
+    phuongXa: '',
+    phuongXaText: '',
     diaChi: '',
-    // Buyer information defaults
-    buyerEmail: '',
-    buyerPhone: '',
-    buyerGender: 'nam',
-    buyerCitizenId: '',
-    selectedProvince: '',
-    selectedProvinceText: '',
-    selectedDistrictWard: '',
-    selectedDistrictWardText: '',
-    specificAddress: '',
+    // Vehicle Information (BaseContractFormData)
     bienSo: '',
-    nhanHieu: '',
-    soLoai: '',
     soKhung: '',
     soMay: '',
-    ngayDKLD: '',
+    tenXe: '',
     namSanXuat: '',
     soChoNgoi: '',
     trongTai: '',
@@ -101,15 +74,25 @@ export default function NewContractPage() {
     loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
     loaiDongCo: '',
     giaTriPin: '',
+    ngayDKLD: '',
+    // Package Selection & Insurance (BaseContractFormData)
     selectedPackageIndex: 0,
-    customRates: [],
     includeTNDS: true,
     tndsCategory: '',
     includeNNTX: true,
+    taiTucPercentage: 0,
+    mucKhauTru: 500000,
+    // Additional UI-specific fields
+    selectedProvince: '',
+    selectedProvinceText: '',
+    selectedDistrictWard: '',
+    selectedDistrictWardText: '',
+    specificAddress: '',
+    nhanHieu: '',
+    soLoai: '',
+    customRates: [],
     selectedNNTXPackage: '',
-    tinhTrang: 'cap_moi',
-    mucKhauTru: 500000, // Default to 500K
-    taiTucPercentage: 0 // Default to 0% (Cấp mới)
+    tinhTrang: 'cap_moi'
   });
   
   const router = useRouter();
@@ -163,6 +146,7 @@ export default function NewContractPage() {
     if (data.bienSo) newFormData.bienSo = data.bienSo;
     if (data.nhanHieu) newFormData.nhanHieu = data.nhanHieu;
     if (data.soLoai) newFormData.soLoai = data.soLoai;
+    if (data.tenXe) newFormData.tenXe = data.tenXe;
     if (data.soKhung) newFormData.soKhung = data.soKhung;
     if (data.soMay) newFormData.soMay = data.soMay;
     if (data.ngayDangKyLanDau) newFormData.ngayDKLD = data.ngayDangKyLanDau;
@@ -334,12 +318,12 @@ export default function NewContractPage() {
 
       const contractData = {
         chuXe: formData.chuXe,
-        diaChi: formData.diaChi,
+        diaChi: formData.diaChi, // Specific address
         // Buyer information
-        buyerEmail: formData.buyerEmail,
-        buyerPhone: formData.buyerPhone,
-        buyerGender: formData.buyerGender,
-        buyerCitizenId: formData.buyerCitizenId,
+        buyerEmail: formData.email,
+        buyerPhone: formData.soDienThoai,
+        buyerGender: formData.gioiTinh,
+        buyerCitizenId: formData.cccd,
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
         selectedDistrictWard: formData.selectedDistrictWard,
@@ -454,8 +438,8 @@ export default function NewContractPage() {
                   summary={currentStep > 2 ? (
                     <div className="text-sm text-white/70 space-y-1">
                       <p><strong>Họ tên:</strong> {formData.chuXe}</p>
-                      <p><strong>Email:</strong> {formData.buyerEmail}</p>
-                      <p><strong>Điện thoại:</strong> {formData.buyerPhone}</p>
+                      <p><strong>Email:</strong> {formData.email}</p>
+                      <p><strong>Điện thoại:</strong> {formData.soDienThoai}</p>
                       <p><strong>Địa chỉ:</strong> {formData.selectedProvinceText}, {formData.selectedDistrictWardText}</p>
                     </div>
                   ) : undefined}

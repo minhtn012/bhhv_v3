@@ -19,26 +19,37 @@ describe('useFormValidation', () => {
         const { result } = renderHook(() => useFormValidation());
         
         const formData = {
+          // Customer Information
           chuXe: 'Nguyễn Văn A',
-          diaChi: '123 Đường ABC',
-          buyerEmail: value,
-          buyerPhone: '0901234567',
-          buyerGender: 'nam' as const,
-          buyerCitizenId: '123456789012',
+          email: value,
+          soDienThoai: '0901234567',
+          cccd: '123456789012',
+          gioiTinh: 'nam' as const,
+          userType: 'ca_nhan' as const,
           selectedProvince: '79',
           selectedProvinceText: 'TP.HCM',
           selectedDistrictWard: '760',
           selectedDistrictWardText: 'Quận 1',
-          specificAddress: '123 ABC',
+          specificAddress: '123 Đường ABC',
+          // Vehicle Information
           bienSo: '51A-123.45',
           soKhung: 'ABC123',
           soMay: 'DEF456',
-          ngayDKLD: '15/06/2020',
           namSanXuat: 2020,
           soChoNgoi: 5,
           trongTai: 0,
           giaTriXe: '500000000',
           loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
+          loaiDongCo: 'xang',
+          giaTriPin: '0',
+          ngayDKLD: '15/06/2020',
+          // Package Selection & Insurance
+          selectedPackageIndex: 0,
+          includeTNDS: true,
+          tndsCategory: 'xe_duoi_6_cho',
+          includeNNTX: false,
+          taiTucPercentage: 10,
+          mucKhauTru: 0,
         };
 
         const carData = {
@@ -54,11 +65,11 @@ describe('useFormValidation', () => {
 
         if (valid) {
           expect(isValid).toBe(true);
-          expect(result.current.fieldErrors.buyerEmail).toBeUndefined();
+          expect(result.current.fieldErrors.email).toBeUndefined();
         } else {
           expect(isValid).toBe(false);
-          expect(result.current.fieldErrors.buyerEmail).toBeDefined();
-          expect(result.current.fieldErrors.buyerEmail).toContain('email');
+          expect(result.current.fieldErrors.email).toBeDefined();
+          expect(result.current.fieldErrors.email).toContain('email');
         }
       });
     });
@@ -71,11 +82,11 @@ describe('useFormValidation', () => {
         
         const formData = {
           chuXe: 'Nguyễn Văn A',
-          diaChi: '123 Đường ABC',
-          buyerEmail: 'test@example.com',
-          buyerPhone: value,
-          buyerGender: 'nam' as const,
-          buyerCitizenId: '123456789012',
+          email: 'test@example.com',
+          soDienThoai: value,
+          cccd: '123456789012',
+          gioiTinh: 'nam' as const,
+          userType: 'ca_nhan' as const,
           selectedProvince: '79',
           selectedProvinceText: 'TP.HCM',
           selectedDistrictWard: '760',
@@ -90,6 +101,14 @@ describe('useFormValidation', () => {
           trongTai: 0,
           giaTriXe: '500000000',
           loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
+          loaiDongCo: 'xang',
+          giaTriPin: '',
+          selectedPackageIndex: 0,
+          includeTNDS: true,
+          tndsCategory: 'xe_duoi_6_cho',
+          includeNNTX: false,
+          taiTucPercentage: 10,
+          mucKhauTru: 0,
         };
 
         const carData = {
@@ -105,11 +124,11 @@ describe('useFormValidation', () => {
 
         if (valid) {
           expect(isValid).toBe(true);
-          expect(result.current.fieldErrors.buyerPhone).toBeUndefined();
+          expect(result.current.fieldErrors.soDienThoai).toBeUndefined();
         } else {
           expect(isValid).toBe(false);
-          expect(result.current.fieldErrors.buyerPhone).toBeDefined();
-          expect(result.current.fieldErrors.buyerPhone).toMatch(/số điện thoại|chữ số/i);
+          expect(result.current.fieldErrors.soDienThoai).toBeDefined();
+          expect(result.current.fieldErrors.soDienThoai).toMatch(/số điện thoại|chữ số/i);
         }
       });
     });
@@ -122,11 +141,11 @@ describe('useFormValidation', () => {
         
         const formData = {
           chuXe: 'Nguyễn Văn A',
-          diaChi: '123 Đường ABC',
-          buyerEmail: 'test@example.com',
-          buyerPhone: '0901234567',
-          buyerGender: 'nam' as const,
-          buyerCitizenId: value,
+          email: 'test@example.com',
+          soDienThoai: '0901234567',
+          cccd: value,
+          gioiTinh: 'nam' as const,
+          userType: 'ca_nhan' as const,
           selectedProvince: '79',
           selectedProvinceText: 'TP.HCM',
           selectedDistrictWard: '760',
@@ -141,6 +160,14 @@ describe('useFormValidation', () => {
           trongTai: 0,
           giaTriXe: '500000000',
           loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
+          loaiDongCo: 'xang',
+          giaTriPin: '',
+          selectedPackageIndex: 0,
+          includeTNDS: true,
+          tndsCategory: 'xe_duoi_6_cho',
+          includeNNTX: false,
+          taiTucPercentage: 10,
+          mucKhauTru: 0,
         };
 
         const carData = {
@@ -156,11 +183,11 @@ describe('useFormValidation', () => {
 
         if (valid) {
           expect(isValid).toBe(true);
-          expect(result.current.fieldErrors.buyerCitizenId).toBeUndefined();
+          expect(result.current.fieldErrors.cccd).toBeUndefined();
         } else {
           expect(isValid).toBe(false);
-          expect(result.current.fieldErrors.buyerCitizenId).toBeDefined();
-          expect(result.current.fieldErrors.buyerCitizenId).toMatch(/căn cước|chữ số/i);
+          expect(result.current.fieldErrors.cccd).toBeDefined();
+          expect(result.current.fieldErrors.cccd).toMatch(/căn cước|chữ số/i);
         }
       });
     });

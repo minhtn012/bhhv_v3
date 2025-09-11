@@ -1,34 +1,8 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { CarSelection } from '@/types/car';
+import { type BaseContractFormData } from '@/types/contract';
 import carEngineTypes from '@db/car_type_engine.json';
-
-interface FormData {
-  chuXe: string;
-  diaChi: string;
-  // Buyer information
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerGender: 'nam' | 'nu' | 'khac';
-  buyerCitizenId: string;
-  selectedProvince: string;
-  selectedProvinceText: string;
-  selectedDistrictWard: string;
-  selectedDistrictWardText: string;
-  specificAddress: string;
-  // Vehicle information
-  bienSo: string;
-  soKhung: string;
-  soMay: string;
-  ngayDKLD: string;
-  namSanXuat: number | '';
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  giaTriXe: string;
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-}
 
 export default function useFormValidation() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -60,22 +34,30 @@ export default function useFormValidation() {
   };
 
   const validationSchema = Yup.object().shape({
-    chuXe: Yup.string().required('Vui lòng nhập chủ xe'),
-    diaChi: Yup.string().required('Vui lòng nhập địa chỉ'),
-    
-    // Buyer information validation
-    buyerEmail: Yup.string()
+    // Customer/Owner Information (consolidated)
+    chuXe: Yup.string().required('Vui lòng nhập họ và tên'),
+    email: Yup.string()
       .email('Vui lòng nhập email hợp lệ')
       .required('Vui lòng nhập email'),
-    buyerPhone: Yup.string()
+    soDienThoai: Yup.string()
       .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
       .required('Vui lòng nhập số điện thoại'),
-    buyerCitizenId: Yup.string()
+    cccd: Yup.string()
       .matches(/^[0-9]{12}$/, 'Căn cước công dân phải có đúng 12 chữ số')
       .required('Vui lòng nhập căn cước công dân'),
+    gioiTinh: Yup.mixed<'nam' | 'nu' | 'khac'>().oneOf(['nam', 'nu', 'khac']).required('Vui lòng chọn giới tính'),
+    userType: Yup.mixed<'ca_nhan' | 'cong_ty'>().oneOf(['ca_nhan', 'cong_ty']).required('Vui lòng chọn loại khách hàng'),
+    
+    // Address Structure (actual form fields)
     selectedProvince: Yup.string().required('Vui lòng chọn tỉnh/thành phố'),
+    selectedProvinceText: Yup.string(),
     selectedDistrictWard: Yup.string().required('Vui lòng chọn quận/huyện/xã'),
+    selectedDistrictWardText: Yup.string(),
     specificAddress: Yup.string().required('Vui lòng nhập địa chỉ cụ thể'),
+    
+    // Buyer fields removed - consolidated into customer fields above
+    
+    // Vehicle information
     bienSo: Yup.string().required('Vui lòng nhập biển số'),
     soKhung: Yup.string().required('Vui lòng nhập số khung'),
     soMay: Yup.string().required('Vui lòng nhập số máy'),
@@ -136,7 +118,26 @@ export default function useFormValidation() {
           return !isNaN(price) && price > 0;
         }),
       otherwise: (schema) => schema.notRequired()
-    })
+    }),
+    
+    // // Package Selection & Insurance fields
+    // selectedPackageIndex: Yup.number()
+    //   .required('Vui lòng chọn gói bảo hiểm')
+    //   .min(0, 'Gói bảo hiểm không hợp lệ'),
+    // includeTNDS: Yup.boolean().required(),
+    // tndsCategory: Yup.string().when('includeTNDS', {
+    //   is: true,
+    //   then: (schema) => schema.required('Vui lòng chọn loại TNDS'),
+    //   otherwise: (schema) => schema.notRequired()
+    // }),
+    // includeNNTX: Yup.boolean().required(),
+    // taiTucPercentage: Yup.number()
+    //   .required('Vui lòng nhập tỷ lệ tái tục')
+    //   .min(0, 'Tỷ lệ tái tục phải từ 0% trở lên')
+    //   .max(100, 'Tỷ lệ tái tục không được vượt quá 100%'),
+    // mucKhauTru: Yup.number()
+    //   .required('Vui lòng nhập mức khấu trừ')
+    //   .min(0, 'Mức khấu trừ phải từ 0 trở lên')
   });
 
   const carValidationSchema = Yup.object().shape({
@@ -146,7 +147,7 @@ export default function useFormValidation() {
     selectedYear: Yup.string().required('Vui lòng chọn năm/phiên bản xe')
   });
 
-  const validateForm = async (formData: FormData, carData: CarSelection): Promise<boolean> => {
+  const validateForm = async (formData: BaseContractFormData, carData: CarSelection): Promise<boolean> => {
     try {
       setFieldErrors({});
 

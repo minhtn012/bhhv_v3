@@ -10,23 +10,7 @@ import {
   type CalculationResult,
   type EnhancedCalculationResult
 } from '@/utils/insurance-calculator';
-
-interface FormData {
-  giaTriXe: string;
-  namSanXuat: number | '';
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-  ngayDKLD: string;
-  selectedPackageIndex: number;
-  includeTNDS: boolean;
-  tndsCategory: string;
-  includeNNTX: boolean;
-  taiTucPercentage: number;
-  mucKhauTru: number;
-}
+import { type InsuranceCalculationFormData } from '@/types/contract';
 
 interface PackageOption {
   index: number;
@@ -44,7 +28,7 @@ export default function useInsuranceCalculation() {
   const [availablePackages, setAvailablePackages] = useState<PackageOption[]>([]);
   const [customRates, setCustomRates] = useState<number[]>([]);
 
-  const calculateRates = useCallback((formData: FormData) => {
+  const calculateRates = useCallback((formData: InsuranceCalculationFormData) => {
     const giaTriXe = parseCurrency(formData.giaTriXe);
     const namSanXuat = Number(formData.namSanXuat);
     const soChoNgoi = Number(formData.soChoNgoi);
@@ -106,7 +90,7 @@ export default function useInsuranceCalculation() {
   }, []);
 
   // Enhanced calculation with custom rates
-  const calculateEnhanced = useCallback((formData: FormData) => {
+  const calculateEnhanced = useCallback((formData: InsuranceCalculationFormData) => {
     if (!calculationResult || customRates.length === 0) {
       setEnhancedResult(null);
       return null;
@@ -138,7 +122,7 @@ export default function useInsuranceCalculation() {
     return enhanced;
   }, [calculationResult, customRates]);
 
-  const calculateTotal = (formData: FormData) => {
+  const calculateTotal = (formData: InsuranceCalculationFormData) => {
     // Always use direct calculation for consistency with displayed values
     if (!calculationResult || availablePackages.length === 0) return 0;
 
@@ -201,7 +185,7 @@ export default function useInsuranceCalculation() {
   }, []);
 
   // Auto-suggest TNDS category
-  const autoSuggestTNDS = useCallback((formData: FormData) => {
+  const autoSuggestTNDS = useCallback((formData: InsuranceCalculationFormData) => {
     const soChoNgoi = Number(formData.soChoNgoi);
     const trongTai = Number(formData.trongTai) || 0;
     

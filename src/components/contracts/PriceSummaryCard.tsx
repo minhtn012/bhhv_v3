@@ -1,5 +1,6 @@
 import { formatCurrency, tndsCategories, parseCurrency, isElectricOrHybridEngine, type EnhancedCalculationResult } from '@/utils/insurance-calculator';
 import Spinner from '@/components/ui/Spinner';
+import { PriceSummaryFormData } from '@/types/contract';
 
 interface PackageOption {
   index: number;
@@ -10,24 +11,15 @@ interface PackageOption {
   available: boolean;
 }
 
-interface FormData {
-  selectedPackageIndex: number;
-  giaTriXe: string;
-  soChoNgoi: number | '';
-  loaiDongCo: string;
-  giaTriPin: string;
-  includeTNDS: boolean;
-  tndsCategory: string;
-  includeNNTX: boolean;
+// Extended form data for component-specific fields
+interface ExtendedPriceSummaryFormData extends PriceSummaryFormData {
   selectedNNTXPackage: string;
-  taiTucPercentage: number;
   mucKhauTru: number;
-  customRates?: number[];
 }
 
 interface PriceSummaryCardProps {
   enhancedResult?: EnhancedCalculationResult;
-  formData: FormData;
+  formData: ExtendedPriceSummaryFormData;
   totalAmount: number;
   nntxFee: number;
   loading: boolean;

@@ -14,50 +14,21 @@ import PackageSelectionStep from '@/components/contracts/PackageSelectionStep';
 import useCarSelection from '@/hooks/useCarSelection';
 import useInsuranceCalculation from '@/hooks/useInsuranceCalculation';
 import useFormValidation from '@/hooks/useFormValidation';
+import { type BaseContractFormData } from '@/types/contract';
 
-interface FormData {
-  // Thông tin khách hàng
-  chuXe: string;
-  diaChi: string;
-  
-  // Thông tin người mua (buyer information)
-  buyerEmail: string;
-  buyerPhone: string;
-  buyerGender: 'nam' | 'nu' | 'khac';
-  buyerCitizenId: string;
+// Extended interface for additional fields specific to edit contract page
+interface FormData extends BaseContractFormData {
+  // Additional UI-specific fields not in BaseContractFormData
   selectedProvince: string;
   selectedProvinceText: string;
   selectedDistrictWard: string;
   selectedDistrictWardText: string;
   specificAddress: string;
-  
-  // Thông tin xe
-  bienSo: string;
   nhanHieu: string;
   soLoai: string;
-  soKhung: string;
-  soMay: string;
-  ngayDKLD: string;
-  namSanXuat: number | '';
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  giaTriXe: string;
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-  
-  // Gói bảo hiểm
-  selectedPackageIndex: number;
   customRates: number[];
-  
-  // Các loại phí
-  includeTNDS: boolean;
-  tndsCategory: string;
-  includeNNTX: boolean;
   selectedNNTXPackage: string;
   tinhTrang: string;
-  mucKhauTru: number;
-  taiTucPercentage: number;
 }
 
 interface Contract {
@@ -131,23 +102,34 @@ export default function EditContractPage() {
   
   // Form data
   const [formData, setFormData] = useState<FormData>({
+    // Customer Information (BaseContractFormData)
     chuXe: '',
     diaChi: '',
-    buyerEmail: '',
+    tinhThanh: '',
+    quanHuyen: '',
+    phuongXa: '',
+    soDienThoai: '',
+    email: '',
+    cccd: '',
+    ngayCapCccd: '',
+    noiCapCccd: '',
+    userType: 'ca_nhan',
+    // Buyer Information (BaseContractFormData)
+    buyerName: '',
+    buyerAddress: '',
+    buyerProvince: '',
+    buyerDistrict: '',
+    buyerWard: '',
     buyerPhone: '',
+    buyerEmail: '',
+    buyerCccd: '',
+    buyerCccdDate: '',
     buyerGender: 'nam',
-    buyerCitizenId: '',
-    selectedProvince: '',
-    selectedProvinceText: '',
-    selectedDistrictWard: '',
-    selectedDistrictWardText: '',
-    specificAddress: '',
+    // Vehicle Information (BaseContractFormData)
     bienSo: '',
-    nhanHieu: '',
-    soLoai: '',
     soKhung: '',
     soMay: '',
-    ngayDKLD: '',
+    tenXe: '',
     namSanXuat: '',
     soChoNgoi: '',
     trongTai: '',
@@ -155,15 +137,25 @@ export default function EditContractPage() {
     loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
     loaiDongCo: '',
     giaTriPin: '',
+    ngayDKLD: '',
+    // Package Selection & Insurance (BaseContractFormData)
     selectedPackageIndex: 0,
-    customRates: [],
     includeTNDS: true,
     tndsCategory: '',
     includeNNTX: true,
-    selectedNNTXPackage: '',
-    tinhTrang: 'cap_moi',
+    taiTucPercentage: 0,
     mucKhauTru: 500000,
-    taiTucPercentage: 0
+    // Additional UI-specific fields
+    selectedProvince: '',
+    selectedProvinceText: '',
+    selectedDistrictWard: '',
+    selectedDistrictWardText: '',
+    specificAddress: '',
+    nhanHieu: '',
+    soLoai: '',
+    customRates: [],
+    selectedNNTXPackage: '',
+    tinhTrang: 'cap_moi'
   });
   
   const router = useRouter();
@@ -231,23 +223,34 @@ export default function EditContractPage() {
   const populateFormFromContract = async (contractData: Contract) => {
     // Set basic form data first
     setFormData({
+      // Customer Information (BaseContractFormData)
       chuXe: contractData.chuXe,
       diaChi: contractData.diaChi,
-      buyerEmail: contractData.buyerEmail || '',
+      tinhThanh: '',
+      quanHuyen: '',
+      phuongXa: '',
+      soDienThoai: '',
+      email: '',
+      cccd: '',
+      ngayCapCccd: '',
+      noiCapCccd: '',
+      userType: 'ca_nhan',
+      // Buyer Information (BaseContractFormData)
+      buyerName: '',
+      buyerAddress: '',
+      buyerProvince: '',
+      buyerDistrict: '',
+      buyerWard: '',
       buyerPhone: contractData.buyerPhone || '',
+      buyerEmail: contractData.buyerEmail || '',
+      buyerCccd: contractData.buyerCitizenId || '',
+      buyerCccdDate: '',
       buyerGender: contractData.buyerGender || 'nam',
-      buyerCitizenId: contractData.buyerCitizenId || '',
-      selectedProvince: contractData.selectedProvince || '',
-      selectedProvinceText: contractData.selectedProvinceText || '',
-      selectedDistrictWard: contractData.selectedDistrictWard || '',
-      selectedDistrictWardText: contractData.selectedDistrictWardText || '',
-      specificAddress: contractData.specificAddress || '',
+      // Vehicle Information (BaseContractFormData)
       bienSo: contractData.bienSo,
-      nhanHieu: contractData.nhanHieu,
-      soLoai: contractData.soLoai,
       soKhung: contractData.soKhung,
       soMay: contractData.soMay,
-      ngayDKLD: contractData.ngayDKLD,
+      tenXe: '',
       namSanXuat: contractData.namSanXuat,
       soChoNgoi: contractData.soChoNgoi,
       trongTai: contractData.trongTai || '',
@@ -255,15 +258,25 @@ export default function EditContractPage() {
       loaiHinhKinhDoanh: contractData.loaiHinhKinhDoanh,
       loaiDongCo: contractData.loaiDongCo || '',
       giaTriPin: contractData.giaTriPin ? formatCurrency(contractData.giaTriPin) : '',
+      ngayDKLD: contractData.ngayDKLD,
+      // Package Selection & Insurance (BaseContractFormData)
       selectedPackageIndex: 0, // Will be determined after calculation
-      customRates: [],
       includeTNDS: contractData.includeTNDS,
       tndsCategory: contractData.tndsCategory,
       includeNNTX: contractData.includeNNTX,
-      selectedNNTXPackage: '',
-      tinhTrang: 'cap_moi',
+      taiTucPercentage: 0,
       mucKhauTru: contractData.mucKhauTru,
-      taiTucPercentage: 0
+      // Additional UI-specific fields
+      selectedProvince: contractData.selectedProvince || '',
+      selectedProvinceText: contractData.selectedProvinceText || '',
+      selectedDistrictWard: contractData.selectedDistrictWard || '',
+      selectedDistrictWardText: contractData.selectedDistrictWardText || '',
+      specificAddress: contractData.specificAddress || '',
+      nhanHieu: contractData.nhanHieu,
+      soLoai: contractData.soLoai,
+      customRates: [],
+      selectedNNTXPackage: '',
+      tinhTrang: 'cap_moi'
     });
 
     // Initialize car data if available
@@ -413,7 +426,7 @@ export default function EditContractPage() {
         buyerEmail: formData.buyerEmail,
         buyerPhone: formData.buyerPhone,
         buyerGender: formData.buyerGender,
-        buyerCitizenId: formData.buyerCitizenId,
+        buyerCitizenId: formData.buyerCccd,
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
         selectedDistrictWard: formData.selectedDistrictWard,
@@ -557,7 +570,7 @@ export default function EditContractPage() {
                     buyerEmail: formData.buyerEmail,
                     buyerPhone: formData.buyerPhone,
                     buyerGender: formData.buyerGender,
-                    buyerCitizenId: formData.buyerCitizenId,
+                    buyerCitizenId: formData.buyerCccd,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,

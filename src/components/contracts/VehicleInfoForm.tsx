@@ -3,6 +3,7 @@ import { CarSelection } from '@/types/car';
 import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
+import { VehicleFormData } from '@/types/contract';
 
 interface EngineType {
   name: string;
@@ -12,30 +13,14 @@ interface EngineType {
 import { getEngineTypeFromCarType } from '@/utils/car-engine-mapping';
 import { useEffect } from 'react';
 
-interface FormData {
-  chuXe: string;
-  diaChi: string;
-  bienSo: string;
-  soKhung: string;
-  soMay: string;
-  ngayDKLD: string;
-  namSanXuat: number | '';
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  giaTriXe: string;
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-}
-
 interface VehicleInfoFormProps {
-  formData: FormData;
+  formData: VehicleFormData;
   carData: CarSelection;
   fieldErrors: Record<string, string>;
-  onFormInputChange: (field: keyof FormData, value: any) => void;
+  onFormInputChange: (field: keyof VehicleFormData, value: string | number) => void;
   onBrandChange: (brand: string) => void;
   onModelChange: (model: string) => void;
-  onCarInputChange: (field: keyof CarSelection, value: any) => void;
+  onCarInputChange: (field: keyof CarSelection, value: string) => void;
   onAcceptSuggestion: () => void;
   onCalculateRates: () => void;
   hideCalculateButton?: boolean;
@@ -68,8 +53,6 @@ export default function VehicleInfoForm({
       if (selectedCar && selectedCar.car_type) {
         const engineType = getEngineTypeFromCarType(selectedCar.car_type);
         if (engineType) {
-          const carType = selectedCar.car_type.toUpperCase();
-          
           // Always update engine type when car model changes
           onFormInputChange('loaiDongCo', engineType);
         }

@@ -2,6 +2,7 @@ import { tndsCategories, type CalculationResult, type EnhancedCalculationResult,
 import PackageCard from './PackageCard';
 import DynamicTNDSSelector from './DynamicTNDSSelector';
 import PriceSummaryCard from './PriceSummaryCard';
+import { PackageSelectionFormData } from '@/types/contract';
 
 interface PackageOption {
   index: number;
@@ -12,32 +13,21 @@ interface PackageOption {
   available: boolean;
 }
 
-interface FormData {
-  giaTriXe: string;
-  soChoNgoi: number | '';
-  trongTai: number | '';
-  loaiHinhKinhDoanh: string;
-  loaiDongCo: string;
-  giaTriPin: string;
-  selectedPackageIndex: number;
-  includeTNDS: boolean;
-  tndsCategory: string;
-  includeNNTX: boolean;
+// Extended form data for component-specific fields
+interface ExtendedPackageFormData extends PackageSelectionFormData {
   selectedNNTXPackage: string;
   tinhTrang: string;
-  mucKhauTru: number;
-  taiTucPercentage: number;
 }
 
 interface PackageSelectionStepProps {
   availablePackages: PackageOption[];
   calculationResult: CalculationResult;
   enhancedResult?: EnhancedCalculationResult;
-  formData: FormData;
+  formData: ExtendedPackageFormData;
   totalAmount: number;
   nntxFee: number;
   loading: boolean;
-  onFormInputChange: (field: keyof FormData, value: any) => void;
+  onFormInputChange: (field: keyof ExtendedPackageFormData, value: string | number | boolean) => void;
   onPackageSelect: (packageIndex: number) => void;
   onSubmit: () => void;
   onRateChange?: (index: number, newRate: number, newFee: number) => void;
