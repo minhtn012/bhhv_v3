@@ -5,6 +5,7 @@ import {
   calculateCustomFee,
   suggestTNDSCategory,
   parseCurrency,
+  calculateTotalVehicleValue,
   packageLabels,
   tndsCategories,
   type CalculationResult,
@@ -143,9 +144,13 @@ export default function useInsuranceCalculation() {
     // We'll let the parent component handle the NNTX fee calculation to avoid double calculation
     // The PriceSummaryCard component has its own async NNTX calculation that should be authoritative
 
-    // 4. Tái tục/ Cấp mới - based on vehicle value
-    const vehicleValue = parseCurrency(formData.giaTriXe);
-    const adjustment = (vehicleValue * formData.taiTucPercentage) / 100;
+    // 4. Tái tục/ Cấp mới - based on total vehicle value (including battery for electric/hybrid)
+    const totalVehicleValue = calculateTotalVehicleValue(
+      parseCurrency(formData.giaTriXe),
+      formData.giaTriPin,
+      formData.loaiDongCo
+    );
+    const adjustment = (totalVehicleValue * formData.taiTucPercentage) / 100;
     total += adjustment;
 
     return total;

@@ -1,4 +1,4 @@
-import { tndsCategories, type CalculationResult, type EnhancedCalculationResult, parseCurrency } from '@/utils/insurance-calculator';
+import { tndsCategories, type CalculationResult, type EnhancedCalculationResult, parseCurrency, calculateTotalVehicleValue } from '@/utils/insurance-calculator';
 import PackageCard from './PackageCard';
 import DynamicTNDSSelector from './DynamicTNDSSelector';
 import PriceSummaryCard from './PriceSummaryCard';
@@ -65,6 +65,7 @@ export default function PackageSelectionStep({
                   package={pkg}
                   isSelected={formData.selectedPackageIndex === pkg.index}
                   onSelect={() => pkg.available && onPackageSelect(pkg.index)}
+                  loaiDongCo={formData.loaiDongCo}
                 />
               ))}
             </div>
@@ -82,9 +83,13 @@ export default function PackageSelectionStep({
             mucKhauTru={formData.mucKhauTru}
             taiTucPercentage={formData.taiTucPercentage}
             adjustmentAmount={(() => {
-              // Calculate adjustment based on vehicle value
-              const vehicleValue = parseCurrency(formData.giaTriXe);
-              return (vehicleValue * formData.taiTucPercentage) / 100;
+              // Calculate adjustment based on total vehicle value (including battery for electric/hybrid)
+              const totalVehicleValue = calculateTotalVehicleValue(
+                parseCurrency(formData.giaTriXe),
+                formData.giaTriPin,
+                formData.loaiDongCo
+              );
+              return (totalVehicleValue * formData.taiTucPercentage) / 100;
             })()}
             onTNDSChange={(includeTNDS, tndsCategory) => {
               onFormInputChange('includeTNDS', includeTNDS);

@@ -1,4 +1,4 @@
-import { formatCurrency, tndsCategories, parseCurrency, isElectricOrHybridEngine, type EnhancedCalculationResult } from '@/utils/insurance-calculator';
+import { formatCurrency, tndsCategories, parseCurrency, isElectricOrHybridEngine, calculateTotalVehicleValue, type EnhancedCalculationResult } from '@/utils/insurance-calculator';
 import Spinner from '@/components/ui/Spinner';
 import { PriceSummaryFormData } from '@/types/contract';
 
@@ -44,22 +44,28 @@ export default function PriceSummaryCard({
       <h3 className="text-xl font-bold text-center text-white mb-4">BẢNG TỔNG HỢP PHÍ</h3>
       
       <div className="space-y-2 text-sm mb-4">
-        <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-          <span className="text-gray-300">1. Phí bảo hiểm Vật chất:</span>
-          <span className="font-semibold text-white">
-            {formatCurrency(enhancedResult?.totalVatChatFee || 0)}
-          </span>
-        </div>
-        
-        {/* Battery fee line - only show for HYBRID/EV vehicles */}
-        {isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0 && (
-          <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-            <span className="text-gray-300">1b. Phí pin xe điện:</span>
-            <span className="font-semibold text-green-400">
-              {formatCurrency(enhancedResult?.totalBatteryFee || 0)}
-            </span>
+        <div className="py-1 border-b border-dashed border-white/20">
+          <div className="text-gray-300 mb-1">
+            1. Phí bảo hiểm Vật chất{isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0 ? ' (bao gồm pin)' : ''}:
           </div>
-        )}
+          <div className="text-right text-xs text-gray-400 mb-1">
+            {(() => {
+              if (enhancedResult?.customRates && formData.selectedPackageIndex !== undefined) {
+                const baseRate = enhancedResult.customRates[formData.selectedPackageIndex];
+                if (baseRate) {
+                  const effectiveRate = isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0 
+                    ? baseRate + 0.10
+                    : baseRate;
+                  return `${effectiveRate.toFixed(2)}%`;
+                }
+              }
+              return '';
+            })()}
+          </div>
+          <div className="text-right font-semibold text-white">
+            {formatCurrency((enhancedResult?.totalVatChatFee || 0) + (enhancedResult?.totalBatteryFee || 0))}
+          </div>
+        </div>
         
         <div className="flex justify-between py-1 border-b border-dashed border-white/20">
           <span className="text-gray-300">2. Phí TNDS Bắt buộc:</span>
@@ -83,9 +89,13 @@ export default function PriceSummaryCard({
             <span className="text-gray-300">4. Tái tục/ Cấp mới:</span>
             <span className="font-semibold text-white">
               {(() => {
-                // Calculate adjustment based on vehicle value
-                const vehicleValue = parseCurrency(formData.giaTriXe);
-                const adjustmentAmount = (vehicleValue * formData.taiTucPercentage) / 100;
+                // Calculate adjustment based on total vehicle value (including battery for electric/hybrid)
+                const totalVehicleValue = calculateTotalVehicleValue(
+                  parseCurrency(formData.giaTriXe),
+                  formData.giaTriPin,
+                  formData.loaiDongCo
+                );
+                const adjustmentAmount = (totalVehicleValue * formData.taiTucPercentage) / 100;
                 return (adjustmentAmount > 0 ? '+' : '') + formatCurrency(Math.abs(adjustmentAmount));
               })()}
             </span>
@@ -129,8 +139,12 @@ export default function PriceSummaryCard({
             
             // 4. Tái tục adjustment
             if (formData.taiTucPercentage !== 0) {
-              const vehicleValue = parseCurrency(formData.giaTriXe);
-              const adjustmentAmount = (vehicleValue * formData.taiTucPercentage) / 100;
+              const totalVehicleValue = calculateTotalVehicleValue(
+                parseCurrency(formData.giaTriXe),
+                formData.giaTriPin,
+                formData.loaiDongCo
+              );
+              const adjustmentAmount = (totalVehicleValue * formData.taiTucPercentage) / 100;
               finalTotal += adjustmentAmount;
             }
             

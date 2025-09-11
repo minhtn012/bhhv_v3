@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/insurance-calculator';
+import { formatCurrency, isElectricOrHybridEngine } from '@/utils/insurance-calculator';
 
 interface PackageOption {
   index: number;
@@ -13,12 +13,14 @@ interface PackageCardProps {
   package: PackageOption;
   isSelected: boolean;
   onSelect: () => void;
+  loaiDongCo?: string; // Add vehicle engine type to detect electric/hybrid
 }
 
 export default function PackageCard({ 
   package: pkg, 
   isSelected, 
-  onSelect
+  onSelect,
+  loaiDongCo
 }: PackageCardProps) {
 
   return (
@@ -49,7 +51,10 @@ export default function PackageCard({
         </div>
         <div className="text-right">
           <div className="text-sm text-gray-300">
-            {pkg.rate.toFixed(2)}%
+            <span>{pkg.rate.toFixed(2)}%</span>
+            {isElectricOrHybridEngine(loaiDongCo) && (
+              <span className="text-sm text-amber-400 font-medium ml-1">+0.10%</span>
+            )}
           </div>
           <div className="font-bold text-blue-400">
             {pkg.available ? formatCurrency(pkg.fee) : 'N/A'}
