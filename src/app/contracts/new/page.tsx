@@ -203,12 +203,8 @@ export default function NewContractPage() {
 
   // Handle form input change
   const handleInputChange = useCallback((field: keyof FormData, value: any) => {
-    if (field === 'loaiHinhKinhDoanh') {
-    }
-    if (field === 'namSanXuat') {
-    }
     setFormData(prev => ({ ...prev, [field]: value }));
-  }, [formData.loaiHinhKinhDoanh, formData.namSanXuat]);
+  }, []);
 
   // Handle extract success
   const handleExtractSuccess = (data: any) => {
