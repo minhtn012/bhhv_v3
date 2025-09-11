@@ -6,7 +6,19 @@ interface ExtractedData {
   soLoai?: string;
 }
 
-export default function useCarSelection() {
+interface VehicleData {
+  tenXe: string;
+  nhanHieu: string;
+  soLoai: string;
+  kieuDang: string;
+  namPhienBan: string;
+}
+
+interface UseCarSelectionProps {
+  onVehicleDataChange?: (vehicleData: VehicleData) => void;
+}
+
+export default function useCarSelection(props?: UseCarSelectionProps) {
   const [carData, setCarData] = useState<CarSelection>({
     suggestedCar: null,
     selectedBrand: '',
@@ -20,6 +32,42 @@ export default function useCarSelection() {
     isLoadingModels: false,
     isLoadingDetails: false
   });
+
+  // Generate vehicle data from car selection
+  const generateVehicleData = (selection: CarSelection): VehicleData => {
+    const { selectedBrand, selectedModel, selectedBodyStyle, selectedYear } = selection;
+    
+    // Generate tenXe (complete vehicle name)
+    let tenXe = '';
+    if (selectedBrand) {
+      tenXe = selectedBrand;
+      if (selectedModel) {
+        tenXe += ` ${selectedModel}`;
+        if (selectedBodyStyle) {
+          tenXe += ` ${selectedBodyStyle}`;
+        }
+        if (selectedYear && selectedYear !== 'Khác') {
+          tenXe += ` ${selectedYear}`;
+        }
+      }
+    }
+    
+    return {
+      tenXe: tenXe.trim(),
+      nhanHieu: selectedBrand,
+      soLoai: selectedModel,
+      kieuDang: selectedBodyStyle,
+      namPhienBan: selectedYear
+    };
+  };
+
+  // Call callback when vehicle data changes
+  const notifyVehicleDataChange = (newCarData: CarSelection) => {
+    if (props?.onVehicleDataChange) {
+      const vehicleData = generateVehicleData(newCarData);
+      props.onVehicleDataChange(vehicleData);
+    }
+  };
 
   // Load all brands on component mount
   useEffect(() => {
@@ -41,12 +89,18 @@ export default function useCarSelection() {
   }, []);
 
   const handleInputChange = (field: keyof CarSelection, value: any) => {
-    setCarData(prev => ({ ...prev, [field]: value }));
+    const newCarData = { ...carData, [field]: value };
+    setCarData(newCarData);
+    
+    // Notify when vehicle identification fields change
+    if (['selectedBrand', 'selectedModel', 'selectedBodyStyle', 'selectedYear'].includes(field)) {
+      notifyVehicleDataChange(newCarData);
+    }
   };
 
   const handleBrandChange = async (brandName: string) => {
-    setCarData(prev => ({ 
-      ...prev, 
+    const newCarData = { 
+      ...carData, 
       selectedBrand: brandName,
       selectedModel: '',
       selectedBodyStyle: '',
@@ -55,44 +109,51 @@ export default function useCarSelection() {
       availableBodyStyles: [],
       availableYears: [],
       isLoadingModels: true
-    }));
+    };
+    
+    setCarData(newCarData);
+    notifyVehicleDataChange(newCarData);
 
     try {
       const response = await fetch(`/api/car-search/models/${encodeURIComponent(brandName)}`);
       const result = await response.json();
       
       if (result.success) {
-        setCarData(prev => ({ 
-          ...prev, 
+        const updatedCarData = { 
+          ...newCarData, 
           availableModels: result.data,
           isLoadingModels: false
-        }));
+        };
+        setCarData(updatedCarData);
       } else {
         console.error('Error loading models:', result.error);
-        setCarData(prev => ({ 
-          ...prev, 
+        setCarData({ 
+          ...newCarData, 
           isLoadingModels: false
-        }));
+        });
       }
     } catch (error) {
       console.error('Error loading models:', error);
-      setCarData(prev => ({ 
-        ...prev, 
+      setCarData({ 
+        ...newCarData, 
         isLoadingModels: false
-      }));
+      });
     }
   };
 
   const handleModelChange = async (modelName: string) => {
-    setCarData(prev => ({ 
-      ...prev, 
+    const newCarData = { 
+      ...carData, 
       selectedModel: modelName,
       selectedBodyStyle: '',
       selectedYear: 'Khác',
       availableBodyStyles: [],
       availableYears: [],
       isLoadingDetails: true
-    }));
+    };
+    
+    setCarData(newCarData);
+    notifyVehicleDataChange(newCarData);
 
     try {
       const response = await fetch(
@@ -101,27 +162,29 @@ export default function useCarSelection() {
       const result = await response.json();
       
       if (result.success) {
-        setCarData(prev => ({ 
-          ...prev, 
+        const updatedCarData = { 
+          ...newCarData, 
           availableBodyStyles: result.data.bodyStyles,
           availableYears: result.data.years || [],
           selectedBodyStyle: result.data.bodyStyles[0]?.name || '',
           selectedYear: result.data.years[0]?.name || '',
           isLoadingDetails: false
-        }));
+        };
+        setCarData(updatedCarData);
+        notifyVehicleDataChange(updatedCarData);
       } else {
         console.error('Error loading car details:', result.error);
-        setCarData(prev => ({ 
-          ...prev, 
+        setCarData({ 
+          ...newCarData, 
           isLoadingDetails: false
-        }));
+        });
       }
     } catch (error) {
       console.error('Error loading car details:', error);
-      setCarData(prev => ({ 
-        ...prev, 
+      setCarData({ 
+        ...newCarData, 
         isLoadingDetails: false
-      }));
+      });
     }
   };
 
@@ -135,8 +198,8 @@ export default function useCarSelection() {
         
         const allModels = modelsResult.success ? modelsResult.data : [car];
         
-        setCarData(prev => ({
-          ...prev,
+        const updatedCarData = {
+          ...carData,
           selectedBrand: car.brand_name,
           selectedModel: car.model_name,
           selectedBodyStyle: car.body_styles?.[0]?.name || '',
@@ -144,11 +207,13 @@ export default function useCarSelection() {
           availableModels: allModels,
           availableBodyStyles: car.body_styles || [],
           availableYears: car.years || []
-        }));
+        };
+        setCarData(updatedCarData);
+        notifyVehicleDataChange(updatedCarData);
       } catch (error) {
         console.error('Error loading all models:', error);
-        setCarData(prev => ({
-          ...prev,
+        const fallbackCarData = {
+          ...carData,
           selectedBrand: car.brand_name,
           selectedModel: car.model_name,
           selectedBodyStyle: car.body_styles?.[0]?.name || '',
@@ -156,7 +221,9 @@ export default function useCarSelection() {
           availableModels: [car],
           availableBodyStyles: car.body_styles || [],
           availableYears: car.years || []
-        }));
+        };
+        setCarData(fallbackCarData);
+        notifyVehicleDataChange(fallbackCarData);
       }
     }
   };
@@ -199,8 +266,8 @@ export default function useCarSelection() {
         
         const allModels = modelsResult.success ? modelsResult.data : [suggestedCar];
         
-        setCarData(prev => ({
-          ...prev,
+        const updatedCarData = {
+          ...carData,
           suggestedCar,
           selectedBrand: suggestedCar.brand_name,
           selectedModel: suggestedCar.model_name,
@@ -209,7 +276,9 @@ export default function useCarSelection() {
           availableYears: suggestedCar.years || [],
           selectedBodyStyle: suggestedCar.body_styles?.[0]?.name || '',
           selectedYear: suggestedCar.years?.[0]?.name || ''
-        }));
+        };
+        setCarData(updatedCarData);
+        notifyVehicleDataChange(updatedCarData);
       }
 
     } catch (error) {
@@ -254,8 +323,8 @@ export default function useCarSelection() {
       }
 
       // Step 3: Set all data at once
-      setCarData(prev => ({
-        ...prev,
+      const updatedCarData = {
+        ...carData,
         selectedBrand: contractData.carBrand!,
         selectedModel: contractData.carModel!,
         selectedBodyStyle: contractData.carBodyStyle || '',
@@ -265,7 +334,9 @@ export default function useCarSelection() {
         availableYears: detailsResult.data.years || [],
         isLoadingModels: false,
         isLoadingDetails: false
-      }));
+      };
+      setCarData(updatedCarData);
+      notifyVehicleDataChange(updatedCarData);
 
     } catch (error) {
       console.error('Error initializing car data from contract:', error);

@@ -23,6 +23,7 @@ interface VehicleInfoFormProps {
   onCarInputChange: (field: keyof CarSelection, value: string) => void;
   onAcceptSuggestion: () => void;
   onCalculateRates: () => void;
+  onVehicleDataChange?: (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => void;
   hideCalculateButton?: boolean;
 }
 
@@ -36,6 +37,7 @@ export default function VehicleInfoForm({
   onCarInputChange,
   onAcceptSuggestion,
   onCalculateRates,
+  onVehicleDataChange,
   hideCalculateButton = false
 }: VehicleInfoFormProps) {
   const selectedEngine: EngineType | undefined = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
@@ -59,6 +61,21 @@ export default function VehicleInfoForm({
       }
     }
   }, [carData.selectedBrand, carData.selectedModel, carData.availableModels]);
+
+  // Handle vehicle data changes from CarSelectionForm
+  const handleVehicleDataChange = (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => {
+    // Update form data with vehicle details
+    onFormInputChange('tenXe', vehicleData.tenXe);
+    onFormInputChange('nhanHieu', vehicleData.nhanHieu);
+    onFormInputChange('soLoai', vehicleData.soLoai);
+    onFormInputChange('kieuDang', vehicleData.kieuDang);
+    onFormInputChange('namPhienBan', vehicleData.namPhienBan);
+    
+    // Call parent callback if provided
+    if (onVehicleDataChange) {
+      onVehicleDataChange(vehicleData);
+    }
+  };
 
   return (
     <div>      
@@ -165,6 +182,7 @@ export default function VehicleInfoForm({
           onModelChange={onModelChange}
           onInputChange={onCarInputChange}
           onAcceptSuggestion={onAcceptSuggestion}
+          onVehicleDataChange={handleVehicleDataChange}
         />
 
         <div className="lg:col-span-3">

@@ -11,6 +11,7 @@ interface CarSelectionFormProps {
   onModelChange: (model: string) => void;
   onInputChange: (field: keyof CarSelection, value: any) => void;
   onAcceptSuggestion: () => void;
+  onVehicleDataChange?: (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => void;
 }
 
 export default function CarSelectionForm({ 
@@ -19,7 +20,8 @@ export default function CarSelectionForm({
   onBrandChange, 
   onModelChange, 
   onInputChange, 
-  onAcceptSuggestion 
+  onAcceptSuggestion,
+  onVehicleDataChange
 }: CarSelectionFormProps) {
   return (
     <div className="lg:col-span-3 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-4">

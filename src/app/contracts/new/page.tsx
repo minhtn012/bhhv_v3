@@ -111,8 +111,22 @@ export default function NewContractPage() {
     }, delay);
   };
   
+  // Handle vehicle data changes from car selection
+  const handleVehicleDataChange = (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => {
+    setFormData(prev => ({
+      ...prev,
+      tenXe: vehicleData.tenXe,
+      nhanHieu: vehicleData.nhanHieu,
+      soLoai: vehicleData.soLoai,
+      kieuDang: vehicleData.kieuDang,
+      namPhienBan: vehicleData.namPhienBan
+    }));
+  };
+
   // Custom hooks
-  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, searchCarFromExtractedData } = useCarSelection();
+  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, searchCarFromExtractedData } = useCarSelection({
+    onVehicleDataChange: handleVehicleDataChange
+  });
   const { 
     calculationResult, 
     enhancedResult,
@@ -476,6 +490,7 @@ export default function NewContractPage() {
                     onCarInputChange={handleCarInputChange}
                     onAcceptSuggestion={acceptSuggestedCar}
                     onCalculateRates={handleCalculateRates}
+                    onVehicleDataChange={handleVehicleDataChange}
                   />
                 </StepWrapper>
               </div>

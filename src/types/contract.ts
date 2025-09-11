@@ -25,7 +25,7 @@ export interface BaseContractFormData {
   selectedDistrictWardText: string; // District/Ward name
   specificAddress: string;       // Specific address
 
-  // Vehicle Information (12 fields)
+  // Vehicle Information (15 fields)
   bienSo: string;
   soKhung: string;
   soMay: string;
@@ -37,6 +37,13 @@ export interface BaseContractFormData {
   loaiDongCo: string;
   giaTriPin: string;
   ngayDKLD: string;
+  
+  // Vehicle Details from Car Selection
+  tenXe: string;                // Complete vehicle name (brand + model + body style + year)
+  nhanHieu: string;             // Brand name
+  soLoai: string;               // Model name
+  kieuDang: string;             // Body style
+  namPhienBan: string;          // Year/Version
   
   // Package Selection & Insurance (6 fields)  
   selectedPackageIndex: number;
@@ -51,7 +58,7 @@ export interface BaseContractFormData {
 export type VehicleFormData = Pick<BaseContractFormData, 
   'bienSo' | 'soKhung' | 'soMay' | 'namSanXuat' | 'soChoNgoi' | 
   'trongTai' | 'giaTriXe' | 'loaiHinhKinhDoanh' | 'loaiDongCo' | 'giaTriPin' | 
-  'ngayDKLD' | 'chuXe'
+  'ngayDKLD' | 'chuXe' | 'tenXe' | 'nhanHieu' | 'soLoai' | 'kieuDang' | 'namPhienBan'
 >;
 
 export type BuyerFormData = Pick<BaseContractFormData,
@@ -113,6 +120,13 @@ export const defaultContractFormData: BaseContractFormData = {
   loaiDongCo: 'xang',
   giaTriPin: '',
   ngayDKLD: '',
+  
+  // Vehicle Details from Car Selection
+  tenXe: '',
+  nhanHieu: '',
+  soLoai: '',
+  kieuDang: '',
+  namPhienBan: '',
   
   // Package Selection & Insurance
   selectedPackageIndex: 0,

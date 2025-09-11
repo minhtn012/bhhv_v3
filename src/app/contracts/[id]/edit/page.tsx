@@ -162,8 +162,22 @@ export default function EditContractPage() {
   const params = useParams();
   const contractId = params.id as string;
   
+  // Handle vehicle data changes from car selection
+  const handleVehicleDataChange = (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => {
+    setFormData(prev => ({
+      ...prev,
+      tenXe: vehicleData.tenXe,
+      nhanHieu: vehicleData.nhanHieu,
+      soLoai: vehicleData.soLoai,
+      kieuDang: vehicleData.kieuDang,
+      namPhienBan: vehicleData.namPhienBan
+    }));
+  };
+
   // Custom hooks
-  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, initializeFromExistingContract } = useCarSelection();
+  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, initializeFromExistingContract } = useCarSelection({
+    onVehicleDataChange: handleVehicleDataChange
+  });
   const { 
     calculationResult, 
     enhancedResult,
@@ -610,6 +624,7 @@ export default function EditContractPage() {
                   onCarInputChange={handleCarInputChange}
                   onAcceptSuggestion={acceptSuggestedCar}
                   onCalculateRates={handleRecalculate}
+                  onVehicleDataChange={handleVehicleDataChange}
                   hideCalculateButton={true}
                 />
               </div>
