@@ -120,6 +120,7 @@ export default function PackageSelectionStep({
             loading={loading}
             onSubmit={onSubmit}
             submitButtonText={submitButtonText}
+            availablePackages={availablePackages}
           />
         </div>
       </div>

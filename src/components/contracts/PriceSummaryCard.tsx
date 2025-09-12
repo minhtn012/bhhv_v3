@@ -27,6 +27,7 @@ interface PriceSummaryCardProps {
   onSubmit: () => void;
   submitButtonText?: string;
   showSubmitButton?: boolean;
+  availablePackages?: PackageOption[];
 }
 
 export default function PriceSummaryCard({ 
@@ -37,25 +38,25 @@ export default function PriceSummaryCard({
   loading, 
   onSubmit,
   submitButtonText = "Tạo Hợp đồng",
-  showSubmitButton = true
+  showSubmitButton = true,
+  availablePackages
 }: PriceSummaryCardProps) {
-  // Local state for custom percentage editing
-  const [customPercentage, setCustomPercentage] = useState<number | null>(null);
+  // Track user-modified percentage (only set when manually changed)
+  const [userModifiedPercentage, setUserModifiedPercentage] = useState<number | null>(null);
 
-  // Calculate original and effective rates
-  const originalRate = enhancedResult?.customRates?.[formData.selectedPackageIndex];
+  // Calculate original and effective rates with fallback to availablePackages
+  const originalRate = enhancedResult?.customRates?.[formData.selectedPackageIndex] ?? 
+    availablePackages?.find(pkg => pkg.index === formData.selectedPackageIndex)?.rate;
   const originalEffectiveRate = originalRate ? (
     isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0 
       ? originalRate + 0.10
       : originalRate
   ) : 0;
 
-  // Initialize custom percentage with original effective rate
+  // Reset user modifications when package changes
   useEffect(() => {
-    if (originalEffectiveRate > 0 && customPercentage === null) {
-      setCustomPercentage(originalEffectiveRate);
-    }
-  }, [originalEffectiveRate, customPercentage]);
+    setUserModifiedPercentage(null);
+  }, [formData.selectedPackageIndex]);
 
   // Calculate fees based on custom percentage
   const calculateCustomFee = (percentage: number): number => {
@@ -67,10 +68,10 @@ export default function PriceSummaryCard({
     return (totalVehicleValue * percentage) / 100;
   };
 
-  const currentPercentage = customPercentage ?? originalEffectiveRate;
+  const currentPercentage = userModifiedPercentage ?? originalEffectiveRate;
   const originalFee = (enhancedResult?.totalVatChatFee || 0) + (enhancedResult?.totalBatteryFee || 0);
   const customFee = currentPercentage > 0 ? calculateCustomFee(currentPercentage) : originalFee;
-  const hasCustomRate = customPercentage !== null && Math.abs(currentPercentage - originalEffectiveRate) > 0.001;
+  const hasCustomRate = userModifiedPercentage !== null && Math.abs(currentPercentage - originalEffectiveRate) > 0.001;
 
   return (
     <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6 sticky top-4">
@@ -95,7 +96,7 @@ export default function PriceSummaryCard({
                   onChange={(e) => {
                     const value = parseFloat(e.target.value);
                     if (!isNaN(value) && value >= 0.1 && value <= 10) {
-                      setCustomPercentage(value);
+                      setUserModifiedPercentage(value);
                     }
                   }}
                   className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
