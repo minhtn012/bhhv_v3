@@ -1,4 +1,4 @@
-import { formatCurrency, isElectricOrHybridEngine } from '@/utils/insurance-calculator';
+import { formatCurrency, isElectricOrHybridEngine, parseCurrency, calculateTotalVehicleValue } from '@/utils/insurance-calculator';
 
 interface PackageOption {
   index: number;
@@ -14,14 +14,47 @@ interface PackageCardProps {
   isSelected: boolean;
   onSelect: () => void;
   loaiDongCo?: string; // Add vehicle engine type to detect electric/hybrid
+  giaTriXe?: string; // Vehicle value for fee calculation
+  giaTriPin?: string; // Battery value for electric/hybrid vehicles
+  loaiHinhKinhDoanh?: string; // Business type for fee calculation
 }
 
 export default function PackageCard({ 
   package: pkg, 
   isSelected, 
   onSelect,
-  loaiDongCo
+  loaiDongCo,
+  giaTriXe,
+  giaTriPin,
+  loaiHinhKinhDoanh
 }: PackageCardProps) {
+  // Calculate dynamic fee using same logic as PriceSummaryCard
+  const calculateDynamicFee = (): number => {
+    if (!giaTriXe) {
+      return pkg.fee; // Fallback to static fee
+    }
+
+    const giaTriXeValue = parseCurrency(giaTriXe);
+    if (giaTriXeValue <= 0) {
+      return pkg.fee;
+    }
+
+    // Calculate effective rate (add 0.10% for electric/hybrid)
+    const effectiveRate = isElectricOrHybridEngine(loaiDongCo) && giaTriPin && parseCurrency(giaTriPin) > 0 
+      ? pkg.rate + 0.10
+      : pkg.rate;
+
+    // Use same formula as PriceSummaryCard: (xe + pin) * rate%
+    const totalVehicleValue = calculateTotalVehicleValue(
+      giaTriXeValue,
+      giaTriPin,
+      loaiDongCo
+    );
+    
+    return (totalVehicleValue * effectiveRate) / 100;
+  };
+
+  const displayFee = calculateDynamicFee();
 
   return (
     <div 
@@ -57,7 +90,7 @@ export default function PackageCard({
             )}
           </div>
           <div className="font-bold text-blue-400">
-            {pkg.available ? formatCurrency(pkg.fee) : 'N/A'}
+            {pkg.available ? formatCurrency(displayFee) : 'N/A'}
           </div>
         </div>
       </div>

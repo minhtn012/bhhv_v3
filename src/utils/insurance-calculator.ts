@@ -276,8 +276,16 @@ export function calculateCustomFee(
   loaiDongCo?: string,
   giaTriPin?: string | number
 ): { fee: number; hasMinFee: boolean; batteryFee: number } {
-  // Calculate base fee using only vehicle value
-  let fee = (giaTriXe * rate) / 100;
+  // Calculate total vehicle value (xe + pin)
+  const totalVehicleValue = calculateTotalVehicleValue(giaTriXe, giaTriPin, loaiDongCo);
+  
+  // Apply surcharge for electric/hybrid vehicles
+  const effectiveRate = isElectricOrHybridEngine(loaiDongCo) && giaTriPin && parseCurrency(String(giaTriPin)) > 0
+    ? rate + HYBRID_EV_SURCHARGE
+    : rate;
+  
+  // Calculate fee: (xe + pin) * (rate + 0.1%) or xe * rate
+  let fee = (totalVehicleValue * effectiveRate) / 100;
   let hasMinFee = false;
 
   // Apply minimum fee logic for xe gia đình < 500M (from index_2.html)
@@ -287,10 +295,7 @@ export function calculateCustomFee(
     hasMinFee = true;
   }
 
-  // Calculate battery surcharge fee separately
-  const batteryFee = calculateBatterySurchargeFee(giaTriXe, giaTriPin || 0, rate, loaiHinhKinhDoanh, loaiDongCo);
-
-  return { fee, hasMinFee, batteryFee };
+  return { fee, hasMinFee, batteryFee: 0 };
 }
 
 // Auto-suggest TNDS category based on vehicle info

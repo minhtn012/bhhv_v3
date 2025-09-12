@@ -66,6 +66,9 @@ export default function PackageSelectionStep({
                   isSelected={formData.selectedPackageIndex === pkg.index}
                   onSelect={() => pkg.available && onPackageSelect(pkg.index)}
                   loaiDongCo={formData.loaiDongCo}
+                  giaTriXe={formData.giaTriXe}
+                  giaTriPin={formData.giaTriPin}
+                  loaiHinhKinhDoanh={formData.loaiHinhKinhDoanh}
                 />
               ))}
             </div>
