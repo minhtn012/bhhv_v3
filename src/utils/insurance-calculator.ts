@@ -378,6 +378,57 @@ export function getAvailableTNDSCategories(): Array<{ key: string; label: string
   }));
 }
 
+// Helper function to get effective rate from contract or calculation
+export function getEffectiveRateFromContract(contract: {
+  vatChatPackage: {
+    tyLePhi: number;
+    customRate?: number;
+    isCustomRate?: boolean;
+  };
+  loaiDongCo?: string;
+  giaTriPin?: number;
+}): number {
+  const { vatChatPackage, loaiDongCo, giaTriPin } = contract;
+  
+  // Use custom rate if available and marked as custom
+  const baseRate = vatChatPackage.isCustomRate && vatChatPackage.customRate
+    ? vatChatPackage.customRate
+    : vatChatPackage.tyLePhi;
+    
+  // Apply hybrid/EV surcharge if applicable
+  const hasValidBattery = giaTriPin && giaTriPin > 0;
+  return isElectricOrHybridEngine(loaiDongCo) && hasValidBattery
+    ? baseRate + HYBRID_EV_SURCHARGE
+    : baseRate;
+}
+
+// Helper to create vatChatPackage with custom rate
+export function createVatChatPackageWithCustomRate(
+  originalPackage: { name: string; tyLePhi: number; phiVatChat: number; dkbs: string[] },
+  customRate?: number | null,
+  isModified?: boolean
+): {
+  name: string;
+  tyLePhi: number;
+  customRate?: number;
+  isCustomRate?: boolean;
+  phiVatChat: number;
+  dkbs: string[];
+} {
+  const result: any = { ...originalPackage };
+  
+  if (isModified && customRate !== null && customRate !== undefined) {
+    result.customRate = customRate;
+    result.isCustomRate = true;
+  } else {
+    // Clean up custom fields if not custom
+    delete result.customRate;
+    delete result.isCustomRate;
+  }
+  
+  return result;
+}
+
 // Enhanced calculation result interface for real-time updates
 export interface EnhancedCalculationResult extends CalculationResult {
   customRates?: number[];

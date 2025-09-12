@@ -43,7 +43,9 @@ export interface IContract extends Document {
   // Gói bảo hiểm
   vatChatPackage: {
     name: string;
-    tyLePhi: number;
+    tyLePhi: number;        // Tỷ lệ gói gốc
+    customRate?: number;    // Tỷ lệ user đã chỉnh sửa 
+    isCustomRate?: boolean; // Đánh dấu có phải custom rate
     phiVatChat: number;
     dkbs: string[];
   };
@@ -256,6 +258,15 @@ const contractSchema = new Schema<IContract>({
       type: Number,
       required: [true, 'Tỷ lệ phí là bắt buộc'],
       min: [0, 'Tỷ lệ phí không được âm']
+    },
+    customRate: {
+      type: Number,
+      min: [0.1, 'Tỷ lệ custom không được nhỏ hơn 0.1%'],
+      max: [10, 'Tỷ lệ custom không được lớn hơn 10%']
+    },
+    isCustomRate: {
+      type: Boolean,
+      default: false
     },
     phiVatChat: {
       type: Number,

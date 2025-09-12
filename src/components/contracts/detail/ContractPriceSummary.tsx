@@ -67,10 +67,10 @@ export default function ContractPriceSummary({ contract }: ContractPriceSummaryP
   return (
     <PriceSummaryCard
       availablePackages={[]}
-      calculationResult={calculationResult}
       enhancedResult={enhancedResult}
       formData={formData}
       totalAmount={contract.tongPhi}
+      nntxFee={contract.phiNNTX}
       loading={false}
       onSubmit={() => {}} // No-op for display mode
       showSubmitButton={false}

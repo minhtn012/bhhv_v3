@@ -28,6 +28,7 @@ interface PriceSummaryCardProps {
   submitButtonText?: string;
   showSubmitButton?: boolean;
   availablePackages?: PackageOption[];
+  onCustomRateChange?: (customRate: number | null, isModified: boolean) => void;
 }
 
 export default function PriceSummaryCard({ 
@@ -39,7 +40,8 @@ export default function PriceSummaryCard({
   onSubmit,
   submitButtonText = "Tạo Hợp đồng",
   showSubmitButton = true,
-  availablePackages
+  availablePackages,
+  onCustomRateChange
 }: PriceSummaryCardProps) {
   // Track user-modified percentage (only set when manually changed)
   const [userModifiedPercentage, setUserModifiedPercentage] = useState<number | null>(null);
@@ -56,7 +58,9 @@ export default function PriceSummaryCard({
   // Reset user modifications when package changes
   useEffect(() => {
     setUserModifiedPercentage(null);
-  }, [formData.selectedPackageIndex]);
+    // Notify parent that custom rate has been reset
+    onCustomRateChange?.(null, false);
+  }, [formData.selectedPackageIndex, onCustomRateChange]);
 
   // Calculate fees based on custom percentage
   const calculateCustomFee = (percentage: number): number => {
@@ -97,6 +101,9 @@ export default function PriceSummaryCard({
                     const value = parseFloat(e.target.value);
                     if (!isNaN(value) && value >= 0.1 && value <= 10) {
                       setUserModifiedPercentage(value);
+                      // Notify parent about custom rate change
+                      const isModified = Math.abs(value - originalEffectiveRate) > 0.001;
+                      onCustomRateChange?.(value, isModified);
                     }
                   }}
                   className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"

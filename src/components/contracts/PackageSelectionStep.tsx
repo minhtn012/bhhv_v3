@@ -32,6 +32,7 @@ interface PackageSelectionStepProps {
   onSubmit: () => void;
   onRecalculate?: () => void;
   onNNTXFeeChange: (fee: number) => void;
+  onCustomRateChange?: (customRate: number | null, isModified: boolean) => void;
   submitButtonText?: string;
 }
 
@@ -48,6 +49,7 @@ export default function PackageSelectionStep({
   onSubmit,
   onRecalculate,
   onNNTXFeeChange,
+  onCustomRateChange,
   submitButtonText = "Tạo báo giá"
 }: PackageSelectionStepProps) {
   return (
@@ -124,6 +126,7 @@ export default function PackageSelectionStep({
             onSubmit={onSubmit}
             submitButtonText={submitButtonText}
             availablePackages={availablePackages}
+            onCustomRateChange={onCustomRateChange}
           />
         </div>
       </div>
