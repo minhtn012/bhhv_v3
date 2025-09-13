@@ -483,8 +483,9 @@ export function calculateWithCustomRates(
   const totalBatteryFee = batteryFees[selectedPackageIndex] || 0;
   const totalTNDSFee = includeTNDS && tndsCategory ? tndsCategories[tndsCategory as keyof typeof tndsCategories]?.fee || 0 : 0;
   const totalNNTXFee = includeNNTX ? baseResult.nntxFee : 0;
-  const taiTucAdjustment = (giaTriXe * taiTucPercentage) / 100;
-  const grandTotal = totalVatChatFee + totalBatteryFee + totalTNDSFee + totalNNTXFee + taiTucAdjustment;
+  const totalVehicleValue = calculateTotalVehicleValue(giaTriXe, giaTriPin, loaiDongCo);
+  const taiTucAdjustment = (totalVehicleValue * taiTucPercentage) / 100;
+  const grandTotal = totalVatChatFee + totalTNDSFee + totalNNTXFee + taiTucAdjustment;
 
   return {
     ...baseResult,

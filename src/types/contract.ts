@@ -19,6 +19,7 @@ export interface BaseContractFormData {
   userType: 'ca_nhan' | 'cong_ty';
   
   // Address Structure (actual form fields)
+  diaChi: string;               // Main address (from vehicle registration)
   selectedProvince: string;      // Province code
   selectedProvinceText: string;  // Province name  
   selectedDistrictWard: string;  // District/Ward code
@@ -102,6 +103,7 @@ export const defaultContractFormData: BaseContractFormData = {
   userType: 'ca_nhan',
   
   // Address Structure
+  diaChi: '',
   selectedProvince: '',
   selectedProvinceText: '',
   selectedDistrictWard: '',

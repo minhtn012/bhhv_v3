@@ -19,13 +19,10 @@ import { type BaseContractFormData } from '@/types/contract';
 // Extended interface for additional fields specific to edit contract page
 interface FormData extends BaseContractFormData {
   // Additional UI-specific fields not in BaseContractFormData
-  selectedProvince: string;
-  selectedProvinceText: string;
-  selectedDistrictWard: string;
-  selectedDistrictWardText: string;
-  specificAddress: string;
-  nhanHieu: string;
-  soLoai: string;
+  buyerEmail: string;
+  buyerPhone: string;
+  buyerGender: 'nam' | 'nu' | 'khac';
+  buyerCccd: string;
   customRates: number[];
   selectedNNTXPackage: string;
   tinhTrang: string;
@@ -71,6 +68,9 @@ interface Contract {
   vatChatPackage: {
     name: string;
     tyLePhi: number;
+    customRate?: number;
+    isCustomRate?: boolean;
+    phiVatChatGoc?: number;
     phiVatChat: number;
     dkbs: string[];
   };
@@ -82,6 +82,8 @@ interface Contract {
   includeNNTX: boolean;
   phiNNTX: number;
   
+  phiTruocKhiGiam?: number;
+  phiSauKhiGiam?: number;
   tongPhi: number;
   mucKhauTru: number;
   
@@ -97,34 +99,36 @@ export default function EditContractPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<unknown>(null);
   const [initializingCarData, setInitializingCarData] = useState(false);
+  const [customRate, setCustomRate] = useState<number | null>(null);
+  const [isCustomRateModified, setIsCustomRateModified] = useState(false);
+  const [nntxFee, setNntxFee] = useState(0);
   
   // Form data
   const [formData, setFormData] = useState<FormData>({
     // Customer Information (BaseContractFormData)
     chuXe: '',
-    diaChi: '',
-    tinhThanh: '',
-    quanHuyen: '',
-    phuongXa: '',
-    soDienThoai: '',
     email: '',
+    soDienThoai: '',
     cccd: '',
-    ngayCapCccd: '',
-    noiCapCccd: '',
+    gioiTinh: 'nam',
     userType: 'ca_nhan',
-    // Buyer Information (BaseContractFormData)
-    buyerName: '',
-    buyerAddress: '',
-    buyerProvince: '',
-    buyerDistrict: '',
-    buyerWard: '',
-    buyerPhone: '',
+    
+    // Address Structure (from BaseContractFormData)
+    diaChi: '',
+    selectedProvince: '',
+    selectedProvinceText: '',
+    selectedDistrictWard: '',
+    selectedDistrictWardText: '',
+    specificAddress: '',
+    
+    // Extended buyer information for edit
     buyerEmail: '',
-    buyerCccd: '',
-    buyerCccdDate: '',
+    buyerPhone: '',
     buyerGender: 'nam',
+    buyerCccd: '',
+    
     // Vehicle Information (BaseContractFormData)
     bienSo: '',
     soKhung: '',
@@ -138,6 +142,13 @@ export default function EditContractPage() {
     loaiDongCo: '',
     giaTriPin: '',
     ngayDKLD: '',
+    
+    // Vehicle Details from Car Selection
+    nhanHieu: '',
+    soLoai: '',
+    kieuDang: '',
+    namPhienBan: '',
+    
     // Package Selection & Insurance (BaseContractFormData)
     selectedPackageIndex: 0,
     includeTNDS: true,
@@ -145,14 +156,8 @@ export default function EditContractPage() {
     includeNNTX: true,
     taiTucPercentage: 0,
     mucKhauTru: 500000,
+    
     // Additional UI-specific fields
-    selectedProvince: '',
-    selectedProvinceText: '',
-    selectedDistrictWard: '',
-    selectedDistrictWardText: '',
-    specificAddress: '',
-    nhanHieu: '',
-    soLoai: '',
     customRates: [],
     selectedNNTXPackage: '',
     tinhTrang: 'cap_moi'
@@ -346,7 +351,7 @@ export default function EditContractPage() {
   };
 
   // Handle form input change
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  const handleInputChange = (field: keyof FormData, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -360,6 +365,17 @@ export default function EditContractPage() {
       const newFormData = { ...formData, selectedPackageIndex: packageIndex };
       calculateEnhanced(newFormData);
     }, 50);
+  };
+
+  // Handle custom rate changes from PriceSummaryCard
+  const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
+    setCustomRate(customRateValue);
+    setIsCustomRateModified(isModified);
+  }, []);
+
+  // Handle NNTX fee changes
+  const handleNNTXFeeChange = (fee: number) => {
+    setNntxFee(fee);
   };
 
   // Handle recalculate
@@ -407,7 +423,43 @@ export default function EditContractPage() {
         nntxFee = await calculateNNTXFeeByPackage(formData.selectedNNTXPackage, Number(formData.soChoNgoi));
       }
       
-      const totalFee = totalAmount;
+      // Import required function
+      const { calculateTotalVehicleValue } = await import('@/utils/insurance-calculator');
+      
+      // Calculate phí vật chất gốc (original package fee)
+      const phiVatChatGoc = selectedPackage.fee;
+      
+      // Calculate final vat chat fee based on custom rate if available
+      let finalVatChatFee = phiVatChatGoc;
+      if (isCustomRateModified && customRate) {
+        const totalVehicleValue = calculateTotalVehicleValue(
+          parseCurrency(formData.giaTriXe),
+          formData.giaTriPin,
+          formData.loaiDongCo
+        );
+        finalVatChatFee = (totalVehicleValue * customRate) / 100;
+      }
+      
+      // Calculate other fees
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory 
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
+        : 0;
+      const phiNNTX = nntxFee;
+      const phiTaiTuc = (() => {
+        if (formData.taiTucPercentage !== 0) {
+          const totalVehicleValue = calculateTotalVehicleValue(
+            parseCurrency(formData.giaTriXe),
+            formData.giaTriPin,
+            formData.loaiDongCo
+          );
+          return (totalVehicleValue * formData.taiTucPercentage) / 100;
+        }
+        return 0;
+      })();
+      
+      // Calculate totals
+      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+      const phiSauKhiGiam = finalVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
       
       const getDKBS = (index: number): string[] => {
         switch(index) {
@@ -453,20 +505,25 @@ export default function EditContractPage() {
         carYear: carData.selectedYear,
         vatChatPackage: {
           name: selectedPackage.name,
-          tyLePhi: selectedPackage.rate,
-          phiVatChat: selectedPackage.fee,
+          tyLePhi: selectedPackage.rate, // Original package rate
+          customRate: isCustomRateModified ? customRate : undefined, // Custom rate if modified
+          isCustomRate: isCustomRateModified, // Flag to indicate if custom rate is used
+          phiVatChatGoc: phiVatChatGoc, // Phí vật chất theo rate gốc
+          phiVatChat: finalVatChatFee, // Phí vật chất cuối cùng (đã custom)
           dkbs: getDKBS(formData.selectedPackageIndex)
         },
         includeTNDS: formData.includeTNDS,
         tndsCategory: formData.tndsCategory,
-        phiTNDS: formData.includeTNDS && formData.tndsCategory 
-          ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
-          : 0,
+        phiTNDS: phiTNDS,
         includeNNTX: formData.includeNNTX,
-        phiNNTX: nntxFee,
+        phiNNTX: phiNNTX,
         phiPin: enhancedResult?.totalBatteryFee || 0,
         mucKhauTru: formData.mucKhauTru,
-        tongPhi: totalFee
+        taiTucPercentage: formData.taiTucPercentage,
+        phiTaiTuc: phiTaiTuc,
+        phiTruocKhiGiam: phiTruocKhiGiam,
+        phiSauKhiGiam: phiSauKhiGiam,
+        tongPhi: phiSauKhiGiam
       };
 
       const response = await fetch(`/api/contracts/${contractId}`, {
@@ -481,7 +538,7 @@ export default function EditContractPage() {
         const errorData = await response.json();
         setError(errorData.error || 'Lỗi khi cập nhật hợp đồng');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Update error:', error);
       setError('Đã có lỗi xảy ra khi cập nhật hợp đồng');
     } finally {
@@ -626,11 +683,14 @@ export default function EditContractPage() {
                     enhancedResult={enhancedResult || undefined}
                     formData={formData}
                     totalAmount={totalAmount}
+                    nntxFee={nntxFee}
                     loading={submitting || initializingCarData}
                     onFormInputChange={handleInputChange}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={updateContract}
                     onRecalculate={handleRecalculate}
+                    onNNTXFeeChange={handleNNTXFeeChange}
+                    onCustomRateChange={handleCustomRateChange}
                     submitButtonText={initializingCarData ? "Đang tải dữ liệu xe..." : "Cập nhật hợp đồng"}
                   />
                 </div>

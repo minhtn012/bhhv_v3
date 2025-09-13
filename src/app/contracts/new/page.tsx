@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { 
   parseCurrency,
-  tndsCategories
+  tndsCategories,
+  calculateTotalVehicleValue
 } from '@/utils/insurance-calculator';
 import StepIndicator from '@/components/contracts/StepIndicator';
 import StepWrapper from '@/components/contracts/StepWrapper';
@@ -32,6 +33,7 @@ interface FormData extends BaseContractFormData {
   customRates: number[];
   selectedNNTXPackage: string;
   tinhTrang: string;
+  // Ensure diaChi is included (from BaseContractFormData)
 }
 
 export default function NewContractPage() {
@@ -39,6 +41,8 @@ export default function NewContractPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [nntxFee, setNntxFee] = useState(0);
+  const [customRate, setCustomRate] = useState<number | null>(null);
+  const [isCustomRateModified, setIsCustomRateModified] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState({
     cavetFileName: '',
     dangkiemFileName: ''
@@ -54,14 +58,14 @@ export default function NewContractPage() {
     gioiTinh: 'nam',
     userType: 'ca_nhan',
     
-    // Enhanced Address Structure
-    tinhThanh: '',
-    tinhThanhText: '',
-    quanHuyen: '',
-    quanHuyenText: '',
-    phuongXa: '',
-    phuongXaText: '',
+    // Address Structure (from BaseContractFormData)
     diaChi: '',
+    selectedProvince: '',
+    selectedProvinceText: '',
+    selectedDistrictWard: '',
+    selectedDistrictWardText: '',
+    specificAddress: '',
+    
     // Vehicle Information (BaseContractFormData)
     bienSo: '',
     soKhung: '',
@@ -75,6 +79,13 @@ export default function NewContractPage() {
     loaiDongCo: '',
     giaTriPin: '',
     ngayDKLD: '',
+    
+    // Vehicle Details from Car Selection
+    nhanHieu: '',
+    soLoai: '',
+    kieuDang: '',
+    namPhienBan: '',
+    
     // Package Selection & Insurance (BaseContractFormData)
     selectedPackageIndex: 0,
     includeTNDS: true,
@@ -82,14 +93,8 @@ export default function NewContractPage() {
     includeNNTX: true,
     taiTucPercentage: 0,
     mucKhauTru: 500000,
+    
     // Additional UI-specific fields
-    selectedProvince: '',
-    selectedProvinceText: '',
-    selectedDistrictWard: '',
-    selectedDistrictWardText: '',
-    specificAddress: '',
-    nhanHieu: '',
-    soLoai: '',
     customRates: [],
     selectedNNTXPackage: '',
     tinhTrang: 'cap_moi'
@@ -131,7 +136,7 @@ export default function NewContractPage() {
     calculationResult, 
     enhancedResult,
     availablePackages, 
-    customRates,
+    customRates: _customRates, // eslint-disable-line @typescript-eslint/no-unused-vars
     calculateRates, 
     calculateEnhanced,
     calculateTotal,
@@ -284,6 +289,12 @@ export default function NewContractPage() {
     setNntxFee(fee);
   };
 
+  // Handle custom rate changes from PriceSummaryCard
+  const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
+    setCustomRate(customRateValue);
+    setIsCustomRateModified(isModified);
+  }, []);
+
   // Submit contract
   const submitContract = async () => {
     if (!calculationResult || availablePackages.length === 0) {
@@ -301,8 +312,7 @@ export default function NewContractPage() {
     setError('');
 
     try {
-      // Use NNTX fee from state (already calculated by DynamicTNDSSelector)
-      const totalFee = totalAmount + (formData.includeNNTX ? nntxFee : 0);
+      // NNTX fee is already calculated by DynamicTNDSSelector
       
       const getDKBS = (index: number): string[] => {
         switch(index) {
@@ -314,6 +324,42 @@ export default function NewContractPage() {
           default: return [];
         }
       };
+
+      // Calculate phí vật chất gốc (original package fee)
+      const phiVatChatGoc = selectedPackage.fee;
+      
+      // Calculate final vat chat fee based on custom rate if available
+      const finalVatChatFee = isCustomRateModified && customRate 
+        ? (() => {
+            const totalVehicleValue = calculateTotalVehicleValue(
+              parseCurrency(formData.giaTriXe),
+              formData.giaTriPin,
+              formData.loaiDongCo
+            );
+            return (totalVehicleValue * customRate) / 100;
+          })()
+        : phiVatChatGoc;
+        
+      // Calculate other fees
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory 
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
+        : 0;
+      const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+      const phiTaiTuc = (() => {
+        if (formData.taiTucPercentage !== 0) {
+          const totalVehicleValue = calculateTotalVehicleValue(
+            parseCurrency(formData.giaTriXe),
+            formData.giaTriPin,
+            formData.loaiDongCo
+          );
+          return (totalVehicleValue * formData.taiTucPercentage) / 100;
+        }
+        return 0;
+      })();
+      
+      // Calculate totals
+      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+      const phiSauKhiGiam = finalVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
 
       const contractData = {
         chuXe: formData.chuXe,
@@ -348,22 +394,27 @@ export default function NewContractPage() {
         carYear: carData.selectedYear,
         vatChatPackage: {
           name: selectedPackage.name,
-          tyLePhi: selectedPackage.rate,
-          phiVatChat: selectedPackage.fee,
+          tyLePhi: selectedPackage.rate, // Original package rate
+          customRate: isCustomRateModified ? customRate : undefined, // Custom rate if modified
+          isCustomRate: isCustomRateModified, // Flag to indicate if custom rate is used
+          phiVatChatGoc: phiVatChatGoc, // Phí vật chất theo rate gốc
+          phiVatChat: finalVatChatFee, // Phí vật chất cuối cùng (đã custom)
+          taiTucPercentage: formData.taiTucPercentage,
           dkbs: getDKBS(formData.selectedPackageIndex)
         },
         includeTNDS: formData.includeTNDS,
         tndsCategory: formData.tndsCategory,
-        phiTNDS: formData.includeTNDS && formData.tndsCategory 
-          ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
-          : 0,
+        phiTNDS: phiTNDS,
         includeNNTX: formData.includeNNTX,
         selectedNNTXPackage: formData.selectedNNTXPackage,
-        phiNNTX: formData.includeNNTX ? nntxFee : 0,
+        phiNNTX: phiNNTX,
         phiPin: enhancedResult?.totalBatteryFee || 0,
         mucKhauTru: formData.mucKhauTru,
         taiTucPercentage: formData.taiTucPercentage,
-        tongPhi: totalFee
+        phiTaiTuc: phiTaiTuc,
+        phiTruocKhiGiam: phiTruocKhiGiam,
+        phiSauKhiGiam: phiSauKhiGiam,
+        tongPhi: phiSauKhiGiam
       };
 
       const response = await fetch('/api/contracts', {
@@ -379,7 +430,7 @@ export default function NewContractPage() {
         const errorData = await response.json();
         setError(errorData.error || 'Lỗi khi tạo hợp đồng');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Submit error:', error);
       setError('Đã có lỗi xảy ra khi tạo hợp đồng');
     } finally {
@@ -504,6 +555,7 @@ export default function NewContractPage() {
                     onSubmit={submitContract}
                     onRecalculate={handleRecalculate}
                     onNNTXFeeChange={handleNNTXFeeChange}
+                    onCustomRateChange={handleCustomRateChange}
                   />
                 </StepWrapper>
               </div>

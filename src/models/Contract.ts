@@ -46,7 +46,8 @@ export interface IContract extends Document {
     tyLePhi: number;        // Tỷ lệ gói gốc
     customRate?: number;    // Tỷ lệ user đã chỉnh sửa 
     isCustomRate?: boolean; // Đánh dấu có phải custom rate
-    phiVatChat: number;
+    phiVatChatGoc?: number; // Phí vật chất theo rate gốc
+    phiVatChat: number;     // Phí vật chất cuối cùng (đã custom)
     dkbs: string[];
   };
   
@@ -61,8 +62,14 @@ export interface IContract extends Document {
   // Phí pin xe điện (chỉ cho HYBRID/EV)
   phiPin?: number;
   
+  // Tái tục/Cấp mới
+  taiTucPercentage?: number;
+  phiTaiTuc?: number;
+  
   // Tổng phí
-  tongPhi: number;
+  phiTruocKhiGiam?: number; // Tổng phí theo rate gốc
+  phiSauKhiGiam?: number;   // Tổng phí cuối cùng (đã giảm)
+  tongPhi: number;          // = phiSauKhiGiam (backward compatibility)
   mucKhauTru: number;
   
   // Trạng thái workflow
@@ -268,6 +275,10 @@ const contractSchema = new Schema<IContract>({
       type: Boolean,
       default: false
     },
+    phiVatChatGoc: {
+      type: Number,
+      min: [0, 'Phí vật chất gốc không được âm']
+    },
     phiVatChat: {
       type: Number,
       required: [true, 'Phí vật chất là bắt buộc'],
@@ -312,7 +323,27 @@ const contractSchema = new Schema<IContract>({
     default: 0
   },
   
+  // Tái tục/Cấp mới
+  taiTucPercentage: {
+    type: Number,
+    min: [-100, 'Tỷ lệ tái tục không được nhỏ hơn -100%'],
+    max: [100, 'Tỷ lệ tái tục không được lớn hơn 100%'],
+    default: 0
+  },
+  phiTaiTuc: {
+    type: Number,
+    default: 0
+  },
+  
   // Tổng phí
+  phiTruocKhiGiam: {
+    type: Number,
+    min: [0, 'Tổng phí trước khi giảm không được âm']
+  },
+  phiSauKhiGiam: {
+    type: Number,
+    min: [0, 'Tổng phí sau khi giảm không được âm']
+  },
   tongPhi: {
     type: Number,
     required: [true, 'Tổng phí là bắt buộc'],

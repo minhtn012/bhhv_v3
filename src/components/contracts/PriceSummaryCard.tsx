@@ -60,7 +60,7 @@ export default function PriceSummaryCard({
     setUserModifiedPercentage(null);
     // Notify parent that custom rate has been reset
     onCustomRateChange?.(null, false);
-  }, [formData.selectedPackageIndex, onCustomRateChange]);
+  }, [formData.selectedPackageIndex]);
 
   // Calculate fees based on custom percentage
   const calculateCustomFee = (percentage: number): number => {
