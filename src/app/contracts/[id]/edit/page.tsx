@@ -26,6 +26,11 @@ interface FormData extends BaseContractFormData {
   customRates: number[];
   selectedNNTXPackage: string;
   tinhTrang: string;
+  // Calculated fee fields for database storage
+  phiVatChatGoc: number;
+  phiTruocKhiGiam: number;
+  phiSauKhiGiam: number;
+  totalAmount: number;
 }
 
 interface Contract {
@@ -160,7 +165,13 @@ export default function EditContractPage() {
     // Additional UI-specific fields
     customRates: [],
     selectedNNTXPackage: '',
-    tinhTrang: 'cap_moi'
+    tinhTrang: 'cap_moi',
+
+    // Calculated fee fields (initialized to 0)
+    phiVatChatGoc: 0,
+    phiTruocKhiGiam: 0,
+    phiSauKhiGiam: 0,
+    totalAmount: 0
   });
   
   const router = useRouter();
@@ -328,7 +339,7 @@ export default function EditContractPage() {
     };
 
     const { result, packages } = calculateRates(tempFormData);
-    
+
     if (result && packages) {
       // Find the package that matches the current contract
       let matchingPackageIndex = 0;
@@ -338,10 +349,19 @@ export default function EditContractPage() {
         }
       });
 
-      setFormData(prev => ({ 
-        ...prev, 
+      // Calculate initial fee values from existing contract data
+      const phiVatChatGoc = contractData.vatChatPackage.phiVatChatGoc || contractData.vatChatPackage.phiVatChat;
+      const phiTruocKhiGiam = contractData.phiTruocKhiGiam || contractData.tongPhi;
+      const phiSauKhiGiam = contractData.phiSauKhiGiam || contractData.tongPhi;
+
+      setFormData(prev => ({
+        ...prev,
         selectedPackageIndex: matchingPackageIndex,
-        customRates: result?.finalRates.map(r => r || 0) || []
+        customRates: result?.finalRates.map(r => r || 0) || [],
+        phiVatChatGoc: phiVatChatGoc,
+        phiTruocKhiGiam: phiTruocKhiGiam,
+        phiSauKhiGiam: phiSauKhiGiam,
+        totalAmount: contractData.tongPhi
       }));
 
       setTimeout(() => {
@@ -357,10 +377,41 @@ export default function EditContractPage() {
 
   // Handle package selection changes
   const handlePackageSelection = (packageIndex: number) => {
-    setFormData(prev => ({ ...prev, selectedPackageIndex: packageIndex }));
-    
+    // Calculate updated fee values based on new package selection
+    const selectedPackage = availablePackages[packageIndex];
+    const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+
+    // Calculate other fees
+    const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
+      ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
+      : 0;
+    const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+    const phiTaiTuc = (() => {
+      if (formData.taiTucPercentage !== 0) {
+        const totalVehicleValue = calculateTotalVehicleValue(
+          parseCurrency(formData.giaTriXe),
+          formData.giaTriPin,
+          formData.loaiDongCo
+        );
+        return (totalVehicleValue * formData.taiTucPercentage) / 100;
+      }
+      return 0;
+    })();
+
+    const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+    const phiSauKhiGiam = phiTruocKhiGiam; // Will be updated if custom rate is applied
+
+    setFormData(prev => ({
+      ...prev,
+      selectedPackageIndex: packageIndex,
+      phiVatChatGoc: phiVatChatGoc,
+      phiTruocKhiGiam: phiTruocKhiGiam,
+      phiSauKhiGiam: phiSauKhiGiam,
+      totalAmount: phiSauKhiGiam
+    }));
+
     syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
-    
+
     setTimeout(() => {
       const newFormData = { ...formData, selectedPackageIndex: packageIndex };
       calculateEnhanced(newFormData);
@@ -371,7 +422,44 @@ export default function EditContractPage() {
   const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
     setCustomRate(customRateValue);
     setIsCustomRateModified(isModified);
-  }, []);
+
+    // Update formData with new calculated fees when custom rate changes
+    if (isModified && customRateValue !== null && availablePackages.length > 0) {
+      const selectedPackage = availablePackages[formData.selectedPackageIndex];
+      const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+
+      // Calculate custom vat chat fee
+      const totalVehicleValue = calculateTotalVehicleValue(
+        parseCurrency(formData.giaTriXe),
+        formData.giaTriPin,
+        formData.loaiDongCo
+      );
+      const customVatChatFee = (totalVehicleValue * customRateValue) / 100;
+
+      // Calculate other fees
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
+        : 0;
+      const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+      const phiTaiTuc = (() => {
+        if (formData.taiTucPercentage !== 0) {
+          return (totalVehicleValue * formData.taiTucPercentage) / 100;
+        }
+        return 0;
+      })();
+
+      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+      const phiSauKhiGiam = customVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
+
+      setFormData(prev => ({
+        ...prev,
+        phiVatChatGoc: phiVatChatGoc,
+        phiTruocKhiGiam: phiTruocKhiGiam,
+        phiSauKhiGiam: phiSauKhiGiam,
+        totalAmount: phiSauKhiGiam
+      }));
+    }
+  }, [availablePackages, formData, nntxFee]);
 
   // Handle NNTX fee changes
   const handleNNTXFeeChange = (fee: number) => {
@@ -426,23 +514,26 @@ export default function EditContractPage() {
       // Import required function
       const { calculateTotalVehicleValue } = await import('@/utils/insurance-calculator');
       
-      // Calculate phí vật chất gốc (original package fee)
-      const phiVatChatGoc = selectedPackage.fee;
-      
+      // Use calculated fee data from formData (already calculated in handleCustomRateChange and handlePackageSelection)
+      const phiVatChatGoc = formData.phiVatChatGoc;
+      const phiTruocKhiGiam = formData.phiTruocKhiGiam;
+      const phiSauKhiGiam = formData.phiSauKhiGiam;
+
       // Calculate final vat chat fee based on custom rate if available
-      let finalVatChatFee = phiVatChatGoc;
-      if (isCustomRateModified && customRate) {
-        const totalVehicleValue = calculateTotalVehicleValue(
-          parseCurrency(formData.giaTriXe),
-          formData.giaTriPin,
-          formData.loaiDongCo
-        );
-        finalVatChatFee = (totalVehicleValue * customRate) / 100;
-      }
-      
-      // Calculate other fees
-      const phiTNDS = formData.includeTNDS && formData.tndsCategory 
-        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
+      const finalVatChatFee = isCustomRateModified && customRate
+        ? (() => {
+            const totalVehicleValue = calculateTotalVehicleValue(
+              parseCurrency(formData.giaTriXe),
+              formData.giaTriPin,
+              formData.loaiDongCo
+            );
+            return (totalVehicleValue * customRate) / 100;
+          })()
+        : phiVatChatGoc;
+
+      // Calculate other fees for contract data
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
         : 0;
       const phiNNTX = nntxFee;
       const phiTaiTuc = (() => {
@@ -456,10 +547,6 @@ export default function EditContractPage() {
         }
         return 0;
       })();
-      
-      // Calculate totals
-      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
-      const phiSauKhiGiam = finalVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
       
       const getDKBS = (index: number): string[] => {
         switch(index) {

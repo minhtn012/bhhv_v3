@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 
+const MODEL_GEMINI = "gemini-2.0-flash-lite"
+// gemini-2.0-flash-exp
 // POST /api/contracts/extract-info - Trích xuất thông tin từ ảnh sử dụng Gemini API
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Gọi Gemini API
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_GEMINI}:generateContent?key=${apiKey}`;
     
     const prompt = `Phân tích hình ảnh giấy tờ xe (đăng ký hoặc đăng kiểm) của Việt Nam và trích xuất các thông tin sau dưới dạng JSON. Chỉ trả về JSON, không giải thích gì thêm.
 

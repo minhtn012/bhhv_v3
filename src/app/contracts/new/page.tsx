@@ -33,6 +33,11 @@ interface FormData extends BaseContractFormData {
   customRates: number[];
   selectedNNTXPackage: string;
   tinhTrang: string;
+  // Calculated fee fields for database storage
+  phiVatChatGoc: number;
+  phiTruocKhiGiam: number;
+  phiSauKhiGiam: number;
+  totalAmount: number;
   // Ensure diaChi is included (from BaseContractFormData)
 }
 
@@ -97,7 +102,13 @@ export default function NewContractPage() {
     // Additional UI-specific fields
     customRates: [],
     selectedNNTXPackage: '',
-    tinhTrang: 'cap_moi'
+    tinhTrang: 'cap_moi',
+
+    // Calculated fee fields (initialized to 0)
+    phiVatChatGoc: 0,
+    phiTruocKhiGiam: 0,
+    phiSauKhiGiam: 0,
+    totalAmount: 0
   });
   
   const router = useRouter();
@@ -232,26 +243,44 @@ export default function NewContractPage() {
 
   // Calculate insurance rates
   const handleCalculateRates = async () => {
-    
+
     const isValid = await validateForm(formData, carData);
     if (!isValid) {
       return;
     }
 
     const { result, packages, defaultTndsCategory } = calculateRates(formData);
-    
+
+    // Calculate initial fee values
+    const selectedPackage = packages && packages.length > 0 ? packages[0] : null;
+    const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+
+    // Calculate basic totals (will be updated when package is selected)
+    const phiTNDS = formData.includeTNDS && defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories]
+      ? tndsCategories[defaultTndsCategory as keyof typeof tndsCategories].fee
+      : 0;
+    const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+    const phiTaiTuc = 0; // Will be calculated based on taiTucPercentage
+
+    const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+    const phiSauKhiGiam = phiTruocKhiGiam; // Initially same, will change with custom rates
+
     // Create updated form data with new values
     const updatedFormData = {
       ...formData,
-      tndsCategory: defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories] 
-        ? defaultTndsCategory 
+      tndsCategory: defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories]
+        ? defaultTndsCategory
         : formData.tndsCategory,
-      customRates: result?.finalRates.map(r => r || 0) || []
+      customRates: result?.finalRates.map(r => r || 0) || [],
+      phiVatChatGoc: phiVatChatGoc,
+      phiTruocKhiGiam: phiTruocKhiGiam,
+      phiSauKhiGiam: phiSauKhiGiam,
+      totalAmount: phiSauKhiGiam
     };
 
     // Update state and calculate enhanced results with updated data immediately
     setFormData(updatedFormData);
-    
+
     // Note: No need for refreshPackageFees here - calculateRates already created packages with correct fees
     calculateEnhanced(updatedFormData);
 
@@ -262,15 +291,46 @@ export default function NewContractPage() {
 
   // Handle package selection changes
   const handlePackageSelection = (packageIndex: number) => {
-    // Create updated form data with new package selection
-    const updatedFormData = { ...formData, selectedPackageIndex: packageIndex };
-    
+    // Calculate updated fee values based on new package selection
+    const selectedPackage = availablePackages[packageIndex];
+    const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+
+    // Calculate other fees
+    const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
+      ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
+      : 0;
+    const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+    const phiTaiTuc = (() => {
+      if (formData.taiTucPercentage !== 0) {
+        const totalVehicleValue = calculateTotalVehicleValue(
+          parseCurrency(formData.giaTriXe),
+          formData.giaTriPin,
+          formData.loaiDongCo
+        );
+        return (totalVehicleValue * formData.taiTucPercentage) / 100;
+      }
+      return 0;
+    })();
+
+    const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+    const phiSauKhiGiam = phiTruocKhiGiam; // Will be updated if custom rate is applied
+
+    // Create updated form data with new package selection and calculated fees
+    const updatedFormData = {
+      ...formData,
+      selectedPackageIndex: packageIndex,
+      phiVatChatGoc: phiVatChatGoc,
+      phiTruocKhiGiam: phiTruocKhiGiam,
+      phiSauKhiGiam: phiSauKhiGiam,
+      totalAmount: phiSauKhiGiam
+    };
+
     // Update state
     setFormData(updatedFormData);
-    
+
     // Sync package fee to ensure correct calculation
     syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
-    
+
     // Trigger enhanced calculation with updated data immediately
     calculateEnhanced(updatedFormData);
   };
@@ -293,7 +353,44 @@ export default function NewContractPage() {
   const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
     setCustomRate(customRateValue);
     setIsCustomRateModified(isModified);
-  }, []);
+
+    // Update formData with new calculated fees when custom rate changes
+    if (isModified && customRateValue !== null && availablePackages.length > 0) {
+      const selectedPackage = availablePackages[formData.selectedPackageIndex];
+      const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+
+      // Calculate custom vat chat fee
+      const totalVehicleValue = calculateTotalVehicleValue(
+        parseCurrency(formData.giaTriXe),
+        formData.giaTriPin,
+        formData.loaiDongCo
+      );
+      const customVatChatFee = (totalVehicleValue * customRateValue) / 100;
+
+      // Calculate other fees
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
+        : 0;
+      const phiNNTX = formData.includeNNTX ? nntxFee : 0;
+      const phiTaiTuc = (() => {
+        if (formData.taiTucPercentage !== 0) {
+          return (totalVehicleValue * formData.taiTucPercentage) / 100;
+        }
+        return 0;
+      })();
+
+      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
+      const phiSauKhiGiam = customVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
+
+      setFormData(prev => ({
+        ...prev,
+        phiVatChatGoc: phiVatChatGoc,
+        phiTruocKhiGiam: phiTruocKhiGiam,
+        phiSauKhiGiam: phiSauKhiGiam,
+        totalAmount: phiSauKhiGiam
+      }));
+    }
+  }, [availablePackages, formData, nntxFee]);
 
   // Submit contract
   const submitContract = async () => {
@@ -325,11 +422,13 @@ export default function NewContractPage() {
         }
       };
 
-      // Calculate phí vật chất gốc (original package fee)
-      const phiVatChatGoc = selectedPackage.fee;
-      
+      // Use calculated fee data from formData (already calculated in handleCustomRateChange and handlePackageSelection)
+      const phiVatChatGoc = formData.phiVatChatGoc;
+      const phiTruocKhiGiam = formData.phiTruocKhiGiam;
+      const phiSauKhiGiam = formData.phiSauKhiGiam;
+
       // Calculate final vat chat fee based on custom rate if available
-      const finalVatChatFee = isCustomRateModified && customRate 
+      const finalVatChatFee = isCustomRateModified && customRate
         ? (() => {
             const totalVehicleValue = calculateTotalVehicleValue(
               parseCurrency(formData.giaTriXe),
@@ -339,10 +438,10 @@ export default function NewContractPage() {
             return (totalVehicleValue * customRate) / 100;
           })()
         : phiVatChatGoc;
-        
-      // Calculate other fees
-      const phiTNDS = formData.includeTNDS && formData.tndsCategory 
-        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee 
+
+      // Calculate other fees for contract data
+      const phiTNDS = formData.includeTNDS && formData.tndsCategory
+        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
         : 0;
       const phiNNTX = formData.includeNNTX ? nntxFee : 0;
       const phiTaiTuc = (() => {
@@ -356,10 +455,6 @@ export default function NewContractPage() {
         }
         return 0;
       })();
-      
-      // Calculate totals
-      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
-      const phiSauKhiGiam = finalVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
 
       const contractData = {
         chuXe: formData.chuXe,
