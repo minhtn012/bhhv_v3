@@ -51,7 +51,7 @@ export default function InsurancePackageSection({ contract }: InsurancePackageSe
         </div>
         
         {/* Battery fee - only show for HYBRID/EV vehicles with battery fee */}
-        {contract.phiPin && contract.phiPin > 0 && (
+        {!!(contract.phiPin && contract.phiPin > 0) && (
           <div>
             <h3 className="text-lg font-medium text-white mb-2">Phí pin xe điện</h3>
             <div className="bg-white/5 rounded-xl p-4">
@@ -62,7 +62,6 @@ export default function InsurancePackageSection({ contract }: InsurancePackageSe
             </div>
           </div>
         )}
-        
         {contract.includeTNDS && (
           <div>
             <h3 className="text-lg font-medium text-white mb-2">TNDS Bắt buộc</h3>

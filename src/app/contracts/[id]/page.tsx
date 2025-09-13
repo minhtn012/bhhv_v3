@@ -7,7 +7,7 @@ import ContractDetailHeader, { getAvailableStatusTransitions } from '@/component
 import CustomerInfoSection from '@/components/contracts/detail/CustomerInfoSection';
 import VehicleInfoSection from '@/components/contracts/detail/VehicleInfoSection';
 import InsurancePackageSection from '@/components/contracts/detail/InsurancePackageSection';
-import ContractPriceSummary from '@/components/contracts/detail/ContractPriceSummary';
+import ContractPriceSummaryView from '@/components/contracts/detail/ContractPriceSummaryView';
 import StatusHistorySection from '@/components/contracts/detail/StatusHistorySection';
 import StatusChangeModal from '@/components/contracts/detail/StatusChangeModal';
 import QuoteModal from '@/components/contracts/detail/QuoteModal';
@@ -240,7 +240,7 @@ export default function ContractDetailPage() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              <ContractPriceSummary contract={contract} />
+              <ContractPriceSummaryView contract={contract} />
               <StatusHistorySection contract={contract} />
             </div>
           </div>
