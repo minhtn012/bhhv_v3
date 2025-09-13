@@ -29,10 +29,13 @@ interface Contract {
     tyLePhi: number;
     phiVatChat: number;
     dkbs: string[];
+    customRate?: number;
+    isCustomRate?: boolean;
   };
   phiTNDS: number;
   phiNNTX: number;
   tongPhi: number;
+  taiTucPercentage?: number;
 }
 
 interface QuoteModalProps {
@@ -79,12 +82,17 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           'q-mucDich': getLoaiHinhText(contract.loaiHinhKinhDoanh),
           'q-soTienBH': formatCurrency(calculateTotalVehicleValue(contract.giaTriXe, contract.giaTriPin, contract.loaiDongCo)),
           'q-mucKhauTru': formatCurrency(contract.mucKhauTru) + '/vụ',
-          'q-tyLePhi': contract.vatChatPackage.tyLePhi.toFixed(2) + '%',
+          'q-tyLePhi': (contract.vatChatPackage.isCustomRate && contract.vatChatPackage.customRate
+            ? contract.vatChatPackage.customRate
+            : contract.vatChatPackage.tyLePhi).toFixed(2) + '%',
           'q-dkbs': contract.vatChatPackage.dkbs.join('<br>'),
           'q-phiVatChat': formatCurrency(contract.vatChatPackage.phiVatChat),
           'q-phiTNDS': formatCurrency(contract.phiTNDS),
           'q-phiNNTX': formatCurrency(contract.phiNNTX),
-          'q-tongPhi': formatCurrency(contract.tongPhi)
+          'q-tongPhi': formatCurrency(contract.tongPhi),
+          'q-tinhTrang': contract.taiTucPercentage && contract.taiTucPercentage > 0
+            ? contract.taiTucPercentage.toFixed(2) + '%'
+            : ''
         };
 
         // Update DOM elements
@@ -242,7 +250,7 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
               </tr>
               <tr>
                 <td style={{ fontWeight: 'bold', backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px' }}>Tái Tục/ Cấp Mới</td>
-                <td colSpan={3} id="q-tinhTrang" style={{ backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px' }}>Cấp Mới</td>
+                <td colSpan={3} id="q-tinhTrang" style={{ backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px' }}></td>
               </tr>
             </tbody>
           </table>
