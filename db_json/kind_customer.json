@@ -1,0 +1,12 @@
+[
+  {
+    "value": "bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1",
+    "customer_value": "personal",
+    "label": "Cá nhân"
+  },
+  {
+    "value": "bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d2",
+    "customer_value": "company",
+    "label": "Doanh nghiệp"
+  }
+]

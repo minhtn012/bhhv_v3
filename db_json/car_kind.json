@@ -1,86 +1,67 @@
 [
   {
+    "code": "khong_kd_cho_nguoi",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4874",
     "name": "Xe ô tô chở người"
   },
   {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4875",
-    "name": "Xe bán tải (Pickup)"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4876",
-    "name": "Xe vận tải hàng hóa"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4877",
-    "name": "Xe tập lái"
-  },
-  {
-    "value": "7302041d-7244-4a1e-8c94-29bb863a2b5e",
-    "name": "Xe đông lạnh"
-  },
-  {
-    "value": "d1414475-6068-438c-9bb8-fb77d5008017",
-    "name": "Xe hoạt động trong vùng khai thác khoáng sản"
-  },
-  {
-    "value": "1089fc5b-cd51-4d73-a777-b23f0788a7da",
-    "name": "Xe đầu kéo"
-  },
-  {
-    "value": "0c92b741-c6ab-4ae9-8d33-940ebc1ff89b",
-    "name": "Xe Grab và xe tương tự"
-  },
-  {
-    "value": "4c0b01d8-eb7b-4420-ac6e-ef0aa0f34bf1",
-    "name": "Xe vận tải hành khách liên tỉnh"
-  },
-  {
+    "code": "khong_kd_cho_hang",
     "value": "8ed9f2ad-ae11-4fca-9c8e-fb39f821a8da",
     "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN"
   },
   {
-    "value": "376187ff-8d66-467a-bdbe-600ee71a79fe",
-    "name": "Xe vận tải hành khách nội tỉnh"
+    "code": "khong_kd_pickup_van",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4875",
+    "name": "Xe bán tải (Pickup)"
   },
   {
+    "code": "kd_cho_hang",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4876",
+    "name": "Xe vận tải hàng hóa"
+  },
+  {
+    "code": "kd_dau_keo",
+    "value": "1089fc5b-cd51-4d73-a777-b23f0788a7da",
+    "name": "Xe đầu kéo"
+  },
+  {
+    "code": "kd_cho_khach_lien_tinh",
+    "value": "4c0b01d8-eb7b-4420-ac6e-ef0aa0f34bf1",
+    "name": "Xe vận tải hành khách liên tỉnh"
+  },
+  {
+    "code": "kd_grab_be",
+    "value": "0c92b741-c6ab-4ae9-8d33-940ebc1ff89b",
+    "name": "Xe Grab và xe tương tự"
+  },
+  {
+    "code": "kd_taxi_tu_lai",
     "value": "2dda3451-fc03-4385-a201-50d63b834655",
     "name": "Xe cho thuê tự lái"
   },
   {
-    "value": "dabc0084-71df-4387-a708-205dbc99fcb4",
-    "name": "Rơ mooc chuyên dụng (ben)"
+    "code": "kd_hop_dong_tren_9c",
+    "value": "376187ff-8d66-467a-bdbe-600ee71a79fe",
+    "name": "Xe vận tải hành khách nội tỉnh"
   },
   {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4879",
-    "name": "Xe taxi"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4880",
-    "name": "Xe ô tô cứu thương"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4881",
-    "name": "Xe ô tô chở tiền"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4883",
-    "name": "Xe chuyên dùng"
-  },
-  {
-    "value": "8feb985b-dc77-46e3-b5af-186b10be4884",
-    "name": "Rơ mooc"
-  },
-  {
+    "code": "kd_bus",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4886",
     "name": "Xe buýt"
   },
   {
-    "value": "59f24750-9ea1-4d07-88fe-fa3925dc1865",
-    "name": "Xe biển đỏ"
+    "code": "kd_pickup_van",
+    "value": "8ed9f2ad-ae11-4fca-9c8e-ef0aa0f34bf1",
+    "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN"
   },
   {
-    "value": "1291af55-45a3-41c2-a87b-4bce89a605b9",
-    "name": "Xe biển xanh"
+    "code": "kd_chuyen_dung",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4883",
+    "name": "Xe chuyên dùng"
+  },
+  {
+    "code": "kd_romooc_ben",
+    "value": "dabc0084-71df-4387-a708-205dbc99fcb4",
+    "name": "Rơ mooc chuyên dụng (ben)"
   }
 ]

@@ -11,6 +11,7 @@ import carDeduction from '@db/car_deduction.json';
 import carTypeEngine from '@db/car_type_engine.json';
 import carGoal from '@db/input-drl_goal.json';
 import allCarDetails from '@db/all_car_details.json';
+import carTypeInsurance from '@db/car_type_insturance.json';
 
 // Fixed BHV API constants
 const BHV_CONSTANTS = {
@@ -48,11 +49,17 @@ function formatDateTimeForBhv(date: Date): string {
 export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
   const insuranceOptions: Record<string, string> = {};
 
+  // Always include "Cơ bản" package (default)
+  const basicPackage = carInsurance.find(item => item.label === "Cơ bản");
+  if (basicPackage) {
+    insuranceOptions[basicPackage.value] = basicPackage.value;
+  }
+
+  // Add AU codes if present
   dkbs.forEach(line => {
-    // Extract AU code from "- AU001: Mới thay cũ" format
-    const match = line.match(/AU(\d{3})/);
-    if (match) {
-      const auCode = `AU${match[1]}`;
+    const auMatch = line.match(/AU(\d{3})/);
+    if (auMatch) {
+      const auCode = `AU${auMatch[1]}`;
       const insurance = carInsurance.find(item => item.code === auCode);
       if (insurance) {
         insuranceOptions[insurance.value] = insurance.value;
@@ -228,10 +235,45 @@ export function mapCarDeduction(deductionAmount: number): string {
 }
 
 /**
+ * Map car kind based on business type to UUID
+ */
+export function mapCarKind(loaiHinhKinhDoanh: string): string {
+  const kind = carKind.find(item => item.code === loaiHinhKinhDoanh);
+  return kind?.value || "8feb985b-dc77-46e3-b5af-186b10be4874"; // Default to passenger car
+}
+
+/**
+ * Map insurance type options to UUIDs
+ */
+export function mapInsuranceTypeOptions(includeOptions: { includeTNDS?: boolean; includeNNTX?: boolean }): Record<string, string> {
+  const insuranceTypes: Record<string, string> = {};
+
+  if (includeOptions.includeTNDS) {
+    const tndsInsurance = carTypeInsurance.find(item => item.code === "includeTNDS");
+    if (tndsInsurance) {
+      insuranceTypes[tndsInsurance.value] = tndsInsurance.value;
+    }
+  }
+
+  if (includeOptions.includeNNTX) {
+    const nntxInsurance = carTypeInsurance.find(item => item.code === "includeNNTX");
+    if (nntxInsurance) {
+      insuranceTypes[nntxInsurance.value] = nntxInsurance.value;
+    }
+  }
+
+  return insuranceTypes;
+}
+
+/**
  * Transform contract data to BHV API format
  */
 export function transformContractToBhvFormat(contract: any): any {
   const insuranceOptions = mapInsuranceOptions(contract.vatChatPackage?.dkbs || []);
+  const insuranceTypeOptions = mapInsuranceTypeOptions({
+    includeTNDS: contract.includeTNDS || false,
+    includeNNTX: contract.includeNNTX || false
+  });
   const kindConfig = getKindConfig(contract.loaiHinhKinhDoanh);
   const carWeightGoods = mapCarWeightGoods(contract.trongTai || 0);
 
@@ -243,6 +285,7 @@ export function transformContractToBhvFormat(contract: any): any {
     kind_config: JSON.stringify(kindConfig),
     product_id: BHV_CONSTANTS.PRODUCT_ID,
     car_year_buy: BHV_CONSTANTS.CAR_YEAR_BUY,
+    car_kind: mapCarKind(contract.loaiHinhKinhDoanh),
     get_fee_mode: BHV_CONSTANTS.GET_FEE_MODE,
     kind_customer: BHV_CONSTANTS.KIND_CUSTOMER,
     chk_agree_term: BHV_CONSTANTS.CHK_AGREE_TERM,
@@ -271,7 +314,13 @@ export function transformContractToBhvFormat(contract: any): any {
     car_number_engine: contract.soMay,
     car_fisrt_date: contract.ngayDKLD,
 
+    // Request change fees (discount/fee modifications)
+    request_change_fees: contract.requestChangeFees || "",
+
     // Customer data
+    buyer_customer_code: "",
+    buyer_partner_code: "",
+    buyer_agency_code: "",
     buyer_fullname: contract.chuXe, // Owner name from contract
     buyer_email: contract.buyerEmail,
     buyer_phone: contract.buyerPhone,
@@ -337,6 +386,9 @@ export function transformContractToBhvFormat(contract: any): any {
 
   // Add insurance options
   Object.assign(dataObject, insuranceOptions);
+
+  // Add insurance type options (TNDS/NNTX)
+  Object.assign(dataObject, insuranceTypeOptions);
 
   const bhvData = {
     action_name: "vehicle/transport/review",

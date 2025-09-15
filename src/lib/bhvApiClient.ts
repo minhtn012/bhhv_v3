@@ -35,7 +35,7 @@ export class BhvApiClient {
       'sec-fetch-mode': 'cors',
       'sec-fetch-site': 'same-origin',
       'x-requested-with': 'XMLHttpRequest',
-      'cookie': cookie || '4c5234cd-80ac-4deb-ae8e-a79b531f901e=CfDJ8O51rrl%2FT6hIiLxg3JwU543u7pVQ99hhSkDbLW3Nk8ZMwjnw9rgr23o5dkPge3sOQAb7wy5vO3ead8ANAdPUGYm%2BTwlkB4sMSUSKfgjuNbCgHUG9OgYIoQV1qurLkzUfUXsKNFXehasV2YdrsSv3uVQgMLDSsryVrpcm33WxgvKi',
+      'cookie': cookie || '4c5234cd-80ac-4deb-ae8e-a79b531f901e=CfDJ8O51rrl%2FT6hIiLxg3JwU5426BMK1as7%2BeHYo%2F607Z9IOpLr7aSRRhewApmJ0Ugiya7K0MqNNKin8%2FTbWlDGEpNRVUcAC3KthZJvf7pD4Bh8NKLYMjpq7cA0ppNVothT1iAPVe%2BVR9YvEyWJui9M0gpTOQ%2BpOYUWVrx1bzCsaysB8',
       'Referer': 'https://my.bhv.com.vn/bao-hiem-xe-co-gioi'
     };
   }
