@@ -51,7 +51,6 @@ export async function POST(request: NextRequest) {
         username: user.username,
         email: user.email,
         role: user.role,
-        type: user.role,
         isLoggedIn: true
       }
     });

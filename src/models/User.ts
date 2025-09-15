@@ -8,6 +8,11 @@ export interface IUser extends Document {
   password: string;
   role: 'admin' | 'user';
   isActive: boolean;
+  // BHV credentials (only for role='user')
+  bhvUsername?: string; // encrypted
+  bhvPassword?: string; // encrypted
+  bhvConnectedAt?: Date;
+  bhvStatus?: 'connected' | 'disconnected';
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -45,6 +50,24 @@ const userSchema = new Schema<IUser>({
   isActive: {
     type: Boolean,
     default: true
+  },
+  // BHV credentials (optional, only for role='user')
+  bhvUsername: {
+    type: String,
+    required: false
+  },
+  bhvPassword: {
+    type: String,
+    required: false
+  },
+  bhvConnectedAt: {
+    type: Date,
+    required: false
+  },
+  bhvStatus: {
+    type: String,
+    enum: ['connected', 'disconnected'],
+    required: false
   }
 }, {
   timestamps: true

@@ -7,7 +7,14 @@ export interface BhvApiResponse {
   contractNumber?: string;
   pdfBase64?: string;
   error?: string;
-  rawResponse?: any;
+  rawResponse?: unknown;
+}
+
+export interface BhvAuthResponse {
+  success: boolean;
+  cookies?: string;
+  error?: string;
+  rawResponse?: unknown;
 }
 
 export interface BhvRequestData {
@@ -21,9 +28,12 @@ export interface BhvRequestData {
  */
 export class BhvApiClient {
   private readonly BHV_ENDPOINT = 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e';
+  private sessionCookies: string | null = null;
 
   // Headers from captured requests
   private getHeaders(cookie?: string): HeadersInit {
+    const cookieToUse = cookie || this.sessionCookies || '4c5234cd-80ac-4deb-ae8e-a79b531f901e=CfDJ8O51rrl%2FT6hIiLxg3JwU5426BMK1as7%2BeHYo%2F607Z9IOpLr7aSRRhewApmJ0Ugiya7K0MqNNKin8%2FTbWlDGEpNRVUcAC3KthZJvf7pD4Bh8NKLYMjpq7cA0ppNVothT1iAPVe%2BVR9YvEyWJui9M0gpTOQ%2BpOYUWVrx1bzCsaysB8';
+
     return {
       'accept': 'application/json, text/javascript, */*; q=0.01',
       'accept-language': 'en-US,en;q=0.9,vi;q=0.8,lb;q=0.7',
@@ -35,9 +45,143 @@ export class BhvApiClient {
       'sec-fetch-mode': 'cors',
       'sec-fetch-site': 'same-origin',
       'x-requested-with': 'XMLHttpRequest',
-      'cookie': cookie || '4c5234cd-80ac-4deb-ae8e-a79b531f901e=CfDJ8O51rrl%2FT6hIiLxg3JwU5426BMK1as7%2BeHYo%2F607Z9IOpLr7aSRRhewApmJ0Ugiya7K0MqNNKin8%2FTbWlDGEpNRVUcAC3KthZJvf7pD4Bh8NKLYMjpq7cA0ppNVothT1iAPVe%2BVR9YvEyWJui9M0gpTOQ%2BpOYUWVrx1bzCsaysB8',
-      'Referer': 'https://my.bhv.com.vn/bao-hiem-xe-co-gioi'
+      'cookie': cookieToUse,
+      'Referer': 'https://my.bhv.com.vn/'
     };
+  }
+
+  /**
+   * Parse cookies from response headers
+   */
+  private parseCookiesFromHeaders(headers: Headers): string {
+    const cookies: string[] = [];
+
+    headers.forEach((value, name) => {
+      if (name.toLowerCase() === 'set-cookie') {
+        // Extract cookie name=value part (before first semicolon)
+        const cookiePart = value.split(';')[0];
+        if (cookiePart) {
+          cookies.push(cookiePart);
+        }
+      }
+    });
+
+    return cookies.join('; ');
+  }
+
+  /**
+   * Authenticate with BHV API and get session cookies
+   */
+  async authenticate(username: string, password: string): Promise<BhvAuthResponse> {
+    try {
+      console.log('🔐 Authenticating with BHV API...');
+
+      const authData = {
+        action_name: 'public/user/login',
+        data: JSON.stringify({
+          total_click: '1',
+          account: username,
+          password: password
+        }),
+        d_info: {}
+      };
+
+      const response = await fetch(this.BHV_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json, text/javascript, */*; q=0.01',
+          'accept-language': 'en-US,en;q=0.9,vi;q=0.8,lb;q=0.7',
+          'content-type': 'application/json; charset=UTF-8',
+          'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"',
+          'sec-ch-ua-mobile': '?0',
+          'sec-ch-ua-platform': '"Linux"',
+          'sec-fetch-dest': 'empty',
+          'sec-fetch-mode': 'cors',
+          'sec-fetch-site': 'same-origin',
+          'x-requested-with': 'XMLHttpRequest',
+          'cookie': '_ga=GA1.1.1701792270.1756137871; _ga_GCQNHXB6V5=GS2.1.s1756137871$o1$g0$t1756138135$j60$l0$h0',
+          'Referer': 'https://my.bhv.com.vn/'
+        },
+        body: JSON.stringify(authData)
+      });
+
+      console.log('📡 Auth response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ BHV Auth error:', errorText);
+        return {
+          success: false,
+          error: `HTTP ${response.status}: ${errorText}`,
+          rawResponse: { status: response.status, text: errorText }
+        };
+      }
+
+      // Extract cookies from response headers
+      const cookies = this.parseCookiesFromHeaders(response.headers);
+      if (cookies) {
+        this.sessionCookies = cookies;
+        console.log('🍪 Authentication cookies obtained:', cookies.substring(0, 50) + '...');
+      } else {
+        console.log('❌ No cookies found in response headers');
+      }
+
+      const responseData = await response.json();
+      console.log('📋 Auth response data:', responseData);
+
+      // Check if authentication was successful
+      // Success criteria: status_code 200 AND cookies obtained AND data_key exists
+      if (responseData.status_code === 200 && cookies && responseData.data_key) {
+        console.log('✅ BHV Authentication successful - cookies and session data obtained');
+        return {
+          success: true,
+          cookies: cookies,
+          rawResponse: responseData
+        };
+      } else if (responseData.status_code === 200 && !cookies) {
+        console.log('⚠️ BHV returned 200 but no cookies - likely auth failed');
+        return {
+          success: false,
+          error: `Authentication failed: No session cookies received`,
+          rawResponse: responseData
+        };
+      } else {
+        return {
+          success: false,
+          error: `Authentication failed: ${responseData.message || 'Invalid credentials'}`,
+          rawResponse: responseData
+        };
+      }
+
+    } catch (error) {
+      console.error('💥 BHV Auth error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown authentication error',
+        rawResponse: { error: error }
+      };
+    }
+  }
+
+  /**
+   * Get current session cookies
+   */
+  getSessionCookies(): string | null {
+    return this.sessionCookies;
+  }
+
+  /**
+   * Set session cookies manually
+   */
+  setSessionCookies(cookies: string): void {
+    this.sessionCookies = cookies;
+  }
+
+  /**
+   * Clear session cookies
+   */
+  clearSession(): void {
+    this.sessionCookies = null;
   }
 
   /**
@@ -136,7 +280,9 @@ export class BhvApiClient {
 
       // In Node.js environment, we can save to filesystem
       if (typeof window === 'undefined') {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fs = require('fs');
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const path = require('path');
 
         const pdfBuffer = Buffer.from(cleanBase64, 'base64');
@@ -157,8 +303,7 @@ export class BhvApiClient {
       // In browser environment, return data URL
       return `data:application/pdf;base64,${cleanBase64}`;
 
-    } catch (error) {
-      console.error('❌ Error saving PDF:', error);
+    } catch {
       throw new Error('Failed to save PDF file');
     }
   }

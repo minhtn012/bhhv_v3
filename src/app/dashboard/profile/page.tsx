@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
+import BhvAuthSection from '@/components/profile/BhvAuthSection';
 
 interface User {
   id: string;
@@ -30,6 +31,15 @@ export default function ProfilePage() {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordError, setPasswordError] = useState('');
 
+  // BHV Auth state (mock data for now)
+  const [bhvAuthData, setBhvAuthData] = useState({
+    hasCredentials: false,
+    isConnected: false,
+    username: '',
+    lastConnectionTime: undefined as Date | undefined
+  });
+  const [bhvLoading, setBhvLoading] = useState(false);
+
   useEffect(() => {
     // Check if user is logged in
     const userData = localStorage.getItem('user');
@@ -44,6 +54,11 @@ export default function ProfilePage() {
 
     // Also fetch fresh user data from API
     fetchUserProfile();
+
+    // Fetch BHV credentials status if user role is 'user'
+    if (parsedUser.role === 'user') {
+      fetchBhvCredentials();
+    }
   }, [router]);
 
   const fetchUserProfile = async () => {
@@ -66,6 +81,31 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error('Fetch profile error:', error);
+    }
+  };
+
+  const fetchBhvCredentials = async () => {
+    try {
+      const response = await fetch('/api/users/bhv-credentials', {
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBhvAuthData({
+          hasCredentials: data.hasCredentials,
+          isConnected: data.isConnected,
+          username: '', // Don't store actual username in client state
+          lastConnectionTime: data.lastConnectionTime ? new Date(data.lastConnectionTime) : undefined
+        });
+      } else if (response.status === 403) {
+        // User doesn't have permission to access BHV credentials (probably admin)
+        console.log('User does not have BHV credentials access');
+      } else {
+        console.error('Failed to fetch BHV credentials status');
+      }
+    } catch (error) {
+      console.error('BHV credentials fetch error:', error);
     }
   };
 
@@ -120,6 +160,121 @@ export default function ProfilePage() {
     }
   };
 
+  // BHV Auth handlers (real implementations)
+  const handleSaveBhvCredentials = async (credentials: { username: string; password: string }) => {
+    setBhvLoading(true);
+    setError('');
+    setPasswordError('');
+
+    try {
+      // First, test authentication with BHV
+      const response = await fetch('/api/users/bhv-test-auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: credentials.username,
+          password: credentials.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Authentication successful - update state
+        setBhvAuthData(prev => ({
+          ...prev,
+          hasCredentials: true,
+          isConnected: true,
+          username: '', // Don't store actual username in client state for security
+          lastConnectionTime: new Date(data.connectionTime)
+        }));
+
+        setSuccess('Kết nối BHV thành công! Thông tin đăng nhập đã được lưu.');
+      } else {
+        // Authentication failed - show error and reset form
+        setError(data.error || 'Không thể xác thực với BHV. Vui lòng kiểm tra lại thông tin.');
+
+        // Reset BHV auth data to allow user to re-enter credentials
+        setBhvAuthData(prev => ({
+          ...prev,
+          hasCredentials: false,
+          isConnected: false,
+          username: '',
+          lastConnectionTime: undefined
+        }));
+      }
+    } catch (error) {
+      setError('Lỗi kết nối. Vui lòng kiểm tra kết nối internet và thử lại.');
+
+      // Reset form on network error as well
+      setBhvAuthData(prev => ({
+        ...prev,
+        hasCredentials: false,
+        isConnected: false,
+        username: '',
+        lastConnectionTime: undefined
+      }));
+    } finally {
+      setBhvLoading(false);
+    }
+  };
+
+  const handleTestBhvConnection = async () => {
+    if (!bhvAuthData.hasCredentials) {
+      setError('Chưa có thông tin đăng nhập BHV để kiểm tra. Vui lòng nhập thông tin đăng nhập trước.');
+      return;
+    }
+
+    setBhvLoading(true);
+    setError('');
+    setPasswordError('');
+
+    try {
+      // Since we now store credentials, we need user to re-enter password for security
+      // This is a limitation of the test connection feature
+      setError('Để kiểm tra kết nối, vui lòng nhập lại thông tin đăng nhập trong form bên dưới.');
+    } catch (error) {
+      setError('Lỗi hệ thống. Vui lòng thử lại sau.');
+      console.error('BHV connection test error:', error);
+    } finally {
+      setBhvLoading(false);
+    }
+  };
+
+  const handleRemoveBhvCredentials = async () => {
+    setBhvLoading(true);
+    setError('');
+    setPasswordError('');
+
+    try {
+      const response = await fetch('/api/users/bhv-credentials', {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        setBhvAuthData({
+          hasCredentials: false,
+          isConnected: false,
+          username: '',
+          lastConnectionTime: undefined
+        });
+        setSuccess('Đã xóa thông tin đăng nhập BHV.');
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Không thể xóa thông tin đăng nhập BHV.');
+      }
+    } catch (error) {
+      setError('Lỗi kết nối. Vui lòng thử lại sau.');
+      console.error('BHV credentials removal error:', error);
+    } finally {
+      setBhvLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -144,6 +299,31 @@ export default function ProfilePage() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="max-w-4xl mx-auto space-y-6">
+
+          {/* Global Success/Error Messages */}
+          {success && (
+            <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 text-green-400 text-sm">
+              {success}
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
+        {/* BHV Authentication Section - Only for regular users */}
+        {user.role === 'user' && (
+          <BhvAuthSection
+            authData={bhvAuthData}
+            onSaveCredentials={handleSaveBhvCredentials}
+            onTestConnection={handleTestBhvConnection}
+            onRemoveCredentials={handleRemoveBhvCredentials}
+            isLoading={bhvLoading}
+          />
+        )}
+
         {/* Profile Information */}
         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
           <h1 className="text-2xl font-bold text-white mb-6">Profile Information</h1>
@@ -222,12 +402,6 @@ export default function ProfilePage() {
         {/* Change Password */}
         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
           <h2 className="text-xl font-bold text-white mb-6">Change Password</h2>
-          
-          {success && (
-            <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 text-green-400 text-sm mb-6">
-              {success}
-            </div>
-          )}
 
           {passwordError && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm mb-6">
