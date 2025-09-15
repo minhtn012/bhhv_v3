@@ -163,6 +163,21 @@ export function mapCarBodyStyle(carBrand: string, carModel: string, carBodyStyle
 }
 
 /**
+ * Map car model year variant to UUID
+ */
+export function mapCarModelYear(carBrand: string, carModel: string, carModelYear: string): string {
+  const brand = allCarDetails.find(item => item.brand_name === carBrand);
+  if (brand) {
+    const model = brand.models.find(m => m.model_name === carModel);
+    if (model) {
+      const year = model.years.find(y => y.name === carModelYear);
+      return year?.id || "";
+    }
+  }
+  return "";
+}
+
+/**
  * Map number of seats to seat UUID
  */
 export function mapCarSeat(soChoNgoi: number): string {
@@ -241,7 +256,7 @@ export function transformContractToBhvFormat(contract: any): any {
     car_seat_buy: contract.soChoNgoi?.toString(),
     car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
     car_year: contract.namSanXuat?.toString(),
-    car_model_year: contract.namSanXuat?.toString(),
+    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
     car_value: contract.giaTriXe?.toString(),
     car_value_info: contract.giaTriXe?.toString(),
     car_value_battery: contract.giaTriPin?.toString() || "0",
