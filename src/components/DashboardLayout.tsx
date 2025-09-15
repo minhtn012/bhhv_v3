@@ -67,12 +67,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-80 bg-slate-800/95 transform transition-transform duration-300 ease-out lg:relative lg:translate-x-0 lg:flex-shrink-0 lg:w-72 lg:bg-slate-800/90 ${
+      <div className={`fixed inset-y-0 left-0 z-50 w-80 bg-slate-800/95 transform transition-transform duration-300 ease-out lg:fixed lg:translate-x-0 lg:flex-shrink-0 lg:w-72 lg:bg-slate-800/90 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full max-h-screen">
           {/* Sidebar Header */}
-          <div className="p-6 lg:p-5">
+          <div className="p-6 lg:p-5 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-bold text-white">CMS Pro</h1>
@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
           
           {/* Navigation */}
-          <nav className="flex-1 p-6 lg:p-4">
+          <nav className="flex-1 overflow-y-auto p-6 lg:p-4 min-h-0">
             <div className="space-y-1">
               <a href="/dashboard" className="flex items-center gap-4 px-4 py-4 text-slate-300 hover:text-white hover:bg-slate-700 rounded-xl transition-all duration-200 min-h-[52px]">
                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,8 +139,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </nav>
           
-          {/* User Profile */}
-          <div className="p-6 lg:p-4">
+          {/* User Profile - Always visible at bottom */}
+          <div className="p-6 lg:p-4 flex-shrink-0 mt-auto">
             <div className="flex items-center gap-4 p-4 bg-slate-700/50 rounded-xl">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold text-base">
@@ -166,7 +166,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:min-w-0">
+      <div className="flex-1 flex flex-col lg:min-w-0 lg:ml-72">
         {/* Top Bar */}
         <header className="bg-slate-800/50 px-4 lg:px-6 py-6">
           <div className="flex items-center justify-between">
