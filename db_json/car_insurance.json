@@ -1,0 +1,57 @@
+[
+  {
+    "code": "AU001",
+    "value": "e174526c-5a23-4aca-8d9f-ea198dc6b874",
+    "label": "Bảo hiểm thay thế mới/ Bảo hiểm mới thay cũ"
+  },
+  {
+    "code": "AU002",
+    "value": "5eab040c-901d-4f4c-a3be-11e6b6fad9a1",
+    "label": "Bảo hiểm lựa chọn cơ sở sửa chữa"
+  },
+  {
+    "code": "AU006",
+    "value": "6ea497a9-df0a-49f8-9d92-3dcf0ef53645",
+    "label": "Bảo hiểm tổn thất của động cơ khi xe hoạt động trong khu vực bị ngập nước"
+  },
+  {
+    "code": "AU009",
+    "value": "c42582c5-c95b-4d92-8a3b-c5770775d3bf",
+    "label": "Bảo hiểm xe bị mất trộm, cướp bộ phận"
+  },
+  {
+    "code": "AU003",
+    "value": "1e1c66f4-bf6e-4dfd-9a55-a21deeb151cf",
+    "label": "Bảo hiểm thuê xe trong thời gian sửa chữa/ Bảo hiểm gián đoạn sử dụng xe"
+  },
+  {
+    "code": "AU005",
+    "value": "03b7e7be-2a76-4646-b043-828b982146c4",
+    "label": "Bảo hiểm vật chất xe cơ giới ngoài lãnh thổ Việt Nam"
+  },
+  {
+    "code": "AU010",
+    "value": "f4c4529b-49c7-4aa2-b60c-d6cdbe6fe18a",
+    "label": "Bảo hiểm vật chất xe cơ giới lưu hành tạm thời"
+  },
+  {
+    "code": "AU004",
+    "value": "7b9e2a58-efe1-4858-9bb0-e20469079832",
+    "label": "Bảo hiểm vật chất đối với xe miễn thuế, tạm nhập, tái xuất"
+  },
+  {
+    "code": "AU008",
+    "value": "ceec8fa4-9659-4618-b926-c53d32bce27c",
+    "label": "Bảo hiểm xe tập lái, sát hạch"
+  },
+  {
+    "code": null,
+    "value": "fcc672ad-b296-462d-b17f-027579819aea",
+    "label": "Bảo hiểm bồi thường theo giới hạn trách nhiệm"
+  },
+  {
+    "code": null,
+    "value": "276a4c5a-fead-4d9d-a1f8-98a92472b7aa",
+    "label": "Bảo hiểm vật chất xe hoạt động trong khu vực nội bộ"
+  }
+]

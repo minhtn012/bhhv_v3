@@ -1,0 +1,82 @@
+{
+  "_id": {
+    "$oid": "68c7931a318a809983d3e23d"
+  },
+  "chuXe": "CTY TNHH VTDV TM KIẾN HOÀNG -123",
+  "diaChi": "79 Tô Ký P.TMT Q.12",
+  "buyerEmail": "email@abc.com",
+  "buyerPhone": "0982111222",
+  "buyerGender": "nam",
+  "buyerCitizenId": "123123123123",
+  "selectedProvince": "eee52932-0358-47d5-9984-be1132c7f01",
+  "selectedProvinceText": "Thành phố Hà Nội",
+  "selectedDistrictWard": "6c24e5c0-1791-4c09-9810-00b80102277",
+  "selectedDistrictWardText": "Huyện Chương Mỹ",
+  "specificAddress": "123 nguyen van a",
+  "bienSo": "50H-229.67",
+  "nhanHieu": "MAZDA",
+  "soLoai": "BT-50",
+  "soKhung": "LGGX6D058ML305284",
+  "soMay": "YC6L35050LG1L9M00117",
+  "ngayDKLD": "10/03/2023",
+  "namSanXuat": 2021,
+  "soChoNgoi": 2,
+  "trongTai": 17990,
+  "giaTriXe": 800000000,
+  "loaiHinhKinhDoanh": "khong_kd_cho_nguoi",
+  "loaiDongCo": "2cdc787a-207b-4e8c-b56d-ae016f1c2c94",
+  "giaTriPin": 20000000,
+  "carBrand": "MAZDA",
+  "carModel": "BT-50",
+  "carBodyStyle": "PICK-UP",
+  "carYear": "4X4 2.2L",
+  "vatChatPackage": {
+    "name": "Gói AU001 + AU002 + AU006 + AU009",
+    "tyLePhi": 1.1500000000000001,
+    "customRate": 1.2,
+    "isCustomRate": true,
+    "phiVatChatGoc": 10250000.000000002,
+    "phiVatChat": 9840000,
+    "dkbs": [
+      "- AU001: Mới thay cũ",
+      "- AU002: Lựa chọn cơ sở sửa chữa",
+      "- AU006: Thủy kích",
+      "- AU009: Mất cắp bộ phận"
+    ]
+  },
+  "includeTNDS": true,
+  "tndsCategory": "duoi_6_cho_khong_kd",
+  "phiTNDS": 480700,
+  "includeNNTX": true,
+  "phiNNTX": 40000,
+  "phiPin": 0,
+  "taiTucPercentage": 0.1,
+  "phiTaiTuc": 820000,
+  "phiTruocKhiGiam": 11590700.000000002,
+  "phiSauKhiGiam": 11180700,
+  "tongPhi": 11180700,
+  "mucKhauTru": 500000,
+  "status": "nhap",
+  "createdBy": "68b7b4bd59e71097aac048ab",
+  "contractNumber": "BH202509159553",
+  "statusHistory": [
+    {
+      "status": "nhap",
+      "changedBy": "68b7b4bd59e71097aac048ab",
+      "changedAt": {
+        "$date": "2025-09-15T04:16:26.426Z"
+      },
+      "note": "Tạo hợp đồng mới",
+      "_id": {
+        "$oid": "68c7931a318a809983d3e23e"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-09-15T04:16:26.426Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-15T04:16:26.426Z"
+  },
+  "__v": 0
+}
