@@ -1,0 +1,100 @@
+{
+  "_id": {
+    "$oid": "68c7e3f813d9f57dd453fd7c"
+  },
+  "chuXe": "CTY TNHH VTDV TM KIẾN HOÀNG",
+  "diaChi": "79 Tô Ký P.TMT Q.12",
+  "buyerEmail": "email@abc.com",
+  "buyerPhone": "0988111222",
+  "buyerGender": "nam",
+  "buyerCitizenId": "123123123123",
+  "selectedProvince": "eee52932-0358-47d5-9984-be1132c7f01",
+  "selectedProvinceText": "Thành phố Hà Nội",
+  "selectedDistrictWard": "6c24e5c0-1791-4c09-9810-00b80102018",
+  "selectedDistrictWardText": "Huyện Gia Lâm",
+  "specificAddress": "132 ha noi",
+  "bienSo": "50H-229.67",
+  "nhanHieu": "CHENGLONG",
+  "soLoai": "LZ1340",
+  "soKhung": "LGGX6D058ML305284",
+  "soMay": "YC6L35050LG1L9M00117",
+  "ngayDKLD": "10/03/2023",
+  "namSanXuat": 2021,
+  "soChoNgoi": 2,
+  "trongTai": 17990,
+  "giaTriXe": 800000000,
+  "loaiHinhKinhDoanh": "kd_cho_hang",
+  "loaiDongCo": "31cd6b1d-39a6-42d5-9c5f-13f44ad1a8a9",
+  "carBrand": "CHENGLONG",
+  "carModel": "LZ1340",
+  "carBodyStyle": "TRUCK",
+  "carYear": "6X4",
+  "vatChatPackage": {
+    "name": "Gói AU001 + AU006",
+    "tyLePhi": 1.26,
+    "isCustomRate": false,
+    "phiVatChatGoc": 10080000,
+    "phiVatChat": 10080000,
+    "dkbs": [
+      "- AU001: Mới thay cũ",
+      "- AU006: Thủy kích"
+    ]
+  },
+  "includeTNDS": true,
+  "tndsCategory": "tai_tren_15_tan",
+  "phiTNDS": 3520000,
+  "includeNNTX": true,
+  "phiNNTX": 100000,
+  "phiPin": 0,
+  "taiTucPercentage": 0,
+  "phiTaiTuc": 0,
+  "phiTruocKhiGiam": 13700000,
+  "phiSauKhiGiam": 13700000,
+  "tongPhi": 13700000,
+  "mucKhauTru": 1000000,
+  "status": "khach_duyet",
+  "createdBy": "68b7b4bd59e71097aac048ab",
+  "contractNumber": "BH202509150890",
+  "statusHistory": [
+    {
+      "status": "nhap",
+      "changedBy": "68b7b4bd59e71097aac048ab",
+      "changedAt": {
+        "$date": "2025-09-15T10:01:28.084Z"
+      },
+      "note": "Tạo hợp đồng mới",
+      "_id": {
+        "$oid": "68c7e3f813d9f57dd453fd7d"
+      }
+    },
+    {
+      "status": "cho_duyet",
+      "changedBy": "68b7b4bd59e71097aac048ab",
+      "changedAt": {
+        "$date": "2025-09-15T10:01:39.618Z"
+      },
+      "note": "Trạng thái chuyển sang: Chờ duyệt",
+      "_id": {
+        "$oid": "68c7e40313d9f57dd453fd8b"
+      }
+    },
+    {
+      "status": "khach_duyet",
+      "changedBy": "68b7b4bd59e71097aac048ab",
+      "changedAt": {
+        "$date": "2025-09-15T10:01:44.699Z"
+      },
+      "note": "Trạng thái chuyển sang: Khách duyệt",
+      "_id": {
+        "$oid": "68c7e40813d9f57dd453fd93"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-09-15T10:01:28.084Z"
+  },
+  "updatedAt": {
+    "$date": "2025-09-15T10:01:44.699Z"
+  },
+  "__v": 2
+}
