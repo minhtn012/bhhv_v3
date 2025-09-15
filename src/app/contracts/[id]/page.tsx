@@ -11,6 +11,7 @@ import ContractPriceSummaryView from '@/components/contracts/detail/ContractPric
 import StatusHistorySection from '@/components/contracts/detail/StatusHistorySection';
 import StatusChangeModal from '@/components/contracts/detail/StatusChangeModal';
 import QuoteModal from '@/components/contracts/detail/QuoteModal';
+import BhvPdfModal from '@/components/contracts/detail/BhvPdfModal';
 
 // Type declaration for html2canvas
 declare global {
@@ -101,6 +102,9 @@ export default function ContractDetailPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
+  const [bhvSubmissionLoading, setBhvSubmissionLoading] = useState(false);
+  const [showBhvPdfModal, setShowBhvPdfModal] = useState(false);
+  const [bhvPdfData, setBhvPdfData] = useState<string>('');
   
   const router = useRouter();
   const params = useParams();
@@ -184,6 +188,38 @@ export default function ContractDetailPage() {
     setShowQuoteModal(true);
   };
 
+  const handleSubmitToBhv = async () => {
+    if (!contract) return;
+
+    setBhvSubmissionLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`/api/contracts/${contractId}/submit-to-bhv`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Success - show PDF modal
+        setBhvPdfData(data.pdfBase64);
+        setShowBhvPdfModal(true);
+
+        // Optionally refresh contract data to show updated status
+        // await fetchContract();
+      } else {
+        setError(data.error || 'Lỗi khi tạo hợp đồng BHV');
+      }
+    } catch (error) {
+      console.error('BHV submission error:', error);
+      setError('Đã có lỗi xảy ra khi tạo hợp đồng BHV');
+    } finally {
+      setBhvSubmissionLoading(false);
+    }
+  };
+
 
   if (loading) {
     return (
@@ -222,6 +258,8 @@ export default function ContractDetailPage() {
             currentUser={currentUser}
             onStatusChange={() => setShowStatusModal(true)}
             onGenerateQuote={generateAndShowQuote}
+            onSubmitToBhv={handleSubmitToBhv}
+            bhvSubmissionLoading={bhvSubmissionLoading}
           />
 
           {error && (
@@ -261,6 +299,16 @@ export default function ContractDetailPage() {
         contract={contract}
         isVisible={showQuoteModal}
         onClose={() => setShowQuoteModal(false)}
+      />
+
+      <BhvPdfModal
+        isVisible={showBhvPdfModal}
+        onClose={() => {
+          setShowBhvPdfModal(false);
+          setBhvPdfData('');
+        }}
+        pdfBase64={bhvPdfData}
+        contractNumber={contract?.contractNumber || ''}
       />
     </DashboardLayout>
   );

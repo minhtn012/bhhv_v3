@@ -19,6 +19,8 @@ interface ContractDetailHeaderProps {
   currentUser: User | null;
   onStatusChange: () => void;
   onGenerateQuote: () => void;
+  onSubmitToBhv?: () => void;
+  bhvSubmissionLoading?: boolean;
 }
 
 const statusMap = {
@@ -85,7 +87,9 @@ export default function ContractDetailHeader({
   contract,
   currentUser,
   onStatusChange,
-  onGenerateQuote
+  onGenerateQuote,
+  onSubmitToBhv,
+  bhvSubmissionLoading = false
 }: ContractDetailHeaderProps) {
   const router = useRouter();
   
@@ -146,6 +150,29 @@ export default function ContractDetailHeader({
           >
             Báo giá
           </button>
+
+          {/* BHV Submission Button */}
+          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onSubmitToBhv && (
+            <button
+              onClick={onSubmitToBhv}
+              disabled={bhvSubmissionLoading}
+              className="bg-orange-600 hover:bg-orange-700 disabled:bg-orange-800 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-xl transition-colors text-center flex items-center gap-2"
+            >
+              {bhvSubmissionLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Đang tạo...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Tạo hợp đồng BHV
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>
