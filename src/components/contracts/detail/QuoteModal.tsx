@@ -78,7 +78,9 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           'q-loaiXe': contract.soLoai,
           'q-soKhung': contract.soKhung,
           'q-soMay': contract.soMay,
-          'q-giaTriXe': formatCurrency(contract.giaTriXe),
+          'q-giaTriXe': contract.giaTriPin && contract.giaTriPin > 0
+            ? `${formatCurrency(contract.giaTriXe)}\n${formatCurrency(contract.giaTriPin)}`
+            : formatCurrency(contract.giaTriXe),
           'q-mucDich': getLoaiHinhText(contract.loaiHinhKinhDoanh),
           'q-soTienBH': formatCurrency(calculateTotalVehicleValue(contract.giaTriXe, contract.giaTriPin, contract.loaiDongCo)),
           'q-mucKhauTru': formatCurrency(contract.mucKhauTru) + '/vụ',
@@ -99,8 +101,8 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
         Object.entries(qElements).forEach(([id, value]) => {
           const element = document.getElementById(id);
           if (element) {
-            if (id === 'q-dkbs') {
-              element.innerHTML = value;
+            if (id === 'q-dkbs' || id === 'q-giaTriXe') {
+              element.innerHTML = value.replace(/\n/g, '<br/>');
             } else {
               element.textContent = value;
             }
@@ -175,10 +177,10 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
               />
               <div>
                 <h2 className="text-xl font-bold" style={{ color: '#dc2626' }}>CÔNG TY BẢO HIỂM HÙNG VƯƠNG THÀNH PHỐ HỒ CHÍ MINH</h2>
-                <p className="font-semibold" style={{ color: '#000' }}>BHV TP HCM</p>
+                <p className="font-semibold" style={{ color: '#000', fontSize: '24px' }}>BHV TP HCM</p>
               </div>
             </div>
-            <h3 className="text-lg font-bold mt-4" style={{ color: '#000' }}>BẢN CHÀO PHÍ BẢO HIỂM XE CƠ GIỚI</h3>
+            <h3 className="text-lg font-bold mt-4" style={{ color: '#dc2626' }}>BẢN CHÀO PHÍ BẢO HIỂM XE CƠ GIỚI</h3>
           </header>
           <table style={{ width: '100%', fontSize: '14px', borderCollapse: 'collapse', border: '1px solid black' }}>
             <tbody>
@@ -215,8 +217,13 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
                 <td id="q-soMay" style={{ border: '1px solid black', padding: '8px' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Giá trị xe:</td>
-                <td id="q-giaTriXe" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>
+                  Giá trị xe:
+                  {contract?.giaTriPin && contract.giaTriPin > 0 && <><br/>giá trị pin:</>}
+                </td>
+                <td id="q-giaTriXe" style={{ border: '1px solid black', padding: '8px' }}>
+                  {contract?.giaTriPin && contract.giaTriPin > 0 && <br/>}
+                </td>
                 <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Mục đích sử dụng:</td>
                 <td id="q-mucDich" style={{ border: '1px solid black', padding: '8px' }}></td>
               </tr>
@@ -233,15 +240,15 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
                 <td id="q-dkbs" rowSpan={4} style={{ verticalAlign: 'top', border: '1px solid black', padding: '8px' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Vật chất thân xe:</td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm Vật Chất Xe:</td>
                 <td id="q-phiVatChat" style={{ border: '1px solid black', padding: '8px' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>TNDS:</td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm TNDS:</td>
                 <td id="q-phiTNDS" style={{ border: '1px solid black', padding: '8px' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>NNTX:</td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm NNTX:</td>
                 <td id="q-phiNNTX" style={{ border: '1px solid black', padding: '8px' }}></td>
               </tr>
               <tr>
