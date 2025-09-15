@@ -1,4 +1,5 @@
 import { formatCurrency, isElectricOrHybridEngine, calculateTotalVehicleValue } from '@/utils/insurance-calculator';
+import { getVehicleTypeText } from '@/utils/vehicle-type-mapping';
 import carEngineTypes from '@db/car_type_engine.json';
 
 interface Contract {
@@ -23,23 +24,6 @@ interface VehicleInfoSectionProps {
   contract: Contract;
 }
 
-const getLoaiHinhText = (loaiHinh: string): string => {
-  const mapping: { [key: string]: string } = {
-    'khong_kd_cho_nguoi': 'Xe chở người (xe gia đình)',
-    'khong_kd_cho_hang': 'Xe chở hàng (không kinh doanh vận tải)',
-    'khong_kd_pickup_van': 'Xe bán tải / Van (không kinh doanh)',
-    'kd_cho_hang': 'Xe tải kinh doanh',
-    'kd_dau_keo': 'Xe đầu kéo',
-    'kd_cho_khach_lien_tinh': 'Xe khách liên tỉnh, nội tỉnh',
-    'kd_grab_be': 'Grab, Be, taxi công nghệ (< 9 chỗ)',
-    'kd_taxi_tu_lai': 'Taxi, xe cho thuê tự lái',
-    'kd_hop_dong_tren_9c': 'Xe khách hợp đồng (> 9 chỗ)',
-    'kd_bus': 'Xe bus',
-    'kd_pickup_van': 'Xe bán tải / Van (kinh doanh)',
-    'kd_chuyen_dung': 'Xe chuyên dùng khác (xe cứu thương...)'
-  };
-  return mapping[loaiHinh] || loaiHinh;
-};
 
 const getEngineTypeText = (engineTypeId: string): string => {
   const engineType = carEngineTypes.find(engine => engine.value === engineTypeId);
@@ -129,7 +113,7 @@ export default function VehicleInfoSection({ contract }: VehicleInfoSectionProps
         )}
         <div className="md:col-span-3">
           <label className="block text-gray-300 text-sm mb-1">Mục đích sử dụng</label>
-          <p className="text-white">{getLoaiHinhText(contract.loaiHinhKinhDoanh)}</p>
+          <p className="text-white">{getVehicleTypeText(contract.loaiHinhKinhDoanh)}</p>
         </div>
       </div>
     </div>

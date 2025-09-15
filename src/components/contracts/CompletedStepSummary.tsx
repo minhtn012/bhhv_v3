@@ -1,6 +1,7 @@
 'use client';
 
 import { formatCurrency } from '@/utils/insurance-calculator';
+import { getVehicleTypeText } from '@/utils/vehicle-type-mapping';
 
 interface FileUploadSummaryProps {
   cavetFileName?: string;
@@ -51,23 +52,6 @@ export function FileUploadSummary({ cavetFileName, dangkiemFileName }: FileUploa
 }
 
 export function VehicleInfoSummary({ formData }: VehicleInfoSummaryProps) {
-  const getLoaiHinhText = (value: string) => {
-    const options = {
-      'khong_kd_cho_nguoi': 'Xe chở người (xe gia đình)',
-      'khong_kd_cho_hang': 'Xe chở hàng (không kinh doanh)',
-      'khong_kd_pickup_van': 'Xe bán tải/Van (không kinh doanh)',
-      'kd_cho_hang': 'Xe tải kinh doanh',
-      'kd_dau_keo': 'Xe đầu kéo',
-      'kd_cho_khach_lien_tinh': 'Xe khách liên tỉnh, nội tỉnh',
-      'kd_grab_be': 'Grab, Be, taxi công nghệ',
-      'kd_taxi_tu_lai': 'Taxi, xe cho thuê tự lái',
-      'kd_hop_dong_tren_9c': 'Xe khách hợp đồng (>9 chỗ)',
-      'kd_bus': 'Xe bus',
-      'kd_pickup_van': 'Xe bán tải/Van (kinh doanh)',
-      'kd_chuyen_dung': 'Xe chuyên dùng khác'
-    };
-    return options[value as keyof typeof options] || value;
-  };
 
   return (
     <div className="text-sm text-gray-300 space-y-3">
@@ -103,7 +87,7 @@ export function VehicleInfoSummary({ formData }: VehicleInfoSummaryProps) {
         </div>
         <div className="lg:col-span-2">
           <span className="text-gray-400">Loại hình sử dụng:</span>
-          <p className="text-white font-medium">{getLoaiHinhText(formData.loaiHinhKinhDoanh)}</p>
+          <p className="text-white font-medium">{getVehicleTypeText(formData.loaiHinhKinhDoanh)}</p>
         </div>
       </div>
     </div>

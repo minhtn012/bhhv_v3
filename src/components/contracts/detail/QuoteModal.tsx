@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { formatCurrency, calculateTotalVehicleValue } from '@/utils/insurance-calculator';
+import { getVehicleTypeText } from '@/utils/vehicle-type-mapping';
 
 // Type declaration for html2canvas
 declare global {
@@ -44,23 +45,6 @@ interface QuoteModalProps {
   onClose: () => void;
 }
 
-const getLoaiHinhText = (loaiHinh: string): string => {
-  const mapping: { [key: string]: string } = {
-    'khong_kd_cho_nguoi': 'Xe chở người (xe gia đình)',
-    'khong_kd_cho_hang': 'Xe chở hàng (không kinh doanh vận tải)',
-    'khong_kd_pickup_van': 'Xe bán tải / Van (không kinh doanh)',
-    'kd_cho_hang': 'Xe tải kinh doanh',
-    'kd_dau_keo': 'Xe đầu kéo',
-    'kd_cho_khach_lien_tinh': 'Xe khách liên tỉnh, nội tỉnh',
-    'kd_grab_be': 'Grab, Be, taxi công nghệ (< 9 chỗ)',
-    'kd_taxi_tu_lai': 'Taxi, xe cho thuê tự lái',
-    'kd_hop_dong_tren_9c': 'Xe khách hợp đồng (> 9 chỗ)',
-    'kd_bus': 'Xe bus',
-    'kd_pickup_van': 'Xe bán tải / Van (kinh doanh)',
-    'kd_chuyen_dung': 'Xe chuyên dùng khác (xe cứu thương...)'
-  };
-  return mapping[loaiHinh] || loaiHinh;
-};
 
 export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalProps) {
   useEffect(() => {
@@ -81,7 +65,7 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           'q-giaTriXe': contract.giaTriPin && contract.giaTriPin > 0
             ? `${formatCurrency(contract.giaTriXe)}\n${formatCurrency(contract.giaTriPin)}`
             : formatCurrency(contract.giaTriXe),
-          'q-mucDich': getLoaiHinhText(contract.loaiHinhKinhDoanh),
+          'q-mucDich': getVehicleTypeText(contract.loaiHinhKinhDoanh),
           'q-soTienBH': formatCurrency(calculateTotalVehicleValue(contract.giaTriXe, contract.giaTriPin, contract.loaiDongCo)),
           'q-mucKhauTru': formatCurrency(contract.mucKhauTru) + '/vụ',
           'q-tyLePhi': (contract.vatChatPackage.isCustomRate && contract.vatChatPackage.customRate
