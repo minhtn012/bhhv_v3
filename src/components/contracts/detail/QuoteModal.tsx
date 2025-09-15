@@ -173,14 +173,15 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
                 src="/logo.png" 
                 alt="BHV Logo" 
                 className="w-16 h-16 object-contain"
-                style={{ width: '64px', height: '64px' }}
+                style={{ width: '100px', height: '100px' }}
               />
               <div>
                 <h2 className="text-xl font-bold" style={{ color: '#dc2626' }}>CÔNG TY BẢO HIỂM HÙNG VƯƠNG THÀNH PHỐ HỒ CHÍ MINH</h2>
                 <p className="font-semibold" style={{ color: '#000', fontSize: '24px' }}>BHV TP HCM</p>
+                <h3 className="text-lg font-bold mt-4" style={{ color: '#dc2626' }}>BẢN CHÀO PHÍ BẢO HIỂM XE CƠ GIỚI</h3>
               </div>
             </div>
-            <h3 className="text-lg font-bold mt-4" style={{ color: '#dc2626' }}>BẢN CHÀO PHÍ BẢO HIỂM XE CƠ GIỚI</h3>
+            
           </header>
           <table style={{ width: '100%', fontSize: '14px', borderCollapse: 'collapse', border: '1px solid black' }}>
             <tbody>
