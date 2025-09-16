@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { getStatusText } from '@/utils/contract-status';
 
 export interface IContract extends Document {
   _id: string;
@@ -408,14 +409,7 @@ contractSchema.index({ createdAt: -1 });
 // Middleware để tự động thêm vào statusHistory khi thay đổi trạng thái
 contractSchema.pre('save', function(next) {
   if (this.isModified('status') && !this.isNew) {
-    const statusMap: { [key: string]: string } = {
-      'nhap': 'Nháp',
-      'cho_duyet': 'Chờ duyệt', 
-      'khach_duyet': 'Khách duyệt',
-      'ra_hop_dong': 'Ra hợp đồng',
-      'huy': 'Đã hủy'
-    };
-    const statusText = statusMap[this.status] || this.status;
+    const statusText = getStatusText(this.status);
     
     this.statusHistory.push({
       status: this.status,
@@ -437,14 +431,7 @@ contractSchema.pre('save', function(next) {
 
 // Static method để lấy trạng thái tiếng Việt
 contractSchema.statics.getStatusText = function(status: string): string {
-  const statusMap: { [key: string]: string } = {
-    'nhap': 'Nháp',
-    'cho_duyet': 'Chờ duyệt', 
-    'khach_duyet': 'Khách duyệt',
-    'ra_hop_dong': 'Ra hợp đồng',
-    'huy': 'Đã hủy'
-  };
-  return statusMap[status] || status;
+  return getStatusText(status);
 };
 
 // Instance method để kiểm tra có thể chỉnh sửa không

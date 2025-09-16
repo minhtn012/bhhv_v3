@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
+import { getStatusText, getStatusColor } from '@/utils/contract-status';
 
 interface Contract {
   _id: string;
@@ -21,22 +22,6 @@ interface Pagination {
   total: number;
   pages: number;
 }
-
-const statusMap = {
-  'nhap': 'Nháp',
-  'cho_duyet': 'Chờ duyệt',
-  'khach_duyet': 'Khách duyệt',
-  'ra_hop_dong': 'Ra hợp đồng',
-  'huy': 'Đã hủy'
-};
-
-const statusColors = {
-  'nhap': 'bg-gray-500/20 text-gray-300',
-  'cho_duyet': 'bg-yellow-500/20 text-yellow-300',
-  'khach_duyet': 'bg-green-500/20 text-green-300',
-  'ra_hop_dong': 'bg-blue-500/20 text-blue-300',
-  'huy': 'bg-red-500/20 text-red-300'
-};
 
 export default function ContractsPage() {
   const [contracts, setContracts] = useState<Contract[]>([]);
@@ -315,8 +300,8 @@ export default function ContractsPage() {
                           <td className="py-3 px-4 text-white">{contract.chuXe}</td>
                           <td className="py-3 px-4 text-gray-300 font-mono">{contract.bienSo}</td>
                           <td className="py-3 px-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[contract.status]}`}>
-                              {statusMap[contract.status]}
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)}`}>
+                              {getStatusText(contract.status)}
                             </span>
                           </td>
                           <td className="py-3 px-4 text-green-300 font-medium">
@@ -375,8 +360,8 @@ export default function ContractsPage() {
                             <p className="text-gray-300 text-sm mt-1">{contract.chuXe}</p>
                           </div>
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[contract.status]} whitespace-nowrap ml-2`}>
-                          {statusMap[contract.status]}
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)} whitespace-nowrap ml-2`}>
+                          {getStatusText(contract.status)}
                         </span>
                       </div>
                       

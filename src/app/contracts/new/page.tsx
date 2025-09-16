@@ -48,7 +48,7 @@ export default function NewContractPage() {
   const [nntxFee, setNntxFee] = useState(0);
   const [customRate, setCustomRate] = useState<number | null>(null);
   const [isCustomRateModified, setIsCustomRateModified] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState({
+  const [uploadedFiles] = useState({
     cavetFileName: '',
     dangkiemFileName: ''
   });
@@ -233,13 +233,6 @@ export default function NewContractPage() {
   };
 
 
-  // Track uploaded files
-  const handleFileUpload = (files: { cavet?: File; dangkiem?: File }) => {
-    setUploadedFiles({
-      cavetFileName: files.cavet?.name || uploadedFiles.cavetFileName,
-      dangkiemFileName: files.dangkiem?.name || uploadedFiles.dangkiemFileName
-    });
-  };
 
   // Calculate insurance rates
   const handleCalculateRates = async () => {

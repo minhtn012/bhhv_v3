@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
 import jwt from 'jsonwebtoken';
+import { getStatusChartColor, getStatusText } from '@/utils/contract-status';
 
 interface UserDashboardStats {
   overview: {
@@ -79,28 +80,13 @@ export async function GET(request: NextRequest) {
       { $group: { _id: '$status', count: { $sum: 1 } } }
     ]);
 
-    const statusColors = {
-      'nhap': '#64748b',      // gray
-      'cho_duyet': '#f59e0b', // amber
-      'khach_duyet': '#3b82f6', // blue
-      'ra_hop_dong': '#10b981', // emerald
-      'huy': '#ef4444'        // red
-    };
-
-    const statusTexts = {
-      'nhap': 'Nháp',
-      'cho_duyet': 'Chờ duyệt',
-      'khach_duyet': 'Khách duyệt',
-      'ra_hop_dong': 'Ra hợp đồng',
-      'huy': 'Đã hủy'
-    };
 
     const statusDistribution = statusStats.map(stat => ({
       status: stat._id,
-      statusText: statusTexts[stat._id as keyof typeof statusTexts] || stat._id,
+      statusText: getStatusText(stat._id),
       count: stat.count,
       percentage: totalContracts > 0 ? (stat.count / totalContracts) * 100 : 0,
-      color: statusColors[stat._id as keyof typeof statusColors] || '#64748b'
+      color: getStatusChartColor(stat._id)
     }));
 
     // 3. Recent Activity (từ statusHistory của contracts của user)

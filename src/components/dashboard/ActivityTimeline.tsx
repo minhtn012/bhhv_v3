@@ -2,6 +2,7 @@
 
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { getStatusText } from '@/utils/contract-status';
 
 interface ActivityItem {
   _id: string;
@@ -76,16 +77,6 @@ export default function ActivityTimeline({ activities, isLoading = false }: Acti
     }
   };
 
-  const getStatusText = (status: string) => {
-    const statusMap: { [key: string]: string } = {
-      'nhap': 'Nháp',
-      'cho_duyet': 'Chờ duyệt',
-      'khach_duyet': 'Khách duyệt',
-      'ra_hop_dong': 'Ra hợp đồng',
-      'huy': 'Đã hủy'
-    };
-    return statusMap[status] || status;
-  };
 
   const formatRelativeTime = (date: Date) => {
     try {

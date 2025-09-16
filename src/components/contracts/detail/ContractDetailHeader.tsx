@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation';
+import { getStatusText, getStatusColor } from '@/utils/contract-status';
 
 interface Contract {
   _id: string;
@@ -22,22 +23,6 @@ interface ContractDetailHeaderProps {
   onSubmitToBhv?: () => void;
   bhvSubmissionLoading?: boolean;
 }
-
-const statusMap = {
-  'nhap': 'Nháp',
-  'cho_duyet': 'Chờ duyệt',
-  'khach_duyet': 'Khách duyệt',
-  'ra_hop_dong': 'Ra hợp đồng',
-  'huy': 'Đã hủy'
-};
-
-const statusColors = {
-  'nhap': 'bg-gray-500/20 text-gray-300',
-  'cho_duyet': 'bg-yellow-500/20 text-yellow-300',
-  'khach_duyet': 'bg-green-500/20 text-green-300',
-  'ra_hop_dong': 'bg-blue-500/20 text-blue-300',
-  'huy': 'bg-red-500/20 text-red-300'
-};
 
 const canChangeStatus = (fromStatus: string, toStatus: string, currentUser: User | null): boolean => {
   switch (fromStatus) {
@@ -108,8 +93,8 @@ export default function ContractDetailHeader({
             Chi tiết hợp đồng {contract.contractNumber}
           </h1>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[contract.status]} w-fit`}>
-              {statusMap[contract.status]}
+            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(contract.status)} w-fit`}>
+              {getStatusText(contract.status)}
             </span>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
               <span className="text-gray-300">
