@@ -336,7 +336,11 @@ export default function EditContractPage() {
       giaTriXe: formatCurrency(contractData.giaTriXe),
       loaiHinhKinhDoanh: contractData.loaiHinhKinhDoanh,
       namSanXuat: contractData.namSanXuat,
-      soChoNgoi: contractData.soChoNgoi
+      soChoNgoi: contractData.soChoNgoi,
+      ngayDKLD: contractData.ngayDKLD,
+      trongTai: contractData.trongTai || 0,
+      loaiDongCo: contractData.loaiDongCo || '',
+      giaTriPin: contractData.giaTriPin ? formatCurrency(contractData.giaTriPin) : ''
     };
 
     const { result, packages } = calculateRates(tempFormData);
