@@ -73,7 +73,8 @@ export default function PriceSummaryCard({
   };
 
   const currentPercentage = userModifiedPercentage ?? originalEffectiveRate;
-  const originalFee = (enhancedResult?.totalVatChatFee || 0) + (enhancedResult?.totalBatteryFee || 0);
+  const originalFee = (enhancedResult?.totalVatChatFee || 0) + (enhancedResult?.totalBatteryFee || 0) ||
+    (originalEffectiveRate > 0 ? calculateCustomFee(originalEffectiveRate) : 0);
   const customFee = currentPercentage > 0 ? calculateCustomFee(currentPercentage) : originalFee;
   const hasCustomRate = userModifiedPercentage !== null && Math.abs(currentPercentage - originalEffectiveRate) > 0.001;
 
