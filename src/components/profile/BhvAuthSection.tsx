@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import BhvConnectionStatus from './BhvConnectionStatus';
-import BhvCredentialsForm from './BhvCredentialsForm';
 
 interface BhvCredentials {
   username: string;
@@ -31,60 +29,75 @@ export default function BhvAuthSection({
   onRemoveCredentials,
   isLoading = false
 }: BhvAuthSectionProps) {
-  const [showCredentialsForm, setShowCredentialsForm] = useState(!authData.hasCredentials);
+  const [credentials, setCredentials] = useState<BhvCredentials>({
+    username: authData.username || '',
+    password: ''
+  });
+  const [testing, setTesting] = useState(false);
+  const [error, setError] = useState<string>('');
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleSaveCredentials = async (credentials: BhvCredentials) => {
-    await onSaveCredentials(credentials);
-    setShowCredentialsForm(false);
-    setIsEditing(false);
-  };
+  const handleTestAndSave = async () => {
+    if (!credentials.username.trim() || !credentials.password.trim()) {
+      setError('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
 
-  const handleEditCredentials = () => {
-    setIsEditing(true);
-    setShowCredentialsForm(true);
-  };
+    setTesting(true);
+    setError('');
 
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    if (authData.hasCredentials) {
-      setShowCredentialsForm(false);
+    try {
+      await onTestConnection();
+      await onSaveCredentials(credentials);
+      setCredentials(prev => ({ ...prev, password: '' })); // Clear password after success
+      setIsEditing(false); // Exit editing mode on success
+    } catch (err) {
+      setError('Kết nối thất bại. Vui lòng kiểm tra thông tin đăng nhập.');
+    } finally {
+      setTesting(false);
     }
   };
 
+  const handleEdit = () => {
+    setCredentials({
+      username: authData.username || '',
+      password: ''
+    });
+    setError('');
+    setIsEditing(true);
+  };
+
+  const showForm = !authData.hasCredentials || !authData.isConnected || error || isEditing;
+
   return (
-    <div className="space-y-6">
-      {/* Section Header */}
+    <div className="space-y-4">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-3">
           <h2 className="text-xl font-semibold text-white">Kết nối BHV</h2>
-          <p className="text-gray-300 text-sm mt-1">
-            Quản lý thông tin đăng nhập và kết nối với hệ thống BHV
-          </p>
+          {authData.hasCredentials && authData.isConnected && !showForm && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400">
+              <div className="w-2 h-2 rounded-full bg-green-400"></div>
+              Đã kết nối
+            </div>
+          )}
         </div>
 
-        {authData.hasCredentials && !showCredentialsForm && (
+        {authData.hasCredentials && authData.isConnected && !showForm && (
           <div className="flex gap-2">
             <button
-              onClick={handleEditCredentials}
+              onClick={handleEdit}
               disabled={isLoading}
-              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2"
+              className="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white text-sm rounded-lg transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              Chỉnh sửa
+              Sửa
             </button>
-
             {onRemoveCredentials && (
               <button
                 onClick={onRemoveCredentials}
                 disabled={isLoading}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2"
+                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white text-sm rounded-lg transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
                 Xóa
               </button>
             )}
@@ -92,53 +105,86 @@ export default function BhvAuthSection({
         )}
       </div>
 
-      {/* Connection Status (always show if has credentials) */}
-      {authData.hasCredentials && (
-        <BhvConnectionStatus
-          isConnected={authData.isConnected}
-          lastConnectionTime={authData.lastConnectionTime}
-          username={authData.username}
-          onTestConnection={onTestConnection}
-          isLoading={isLoading}
-        />
-      )}
-
-      {/* Credentials Form */}
-      <BhvCredentialsForm
-        initialCredentials={authData.hasCredentials ? { username: authData.username || '', password: '' } : undefined}
-        onSave={handleSaveCredentials}
-        onCancel={authData.hasCredentials ? handleCancelEdit : undefined}
-        isLoading={isLoading}
-        showForm={showCredentialsForm}
-      />
-
-      {/* Quick Setup Guide (only show when no credentials) */}
-      {!authData.hasCredentials && !showCredentialsForm && (
-        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
+      {/* Success State */}
+      {authData.hasCredentials && authData.isConnected && !showForm && (
+        <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <div className="text-green-400 font-medium text-sm">Kết nối thành công</div>
+              <div className="text-green-300 text-xs">Tài khoản: {authData.username}</div>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">Kết nối với BHV</h3>
-            <p className="text-gray-300 text-sm mb-6 max-w-md mx-auto">
-              Thiết lập kết nối với hệ thống BHV để tự động đồng bộ dữ liệu và tạo hợp đồng.
-            </p>
-            <button
-              onClick={() => setShowCredentialsForm(true)}
-              disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-xl transition-colors duration-200 flex items-center gap-2 mx-auto"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              Thiết lập ngay
-            </button>
           </div>
         </div>
       )}
 
+      {/* Form */}
+      {showForm && (
+        <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+          <h3 className="text-lg font-semibold text-white mb-4">Thông tin đăng nhập BHV</h3>
+
+          {error && (
+            <div className="mb-4 bg-red-500/20 border border-red-500/30 rounded-lg p-3">
+              <div className="text-red-400 text-sm">{error}</div>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Tên đăng nhập *</label>
+              <input
+                type="text"
+                value={credentials.username}
+                onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
+                disabled={testing || isLoading}
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                placeholder="Nhập tên đăng nhập BHV"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Mật khẩu *</label>
+              <input
+                type="password"
+                value={credentials.password}
+                onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+                disabled={testing || isLoading}
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                placeholder="Nhập mật khẩu BHV"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleTestAndSave}
+                disabled={testing || isLoading || !credentials.username.trim() || !credentials.password.trim()}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
+              >
+                {testing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Đang kiểm tra...
+                  </>
+                ) : (
+                  'Kiểm tra kết nối'
+                )}
+              </button>
+
+              {isEditing && (
+                <button
+                  onClick={() => setIsEditing(false)}
+                  disabled={testing || isLoading}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+                >
+                  Hủy
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
