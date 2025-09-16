@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import BhvAuthSection from '@/components/profile/BhvAuthSection';
+import ProfileInfoSection from '@/components/profile/ProfileInfoSection';
+import ChangePasswordSection from '@/components/profile/ChangePasswordSection';
 
 interface User {
   id: string;
@@ -324,148 +326,16 @@ export default function ProfilePage() {
           />
         )}
 
-        {/* Profile Information */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-          <h1 className="text-2xl font-bold text-white mb-6">Profile Information</h1>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
-                <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white">
-                  {user.username}
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white">
-                  {user.email}
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Role</label>
-                <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl">
-                  <span className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                    user.role === 'admin' 
-                      ? 'bg-purple-500/20 text-purple-400' 
-                      : 'bg-blue-500/20 text-blue-400'
-                  }`}>
-                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                  </span>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
-                <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl">
-                  <span className={`px-3 py-1 rounded-lg text-sm font-medium ${
-                    user.isActive 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {user.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Member Since</label>
-              <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white">
-                {new Date(user.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Last Updated</label>
-              <div className="px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white">
-                {new Date(user.updatedAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Change Password */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
-          <h2 className="text-xl font-bold text-white mb-6">Change Password</h2>
-
-          {passwordError && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm mb-6">
-              {passwordError}
-            </div>
-          )}
-
-          <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Current Password</label>
-              <input
-                type="password"
-                required
-                value={passwordForm.currentPassword}
-                onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="Enter current password"
-                disabled={passwordLoading}
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">New Password</label>
-              <input
-                type="password"
-                required
-                value={passwordForm.newPassword}
-                onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="Enter new password"
-                disabled={passwordLoading}
-                minLength={6}
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Confirm New Password</label>
-              <input
-                type="password"
-                required
-                value={passwordForm.confirmPassword}
-                onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                placeholder="Confirm new password"
-                disabled={passwordLoading}
-                minLength={6}
-              />
-            </div>
-            
-            <button
-              type="submit"
-              disabled={passwordLoading}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] disabled:hover:scale-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent shadow-lg"
-            >
-              {passwordLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Changing Password...
-                </div>
-              ) : (
-                'Change Password'
-              )}
-            </button>
-          </form>
+        {/* Profile Information and Change Password Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ProfileInfoSection user={user} />
+          <ChangePasswordSection
+            onChangePassword={handleChangePassword}
+            passwordForm={passwordForm}
+            setPasswordForm={setPasswordForm}
+            passwordLoading={passwordLoading}
+            passwordError={passwordError}
+          />
         </div>
 
         {/* Account Statistics */}
