@@ -195,9 +195,43 @@ export default function ContractDetailPage() {
     setError('');
 
     try {
+      // Step 1: Get fresh BHV authentication cookies
+      console.log('🔐 Getting fresh BHV authentication...');
+      const authResponse = await fetch('/api/users/bhv-test-auth', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      const authData = await authResponse.json();
+
+      if (!authResponse.ok || !authData.success) {
+        // Handle auth failures
+        if (authResponse.status === 404 && !authData.hasCredentials) {
+          setError('Chưa có thông tin đăng nhập BHV. Vui lòng cài đặt thông tin BHV trong profile.');
+          return;
+        } else if (authResponse.status === 401) {
+          setError('Thông tin đăng nhập BHV không hợp lệ. Vui lòng cập nhật lại trong profile.');
+          return;
+        } else {
+          setError(authData.error || 'Lỗi khi xác thực với BHV');
+          return;
+        }
+      }
+
+      if (!authData.cookies) {
+        setError('Không thể lấy session BHV. Vui lòng thử lại.');
+        return;
+      }
+
+      console.log('✅ BHV authentication successful, submitting contract...');
+
+      // Step 2: Submit contract with fresh cookies
       const response = await fetch(`/api/contracts/${contractId}/submit-to-bhv`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cookies: authData.cookies
+        })
       });
 
       const data = await response.json();

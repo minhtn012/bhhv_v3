@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
-import { 
+import {
   parseCurrency,
   formatCurrency,
-  tndsCategories
+  tndsCategories,
+  calculateTotalVehicleValue
 } from '@/utils/insurance-calculator';
 import BuyerInfoForm from '@/components/contracts/BuyerInfoForm';
 import VehicleInfoForm from '@/components/contracts/VehicleInfoForm';

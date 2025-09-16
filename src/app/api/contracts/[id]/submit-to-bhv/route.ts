@@ -19,7 +19,12 @@ export async function POST(
       );
     }
 
+    // Get cookies from request body
+    const body = await request.json().catch(() => ({}));
+    const { cookies } = body;
+
     console.log('🔄 Processing BHV submission for contract:', contractId);
+    console.log('🍪 Using cookies:', cookies ? 'provided' : 'not provided');
 
     // Fetch contract from database
     const contract = await Contract.findById(contractId).lean();
@@ -48,9 +53,9 @@ export async function POST(
     console.log('🔄 Transforming contract data to BHV format...');
     const bhvRequestData = transformContractToBhvFormat(contract);
 
-    // Submit to BHV API
+    // Submit to BHV API with fresh cookies
     console.log('🚀 Submitting to BHV API...');
-    const bhvResult = await bhvApiClient.submitContract(bhvRequestData);
+    const bhvResult = await bhvApiClient.submitContract(bhvRequestData, cookies);
 
     if (bhvResult.success) {
       console.log('✅ BHV submission successful');

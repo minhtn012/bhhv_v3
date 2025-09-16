@@ -320,7 +320,6 @@ export default function ProfilePage() {
           <BhvAuthSection
             authData={bhvAuthData}
             onSaveCredentials={handleSaveBhvCredentials}
-            onTestConnection={handleTestBhvConnection}
             onRemoveCredentials={handleRemoveBhvCredentials}
             isLoading={bhvLoading}
           />

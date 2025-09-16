@@ -36,7 +36,7 @@ export function encrypt(plaintext: string): string {
     const key = deriveKey(password, salt);
     const iv = crypto.randomBytes(IV_LENGTH);
 
-    const cipher = crypto.createCipher(ALGORITHM, key);
+    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
 
     let encrypted = cipher.update(plaintext, 'utf8', 'hex');
     encrypted += cipher.final('hex');
@@ -71,9 +71,9 @@ export function decrypt(encryptedData: string): string {
 
     const key = deriveKey(password, salt);
 
-    const decipher = crypto.createDecipher(ALGORITHM, key);
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
 
-    let decrypted = decipher.update(encrypted, null, 'utf8');
+    let decrypted = decipher.update(encrypted.toString('hex'), 'hex', 'utf8');
     decrypted += decipher.final('utf8');
 
     return decrypted;

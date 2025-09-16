@@ -53,11 +53,11 @@ export const tndsCategories = {
 };
 
 export const packageLabels = [
-  { name: 'Gói Cơ bản', details: 'Bảo hiểm cơ bản' },
-  { name: 'Gói AU001', details: 'Thêm: Thay mới không khấu hao' },
-  { name: 'Gói AU001 + AU006', details: 'Thêm: Thủy kích' },
-  { name: 'Gói AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage' },
-  { name: 'Gói AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' }
+  { name: 'Gói Cơ bản', details: 'Bảo hiểm cơ bản' , code: "pk01"},
+  { name: 'Gói AU001', details: 'Thêm: Thay mới không khấu hao', code: "pk02" },
+  { name: 'Gói AU001 + AU006', details: 'Thêm: Thủy kích' , code: "pk03"},
+  { name: 'Gói AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage', code : "pk04" },
+  { name: 'Gói AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' , code : "pk05"}
 ];
 
 export const loaiHinhKinhDoanhOptions = [

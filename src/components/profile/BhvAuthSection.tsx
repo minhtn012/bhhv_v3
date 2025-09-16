@@ -17,7 +17,6 @@ interface BhvAuthData {
 interface BhvAuthSectionProps {
   authData: BhvAuthData;
   onSaveCredentials: (credentials: BhvCredentials) => Promise<void>;
-  onTestConnection: () => Promise<void>;
   onRemoveCredentials?: () => Promise<void>;
   isLoading?: boolean;
 }
@@ -25,7 +24,6 @@ interface BhvAuthSectionProps {
 export default function BhvAuthSection({
   authData,
   onSaveCredentials,
-  onTestConnection,
   onRemoveCredentials,
   isLoading = false
 }: BhvAuthSectionProps) {
@@ -47,7 +45,7 @@ export default function BhvAuthSection({
     setError('');
 
     try {
-      await onTestConnection();
+      // onSaveCredentials handles both testing and saving credentials
       await onSaveCredentials(credentials);
       setCredentials(prev => ({ ...prev, password: '' })); // Clear password after success
       setIsEditing(false); // Exit editing mode on success

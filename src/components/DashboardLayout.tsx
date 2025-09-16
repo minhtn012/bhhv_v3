@@ -75,7 +75,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="p-6 lg:p-5 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-xl font-bold text-white">CMS Pro</h1>
+                <h1 className="text-xl font-bold text-white">BHV AUTO CONTRACT</h1>
                 <p className="text-sm text-slate-300 mt-1">
                   {user.role === 'admin' ? '🔑 Administrator' : '👤 User'} Panel
                 </p>
