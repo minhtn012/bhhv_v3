@@ -22,6 +22,8 @@ interface ContractDetailHeaderProps {
   onGenerateQuote: () => void;
   onSubmitToBhv?: () => void;
   bhvSubmissionLoading?: boolean;
+  onExportWord?: () => void;
+  wordExportLoading?: boolean;
 }
 
 const canChangeStatus = (fromStatus: string, toStatus: string, currentUser: User | null): boolean => {
@@ -74,7 +76,9 @@ export default function ContractDetailHeader({
   onStatusChange,
   onGenerateQuote,
   onSubmitToBhv,
-  bhvSubmissionLoading = false
+  bhvSubmissionLoading = false,
+  onExportWord,
+  wordExportLoading = false
 }: ContractDetailHeaderProps) {
   const router = useRouter();
   
@@ -154,6 +158,29 @@ export default function ContractDetailHeader({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   Tạo hợp đồng BHV
+                </>
+              )}
+            </button>
+          )}
+
+          {/* Word Export Button */}
+          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onExportWord && (
+            <button
+              onClick={onExportWord}
+              disabled={wordExportLoading}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-xl transition-colors text-center flex items-center gap-2"
+            >
+              {wordExportLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Đang xuất...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Xuất hợp đồng Word
                 </>
               )}
             </button>

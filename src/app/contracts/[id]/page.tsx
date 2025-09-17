@@ -105,6 +105,7 @@ export default function ContractDetailPage() {
   const [bhvSubmissionLoading, setBhvSubmissionLoading] = useState(false);
   const [showBhvPdfModal, setShowBhvPdfModal] = useState(false);
   const [bhvPdfData, setBhvPdfData] = useState<string>('');
+  const [wordExportLoading, setWordExportLoading] = useState(false);
   
   const router = useRouter();
   const params = useParams();
@@ -186,6 +187,40 @@ export default function ContractDetailPage() {
 
   const generateAndShowQuote = () => {
     setShowQuoteModal(true);
+  };
+
+  const handleExportWord = async () => {
+    if (!contract) return;
+
+    setWordExportLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`/api/contracts/${contractId}/word-export`);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'Lỗi khi xuất file Word');
+        return;
+      }
+
+      const blob = await response.blob();
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hop-dong-${contract.contractNumber}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Failed to export Word document:', error);
+      setError('Lỗi khi xuất file Word');
+    } finally {
+      setWordExportLoading(false);
+    }
   };
 
   const handleSubmitToBhv = async () => {
@@ -294,6 +329,8 @@ export default function ContractDetailPage() {
             onGenerateQuote={generateAndShowQuote}
             onSubmitToBhv={handleSubmitToBhv}
             bhvSubmissionLoading={bhvSubmissionLoading}
+            onExportWord={handleExportWord}
+            wordExportLoading={wordExportLoading}
           />
 
           {error && (
