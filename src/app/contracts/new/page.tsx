@@ -84,6 +84,7 @@ export default function NewContractPage() {
     loaiDongCo: '',
     giaTriPin: '',
     ngayDKLD: '',
+    loaiXe: '',
     
     // Vehicle Details from Car Selection
     nhanHieu: '',
@@ -182,6 +183,7 @@ export default function NewContractPage() {
     if (data.namSanXuat) newFormData.namSanXuat = data.namSanXuat;
     if (data.soChoNgoi) newFormData.soChoNgoi = data.soChoNgoi;
     if (data.trongTaiHangHoa) newFormData.trongTai = data.trongTaiHangHoa;
+    if (data.loaiXe) newFormData.loaiXe = data.loaiXe;
     
     // Auto-select loại hình kinh doanh
     if (data.kinhDoanhVanTai && data.loaiXe) {
@@ -476,6 +478,7 @@ export default function NewContractPage() {
         loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
         loaiDongCo: formData.loaiDongCo,
         giaTriPin: formData.giaTriPin ? parseCurrency(formData.giaTriPin) : undefined,
+        loaiXe: formData.loaiXe,
         carBrand: carData.selectedBrand,
         carModel: carData.selectedModel,
         carBodyStyle: carData.selectedBodyStyle,

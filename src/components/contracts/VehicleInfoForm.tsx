@@ -78,12 +78,23 @@ export default function VehicleInfoForm({
   };
 
   return (
-    <div>      
+    <div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Car Selection Section - Thông tin xe tự động */}
+        <CarSelectionForm
+          carData={carData}
+          fieldErrors={fieldErrors}
+          onBrandChange={onBrandChange}
+          onModelChange={onModelChange}
+          onInputChange={onCarInputChange}
+          onAcceptSuggestion={onAcceptSuggestion}
+          onVehicleDataChange={handleVehicleDataChange}
+        />
+
         <div>
           <label className="block text-white font-medium mb-2">Biển số *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={formData.bienSo}
             onChange={(e) => onFormInputChange('bienSo', e.target.value.toUpperCase())}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white font-mono min-h-[48px] ${
@@ -174,25 +185,14 @@ export default function VehicleInfoForm({
           <FieldError fieldName="soChoNgoi" errors={fieldErrors} />
         </div>
 
-        {/* Car Selection Section */}
-        <CarSelectionForm
-          carData={carData}
-          fieldErrors={fieldErrors}
-          onBrandChange={onBrandChange}
-          onModelChange={onModelChange}
-          onInputChange={onCarInputChange}
-          onAcceptSuggestion={onAcceptSuggestion}
-          onVehicleDataChange={handleVehicleDataChange}
-        />
-
-        <div className="lg:col-span-3">
+        <div>
           <label className="block text-white font-medium mb-2">Giá trị xe (VNĐ) *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={formData.giaTriXe}
             onChange={(e) => onFormInputChange('giaTriXe', formatNumberInput(e.target.value))}
             placeholder="Ví dụ: 800,000,000"
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+            className={`w-full bg-white/10 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               fieldErrors.giaTriXe ? 'border-red-500' : 'border-white/20'
             }`}
             required
@@ -200,12 +200,27 @@ export default function VehicleInfoForm({
           <FieldError fieldName="giaTriXe" errors={fieldErrors} />
         </div>
 
-        <div className="lg:col-span-3">
+        <div>
+          <label htmlFor="loaiXe" className="block text-white font-medium mb-2">Loại xe</label>
+          <input
+            id="loaiXe"
+            type="text"
+            value={formData.loaiXe}
+            onChange={(e) => onFormInputChange('loaiXe', e.target.value)}
+            placeholder="Ví dụ: xe con, xe tải, bán tải..."
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.loaiXe ? 'border-red-500' : 'border-slate-500/30'
+            }`}
+          />
+          <FieldError fieldName="loaiXe" errors={fieldErrors} />
+        </div>
+
+        <div>
           <label className="block text-white font-medium mb-2">Loại động cơ *</label>
-          <select 
+          <select
             value={formData.loaiDongCo}
             onChange={(e) => onFormInputChange('loaiDongCo', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+            className={`w-full bg-white/10 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               fieldErrors.loaiDongCo ? 'border-red-500' : 'border-white/20'
             }`}
             required
@@ -219,6 +234,7 @@ export default function VehicleInfoForm({
           </select>
           <FieldError fieldName="loaiDongCo" errors={fieldErrors} />
         </div>
+
 
         {isElectricOrHybrid && (
           <div className="lg:col-span-3">

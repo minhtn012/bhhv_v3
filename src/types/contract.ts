@@ -26,7 +26,7 @@ export interface BaseContractFormData {
   selectedDistrictWardText: string; // District/Ward name
   specificAddress: string;       // Specific address
 
-  // Vehicle Information (15 fields)
+  // Vehicle Information (16 fields)
   bienSo: string;
   soKhung: string;
   soMay: string;
@@ -38,6 +38,7 @@ export interface BaseContractFormData {
   loaiDongCo: string;
   giaTriPin: string;
   ngayDKLD: string;
+  loaiXe: string;
   
   // Vehicle Details from Car Selection
   tenXe: string;                // Complete vehicle name (brand + model + body style + year)
@@ -56,10 +57,10 @@ export interface BaseContractFormData {
 }
 
 // Specialized type definitions using Pick utility
-export type VehicleFormData = Pick<BaseContractFormData, 
-  'bienSo' | 'soKhung' | 'soMay' | 'namSanXuat' | 'soChoNgoi' | 
-  'trongTai' | 'giaTriXe' | 'loaiHinhKinhDoanh' | 'loaiDongCo' | 'giaTriPin' | 
-  'ngayDKLD' | 'chuXe' | 'tenXe' | 'nhanHieu' | 'soLoai' | 'kieuDang' | 'namPhienBan'
+export type VehicleFormData = Pick<BaseContractFormData,
+  'bienSo' | 'soKhung' | 'soMay' | 'namSanXuat' | 'soChoNgoi' |
+  'trongTai' | 'giaTriXe' | 'loaiHinhKinhDoanh' | 'loaiDongCo' | 'giaTriPin' |
+  'ngayDKLD' | 'loaiXe' | 'chuXe' | 'tenXe' | 'nhanHieu' | 'soLoai' | 'kieuDang' | 'namPhienBan'
 >;
 
 export type BuyerFormData = Pick<BaseContractFormData,
@@ -122,6 +123,7 @@ export const defaultContractFormData: BaseContractFormData = {
   loaiDongCo: 'xang',
   giaTriPin: '',
   ngayDKLD: '',
+  loaiXe: '',
   
   // Vehicle Details from Car Selection
   tenXe: '',
