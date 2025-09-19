@@ -12,6 +12,7 @@ import StatusHistorySection from '@/components/contracts/detail/StatusHistorySec
 import StatusChangeModal from '@/components/contracts/detail/StatusChangeModal';
 import QuoteModal from '@/components/contracts/detail/QuoteModal';
 import BhvPdfModal from '@/components/contracts/detail/BhvPdfModal';
+import BhvCredentialsModal from '@/components/contracts/detail/BhvCredentialsModal';
 
 // Type declaration for html2canvas
 declare global {
@@ -106,6 +107,8 @@ export default function ContractDetailPage() {
   const [showBhvPdfModal, setShowBhvPdfModal] = useState(false);
   const [bhvPdfData, setBhvPdfData] = useState<string>('');
   const [wordExportLoading, setWordExportLoading] = useState(false);
+  const [showBhvCredentialsModal, setShowBhvCredentialsModal] = useState(false);
+  const [bhvCredentialsError, setBhvCredentialsError] = useState('');
   
   const router = useRouter();
   const params = useParams();
@@ -223,6 +226,15 @@ export default function ContractDetailPage() {
     }
   };
 
+  const handleBhvCredentialsSuccess = async () => {
+    // Close credentials modal and retry BHV submission
+    setShowBhvCredentialsModal(false);
+    setBhvCredentialsError('');
+
+    // Retry the BHV submission process
+    await handleSubmitToBhv();
+  };
+
   const handleSubmitToBhv = async () => {
     if (!contract) return;
 
@@ -240,12 +252,14 @@ export default function ContractDetailPage() {
       const authData = await authResponse.json();
 
       if (!authResponse.ok || !authData.success) {
-        // Handle auth failures
+        // Handle auth failures - show credentials modal
         if (authResponse.status === 404 && !authData.hasCredentials) {
-          setError('Chưa có thông tin đăng nhập BHV. Vui lòng cài đặt thông tin BHV trong profile.');
+          setBhvCredentialsError('Chưa có thông tin đăng nhập BHV. Vui lòng nhập thông tin để tiếp tục.');
+          setShowBhvCredentialsModal(true);
           return;
         } else if (authResponse.status === 401) {
-          setError('Thông tin đăng nhập BHV không hợp lệ. Vui lòng cập nhật lại trong profile.');
+          setBhvCredentialsError('Thông tin đăng nhập BHV không hợp lệ. Vui lòng nhập lại thông tin.');
+          setShowBhvCredentialsModal(true);
           return;
         } else {
           setError(authData.error || 'Lỗi khi xác thực với BHV');
@@ -380,6 +394,16 @@ export default function ContractDetailPage() {
         }}
         pdfBase64={bhvPdfData}
         contractNumber={contract?.contractNumber || ''}
+      />
+
+      <BhvCredentialsModal
+        isVisible={showBhvCredentialsModal}
+        onClose={() => {
+          setShowBhvCredentialsModal(false);
+          setBhvCredentialsError('');
+        }}
+        onSuccess={handleBhvCredentialsSuccess}
+        error={bhvCredentialsError}
       />
     </DashboardLayout>
   );
