@@ -49,10 +49,29 @@ interface ContractData {
   createdAt?: string;
   updatedAt?: string;
   createdBy?: string;
+  includeTNDS?: boolean;
 }
 
-export async function generateWordContract(contractData: ContractData) {
-  const templatePath = path.join(process.cwd(), 'templates/temp_2025.docx');
+function getTemplatePath(contractType: string, includeTNDS: boolean): string {
+  if (contractType === '3-party') {
+    return 'templates/3ben.docx';
+  }
+
+  // Hợp đồng 2 bên
+  return includeTNDS
+    ? 'templates/2ben_vcx_tnns.docx'
+    : 'templates/2ben_vcx.docx';
+}
+
+interface BankInfo {
+  bankName: string;
+  bankOldAddress: string;
+  bankNewAddress: string;
+}
+
+export async function generateWordContract(contractData: ContractData, contractType: string = '2-party', bankInfo?: BankInfo | null) {
+  const templateFileName = getTemplatePath(contractType, contractData.includeTNDS || false);
+  const templatePath = path.join(process.cwd(), templateFileName);
   const content = fs.readFileSync(templatePath, 'binary');
 
   // Map contract data to template variables
@@ -118,7 +137,12 @@ export async function generateWordContract(contractData: ContractData) {
     _v_status: contractData.status || "-",
     _v_createdAt: contractData.createdAt ? new Date(contractData.createdAt).toLocaleDateString('vi-VN') : "-",
     _v_updatedAt: contractData.updatedAt ? new Date(contractData.updatedAt).toLocaleDateString('vi-VN') : "-",
-    _v_createdBy: contractData.createdBy || "-"
+    _v_createdBy: contractData.createdBy || "-",
+
+    // Bank information for 3-party contracts
+    c_bankName: bankInfo?.bankName || "-",
+    bankOldAddress: bankInfo?.bankOldAddress || "-",
+    bankNewAddress: bankInfo?.bankNewAddress || "-"
   };
 
   const zip = new PizZip(content);

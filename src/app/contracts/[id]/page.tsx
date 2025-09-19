@@ -13,6 +13,7 @@ import StatusChangeModal from '@/components/contracts/detail/StatusChangeModal';
 import QuoteModal from '@/components/contracts/detail/QuoteModal';
 import BhvPdfModal from '@/components/contracts/detail/BhvPdfModal';
 import BhvCredentialsModal from '@/components/contracts/detail/BhvCredentialsModal';
+import ContractTypeModal, { ContractType, BankInfo } from '@/components/contracts/detail/ContractTypeModal';
 
 // Type declaration for html2canvas
 declare global {
@@ -109,6 +110,7 @@ export default function ContractDetailPage() {
   const [wordExportLoading, setWordExportLoading] = useState(false);
   const [showBhvCredentialsModal, setShowBhvCredentialsModal] = useState(false);
   const [bhvCredentialsError, setBhvCredentialsError] = useState('');
+  const [showContractTypeModal, setShowContractTypeModal] = useState(false);
   
   const router = useRouter();
   const params = useParams();
@@ -192,14 +194,26 @@ export default function ContractDetailPage() {
     setShowQuoteModal(true);
   };
 
-  const handleExportWord = async () => {
+  const handleShowContractTypeModal = () => {
+    setShowContractTypeModal(true);
+  };
+
+  const handleExportWord = async (contractType: ContractType, bankInfo?: BankInfo) => {
     if (!contract) return;
 
     setWordExportLoading(true);
     setError('');
 
     try {
-      const response = await fetch(`/api/contracts/${contractId}/word-export`);
+      // Build query parameters
+      const params = new URLSearchParams({ contractType });
+      if (contractType === '3-party' && bankInfo) {
+        params.append('bankName', bankInfo.bankName);
+        params.append('bankOldAddress', bankInfo.bankOldAddress);
+        params.append('bankNewAddress', bankInfo.bankNewAddress);
+      }
+
+      const response = await fetch(`/api/contracts/${contractId}/word-export?${params}`);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -209,15 +223,19 @@ export default function ContractDetailPage() {
 
       const blob = await response.blob();
 
-      // Create download link
+      // Create download link with contract type in filename
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
+      const typePrefix = contractType === '3-party' ? '3ben' : '2ben';
       a.href = url;
-      a.download = `hop-dong-${contract.contractNumber}.docx`;
+      a.download = `hop-dong-${typePrefix}-${contract.contractNumber}.docx`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+
+      // Close the modal after successful export
+      setShowContractTypeModal(false);
     } catch (error) {
       console.error('Failed to export Word document:', error);
       setError('Lỗi khi xuất file Word');
@@ -343,7 +361,7 @@ export default function ContractDetailPage() {
             onGenerateQuote={generateAndShowQuote}
             onSubmitToBhv={handleSubmitToBhv}
             bhvSubmissionLoading={bhvSubmissionLoading}
-            onExportWord={handleExportWord}
+            onExportWord={handleShowContractTypeModal}
             wordExportLoading={wordExportLoading}
           />
 
@@ -404,6 +422,13 @@ export default function ContractDetailPage() {
         }}
         onSuccess={handleBhvCredentialsSuccess}
         error={bhvCredentialsError}
+      />
+
+      <ContractTypeModal
+        isVisible={showContractTypeModal}
+        onClose={() => setShowContractTypeModal(false)}
+        onExport={handleExportWord}
+        loading={wordExportLoading}
       />
     </DashboardLayout>
   );
