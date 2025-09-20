@@ -125,6 +125,76 @@ export async function PUT(
   }
 }
 
+// PATCH /api/contracts/[id] - Cập nhật một số fields cụ thể (như dates)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = requireAuth(request);
+    await connectToDatabase();
+
+    const { id } = await params;
+    const contract = await Contract.findById(id);
+    if (!contract) {
+      return NextResponse.json(
+        { error: 'Không tìm thấy hợp đồng' },
+        { status: 404 }
+      );
+    }
+
+    // User chỉ sửa được contract của mình, admin sửa tất cả
+    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+      return NextResponse.json(
+        { error: 'Không có quyền truy cập' },
+        { status: 403 }
+      );
+    }
+
+    const body = await request.json();
+
+    // Chỉ cho phép update một số trường cụ thể (như dates)
+    const allowedFields = ['ngayBatDauBaoHiem', 'ngayKetThucBaoHiem'];
+    const updateData: any = {};
+
+    allowedFields.forEach(field => {
+      if (body[field] !== undefined) {
+        updateData[field] = body[field];
+      }
+    });
+
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json(
+        { error: 'Không có dữ liệu hợp lệ để cập nhật' },
+        { status: 400 }
+      );
+    }
+
+    // Update contract
+    await Contract.findByIdAndUpdate(id, updateData);
+
+    return NextResponse.json({
+      message: 'Cập nhật thông tin thành công',
+      updatedFields: Object.keys(updateData)
+    });
+
+  } catch (error: any) {
+    console.error('Patch contract error:', error);
+
+    if (error.message === 'Authentication required') {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
 // DELETE /api/contracts/[id] - Xóa contract
 export async function DELETE(
   request: NextRequest,

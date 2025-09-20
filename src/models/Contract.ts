@@ -81,6 +81,10 @@ export interface IContract extends Document {
   cavetImage?: string;
   dangkiemImage?: string;
   
+  // Thời hạn bảo hiểm
+  ngayBatDauBaoHiem?: string;
+  ngayKetThucBaoHiem?: string;
+
   // Metadata
   createdBy: string;
   createdAt: Date;
@@ -374,6 +378,16 @@ const contractSchema = new Schema<IContract>({
   },
   dangkiemImage: {
     type: String
+  },
+
+  // Thời hạn bảo hiểm
+  ngayBatDauBaoHiem: {
+    type: String,
+    trim: true
+  },
+  ngayKetThucBaoHiem: {
+    type: String,
+    trim: true
   },
   
   // Metadata

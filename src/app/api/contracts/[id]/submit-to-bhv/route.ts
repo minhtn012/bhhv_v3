@@ -49,8 +49,12 @@ export async function POST(
       );
     }
 
-    // Transform contract data to BHV format
+    // Transform contract data to BHV format (contract already has dates from DB)
     console.log('🔄 Transforming contract data to BHV format...');
+    console.log('📅 Using dates from contract:', {
+      ngayBatDauBaoHiem: contract.ngayBatDauBaoHiem,
+      ngayKetThucBaoHiem: contract.ngayKetThucBaoHiem
+    });
     const bhvRequestData = transformContractToBhvFormat(contract);
 
     // Submit to BHV API with fresh cookies
@@ -60,7 +64,7 @@ export async function POST(
     if (bhvResult.success) {
       console.log('✅ BHV submission successful');
 
-      // Optionally update contract status or add submission history
+      // Optionally add submission history
       // await Contract.findByIdAndUpdate(contractId, {
       //   $push: {
       //     statusHistory: {

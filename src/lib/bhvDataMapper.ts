@@ -34,6 +34,14 @@ function formatDateForBhv(date: Date): string {
 }
 
 /**
+ * Parse date string from DD/MM/YYYY format to Date object
+ */
+function parseDateFromDDMMYYYY(dateStr: string): Date {
+  const [day, month, year] = dateStr.split('/').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+/**
  * Format date and time for BHV API (DD/MM/YYYY HH:mm)
  */
 function formatDateTimeForBhv(date: Date): string {
@@ -361,8 +369,12 @@ export function transformContractToBhvFormat(contract: any): any {
 
     // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
     buyer_payment_date: formatDateForBhv(new Date()),
-    active_date: formatDateTimeForBhv(new Date()),
-    inactive_date: formatDateTimeForBhv(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)),
+    active_date: formatDateTimeForBhv(
+      contract.ngayBatDauBaoHiem ? parseDateFromDDMMYYYY(contract.ngayBatDauBaoHiem) : new Date()
+    ),
+    inactive_date: formatDateTimeForBhv(
+      contract.ngayKetThucBaoHiem ? parseDateFromDDMMYYYY(contract.ngayKetThucBaoHiem) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    ),
   
     // Total premium
     total_premium: contract.tongPhi?.toString(),

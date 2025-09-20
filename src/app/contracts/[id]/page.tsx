@@ -13,6 +13,7 @@ import StatusChangeModal from '@/components/contracts/detail/StatusChangeModal';
 import QuoteModal from '@/components/contracts/detail/QuoteModal';
 import BhvPdfModal from '@/components/contracts/detail/BhvPdfModal';
 import BhvCredentialsModal from '@/components/contracts/detail/BhvCredentialsModal';
+import BhvContractDateModal from '@/components/contracts/detail/BhvContractDateModal';
 import ContractTypeModal, { ContractType, BankInfo } from '@/components/contracts/detail/ContractTypeModal';
 
 // Type declaration for html2canvas
@@ -82,7 +83,11 @@ interface Contract {
   
   cavetImage?: string;
   dangkiemImage?: string;
-  
+
+  // Thời hạn bảo hiểm
+  ngayBatDauBaoHiem?: string;
+  ngayKetThucBaoHiem?: string;
+
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -110,6 +115,7 @@ export default function ContractDetailPage() {
   const [wordExportLoading, setWordExportLoading] = useState(false);
   const [showBhvCredentialsModal, setShowBhvCredentialsModal] = useState(false);
   const [bhvCredentialsError, setBhvCredentialsError] = useState('');
+  const [showBhvContractDateModal, setShowBhvContractDateModal] = useState(false);
   const [showContractTypeModal, setShowContractTypeModal] = useState(false);
   
   const router = useRouter();
@@ -249,18 +255,50 @@ export default function ContractDetailPage() {
     setShowBhvCredentialsModal(false);
     setBhvCredentialsError('');
 
-    // Retry the BHV submission process
-    await handleSubmitToBhv();
+    // Show date modal to continue the process
+    setShowBhvContractDateModal(true);
   };
 
-  const handleSubmitToBhv = async () => {
+  const handleShowBhvDateModal = () => {
+    setShowBhvContractDateModal(true);
+  };
+
+  const handleBhvDateConfirm = async (startDate: string, endDate: string) => {
+    // Close date modal and proceed with BHV submission
+    setShowBhvContractDateModal(false);
+
+    // Call the original BHV submission with dates
+    await handleSubmitToBhvWithDates(startDate, endDate);
+  };
+
+  const handleSubmitToBhvWithDates = async (startDate?: string, endDate?: string) => {
     if (!contract) return;
 
     setBhvSubmissionLoading(true);
     setError('');
 
     try {
-      // Step 1: Get fresh BHV authentication cookies
+      // Step 1: Update dates to DB first (if provided)
+      if (startDate && endDate) {
+        console.log('💾 Updating insurance dates to database...');
+        const updateResponse = await fetch(`/api/contracts/${contractId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ngayBatDauBaoHiem: startDate,
+            ngayKetThucBaoHiem: endDate
+          })
+        });
+
+        if (!updateResponse.ok) {
+          const errorData = await updateResponse.json();
+          setError(errorData.error || 'Lỗi khi cập nhật ngày bảo hiểm');
+          return;
+        }
+        console.log('✅ Insurance dates updated successfully');
+      }
+
+      // Step 2: Get fresh BHV authentication cookies
       console.log('🔐 Getting fresh BHV authentication...');
       const authResponse = await fetch('/api/users/bhv-test-auth', {
         method: 'GET',
@@ -292,7 +330,7 @@ export default function ContractDetailPage() {
 
       console.log('✅ BHV authentication successful, submitting contract...');
 
-      // Step 2: Submit contract with fresh cookies
+      // Step 3: Submit contract to BHV (contract will be fetched from DB with updated dates)
       const response = await fetch(`/api/contracts/${contractId}/submit-to-bhv`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -308,8 +346,8 @@ export default function ContractDetailPage() {
         setBhvPdfData(data.pdfBase64);
         setShowBhvPdfModal(true);
 
-        // Optionally refresh contract data to show updated status
-        // await fetchContract();
+        // Refresh contract data to show updated dates
+        await fetchContract();
       } else {
         setError(data.error || 'Lỗi khi tạo hợp đồng BHV');
       }
@@ -320,6 +358,7 @@ export default function ContractDetailPage() {
       setBhvSubmissionLoading(false);
     }
   };
+
 
 
   if (loading) {
@@ -359,7 +398,7 @@ export default function ContractDetailPage() {
             currentUser={currentUser}
             onStatusChange={() => setShowStatusModal(true)}
             onGenerateQuote={generateAndShowQuote}
-            onSubmitToBhv={handleSubmitToBhv}
+            onSubmitToBhv={handleShowBhvDateModal}
             bhvSubmissionLoading={bhvSubmissionLoading}
             onExportWord={handleShowContractTypeModal}
             wordExportLoading={wordExportLoading}
@@ -422,6 +461,13 @@ export default function ContractDetailPage() {
         }}
         onSuccess={handleBhvCredentialsSuccess}
         error={bhvCredentialsError}
+      />
+
+      <BhvContractDateModal
+        isVisible={showBhvContractDateModal}
+        onClose={() => setShowBhvContractDateModal(false)}
+        onConfirm={handleBhvDateConfirm}
+        loading={bhvSubmissionLoading}
       />
 
       <ContractTypeModal
