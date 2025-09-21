@@ -1,0 +1,31 @@
+fetch("https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e", {
+  "headers": {
+    "accept": "application/json, text/javascript, */*; q=0.01",
+    "accept-language": "en-US,en;q=0.9,vi;q=0.8,lb;q=0.7",
+    "content-type": "application/json; charset=UTF-8",
+    "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Linux\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-requested-with": "XMLHttpRequest",
+    "cookie": "fc2f99e4-dd33-45a0-9e7a-2f1fbe3324d2=CfDJ8O51rrl%2FT6hIiLxg3JwU5403pddQkgPUxQuJlqFO0WdxV1Km9s%2FZ9RhCu4%2BXC%2FsY6mavqYlXcwabyMflpOuVVkDobJqZVytNPqnXFsTTDrlUQmUVo1cduVI9SQjB9S%2B3rXbE%2FfjYbV2aiBtpM5WCdy2IB8sHAAhgpJ422ZApvoX%2F",
+    "Referer": "https://my.bhv.com.vn/bao-hiem-xe-co-gioi"
+  },
+  "body": "{\"action_name\":\"vehicle/transport/install\",\"data\":\"{\\\"sale_code\\\":\\\"\\\",\\\"kind_action\\\":\\\"insert\\\",\\\"certificate_code\\\":\\\"\\\",\\\"kind_config\\\":\\\"{\\\\\\\"car_goal\\\\\\\":\\\\\\\"yes\\\\\\\",\\\\\\\"car_seat\\\\\\\":\\\\\\\"yes\\\\\\\",\\\\\\\"car_weigh_goods\\\\\\\":\\\\\\\"no\\\\\\\"}\\\",\\\"product_id\\\":\\\"3588e406-6f89-4a14-839b-64460bbcea67\\\",\\\"car_year_buy\\\":\\\"53d91be0-a641-4309-bd6b-e76befbe4e70\\\",\\\"car_kind\\\":\\\"8feb985b-dc77-46e3-b5af-186b10be4874\\\",\\\"car_automaker\\\":\\\"b07cadc0-b84d-4863-b374-fe018b3194c111\\\",\\\"car_model\\\":\\\"f07080e9-c23f-449f-83e9-f8c2a8778d0302\\\",\\\"car_goal\\\":\\\"6ee07aa2-43bd-4141-b6d2-49f8f6cfe1a1\\\",\\\"car_seat\\\":\\\"33d227b2-dbb9-4fdf-9cf7-b0fa843d5454\\\",\\\"car_weigh_goods\\\":\\\"\\\",\\\"car_year\\\":\\\"2022\\\",\\\"car_fisrt_date\\\":\\\"20/09/2025\\\",\\\"get_fee_mode\\\":\\\"tu_dong\\\",\\\"417b153b-f030-4b6a-91a4-433c80e4b746\\\":\\\"417b153b-f030-4b6a-91a4-433c80e4b746\\\",\\\"0b0026a2-ebe6-4350-862b-18a4a3d90609\\\":\\\"0b0026a2-ebe6-4350-862b-18a4a3d90609\\\",\\\"car_package\\\":\\\"340d36cf-6d41-444c-a6a0-bb1ebec05033\\\",\\\"car_seat_buy\\\":\\\"7\\\",\\\"c2db43ab-ccdc-44d3-8fdc-2167b86e01900\\\":\\\"c2db43ab-ccdc-44d3-8fdc-2167b86e01900\\\",\\\"car_body_styles\\\":\\\"cb3464e5-bb4d-4268-a08d-b432252dee95\\\",\\\"car_model_year\\\":\\\"0bc452e9-38a6-4ea0-bdb1-13d35c15104e\\\",\\\"car_type_engine\\\":\\\"31cd6b1d-39a6-42d5-9c5f-13f44ad1a8a9\\\",\\\"car_deduction\\\":\\\"4cfc8ba9-cd89-4abf-aaa6-49df298ec3581\\\",\\\"car_value_info\\\":\\\"800.000.000\\\",\\\"car_value\\\":\\\"800.000.000\\\",\\\"car_value_battery_info\\\":\\\"0\\\",\\\"car_value_battery\\\":\\\"0\\\",\\\"e174526c-5a23-4aca-8d9f-ea198dc6b874\\\":\\\"e174526c-5a23-4aca-8d9f-ea198dc6b874\\\",\\\"5eab040c-901d-4f4c-a3be-11e6b6fad9a1\\\":\\\"5eab040c-901d-4f4c-a3be-11e6b6fad9a1\\\",\\\"fcc672ad-b296-462d-b17f-027579819aea\\\":\\\"fcc672ad-b296-462d-b17f-027579819aea\\\",\\\"request_change_fees\\\":\\\"\\\",\\\"buyer_customer_code\\\":\\\"\\\",\\\"buyer_partner_code\\\":\\\"\\\",\\\"buyer_agency_code\\\":\\\"\\\",\\\"buyer_payment_date\\\":\\\"20/09/2025\\\",\\\"car_number_plate\\\":\\\"11111\\\",\\\"car_chassis\\\":\\\"22222\\\",\\\"car_number_engine\\\":\\\"33333\\\",\\\"c854019c-3eab-4d1b-b956-2ed95e3f709a\\\":\\\"\\\",\\\"ab71b377-f180-4e56-aeef-f288443f1726\\\":\\\"\\\",\\\"3997b5b8-1eb5-4e99-b31c-6a61d35903b0\\\":\\\"\\\",\\\"04287fbf-fdea-4058-9776-f64f286b0da2\\\":\\\"\\\",\\\"931e943c-3f67-458d-ada4-f780ce7e882d\\\":\\\"\\\",\\\"05f7ac7b-b8cf-4b49-9f95-5db6af14101e\\\":\\\"\\\",\\\"41297ef3-0a7e-4ec0-ae6e-50966a4a9972\\\":\\\"\\\",\\\"c91893f5-49f0-477a-a52d-263cdaed19b9\\\":\\\"\\\",\\\"35add4ab-a834-4a1a-ad72-a42adb83f7ee\\\":\\\"\\\",\\\"25daddf5-cc38-49ef-bc4a-15e20a98d3cc\\\":\\\"\\\",\\\"kind_customer\\\":\\\"bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1\\\",\\\"buyer_fullname\\\":\\\"nguyen van a\\\",\\\"buyer_email\\\":\\\"email@acb.com\\\",\\\"buyer_phone\\\":\\\"0988111222\\\",\\\"buyer_gender\\\":\\\"NAM\\\",\\\"buyer_identity_card\\\":\\\"111\\\",\\\"buyer_passport\\\":\\\"222\\\",\\\"buyer_city\\\":\\\"eee52932-0358-47d5-9984-be1132c7f04\\\",\\\"buyer_district\\\":\\\"29a24c2e-a5cb-4b98-b5f8-26be02df080c\\\",\\\"buyer_address\\\":\\\"nguyen van a\\\",\\\"chk_add_vietnam\\\":\\\"vietnam\\\",\\\"buyer_company_hoten\\\":\\\"\\\",\\\"buyer_company_qhns\\\":\\\"\\\",\\\"tax_content_kind\\\":\\\"nvbh_shd_bks\\\",\\\"tax_content_option_noi_dung_dac_biet_noidung\\\":\\\"\\\",\\\"chk_owner_vehicle\\\":\\\"100\\\",\\\"owner_vehicle_relationship\\\":\\\"1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1\\\",\\\"owner_vehicle_fullname\\\":\\\"nguyen van a\\\",\\\"owner_vehicle_email\\\":\\\"email@acb.com\\\",\\\"owner_vehicle_identity_card\\\":\\\"111\\\",\\\"owner_vehicle_phone\\\":\\\"0988111222\\\",\\\"owner_vehicle_gender\\\":\\\"NAM\\\",\\\"owner_vehicle_city\\\":\\\"eee52932-0358-47d5-9984-be1132c7f04\\\",\\\"owner_vehicle_district\\\":\\\"29a24c2e-a5cb-4b98-b5f8-26be02df080c\\\",\\\"owner_vehicle_address\\\":\\\"nguyen van a\\\",\\\"chk_beneficiary\\\":\\\"100\\\",\\\"beneficiary_fullname\\\":\\\"nguyen van a\\\",\\\"beneficiary_email\\\":\\\"email@acb.com\\\",\\\"beneficiary_identity_card\\\":\\\"111\\\",\\\"beneficiary_phone\\\":\\\"0988111222\\\",\\\"beneficiary_city\\\":\\\"eee52932-0358-47d5-9984-be1132c7f04\\\",\\\"beneficiary_district\\\":\\\"29a24c2e-a5cb-4b98-b5f8-26be02df080c\\\",\\\"beneficiary_address\\\":\\\"nguyen van a\\\",\\\"active_date\\\":\\\"20/09/2025 17:21\\\",\\\"inactive_date\\\":\\\"20/09/2026 17:21\\\",\\\"chk_agree_term\\\":\\\"1\\\",\\\"total_premium\\\":\\\"15503400\\\"}\",\"d_info\":{}}",
+  "method": "POST"
+});
+############
+
+{
+    "data": "54cbf39d-4a9b-4e33-afe8-84274ee44ba4",
+    "data_code": null,
+    "message": null,
+    "data_entity": null,
+    "data_key": "KLtIE6P5/ublMkxAHmDzuEi6Q0EBzQL5b8Yd/zX/33pcfNJXxqzbc1fcY/vvwxJ969DY3fXJvoxSUq868aMGJYeIGEBe8IO9rr5T3V+lV8qqYsGqr8cX+wMTTwvX03yDK1smDAZ9S+dVTmC5ZYCuGRzn9XXMxxcchVn5UHWDjB06y3Rj9YujGLAIIS0oHO6QT05dF6d4A1uqIbRoSTvBJQVKfPp++xBPtaXLkC7S5UX9KnWISh0Ms8gepe2L0QANJGlEgiOegfRDD9jW2tz16GuWRmI8Iu8LEz8wwnNPONSum2i8A+20MHPLO3kMN+iccFarqCrQrjE5JFq8HF8L1g==",
+    "data_type": "yesno",
+    "status_code": 100,
+    "Cookies": [],
+    "session_date": "2025-09-20T18:24:13.1762033Z"
+}

@@ -1,7 +1,7 @@
 import { ENGINE_TYPE_VALUES } from './car-engine-mapping';
 
 // Data phí bảo hiểm từ index_2.html
-export const physicalDamageRates = {
+export const physicalDamageRates_bak = {
   'khong_kd_cho_nguoi': {
     duoi_500tr: { age_under_3: [1.25, 1.25, 1.3, 1.3], age_3_to_6: [1.35, 1.4, 1.45, 1.5], age_6_to_10: [1.45, 1.55, 1.6, 1.7], age_over_10: [1.54, 1.69, 1.74, null] },
     tu_500_den_700tr: { age_under_3: [1.1, 1.1, 1.15, 1.15], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.4, 1.55, 1.6, null] },
@@ -21,6 +21,28 @@ export const physicalDamageRates = {
   'kd_chuyen_dung': { age_under_3: [1.15, 1.15, 1.2, 1.2], age_3_to_6: [1.2, 1.25, 1.3, 1.35], age_6_to_10: [1.3, 1.4, 1.45, 1.55], age_over_10: [1.5, 1.65, 1.7, null] },
   'kd_romooc_ben': { age_under_3: [1.25, 1.25, 1.30, 1.30], age_3_to_6: [1.35, 1.40, 1.45, 1.50], age_6_to_10: [1.40, 1.50, 1.55, 1.65], age_over_10: [1.50, 1.65, 1.70, null] }
 };
+
+export const physicalDamageRates = {
+  'khong_kd_cho_nguoi': {
+    duoi_500tr: { age_under_3: [1.3, 1.3], age_3_to_6: [1.5, 1.6], age_6_to_10: [1.6, 1.75], age_over_10: [1.7, null] },
+    tu_500_den_700tr: { age_under_3: [1.15, 1.15], age_3_to_6: [1.3, 1.4], age_6_to_10: [1.4, 1.5], age_over_10: [1.5, null] },
+    tu_700_den_1ty: { age_under_3: [1, 1.05], age_3_to_6: [1.15, 1.25], age_6_to_10: [1.25, 1.35], age_over_10: [1.35, null] }
+  },
+  'khong_kd_cho_hang': { age_under_3: [1.15, 1.15], age_3_to_6: [1.3, 1.4], age_6_to_10: [1.4, 1.5], age_over_10: [1.5, null] },
+  'khong_kd_pickup_van': { age_under_3: [1.35, 1.35], age_3_to_6: [1.45, 1.55], age_6_to_10: [1.55, 1.65], age_over_10: [1.65, null] },
+  'kd_cho_hang': { age_under_3: [1.2, 1.2], age_3_to_6: [1.35, 1.4], age_6_to_10: [1.5, 1.6], age_over_10: [1.65, null] },
+  'kd_dau_keo': { age_under_3: [1.7, 1.7], age_3_to_6: [1.9, 1.95], age_6_to_10: [1.95, 2.05], age_over_10: [2.2, null] },
+  'kd_cho_khach_lien_tinh': { age_under_3: [2.21, 2.21], age_3_to_6: [2.4, 2.5], age_6_to_10: [2.54, 2.69], age_over_10: [2.65, null] },
+  'kd_grab_be': { age_under_3: [2.66, 2.66], age_3_to_6: [2.85, 2.95], age_6_to_10: [3.1, 3.24], age_over_10: [3.38, null] },
+  'kd_taxi_tu_lai': { age_under_3: [2.91, 2.91], age_3_to_6: [3.13, 3.23], age_6_to_10: [3.28, 3.43], age_over_10: [3.39, null] },
+  'kd_hop_dong_tren_9c': { age_under_3: [1.25, 1.25], age_3_to_6: [1.45, 1.5], age_6_to_10: [
+1.55, 1.65], age_over_10: [1.6, null] },
+  'kd_bus': { age_under_3: [1.3, 1.3], age_3_to_6: [1.5, 1.6], age_6_to_10: [1.6, 1.75], age_over_10: [1.7, null] },
+  'kd_pickup_van': { age_under_3: [1.35, 1.35], age_3_to_6: [1.45, 1.55], age_6_to_10: [1.55, 1.65], age_over_10: [1.65, null] },
+  'kd_chuyen_dung': { age_under_3: [1.15, 1.15], age_3_to_6: [1.3, 1.4], age_6_to_10: [1.4, 1.5], age_over_10: [1.5, null] },
+  'kd_romooc_ben': { age_under_3: [1.3, 1.3], age_3_to_6: [1.65, 1.75], age_6_to_10: [1.8, 1.95], age_over_10: [2.17, null] }
+}
+
 
 export const additionalRateAU009 = 0.10;
 export const HYBRID_EV_SURCHARGE = 0.10; // 0.1% surcharge for hybrid/electric vehicles
@@ -52,13 +74,38 @@ export const tndsCategories = {
   'tai_tren_15_tan': { label: 'Xe tải > 15 tấn', fee: 3520000 },
 };
 
-export const packageLabels = [
+export const packageLabels_bak = [
   { name: 'Gói Cơ bản', details: 'Bảo hiểm cơ bản' , code: "pk01"},
   { name: 'Gói AU001', details: 'Thêm: Thay mới không khấu hao', code: "pk02" },
   { name: 'Gói AU001 + AU006', details: 'Thêm: Thủy kích' , code: "pk03"},
   { name: 'Gói AU001 + AU002 + AU006', details: 'Thêm: Lựa chọn garage', code : "pk04" },
   { name: 'Gói AU001 + AU002 + AU006 + AU009', details: 'Thêm: Mất cắp bộ phận' , code : "pk05"}
 ];
+
+export const packageLabels = [
+  { name: 'Gói BS001 + BS003', details: 'Thêm: Thủy kích' , code: "pk03"},
+  { name: 'Gói BS001 + BS002 + BS003', details: 'Thêm: Lựa chọn garage', code : "pk04" }
+];
+
+export const packageLabelsDetail = [
+  {
+    code: 'BS001',
+    name: ' Bảo hiểm mới thay cũ'
+  },
+  {
+    code: 'BS002',
+    name: 'Bảo hiểm lựa chọn cơ sở sửa chữa'
+  },
+  {
+    code: 'BS003',
+    name: 'Bảo hiểm tổn thất của động cơ khi xe hoạt động trong khu vực bị ngập nước'
+    },
+  {
+    code: 'BS004',
+    name: 'Bảo hiểm xe tập lái',
+    value: '0.04%'
+  }
+]
 
 export const loaiHinhKinhDoanhOptions = [
   { value: 'khong_kd_cho_nguoi', label: 'Xe chở người (xe gia đình)', group: 'Xe không kinh doanh' },

@@ -3,10 +3,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
-import { 
+import {
   parseCurrency,
   tndsCategories,
-  calculateTotalVehicleValue
+  calculateTotalVehicleValue,
+  packageLabels,
+  packageLabelsDetail
 } from '@/utils/insurance-calculator';
 import StepIndicator from '@/components/contracts/StepIndicator';
 import StepWrapper from '@/components/contracts/StepWrapper';
@@ -407,14 +409,16 @@ export default function NewContractPage() {
       // NNTX fee is already calculated by DynamicTNDSSelector
       
       const getDKBS = (index: number): string[] => {
-        switch(index) {
-          case 0: return ['Cơ bản'];
-          case 1: return ['- AU001: Mới thay cũ'];
-          case 2: return ['- AU001: Mới thay cũ', '- AU006: Thủy kích'];
-          case 3: return ['- AU001: Mới thay cũ', '- AU002: Lựa chọn cơ sở sửa chữa', '- AU006: Thủy kích'];
-          case 4: return ['- AU001: Mới thay cũ', '- AU002: Lựa chọn cơ sở sửa chữa', '- AU006: Thủy kích', '- AU009: Mất cắp bộ phận'];
-          default: return [];
+        if (index >= 0 && index < packageLabels.length) {
+          const pkg = packageLabels[index];
+          // Extract BS codes from name: "Gói BS001 + BS003" → ["BS001", "BS003"]
+          const bsCodes = pkg.name.match(/BS\d+/g) || [];
+          return bsCodes.map(code => {
+            const detail = packageLabelsDetail.find(item => item.code === code);
+            return detail ? `- ${code}: ${detail.name}` : `- ${code}`;
+          });
         }
+        return [];
       };
 
       // Use calculated fee data from formData (already calculated in handleCustomRateChange and handlePackageSelection)
