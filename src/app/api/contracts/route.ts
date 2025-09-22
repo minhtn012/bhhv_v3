@@ -256,7 +256,7 @@ async function checkBhvPremiumsInBackground(contractId: string, contractNumber: 
           beforeTax: premiumData.nntx.beforeTax,
           afterTax: premiumData.nntx.afterTax
         },
-        totalPremium: {
+        total: {
           beforeTax: premiumData.totalPremium.beforeTax,
           afterTax: premiumData.totalPremium.afterTax
         },

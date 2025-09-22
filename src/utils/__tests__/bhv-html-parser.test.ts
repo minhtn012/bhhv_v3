@@ -75,48 +75,60 @@ describe('BHV HTML Parser', () => {
     const result = parseBhvHtmlResponse(sampleHtmlResponse);
 
     expect(result).toEqual({
-      bhvc: expect.any(Number),
-      tnds: 831600, // 756000 + 75600
-      nntx: 30000,  // 27273 + 2727
-      totalPremium: 17901600
+      bhvc: {
+        beforeTax: expect.any(Number),
+        afterTax: expect.any(Number)
+      },
+      tnds: {
+        beforeTax: 756000,
+        afterTax: 831600 // 756000 + 75600
+      },
+      nntx: {
+        beforeTax: 27273,
+        afterTax: 30000  // 27273 + 2727
+      },
+      totalPremium: {
+        beforeTax: expect.any(Number),
+        afterTax: 17901600
+      }
     });
 
     // BHVC should be total minus TNDS and NNTX
     const expectedBhvc = 17901600 - 831600 - 30000;
-    expect(result.bhvc).toBe(expectedBhvc);
+    expect(result.bhvc.afterTax).toBe(expectedBhvc);
   });
 
   test('should handle total premium from hidden input', () => {
     const result = parseBhvHtmlResponse(sampleHtmlResponse);
-    expect(result.totalPremium).toBe(17901600);
+    expect(result.totalPremium.afterTax).toBe(17901600);
   });
 
   test('should identify TNDS package correctly', () => {
     const result = parseBhvHtmlResponse(sampleHtmlResponse);
-    expect(result.tnds).toBe(831600); // 756000 + 75600
+    expect(result.tnds.afterTax).toBe(831600); // 756000 + 75600
   });
 
   test('should identify NNTX package correctly', () => {
     const result = parseBhvHtmlResponse(sampleHtmlResponse);
-    expect(result.nntx).toBe(30000); // 27273 + 2727
+    expect(result.nntx.afterTax).toBe(30000); // 27273 + 2727
   });
 
   test('should return zero values for empty HTML', () => {
     const result = parseBhvHtmlResponse('');
     expect(result).toEqual({
-      bhvc: 0,
-      tnds: 0,
-      nntx: 0,
-      totalPremium: 0
+      bhvc: { beforeTax: 0, afterTax: 0 },
+      tnds: { beforeTax: 0, afterTax: 0 },
+      nntx: { beforeTax: 0, afterTax: 0 },
+      totalPremium: { beforeTax: 0, afterTax: 0 }
     });
   });
 
   test('validatePremiumData should validate consistent data', () => {
     const validData = {
-      bhvc: 17040000,
-      tnds: 831600,
-      nntx: 30000,
-      totalPremium: 17901600
+      bhvc: { beforeTax: 15490909, afterTax: 17040000 },
+      tnds: { beforeTax: 756000, afterTax: 831600 },
+      nntx: { beforeTax: 27273, afterTax: 30000 },
+      totalPremium: { beforeTax: 16274182, afterTax: 17901600 }
     };
 
     expect(validatePremiumData(validData)).toBe(true);
@@ -124,10 +136,10 @@ describe('BHV HTML Parser', () => {
 
   test('validatePremiumData should reject inconsistent data', () => {
     const invalidData = {
-      bhvc: 10000000,
-      tnds: 1000000,
-      nntx: 1000000,
-      totalPremium: 5000000  // Much lower than sum
+      bhvc: { beforeTax: 9090909, afterTax: 10000000 },
+      tnds: { beforeTax: 909091, afterTax: 1000000 },
+      nntx: { beforeTax: 909091, afterTax: 1000000 },
+      totalPremium: { beforeTax: 4545455, afterTax: 5000000 }  // Much lower than sum
     };
 
     expect(validatePremiumData(invalidData)).toBe(false);
