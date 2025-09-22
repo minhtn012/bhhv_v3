@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
+import User from '@/models/User';
 import { transformContractToPremiumCheckFormat } from '@/lib/bhvDataMapper';
 import { bhvApiClient } from '@/lib/bhvApiClient';
 import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
 import { requireAuth } from '@/lib/auth';
+import { decryptBhvCredentials } from '@/lib/encryption';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,10 +14,9 @@ export async function POST(request: NextRequest) {
     await connectToDatabase();
 
     const body = await request.json();
-    const { contractNumber, cookies } = body;
+    const { contractNumber } = body;
 
     console.log('🔄 Processing BHV premium check for contract:', contractNumber);
-    console.log('🍪 Using cookies:', cookies ? 'provided' : 'not provided');
 
     // Validate input
     if (!contractNumber) {
@@ -69,9 +70,37 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Call BHV API for premium check
+    // Get user credentials for BHV authentication
+    console.log('🔍 Getting user BHV credentials...');
+    const userWithCredentials = await User.findById(user.userId).select('bhvUsername bhvPassword');
+    if (!userWithCredentials?.bhvUsername || !userWithCredentials?.bhvPassword) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'No BHV credentials found. Please setup BHV credentials in your profile.'
+        },
+        { status: 400 }
+      );
+    }
+
+    // Decrypt credentials and authenticate with BHV
+    console.log('🔐 Authenticating with BHV API...');
+    const { username, password } = decryptBhvCredentials(userWithCredentials.bhvUsername, userWithCredentials.bhvPassword);
+    const authResult = await bhvApiClient.authenticate(username, password);
+
+    if (!authResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `BHV authentication failed: ${authResult.error}`
+        },
+        { status: 500 }
+      );
+    }
+
+    // Call BHV API for premium check with fresh cookies
     console.log('🚀 Calling BHV API for premium check...');
-    const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, cookies);
+    const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, authResult.cookies);
 
     if (!bhvResult.success) {
       console.error('❌ BHV premium check failed:', bhvResult.error);
@@ -95,15 +124,34 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ BHV premium check successful');
 
+    // Update contract with BHV premiums data
+    console.log('💾 Updating contract with BHV premiums data...');
+    try {
+      await Contract.findByIdAndUpdate(contract._id, {
+        bhvPremiums: {
+          bhvc: premiumData.bhvc,
+          tnds: premiumData.tnds,
+          nntx: premiumData.nntx,
+          total: premiumData.totalPremium,
+          checkedAt: new Date(),
+          success: true
+        }
+      });
+      console.log('✅ Contract updated with BHV premiums data');
+    } catch (updateError) {
+      console.error('❌ Failed to update contract with BHV premiums:', updateError);
+      // Continue with response even if update fails
+    }
+
     return NextResponse.json({
       success: true,
       contractNumber: contract.contractNumber,
       premiums: {
         bhvc: premiumData.bhvc,
         tnds: premiumData.tnds,
-        nntx: premiumData.nntx
-      },
-      totalPremium: premiumData.totalPremium
+        nntx: premiumData.nntx,
+        total: premiumData.totalPremium
+      }
     });
 
   } catch (error) {

@@ -520,7 +520,19 @@ export default function NewContractPage() {
 
       if (response.ok) {
         const result = await response.json();
+
+        // Immediately redirect to contract detail page
         router.push(`/contracts/${result.contract.id}`);
+
+        // Background BHV premium check (fire-and-forget)
+        fetch('/api/contracts/check-bhv-contract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contractNumber: result.contract.contractNumber })
+        }).catch(error => {
+          console.log('Background BHV premium check failed:', error);
+          // Silent fail - không ảnh hưởng user experience
+        });
       } else {
         const errorData = await response.json();
         setError(errorData.error || 'Lỗi khi tạo hợp đồng');

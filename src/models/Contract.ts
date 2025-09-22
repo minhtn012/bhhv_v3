@@ -112,7 +112,7 @@ export interface IContract extends Document {
       beforeTax: number;
       afterTax: number;
     };
-    totalPremium: {
+    total: {
       beforeTax: number;
       afterTax: number;
     };
@@ -471,7 +471,7 @@ const contractSchema = new Schema<IContract>({
           min: [0, 'NNTX premium after tax cannot be negative']
         }
       },
-      totalPremium: {
+      total: {
         beforeTax: {
           type: Number,
           min: [0, 'Total premium before tax cannot be negative']
