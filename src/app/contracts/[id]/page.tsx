@@ -112,6 +112,7 @@ export default function ContractDetailPage() {
   const [bhvSubmissionLoading, setBhvSubmissionLoading] = useState(false);
   const [showBhvPdfModal, setShowBhvPdfModal] = useState(false);
   const [bhvPdfData, setBhvPdfData] = useState<string>('');
+  const [bhvCookies, setBhvCookies] = useState<string>('');
   const [wordExportLoading, setWordExportLoading] = useState(false);
   const [showBhvCredentialsModal, setShowBhvCredentialsModal] = useState(false);
   const [bhvCredentialsError, setBhvCredentialsError] = useState('');
@@ -343,6 +344,7 @@ export default function ContractDetailPage() {
 
       if (response.ok && data.success) {
         // Success - show PDF modal
+        setBhvCookies(authData.cookies); // Save cookies for confirm step
         setBhvPdfData(data.pdfBase64);
         setShowBhvPdfModal(true);
 
@@ -448,9 +450,13 @@ export default function ContractDetailPage() {
         onClose={() => {
           setShowBhvPdfModal(false);
           setBhvPdfData('');
+          setBhvCookies(''); // Clear cookies when closing
         }}
         pdfBase64={bhvPdfData}
         contractNumber={contract?.contractNumber || ''}
+        contractId={contractId}
+        cookies={bhvCookies}
+        onConfirmContract={() => fetchContract()} // Refresh contract data after confirm
       />
 
       <BhvCredentialsModal

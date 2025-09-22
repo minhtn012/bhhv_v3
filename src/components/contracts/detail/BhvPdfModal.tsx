@@ -26,6 +26,8 @@ interface BhvPdfModalProps {
   onClose: () => void;
   pdfBase64: string;
   contractNumber: string;
+  contractId: string;
+  cookies?: string; // Cookies from submit step
   onConfirmContract?: () => void;
 }
 
@@ -34,11 +36,14 @@ export default function BhvPdfModal({
   onClose,
   pdfBase64,
   contractNumber,
+  contractId,
+  cookies,
   onConfirmContract
 }: BhvPdfModalProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [pdfUrl, setPdfUrl] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [isConfirming, setIsConfirming] = useState(false);
   const isMobile = useIsMobile();
 
   // Debug logging
@@ -122,6 +127,49 @@ export default function BhvPdfModal({
   const openPdfInNewTab = () => {
     if (pdfUrl) {
       window.open(pdfUrl, '_blank');
+    }
+  };
+
+  const handleConfirmContract = async () => {
+    console.log('🔄 Starting contract confirmation...');
+    console.log('📋 Contract ID:', contractId);
+    console.log('🍪 Cookies available:', !!cookies);
+
+    if (!contractId) {
+      alert('Lỗi: Không tìm thấy ID hợp đồng');
+      return;
+    }
+
+    setIsConfirming(true);
+    try {
+      const confirmUrl = `/api/contracts/${contractId}/confirm`;
+      console.log('🚀 Calling API:', confirmUrl);
+
+      const response = await fetch(confirmUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cookies: cookies // Pass cookies from submit step
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(`Hợp đồng đã được xác nhận thành công!\nMã hợp đồng BHV: ${result.bhvContractNumber}`);
+        if (onConfirmContract) {
+          onConfirmContract();
+        }
+      } else {
+        alert(`Lỗi xác nhận hợp đồng: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error confirming contract:', error);
+      alert('Có lỗi xảy ra khi xác nhận hợp đồng');
+    } finally {
+      setIsConfirming(false);
     }
   };
 
@@ -209,8 +257,27 @@ export default function BhvPdfModal({
                   </div>
                   <div className="space-y-3">
                     <button
+                      onClick={handleConfirmContract}
+                      disabled={isConfirming}
+                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-3"
+                    >
+                      {isConfirming ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          Đang xác nhận...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          Xác nhận hợp đồng
+                        </>
+                      )}
+                    </button>
+                    <button
                       onClick={openPdfInNewTab}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-3"
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-3"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -266,6 +333,25 @@ export default function BhvPdfModal({
               </div>
 
               <div className="flex gap-3">
+                <button
+                  onClick={handleConfirmContract}
+                  disabled={isConfirming}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  {isConfirming ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Đang xác nhận...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Xác nhận hợp đồng
+                    </>
+                  )}
+                </button>
                 <button
                   onClick={downloadPdf}
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"

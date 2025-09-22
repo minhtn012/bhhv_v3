@@ -13,6 +13,10 @@ export interface BhvApiResponse {
 export interface BhvPremiumResponse {
   success: boolean;
   htmlData?: string;
+}
+export interface BhvConfirmResponse {
+  success: boolean;
+  bhvContractNumber?: string;
   error?: string;
   rawResponse?: unknown;
 }
@@ -189,6 +193,124 @@ export class BhvApiClient {
    */
   clearSession(): void {
     this.sessionCookies = null;
+  }
+
+  /**
+   * Confirm contract with BHV API (2-step process)
+   */
+  async confirmContract(requestData: BhvRequestData, cookie?: string): Promise<BhvConfirmResponse> {
+    try {
+      console.log('🔄 Starting BHV contract confirmation process...');
+
+      // Step 1: Get sale_code with empty sale_code
+      console.log('📋 Step 1: Getting sale_code...');
+      const step1Response = await fetch(this.BHV_ENDPOINT, {
+        method: 'POST',
+        headers: this.getHeaders(cookie),
+        body: JSON.stringify(requestData)
+      });
+
+      if (!step1Response.ok) {
+        const errorText = await step1Response.text();
+        console.error('❌ Step 1 failed:', errorText);
+        return {
+          success: false,
+          error: `Step 1 failed - HTTP ${step1Response.status}: ${errorText}`,
+          rawResponse: { status: step1Response.status, text: errorText }
+        };
+      }
+
+      const step1Data = await step1Response.json();
+      console.log('📋 Step 1 response:', step1Data);
+
+      if (step1Data.status_code !== 200 || !step1Data.data) {
+        return {
+          success: false,
+          error: `Step 1 failed - Invalid response: ${step1Data.message || 'No sale_code received'}`,
+          rawResponse: step1Data
+        };
+      }
+
+      const saleCode = step1Data.data;
+      console.log('✓ Sale code received:', saleCode);
+
+      // Step 2: Confirm with the received sale_code
+      console.log('📋 Step 2: Confirming contract with sale_code...');
+
+      // Update request data with sale_code
+      const step2RequestData = {
+        ...requestData,
+        data: JSON.stringify({
+          ...JSON.parse(requestData.data),
+          sale_code: saleCode
+        })
+      };
+
+      const step2Response = await fetch(this.BHV_ENDPOINT, {
+        method: 'POST',
+        headers: this.getHeaders(cookie),
+        body: JSON.stringify(step2RequestData)
+      });
+
+      if (!step2Response.ok) {
+        const errorText = await step2Response.text();
+        console.error('❌ Step 2 failed:', errorText);
+        return {
+          success: false,
+          error: `Step 2 failed - HTTP ${step2Response.status}: ${errorText}`,
+          rawResponse: { status: step2Response.status, text: errorText }
+        };
+      }
+
+      const step2Data = await step2Response.json();
+      console.log('📋 Step 2 response keys:', Object.keys(step2Data));
+
+      if (step2Data.status_code !== 200) {
+        return {
+          success: false,
+          error: `Step 2 failed - Status ${step2Data.status_code}`,
+          rawResponse: step2Data
+        };
+      }
+
+      // Extract contract number from HTML response
+      const htmlData = step2Data.data;
+      if (typeof htmlData === 'string') {
+        // Extract contract number from HTML using regex
+        const contractNumberMatch = htmlData.match(/HVXCG\d+/);
+        if (contractNumberMatch) {
+          const bhvContractNumber = contractNumberMatch[0];
+          console.log('✅ BHV contract confirmation successful:', bhvContractNumber);
+
+          return {
+            success: true,
+            bhvContractNumber: bhvContractNumber,
+            rawResponse: step2Data
+          };
+        } else {
+          console.warn('⚠️ Contract number not found in HTML response');
+          return {
+            success: false,
+            error: 'Contract number not found in response',
+            rawResponse: step2Data
+          };
+        }
+      } else {
+        return {
+          success: false,
+          error: 'Invalid HTML response format',
+          rawResponse: step2Data
+        };
+      }
+
+    } catch (error) {
+      console.error('💥 BHV contract confirmation error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        rawResponse: { error: error }
+      };
+    }
   }
 
   /**

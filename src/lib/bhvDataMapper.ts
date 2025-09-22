@@ -274,6 +274,144 @@ export function mapInsuranceTypeOptions(includeOptions: { includeTNDS?: boolean;
 }
 
 /**
+ * Transform contract data to BHV API confirmation format
+ */
+export function transformContractToBhvConfirmFormat(contract: any, saleCode: string = ""): any {
+  const insuranceOptions = mapInsuranceOptions(contract.vatChatPackage?.dkbs || []);
+  const insuranceTypeOptions = mapInsuranceTypeOptions({
+    includeTNDS: contract.includeTNDS || false,
+    includeNNTX: contract.includeNNTX || false
+  });
+  const kindConfig = getKindConfig(contract.loaiHinhKinhDoanh);
+  const carWeightGoods = mapCarWeightGoods(contract.trongTai || 0);
+
+  const dataObject: any = {
+    // Fixed constants and configuration
+    certificate_code: ["", ""],
+    kind_action: ["insert", "insert"],
+    sale_code: saleCode, // Key difference: use provided sale_code instead of empty
+    kind_config: JSON.stringify(kindConfig),
+    product_id: BHV_CONSTANTS.PRODUCT_ID,
+    car_year_buy: BHV_CONSTANTS.CAR_YEAR_BUY,
+    car_kind: mapCarKind(contract.loaiHinhKinhDoanh),
+    get_fee_mode: BHV_CONSTANTS.GET_FEE_MODE,
+    kind_customer: BHV_CONSTANTS.KIND_CUSTOMER,
+    chk_agree_term: BHV_CONSTANTS.CHK_AGREE_TERM,
+    chk_add_vietnam: BHV_CONSTANTS.CHK_ADD_VIETNAM,
+
+    // Vehicle data
+    car_automaker: mapCarAutomaker(contract.carBrand || contract.nhanHieu),
+    car_model: mapCarModel(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai),
+    car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh),
+    car_seat: mapCarSeat(contract.soChoNgoi),
+    car_seat_buy: contract.soChoNgoi?.toString(),
+    car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
+    car_year: contract.namSanXuat?.toString(),
+    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
+    car_value: contract.giaTriXe?.toString(),
+    car_value_info: contract.giaTriXe?.toString(),
+    car_value_battery: contract.giaTriPin?.toString() || "0",
+    car_value_battery_info: contract.giaTriPin?.toString() || "0",
+    car_package: mapCarPackage(contract.giaTriXe || 0),
+    car_type_engine: mapCarTypeEngine(contract.engineType || "ICE"),
+    car_deduction: mapCarDeduction(contract.deductionAmount || 500000),
+
+    // Vehicle registration
+    car_number_plate: contract.bienSo,
+    car_chassis: contract.soKhung,
+    car_number_engine: contract.soMay,
+    car_fisrt_date: contract.ngayDKLD,
+
+    // Request change fees (discount/fee modifications)
+    request_change_fees: contract.requestChangeFees || "",
+
+    // Customer data
+    buyer_customer_code: "",
+    buyer_partner_code: "",
+    buyer_agency_code: "",
+    buyer_fullname: contract.chuXe, // Owner name from contract
+    buyer_email: contract.buyerEmail,
+    buyer_phone: contract.buyerPhone,
+    buyer_gender: contract.buyerGender?.toUpperCase(),
+    buyer_identity_card: contract.buyerCitizenId,
+    buyer_city: contract.selectedProvince,
+    buyer_district: contract.selectedDistrictWard,
+    buyer_address: contract.specificAddress,
+
+    // Owner vehicle information (same as buyer for now)
+    chk_owner_vehicle: "100",
+    owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
+    owner_vehicle_fullname: contract.chuXe,
+    owner_vehicle_email: contract.buyerEmail,
+    owner_vehicle_identity_card: contract.buyerCitizenId,
+    owner_vehicle_phone: contract.buyerPhone,
+    owner_vehicle_gender: contract.buyerGender?.toUpperCase(),
+    owner_vehicle_city: contract.selectedProvince,
+    owner_vehicle_district: contract.selectedDistrictWard,
+    owner_vehicle_address: contract.specificAddress,
+
+    // Beneficiary information (same as buyer for now)
+    chk_beneficiary: "100",
+    beneficiary_fullname: contract.chuXe,
+    beneficiary_email: contract.buyerEmail,
+    beneficiary_identity_card: contract.buyerCitizenId,
+    beneficiary_phone: contract.buyerPhone,
+    beneficiary_city: contract.selectedProvince,
+    beneficiary_district: contract.selectedDistrictWard,
+    beneficiary_address: contract.specificAddress,
+
+    // Additional missing fields
+    tax_content_kind: "nvbh_shd_bks",
+    tax_content_option_noi_dung_dac_biet_noidung: "",
+    buyer_company_hoten: "",
+    buyer_company_qhns: "",
+    buyer_passport: "",
+
+    // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
+    buyer_payment_date: formatDateForBhv(new Date()),
+    active_date: formatDateTimeForBhv(
+      contract.ngayBatDauBaoHiem ? parseDateFromDDMMYYYY(contract.ngayBatDauBaoHiem) : new Date()
+    ),
+    inactive_date: formatDateTimeForBhv(
+      contract.ngayKetThucBaoHiem ? parseDateFromDDMMYYYY(contract.ngayKetThucBaoHiem) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    ),
+
+    // Total premium
+    total_premium: contract.tongPhi?.toString(),
+    // order
+    "c854019c-3eab-4d1b-b956-2ed95e3f709a": "",
+    "ab71b377-f180-4e56-aeef-f288443f1726": "",
+    "3997b5b8-1eb5-4e99-b31c-6a61d35903b0": "",
+    "04287fbf-fdea-4058-9776-f64f286b0da2": "",
+    "931e943c-3f67-458d-ada4-f780ce7e882d": "",
+    "05f7ac7b-b8cf-4b49-9f95-5db6af14101e": "",
+    "41297ef3-0a7e-4ec0-ae6e-50966a4a9972": "",
+    "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
+    "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
+    "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
+  };
+
+  // Add car_weigh_goods field if applicable
+  if (carWeightGoods) {
+    dataObject.car_weigh_goods = carWeightGoods;
+  }
+
+  // Add insurance options
+  Object.assign(dataObject, insuranceOptions);
+
+  // Add insurance type options (TNDS/NNTX)
+  Object.assign(dataObject, insuranceTypeOptions);
+
+  const bhvData = {
+    action_name: "vehicle/transport/install", // Key difference: install instead of review
+    data: JSON.stringify(dataObject),
+    d_info: {}
+  };
+
+  return bhvData;
+}
+
+/**
  * Transform contract data to BHV API format
  */
 export function transformContractToBhvFormat(contract: any): any {
