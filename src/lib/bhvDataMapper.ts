@@ -274,6 +274,44 @@ export function mapInsuranceTypeOptions(includeOptions: { includeTNDS?: boolean;
 }
 
 /**
+ * Calculate discount percentage and generate request_change_fees JSON
+ */
+export function calculateRequestChangeFees(contract: any): string {
+  // Check if required data exists
+  if (!contract.bhvPremiums?.bhvc?.afterTax || !contract.vatChatPackage?.phiVatChat) {
+    console.warn('Hệ thống chưa được giảm giá - thiếu dữ liệu bhvPremiums hoặc vatChatPackage');
+    return "";
+  }
+
+  const bhvAfterTax = contract.bhvPremiums.bhvc.afterTax;
+  const vatChatFee = contract.vatChatPackage.phiVatChat;
+
+  // Prevent division by zero
+  if (bhvAfterTax <= 0) {
+    console.warn('Hệ thống chưa được giảm giá - bhvPremiums.bhvc.afterTax <= 0');
+    return "";
+  }
+
+  // Calculate discount percentage
+  const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
+
+  // If negative, set to 0 (no discount)
+  const finalDiscountRate = Math.max(0, Math.round(discountRate));
+
+  // Generate request_change_fees JSON
+  const requestChangeFees = [
+    {
+      option_id: "c2db43ab-ccdc-44d3-8fdc-2167b86e01900",
+      option_type: "RQ_FEES_DISCOUNT",
+      option_value: finalDiscountRate,
+      option_value1: 0
+    }
+  ];
+
+  return JSON.stringify(requestChangeFees);
+}
+
+/**
  * Transform contract data to BHV API confirmation format
  */
 export function transformContractToBhvConfirmFormat(contract: any, saleCode: string = ""): any {
@@ -323,7 +361,7 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     car_fisrt_date: contract.ngayDKLD,
 
     // Request change fees (discount/fee modifications)
-    request_change_fees: contract.requestChangeFees || "",
+    request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data
     buyer_customer_code: "",
@@ -461,7 +499,7 @@ export function transformContractToBhvFormat(contract: any): any {
     car_fisrt_date: contract.ngayDKLD,
 
     // Request change fees (discount/fee modifications)
-    request_change_fees: contract.requestChangeFees || "",
+    request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data
     buyer_customer_code: "",
