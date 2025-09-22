@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
+import User from '@/models/User';
 import { requireAuth } from '@/lib/auth';
+import { transformContractToPremiumCheckFormat } from '@/lib/bhvDataMapper';
+import { bhvApiClient } from '@/lib/bhvApiClient';
+import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
+import { decryptBhvCredentials } from '@/lib/encryption';
 
 // GET /api/contracts - Lấy danh sách contracts
 export async function GET(request: NextRequest) {
@@ -115,6 +120,9 @@ export async function POST(request: NextRequest) {
 
     await contract.save();
 
+    // Auto-check BHV premiums in background (don't block response)
+    checkBhvPremiumsInBackground(contract._id.toString(), contract.contractNumber, user.userId);
+
     return NextResponse.json({
       message: 'Tạo hợp đồng thành công',
       contract: {
@@ -157,5 +165,141 @@ export async function POST(request: NextRequest) {
       { error: 'Internal server error' },
       { status: 500 }
     );
+  }
+}
+
+// Background function to check BHV premiums after contract creation
+async function checkBhvPremiumsInBackground(contractId: string, contractNumber: string, userId: string) {
+  try {
+    console.log('🔄 Starting background BHV premium check for contract:', contractNumber);
+
+    // Fetch the contract from database
+    await connectToDatabase();
+    const contract = await Contract.findById(contractId).lean();
+
+    if (!contract) {
+      console.error('❌ Contract not found for BHV check:', contractId);
+      return;
+    }
+
+    // Get user's BHV credentials
+    const user = await User.findById(userId).lean();
+    if (!user || !user.bhvUsername || !user.bhvPassword) {
+      console.warn('⚠️ User has no BHV credentials, skipping BHV check for contract:', contractNumber);
+      await updateContractWithBhvError(contractId, 'User has no BHV credentials configured');
+      return;
+    }
+
+    // Transform contract data to BHV premium check format
+    const bhvRequestData = transformContractToPremiumCheckFormat(contract);
+
+    // Validate that we have enough data for mapping
+    const dataObj = JSON.parse(bhvRequestData.data);
+    if (!dataObj.car_automaker || !dataObj.car_model || !dataObj.car_value) {
+      console.warn('⚠️ Contract missing required data for BHV mapping:', contractNumber);
+      await updateContractWithBhvError(contractId, 'Missing required data for BHV mapping (car brand, model, or value)');
+      return;
+    }
+
+    // Get BHV cookies by authenticating with user's credentials
+    console.log('🔐 Authenticating with BHV to get cookies...');
+    let bhvCookies = null;
+    try {
+      const { username, password } = decryptBhvCredentials(user.bhvUsername, user.bhvPassword);
+      const authResult = await bhvApiClient.authenticate(username, password);
+
+      if (authResult.success) {
+        bhvCookies = authResult.cookies;
+        console.log('✅ BHV authentication successful');
+      } else {
+        console.error('❌ BHV authentication failed:', authResult.error);
+        await updateContractWithBhvError(contractId, `BHV authentication failed: ${authResult.error}`);
+        return;
+      }
+    } catch (authError) {
+      console.error('❌ BHV authentication error:', authError);
+      await updateContractWithBhvError(contractId, `BHV authentication error: ${authError instanceof Error ? authError.message : 'Unknown auth error'}`);
+      return;
+    }
+
+    // Call BHV API for premium check with authenticated cookies
+    console.log('🚀 Calling BHV API for premium check...');
+    const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, bhvCookies);
+
+    if (!bhvResult.success) {
+      console.error('❌ BHV premium check failed:', bhvResult.error);
+      await updateContractWithBhvError(contractId, `BHV API error: ${bhvResult.error}`);
+      return;
+    }
+
+    // Parse HTML response to extract premium data
+    console.log('🔄 Parsing BHV HTML response...');
+    const premiumData = parseBhvHtmlResponse(bhvResult.htmlData!);
+
+    // Validate premium data consistency
+    if (!validatePremiumData(premiumData)) {
+      console.warn('⚠️ Premium data validation failed - inconsistent totals');
+    }
+
+    // Update contract with BHV premium data
+    await Contract.findByIdAndUpdate(contractId, {
+      bhvPremiums: {
+        bhvc: {
+          beforeTax: premiumData.bhvc.beforeTax,
+          afterTax: premiumData.bhvc.afterTax
+        },
+        tnds: {
+          beforeTax: premiumData.tnds.beforeTax,
+          afterTax: premiumData.tnds.afterTax
+        },
+        nntx: {
+          beforeTax: premiumData.nntx.beforeTax,
+          afterTax: premiumData.nntx.afterTax
+        },
+        totalPremium: {
+          beforeTax: premiumData.totalPremium.beforeTax,
+          afterTax: premiumData.totalPremium.afterTax
+        },
+        checkedAt: new Date(),
+        success: true
+      }
+    });
+
+    console.log('✅ BHV premium check completed successfully for contract:', contractNumber);
+
+  } catch (error) {
+    console.error('💥 Background BHV premium check error for contract:', contractNumber, error);
+    await updateContractWithBhvError(contractId, error instanceof Error ? error.message : 'Unknown error');
+  }
+}
+
+// Helper function to update contract with BHV error
+async function updateContractWithBhvError(contractId: string, errorMessage: string) {
+  try {
+    await Contract.findByIdAndUpdate(contractId, {
+      bhvPremiums: {
+        bhvc: {
+          beforeTax: 0,
+          afterTax: 0
+        },
+        tnds: {
+          beforeTax: 0,
+          afterTax: 0
+        },
+        nntx: {
+          beforeTax: 0,
+          afterTax: 0
+        },
+        totalPremium: {
+          beforeTax: 0,
+          afterTax: 0
+        },
+        checkedAt: new Date(),
+        success: false,
+        error: errorMessage
+      }
+    });
+  } catch (updateError) {
+    console.error('💥 Failed to update contract with BHV error:', updateError);
   }
 }

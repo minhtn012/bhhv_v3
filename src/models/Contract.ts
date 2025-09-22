@@ -97,6 +97,29 @@ export interface IContract extends Document {
     changedAt: Date;
     note?: string;
   }>;
+
+  // BHV premium data from online check
+  bhvPremiums?: {
+    bhvc: {
+      beforeTax: number;
+      afterTax: number;
+    };
+    tnds: {
+      beforeTax: number;
+      afterTax: number;
+    };
+    nntx: {
+      beforeTax: number;
+      afterTax: number;
+    };
+    totalPremium: {
+      beforeTax: number;
+      afterTax: number;
+    };
+    checkedAt: Date;
+    success: boolean;
+    error?: string;
+  };
 }
 
 const contractSchema = new Schema<IContract>({
@@ -413,7 +436,65 @@ const contractSchema = new Schema<IContract>({
     note: {
       type: String
     }
-  }]
+  }],
+
+  // BHV premium data from online check
+  bhvPremiums: {
+    type: {
+      bhvc: {
+        beforeTax: {
+          type: Number,
+          min: [0, 'BHVC premium before tax cannot be negative']
+        },
+        afterTax: {
+          type: Number,
+          min: [0, 'BHVC premium after tax cannot be negative']
+        }
+      },
+      tnds: {
+        beforeTax: {
+          type: Number,
+          min: [0, 'TNDS premium before tax cannot be negative']
+        },
+        afterTax: {
+          type: Number,
+          min: [0, 'TNDS premium after tax cannot be negative']
+        }
+      },
+      nntx: {
+        beforeTax: {
+          type: Number,
+          min: [0, 'NNTX premium before tax cannot be negative']
+        },
+        afterTax: {
+          type: Number,
+          min: [0, 'NNTX premium after tax cannot be negative']
+        }
+      },
+      totalPremium: {
+        beforeTax: {
+          type: Number,
+          min: [0, 'Total premium before tax cannot be negative']
+        },
+        afterTax: {
+          type: Number,
+          min: [0, 'Total premium after tax cannot be negative']
+        }
+      },
+      checkedAt: {
+        type: Date,
+        default: Date.now
+      },
+      success: {
+        type: Boolean,
+        required: false
+      },
+      error: {
+        type: String
+      }
+    },
+    required: false
+  }
 }, {
   timestamps: true
 });

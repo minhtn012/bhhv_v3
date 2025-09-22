@@ -3,10 +3,22 @@
  */
 
 export interface BhvPremiumData {
-  bhvc: number;    // Bảo hiểm vật chất (total - TNDS - NNTX)
-  tnds: number;    // TNDS (phí + thuế gộp)
-  nntx: number;    // NNTX (phí + thuế gộp)
-  totalPremium: number;
+  bhvc: {
+    beforeTax: number;    // Phí trước thuế
+    afterTax: number;     // Phí sau thuế (gộp)
+  };
+  tnds: {
+    beforeTax: number;    // Phí trước thuế
+    afterTax: number;     // Phí sau thuế (gộp)
+  };
+  nntx: {
+    beforeTax: number;    // Phí trước thuế
+    afterTax: number;     // Phí sau thuế (gộp)
+  };
+  totalPremium: {
+    beforeTax: number;    // Tổng phí trước thuế
+    afterTax: number;     // Tổng phí sau thuế
+  };
 }
 
 export interface InsurancePackage {
@@ -76,16 +88,17 @@ function parseInsurancePackage(htmlSection: string, packageNumber: number): Insu
  */
 export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
   try {
-    // Initialize result
+    // Initialize result with new structure
     const result: BhvPremiumData = {
-      bhvc: 0,
-      tnds: 0,
-      nntx: 0,
-      totalPremium: 0
+      bhvc: { beforeTax: 0, afterTax: 0 },
+      tnds: { beforeTax: 0, afterTax: 0 },
+      nntx: { beforeTax: 0, afterTax: 0 },
+      totalPremium: { beforeTax: 0, afterTax: 0 }
     };
 
     // Parse total premium first
-    result.totalPremium = parseTotalPremium(htmlContent);
+    const totalAfterTax = parseTotalPremium(htmlContent);
+    result.totalPremium.afterTax = totalAfterTax;
 
     // Split HTML into sections by <hr class="my-4">
     const sections = htmlContent.split(/<hr\s+class="my-4">/);
@@ -104,24 +117,40 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
 
     console.log('Parsed insurance packages:', packages);
 
-    // Identify specific packages by name patterns
+    // Identify specific packages by name patterns and extract both tax values
     packages.forEach(pkg => {
       const lowerName = pkg.name.toLowerCase();
 
       if (lowerName.includes('tnds') || lowerName.includes('trách nhiệm dân sự')) {
-        result.tnds = pkg.total;
+        result.tnds.beforeTax = pkg.premium;
+        result.tnds.afterTax = pkg.total;
       } else if (lowerName.includes('nntx') || lowerName.includes('người ngồi')) {
-        result.nntx = pkg.total;
+        result.nntx.beforeTax = pkg.premium;
+        result.nntx.afterTax = pkg.total;
       }
     });
 
+    // Calculate total before tax
+    result.totalPremium.beforeTax = result.tnds.beforeTax + result.nntx.beforeTax;
+
     // Calculate BHVC (Physical damage insurance) = Total - TNDS - NNTX
-    result.bhvc = result.totalPremium - result.tnds - result.nntx;
+    result.bhvc.afterTax = result.totalPremium.afterTax - result.tnds.afterTax - result.nntx.afterTax;
+    result.bhvc.beforeTax = result.totalPremium.beforeTax - result.tnds.beforeTax - result.nntx.beforeTax;
+
+    // If we don't have detailed breakdown, estimate BHVC before tax
+    if (result.bhvc.beforeTax <= 0 && result.bhvc.afterTax > 0) {
+      // Estimate before tax as ~90% of after tax (assuming 10% VAT)
+      result.bhvc.beforeTax = Math.round(result.bhvc.afterTax / 1.1);
+      result.totalPremium.beforeTax = result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax;
+    }
 
     // Ensure no negative values
-    result.bhvc = Math.max(0, result.bhvc);
-    result.tnds = Math.max(0, result.tnds);
-    result.nntx = Math.max(0, result.nntx);
+    result.bhvc.beforeTax = Math.max(0, result.bhvc.beforeTax);
+    result.bhvc.afterTax = Math.max(0, result.bhvc.afterTax);
+    result.tnds.beforeTax = Math.max(0, result.tnds.beforeTax);
+    result.tnds.afterTax = Math.max(0, result.tnds.afterTax);
+    result.nntx.beforeTax = Math.max(0, result.nntx.beforeTax);
+    result.nntx.afterTax = Math.max(0, result.nntx.afterTax);
 
     console.log('Final parsed premium data:', result);
 
@@ -130,10 +159,10 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
   } catch (error) {
     console.error('Error parsing BHV HTML response:', error);
     return {
-      bhvc: 0,
-      tnds: 0,
-      nntx: 0,
-      totalPremium: 0
+      bhvc: { beforeTax: 0, afterTax: 0 },
+      tnds: { beforeTax: 0, afterTax: 0 },
+      nntx: { beforeTax: 0, afterTax: 0 },
+      totalPremium: { beforeTax: 0, afterTax: 0 }
     };
   }
 }
@@ -143,9 +172,14 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
  */
 export function validatePremiumData(data: BhvPremiumData): boolean {
   // Check if total roughly equals sum of components (allowing for rounding)
-  const calculatedTotal = data.bhvc + data.tnds + data.nntx;
-  const difference = Math.abs(calculatedTotal - data.totalPremium);
-  const tolerance = data.totalPremium * 0.01; // 1% tolerance
+  const calculatedTotalAfterTax = data.bhvc.afterTax + data.tnds.afterTax + data.nntx.afterTax;
+  const calculatedTotalBeforeTax = data.bhvc.beforeTax + data.tnds.beforeTax + data.nntx.beforeTax;
 
-  return difference <= tolerance;
+  const differenceAfterTax = Math.abs(calculatedTotalAfterTax - data.totalPremium.afterTax);
+  const differenceBeforeTax = Math.abs(calculatedTotalBeforeTax - data.totalPremium.beforeTax);
+
+  const toleranceAfterTax = data.totalPremium.afterTax * 0.01; // 1% tolerance
+  const toleranceBeforeTax = data.totalPremium.beforeTax * 0.01; // 1% tolerance
+
+  return differenceAfterTax <= toleranceAfterTax && differenceBeforeTax <= toleranceBeforeTax;
 }
