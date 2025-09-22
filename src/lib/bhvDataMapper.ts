@@ -410,3 +410,16 @@ export function transformContractToBhvFormat(contract: any): any {
 
   return bhvData;
 }
+
+/**
+ * Transform contract data to BHV premium check format
+ */
+export function transformContractToPremiumCheckFormat(contract: any): any {
+  // Use the same transformation as contract submission but change action_name
+  const bhvData = transformContractToBhvFormat(contract);
+
+  // Change action name for premium checking
+  bhvData.action_name = "vehicle/transport/premium";
+
+  return bhvData;
+}

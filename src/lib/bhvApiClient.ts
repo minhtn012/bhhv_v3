@@ -10,6 +10,13 @@ export interface BhvApiResponse {
   rawResponse?: unknown;
 }
 
+export interface BhvPremiumResponse {
+  success: boolean;
+  htmlData?: string;
+  error?: string;
+  rawResponse?: unknown;
+}
+
 export interface BhvAuthResponse {
   success: boolean;
   cookies?: string;
@@ -305,6 +312,79 @@ export class BhvApiClient {
 
     } catch {
       throw new Error('Failed to save PDF file');
+    }
+  }
+
+  /**
+   * Check premium for contract (returns HTML response)
+   */
+  async checkPremium(requestData: BhvRequestData, cookie?: string): Promise<BhvPremiumResponse> {
+    try {
+      console.log('🔍 Checking premium with BHV API...');
+      console.log('Request data:', JSON.stringify(requestData, null, 2));
+
+      const response = await fetch(this.BHV_ENDPOINT, {
+        method: 'POST',
+        headers: this.getHeaders(cookie),
+        body: JSON.stringify(requestData)
+      });
+
+      console.log('📡 Premium check response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ BHV premium check error:', errorText);
+        return {
+          success: false,
+          error: `HTTP ${response.status}: ${errorText}`,
+          rawResponse: { status: response.status, text: errorText }
+        };
+      }
+
+      const responseData = await response.json();
+      console.log('📋 BHV premium response keys:', Object.keys(responseData));
+
+      // For premium check, BHV returns HTML in the "data" field
+      if (responseData.status_code === 200 && responseData.data) {
+        return {
+          success: true,
+          htmlData: responseData.data,
+          rawResponse: responseData
+        };
+      }
+
+      // Handle error responses
+      if (responseData.status_code && responseData.status_code !== 200) {
+        return {
+          success: false,
+          error: `BHV API error: Status ${responseData.status_code}`,
+          rawResponse: responseData
+        };
+      }
+
+      // Check for other error patterns
+      if (responseData.error || responseData.message) {
+        return {
+          success: false,
+          error: responseData.error || responseData.message,
+          rawResponse: responseData
+        };
+      }
+
+      // Unexpected response format
+      return {
+        success: false,
+        error: 'Unexpected response format from BHV API',
+        rawResponse: responseData
+      };
+
+    } catch (error) {
+      console.error('💥 BHV premium check error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        rawResponse: { error: error }
+      };
     }
   }
 
