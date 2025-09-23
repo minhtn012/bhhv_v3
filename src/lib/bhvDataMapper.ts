@@ -201,26 +201,26 @@ export function mapCarSeat(soChoNgoi: number): string {
 }
 
 /**
- * Map car package value to UUID based on vehicle value
+ * Map car package based on contract's NNTX fee per seat
  */
-export function mapCarPackage(giaTriXe: number): string {
-  // Convert to millions for easier comparison
-  const valueInMillions = giaTriXe / 1000000;
+export function mapCarPackage(contract: any): string {
+  const loaiHinhKinhDoanh = contract.loaiHinhKinhDoanh || '';
+  const phiNNTX = contract.phiNNTX || 0;
+  const soChoNgoi = contract.soChoNgoi || 1;
 
-  // Find the best matching package based on price thresholds
-  if (valueInMillions >= 200) {
-    return "340d36cf-6d41-444c-a6a0-bb1ebec05032"; // 200M package
-  } else if (valueInMillions >= 100) {
-    return "340d36cf-6d41-444c-a6a0-bb1ebec05031"; // 100M package
-  } else if (valueInMillions >= 50) {
-    return "340d36cf-6d41-444c-a6a0-bb1ebec05030"; // 50M package
-  } else if (valueInMillions >= 30) {
-    return "0c12fbd1-d6f5-431b-8166-b7ef7d97a135"; // 30M package
-  } else if (valueInMillions >= 20) {
-    return "340d36cf-6d41-444c-a6a0-bb1ebec05029"; // 20M package
-  } else {
-    return "340d36cf-6d41-444c-a6a0-bb1ebec05033"; // 10M package (default)
-  }
+  // Calculate fee per seat
+  const feePerSeat = phiNNTX / soChoNgoi;
+
+  // Determine if this is business use (kd_*) or non-business (khong_kd_*)
+  const isBusinessUse = loaiHinhKinhDoanh.startsWith('kd');
+
+  // Find exact match in car_package.json
+  const matchedPackage = carPackage.find(pkg => {
+    const targetPrice = isBusinessUse ? pkg.price_kd : pkg.price;
+    return feePerSeat === targetPrice;
+  });
+
+  return matchedPackage?.value || "340d36cf-6d41-444c-a6a0-bb1ebec05033"; // default 10M package
 }
 
 /**
@@ -294,7 +294,7 @@ export function calculateRequestChangeFees(contract: any): string {
 
   // Calculate discount percentage
   const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
-
+  const discount = (bhvAfterTax - vatChatFee) * 0.9
   // If negative, set to 0 (no discount)
   const finalDiscountRate = Math.max(0, Math.round(discountRate));
 
@@ -303,8 +303,8 @@ export function calculateRequestChangeFees(contract: any): string {
     {
       option_id: "c2db43ab-ccdc-44d3-8fdc-2167b86e01900",
       option_type: "RQ_FEES_DISCOUNT",
-      option_value: finalDiscountRate,
-      option_value1: 0
+      option_value: 0,
+      option_value1: discount
     }
   ];
 
@@ -350,7 +350,7 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     car_value_info: contract.giaTriXe?.toString(),
     car_value_battery: contract.giaTriPin?.toString() || "0",
     car_value_battery_info: contract.giaTriPin?.toString() || "0",
-    car_package: mapCarPackage(contract.giaTriXe || 0),
+    car_package: mapCarPackage(contract),
     car_type_engine: mapCarTypeEngine(contract.engineType || "ICE"),
     car_deduction: mapCarDeduction(contract.deductionAmount || 500000),
 
@@ -488,7 +488,7 @@ export function transformContractToBhvFormat(contract: any): any {
     car_value_info: contract.giaTriXe?.toString(),
     car_value_battery: contract.giaTriPin?.toString() || "0",
     car_value_battery_info: contract.giaTriPin?.toString() || "0",
-    car_package: mapCarPackage(contract.giaTriXe || 0),
+    car_package: mapCarPackage(contract),
     car_type_engine: mapCarTypeEngine(contract.engineType || "ICE"),
     car_deduction: mapCarDeduction(contract.deductionAmount || 500000),
 

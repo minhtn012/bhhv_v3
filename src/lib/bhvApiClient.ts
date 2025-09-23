@@ -204,6 +204,7 @@ export class BhvApiClient {
 
       // Step 1: Get sale_code with empty sale_code
       console.log('📋 Step 1: Getting sale_code...');
+      console.log('data...', JSON.stringify(requestData))
       const step1Response = await fetch(this.BHV_ENDPOINT, {
         method: 'POST',
         headers: this.getHeaders(cookie),
