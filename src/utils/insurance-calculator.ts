@@ -205,27 +205,27 @@ export function calculateInsuranceRates(
     if (giaTriXe < 500000000) valueCategory = 'duoi_500tr';
     else if (giaTriXe < 700000000) valueCategory = 'tu_500_den_700tr';
     else if (giaTriXe < 1000000000) valueCategory = 'tu_700_den_1ty';
-    else valueCategory = 'tren_1ty';
+    else valueCategory = 'tu_700_den_1ty'; // Over 1B uses same rates as 700M-1B
     
     const categoryData = physicalDamageRates[loaiHinhKinhDoanh as keyof typeof physicalDamageRates];
     if (typeof categoryData === 'object' && categoryData !== null && valueCategory in categoryData) {
       const valueData = (categoryData as any)[valueCategory];
-      baseRates = valueData?.[ageGroup] || [null, null, null, null];
+      baseRates = valueData?.[ageGroup] || [null, null];
     } else {
-      baseRates = [null, null, null, null];
+      baseRates = [null, null];
     }
   } else {
     const categoryData = physicalDamageRates[loaiHinhKinhDoanh as keyof typeof physicalDamageRates];
     baseRates = typeof categoryData === 'object' && categoryData !== null && ageGroup in categoryData
-      ? (categoryData as any)[ageGroup] || [null, null, null, null]
-      : [null, null, null, null];
+      ? (categoryData as any)[ageGroup] || [null, null]
+      : [null, null];
   }
 
   // Keep original base rates for separate display
   // Tạo finalRates với AU009 addition
   const finalRates = [...baseRates];
-  if (baseRates[3] !== null) {
-    finalRates.push(baseRates[3] + additionalRateAU009);
+  if (baseRates[1] !== null) {
+    finalRates.push(baseRates[1] + additionalRateAU009);
   } else {
     finalRates.push(null);
   }
@@ -381,16 +381,15 @@ export function suggestTNDSCategory(
 // Load NNTX package data
 export async function loadNNTXPackages() {
   try {
-    const response = await fetch('/car_package.json');
-    const packages = await response.json();
-    return packages;
+    const carPackage = (await import('@db/car_package.json')).default;
+    return carPackage;
   } catch (error) {
     console.error('Failed to load NNTX packages:', error);
     return [];
   }
 }
 
-export function calculateNNTXFee(packagePrice: number, soChoNgoi: number): number {
+export function calculateNNTXFee(packagePrice: number, soChoNgoi: number, _loaiHinhKinhDoanh?: string): number {
   return packagePrice * soChoNgoi;
 }
 
@@ -400,14 +399,17 @@ export function calculateNNTXFeeSimple(soChoNgoi: number): number {
 }
 
 // Calculate NNTX fee based on selected package
-export async function calculateNNTXFeeByPackage(selectedPackageValue: string, soChoNgoi: number): Promise<number> {
+export async function calculateNNTXFeeByPackage(selectedPackageValue: string, soChoNgoi: number, loaiHinhKinhDoanh?: string): Promise<number> {
   if (!selectedPackageValue || !soChoNgoi) return 0;
-  
+
   try {
     const packages = await loadNNTXPackages();
     const selectedPackage = packages.find((pkg: any) => pkg.value === selectedPackageValue);
     if (selectedPackage) {
-      return calculateNNTXFee(selectedPackage.price, soChoNgoi);
+      // Use business price for vehicles with 'kd_' prefix, otherwise use regular price
+      const isBusinessVehicle = loaiHinhKinhDoanh?.startsWith('kd_') || false;
+      const packagePrice = isBusinessVehicle ? (selectedPackage.price_kd || selectedPackage.price) : selectedPackage.price;
+      return calculateNNTXFee(packagePrice, soChoNgoi, loaiHinhKinhDoanh);
     }
     return 0;
   } catch (error) {

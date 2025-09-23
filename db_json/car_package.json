@@ -1,32 +1,38 @@
 [
   {
     "name": "10.000.000 đồng/người/vụ",
-    "price": 15000,
+    "price": 10000,
+    "price_kd": 15000,
     "value": "340d36cf-6d41-444c-a6a0-bb1ebec05033"
   },
   {
-    "name": "30.000.000 đồng/người/vụ",
-    "price": 40000,
-    "value": "0c12fbd1-d6f5-431b-8166-b7ef7d97a135"
-  },
-  {
     "name": "20.000.000 đồng/người/vụ",
-    "price": 60000,
+    "price": 20000,
+    "price_kd": 30000,
     "value": "340d36cf-6d41-444c-a6a0-bb1ebec05029"
   },
   {
+    "name": "30.000.000 đồng/người/vụ",
+    "price": 30000,
+    "price_kd":45000,
+    "value": "0c12fbd1-d6f5-431b-8166-b7ef7d97a135"
+  },
+  {
     "name": "50.000.000 đồng/người/vụ",
-    "price": 150000,
+    "price": 50000,
+    "price_kd": 75000,
     "value": "340d36cf-6d41-444c-a6a0-bb1ebec05030"
   },
   {
     "name": "100.000.000 đồng/người/vụ",
-    "price": 400000,
+    "price": 150000,
+    "price_kd": 200000,
     "value": "340d36cf-6d41-444c-a6a0-bb1ebec05031"
   },
   {
     "name": "200.000.000 đồng/người/vụ",
-    "price": 1000000,
+    "price": 300000,
+    "price_kd": 400000,
     "value": "340d36cf-6d41-444c-a6a0-bb1ebec05032"
   }
 ]

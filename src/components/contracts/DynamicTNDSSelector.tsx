@@ -6,6 +6,7 @@ import { formatCurrency, tndsCategories, suggestTNDSCategory, getAvailableTNDSCa
 interface NNTXPackage {
   name: string;
   price: number;
+  price_kd?: number;
   value: string;
 }
 
@@ -76,18 +77,36 @@ export default function DynamicTNDSSelector({
     }
   }, [loaiHinhKinhDoanh, soChoNgoi, trongTai]);
 
-  // Update NNTX fee when package or số chỗ ngồi changes
+  // Update NNTX fee when package, số chỗ ngồi, or business type changes
   useEffect(() => {
     let fee = 0;
-    if (selectedNNTXPackage && nntxPackages.length > 0) {
+    if (includeNNTX && selectedNNTXPackage && nntxPackages.length > 0) {
       const selectedPackage = nntxPackages.find(pkg => pkg.value === selectedNNTXPackage);
       if (selectedPackage) {
-        fee = calculateNNTXFee(selectedPackage.price, soChoNgoi);
+        // Use business price for vehicles with 'kd_' prefix, otherwise use regular price
+        const isBusinessVehicle = loaiHinhKinhDoanh?.startsWith('kd_') || false;
+        const packagePrice = isBusinessVehicle ? (selectedPackage.price_kd || selectedPackage.price) : selectedPackage.price;
+        fee = calculateNNTXFee(packagePrice, soChoNgoi, loaiHinhKinhDoanh);
       }
     }
     setNntxFee(fee);
     onNNTXFeeChange(fee); // Notify parent about fee change
-  }, [selectedNNTXPackage, soChoNgoi, nntxPackages, onNNTXFeeChange]);
+  }, [selectedNNTXPackage, soChoNgoi, nntxPackages, onNNTXFeeChange, loaiHinhKinhDoanh, includeNNTX]);
+
+  // Force recalculation when business type changes (even if package was already selected)
+  useEffect(() => {
+    if (includeNNTX && selectedNNTXPackage && nntxPackages.length > 0) {
+      const selectedPackage = nntxPackages.find(pkg => pkg.value === selectedNNTXPackage);
+      if (selectedPackage) {
+        const isBusinessVehicle = loaiHinhKinhDoanh?.startsWith('kd_') || false;
+        const packagePrice = isBusinessVehicle ? (selectedPackage.price_kd || selectedPackage.price) : selectedPackage.price;
+        const fee = calculateNNTXFee(packagePrice, soChoNgoi, loaiHinhKinhDoanh);
+        console.log('NNTX Fee Debug:', { loaiHinhKinhDoanh, isBusinessVehicle, packagePrice, fee, selectedPackage });
+        setNntxFee(fee);
+        onNNTXFeeChange(fee);
+      }
+    }
+  }, [loaiHinhKinhDoanh, includeNNTX, selectedNNTXPackage, nntxPackages, soChoNgoi, onNNTXFeeChange]);
 
   // Get available categories for dropdown
   const availableCategories = getAvailableTNDSCategories();

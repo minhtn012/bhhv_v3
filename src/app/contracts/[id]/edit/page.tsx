@@ -515,7 +515,7 @@ export default function EditContractPage() {
       let nntxFee = 0;
       if (formData.includeNNTX && formData.selectedNNTXPackage) {
         const { calculateNNTXFeeByPackage } = await import('@/utils/insurance-calculator');
-        nntxFee = await calculateNNTXFeeByPackage(formData.selectedNNTXPackage, Number(formData.soChoNgoi));
+        nntxFee = await calculateNNTXFeeByPackage(formData.selectedNNTXPackage, Number(formData.soChoNgoi), formData.loaiHinhKinhDoanh);
       }
       
       // Import required function

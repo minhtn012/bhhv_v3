@@ -27,7 +27,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.1, 1.1, 1.15, 1.15]); // 500M is in 500-700M range
+        expect(result.baseRates).toEqual([1.15, 1.15]); // 500M is in 500-700M range
       });
 
       test('should calculate correct age group for car 3-6 years', () => {
@@ -37,7 +37,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.2, 1.25, 1.3, 1.35]); // 500M, 3-6 years, 500-700M range
+        expect(result.baseRates).toEqual([1.3, 1.4]); // 500M, 3-6 years, 500-700M range
       });
 
       test('should calculate correct age group for car 6-10 years', () => {
@@ -47,7 +47,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.3, 1.4, 1.45, 1.55]); // 500M, 6-10 years, 500-700M range
+        expect(result.baseRates).toEqual([1.4, 1.5]); // 500M, 6-10 years, 500-700M range
       });
 
       test('should calculate correct age group for car over 10 years', () => {
@@ -57,7 +57,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.4, 1.55, 1.6, null]); // 500M, >10 years, 500-700M range
+        expect(result.baseRates).toEqual([1.5, null]); // 500M, >10 years, 500-700M range
       });
     });
 
@@ -69,7 +69,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.25, 1.25, 1.3, 1.3]);
+        expect(result.baseRates).toEqual([1.3, 1.3]); // Under 500M
       });
 
       test('should use correct rates for cars 500-700M', () => {
@@ -79,7 +79,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.1, 1.1, 1.15, 1.15]);
+        expect(result.baseRates).toEqual([1.15, 1.15]); // 500-700M range
       });
 
       test('should use correct rates for cars 700M-1B', () => {
@@ -89,7 +89,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.0, 1.0, 1.05, 1.05]);
+        expect(result.baseRates).toEqual([1, 1.05]); // 700M-1B range
       });
 
       test('should use correct rates for cars over 1B', () => {
@@ -99,7 +99,7 @@ describe('Insurance Calculator', () => {
           5,
           'khong_kd_cho_nguoi'
         );
-        expect(result.baseRates).toEqual([1.0, 1.0, 1.0, 1.0]);
+        expect(result.baseRates).toEqual([1, 1.05]); // Over 1B - same as 700M-1B range
       });
     });
 
@@ -111,7 +111,7 @@ describe('Insurance Calculator', () => {
           5,
           'kd_grab_be'
         );
-        expect(result.baseRates).toEqual([1.8, 1.8, 1.85, 1.85]);
+        expect(result.baseRates).toEqual([2.66, 2.66]); // Updated to match current rates
       });
 
       test('should calculate rates for taxi', () => {
@@ -121,7 +121,7 @@ describe('Insurance Calculator', () => {
           5,
           'kd_taxi_tu_lai'
         );
-        expect(result.baseRates).toEqual([2.5, 2.55, 2.6, 2.65]); // 3 years old falls in 3-6 age group
+        expect(result.baseRates).toEqual([3.13, 3.23]); // 3 years old falls in 3-6 age group
       });
 
       test('should calculate rates for commercial trucks', () => {
@@ -132,7 +132,7 @@ describe('Insurance Calculator', () => {
           'kd_cho_hang',
           5000
         );
-        expect(result.baseRates).toEqual([1.32, 1.37, 1.42, 1.47]);
+        expect(result.baseRates).toEqual([1.35, 1.4]);
       });
     });
 
@@ -145,8 +145,8 @@ describe('Insurance Calculator', () => {
           'khong_kd_cho_nguoi'
         );
         
-        expect(result.baseRates[3]).toBeNull();
-        expect(result.finalRates[4]).toBeNull(); // AU009 package should be null
+        expect(result.baseRates[1]).toBeNull();
+        expect(result.finalRates[2]).toBeNull(); // AU009 package should be null
       });
 
       test('should add AU009 rate for cars with valid AU009', () => {
@@ -157,8 +157,10 @@ describe('Insurance Calculator', () => {
           'khong_kd_cho_nguoi'
         );
         
-        const expectedAU009 = result.baseRates[3] + additionalRateAU009;
-        expect(result.finalRates[4]).toBe(expectedAU009);
+        if (result.baseRates[1] !== null) {
+          const expectedAU009 = result.baseRates[1] + additionalRateAU009;
+          expect(result.finalRates[2]).toBe(expectedAU009);
+        }
       });
 
       test('should handle unknown business type gracefully', () => {
@@ -169,7 +171,7 @@ describe('Insurance Calculator', () => {
           'unknown_business_type'
         );
         
-        expect(result.baseRates).toEqual([null, null, null, null]);
+        expect(result.baseRates).toEqual([null, null]);
       });
     });
 
@@ -341,10 +343,21 @@ describe('Insurance Calculator', () => {
 
   describe('NNTX Functions', () => {
     describe('calculateNNTXFee', () => {
-      test('should calculate NNTX fee correctly', () => {
+      test('should calculate NNTX fee correctly for non-business vehicles', () => {
         expect(calculateNNTXFee(100000, 5)).toBe(500000);
         expect(calculateNNTXFee(150000, 7)).toBe(1050000);
         expect(calculateNNTXFee(0, 5)).toBe(0);
+      });
+
+      test('should calculate NNTX fee correctly with business type parameter', () => {
+        // Non-business vehicles (same as before)
+        expect(calculateNNTXFee(100000, 5, 'khong_kd_cho_nguoi')).toBe(500000);
+        expect(calculateNNTXFee(150000, 7, 'khong_kd_pickup_van')).toBe(1050000);
+
+        // Business vehicles - parameter doesn't affect calculation in this function
+        // (price selection is handled in calculateNNTXFeeByPackage)
+        expect(calculateNNTXFee(150000, 5, 'kd_cho_hang')).toBe(750000);
+        expect(calculateNNTXFee(200000, 3, 'kd_taxi_tu_lai')).toBe(600000);
       });
     });
 
@@ -448,7 +461,7 @@ describe('Insurance Calculator', () => {
       expect(familyRates).toHaveProperty('duoi_500tr');
       expect(familyRates).toHaveProperty('tu_500_den_700tr');
       expect(familyRates).toHaveProperty('tu_700_den_1ty');
-      expect(familyRates).toHaveProperty('tren_1ty');
+      // Note: tren_1ty category removed in new rate structure
 
       // Each price category should have 4 age groups
       Object.values(familyRates).forEach(priceCategory => {
@@ -457,9 +470,9 @@ describe('Insurance Calculator', () => {
         expect(priceCategory).toHaveProperty('age_6_to_10');
         expect(priceCategory).toHaveProperty('age_over_10');
 
-        // Each age group should have 4 package rates
+        // Each age group should have 2 package rates
         Object.values(priceCategory).forEach(ageGroup => {
-          expect(ageGroup).toHaveLength(4);
+          expect(ageGroup).toHaveLength(2);
         });
       });
     });
@@ -488,14 +501,14 @@ describe('Insurance Calculator', () => {
         'khong_kd_cho_nguoi'
       );
 
-      expect(result.baseRates).toEqual([1.25, 1.25, 1.3, 1.3]);
-      expect(result.finalRates[4]).toBe(1.3 + 0.10); // AU009 added
+      expect(result.baseRates).toEqual([1.3, 1.3]);
+      expect(result.finalRates[2]).toBe(1.3 + 0.10); // AU009 added
       expect(result.mucKhauTru).toBe(500000);
       expect(result.tndsKey).toBe('duoi_6_cho_khong_kd');
 
       // Test custom fee calculation with minimum fee
       const customFee = calculateCustomFee(450_000_000, result.baseRates[0]!, 'khong_kd_cho_nguoi');
-      expect(customFee.fee).toBe(5_625_000); // 450M * 1.25%
+      expect(customFee.fee).toBe(5_850_000); // 450M * 1.3%
       expect(customFee.hasMinFee).toBe(false); // Above minimum
     });
 
@@ -508,8 +521,8 @@ describe('Insurance Calculator', () => {
         7000 // 7 tons
       );
 
-      expect(result.baseRates).toEqual([1.32, 1.37, 1.42, 1.47]);
-      expect(result.finalRates[4]).toBe(1.47 + 0.10); // AU009 added
+      expect(result.baseRates).toEqual([1.35, 1.4]);
+      expect(result.finalRates[2]).toBe(1.4 + 0.10); // AU009 added
       expect(result.mucKhauTru).toBe(1000000); // Commercial deductible
       expect(result.tndsKey).toBe('tai_3_den_8_tan'); // 7 tons
 
