@@ -53,7 +53,7 @@ export async function POST(
 
     // Transform contract data to BHV confirmation format
     console.log('🔄 Transforming contract data to BHV confirmation format...');
-    const bhvRequestData = transformContractToBhvConfirmFormat(contract);
+    const bhvRequestData = transformContractToBhvConfirmFormat(contract, cookies);
 
     // Confirm contract with BHV API
     console.log('🚀 Confirming contract with BHV API...');

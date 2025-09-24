@@ -273,6 +273,19 @@ export function mapInsuranceTypeOptions(includeOptions: { includeTNDS?: boolean;
   return insuranceTypes;
 }
 
+
+/**
+ * Checks the fractional part of a number.
+ * @param {number} number - The number to check.
+ * @returns {number} - Returns 1 if the fractional part is less than 0.5, otherwise returns 0.
+ */
+export function processFractionalPart(number: number) {
+  // Get the fractional part of the number
+  const fractionalPart = number % 1;
+  // If the fractional part is less than 0.5, return 1; otherwise, return 0.
+  return fractionalPart < 0.5 ? 1 : 0;
+}
+
 /**
  * Calculate discount percentage and generate request_change_fees JSON
  */
@@ -283,8 +296,8 @@ export function calculateRequestChangeFees(contract: any): string {
     return "";
   }
 
-  const bhvAfterTax = contract.bhvPremiums.bhvc.afterTax;
-  const vatChatFee = contract.vatChatPackage.phiVatChat;
+  const bhvAfterTax = contract.bhvPremiums.total.afterTax;
+  const vatChatFee = contract.tongPhi;
 
   // Prevent division by zero
   if (bhvAfterTax <= 0) {
@@ -294,10 +307,13 @@ export function calculateRequestChangeFees(contract: any): string {
 
   // Calculate discount percentage
   const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
-  const discount = (bhvAfterTax - vatChatFee) * 0.9
+  let discount = (bhvAfterTax - vatChatFee)
+  discount = discount - processFractionalPart(discount)
   // If negative, set to 0 (no discount)
   const finalDiscountRate = Math.max(0, Math.round(discountRate));
-
+  console.log("#################")
+  console.log(bhvAfterTax, vatChatFee, discount, finalDiscountRate)
+  console.log("#################")
   // Generate request_change_fees JSON
   const requestChangeFees = [
     {
