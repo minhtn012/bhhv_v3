@@ -311,7 +311,7 @@ const sampleContracts = [
 ];
 
 async function createSampleData() {
-  const uri = 'mongodb://dev:dev123@localhost:27018/bhhv?authSource=admin';
+  const uri = process.env.MONGODB_URI || 'mongodb://dev:dev123@localhost:27018/bhhv?authSource=admin';
   const client = new MongoClient(uri);
 
   try {

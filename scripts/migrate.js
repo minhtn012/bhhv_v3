@@ -8,7 +8,7 @@
 const mongoose = require('mongoose');
 
 // MongoDB connection configuration
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://dev:dev123@mongodb:27017/bhhv?authSource=admin';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://dev:dev123@localhost:27018/bhhv?authSource=admin';
 
 // Import your models here (adjust paths as needed)
 // const User = require('../src/models/User');

@@ -10,8 +10,33 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://dev:dev123@localhost:2
 const DB_NAME = process.env.DB_NAME || 'bhhv';
 const COLLECTION_NAME = 'cars';
 
-// Path to car data file
-const CAR_DATA_PATH = path.join(__dirname, '../db_json/all_car_details.json');
+// Path to car data file - flexible path resolution
+function getCarDataPath() {
+  // Check environment variable first
+  const envPath = process.env.CAR_DATA_FILE;
+  if (envPath && fs.existsSync(envPath)) {
+    return envPath;
+  }
+
+  // Common paths to check
+  const possiblePaths = [
+    path.join(__dirname, '../db_json/all_car_details.json'),
+    path.join(__dirname, '../bd_json/all_car_details.json'),
+    path.join(process.cwd(), 'db_json/all_car_details.json'),
+    path.join(process.cwd(), 'bd_json/all_car_details.json'),
+    path.join(process.cwd(), 'data/all_car_details.json')
+  ];
+
+  for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath)) {
+      return filePath;
+    }
+  }
+
+  throw new Error(`Car data file not found. Set CAR_DATA_FILE environment variable or place the file in one of these locations:\n${possiblePaths.join('\n')}`);
+}
+
+const CAR_DATA_PATH = getCarDataPath();
 
 async function importCarData() {
   let client;

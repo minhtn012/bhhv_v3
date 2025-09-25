@@ -11,8 +11,33 @@ const DB_NAME = process.env.DB_NAME || 'bhhv';
 const PROVINCES_COLLECTION = 'provinces';
 const DISTRICTS_WARDS_COLLECTION = 'districts_wards';
 
-// Path to administrative data file
-const ADMIN_DATA_PATH = path.join(__dirname, '../bd_json/vietnam_administrative_data_final.json');
+// Path to administrative data file - flexible path resolution
+function getAdminDataPath() {
+  // Check environment variable first
+  const envPath = process.env.ADMIN_DATA_FILE;
+  if (envPath && fs.existsSync(envPath)) {
+    return envPath;
+  }
+
+  // Common paths to check
+  const possiblePaths = [
+    path.join(__dirname, '../bd_json/vietnam_administrative_data_final.json'),
+    path.join(__dirname, '../db_json/vietnam_administrative_data_final.json'),
+    path.join(process.cwd(), 'bd_json/vietnam_administrative_data_final.json'),
+    path.join(process.cwd(), 'db_json/vietnam_administrative_data_final.json'),
+    path.join(process.cwd(), 'data/vietnam_administrative_data_final.json')
+  ];
+
+  for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath)) {
+      return filePath;
+    }
+  }
+
+  throw new Error(`Admin data file not found. Set ADMIN_DATA_FILE environment variable or place the file in one of these locations:\n${possiblePaths.join('\n')}`);
+}
+
+const ADMIN_DATA_PATH = getAdminDataPath();
 
 async function importAdministrativeData() {
   let client;
