@@ -116,13 +116,24 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    // Only regular users can access BHV credentials
-    if (decoded.role !== 'user') {
-      return NextResponse.json({ error: 'Forbidden - User access required' }, { status: 403 });
+    // Allow both regular users and admin to access BHV credentials
+    if (decoded.role !== 'user' && decoded.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden - User or Admin access required' }, { status: 403 });
+    }
+
+    // Get userId from query parameter (for admin) or use current user
+    const url = new URL(request.url);
+    const targetUserId = url.searchParams.get('userId');
+
+    let userIdToQuery = decoded.userId;
+
+    // If admin is requesting another user's credentials
+    if (targetUserId && decoded.role === 'admin') {
+      userIdToQuery = targetUserId;
     }
 
     await connectToDatabase();
-    const user = await User.findById(decoded.userId).lean();
+    const user = await User.findById(userIdToQuery).lean();
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -141,7 +152,7 @@ export async function GET(request: NextRequest) {
       const { username, password } = decryptBhvCredentials(user.bhvUsername, user.bhvPassword);
 
       // Test authentication with BHV API and get fresh cookies
-      console.log('Getting fresh BHV cookies for user:', decoded.username);
+      console.log('Getting fresh BHV cookies for user:', targetUserId ? `${(user as any).username} (requested by admin ${decoded.username})` : decoded.username);
       const authResult = await bhvApiClient.authenticate(username, password);
 
       if (authResult.success) {

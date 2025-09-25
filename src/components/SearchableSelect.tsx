@@ -181,7 +181,7 @@ export default function SearchableSelect({
         placeholder={loading ? 'Đang tải...' : placeholder}
         disabled={disabled || loading}
         required={required}
-        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none"
+        className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none"
         autoComplete="off"
       />
       

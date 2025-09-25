@@ -220,8 +220,8 @@ export default function VehicleInfoForm({
           <select
             value={formData.loaiDongCo}
             onChange={(e) => onFormInputChange('loaiDongCo', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              fieldErrors.loaiDongCo ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.loaiDongCo ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           >
@@ -260,7 +260,9 @@ export default function VehicleInfoForm({
             onChange={(e) => {
               onFormInputChange('loaiHinhKinhDoanh', e.target.value);
             }}
-            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-white"
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.loaiHinhKinhDoanh ? 'border-red-500' : 'border-slate-500/30'
+            }`}
             required
           >
             {Object.entries(

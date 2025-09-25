@@ -49,6 +49,17 @@ export async function POST(
       );
     }
 
+    // Check if BHV contract already exists
+    if (contract.bhvContractNumber) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Hợp đồng BHV đã được tạo trước đó với số hợp đồng: ${contract.bhvContractNumber}`
+        },
+        { status: 400 }
+      );
+    }
+
     // Transform contract data to BHV format (contract already has dates from DB)
     console.log('🔄 Transforming contract data to BHV format...');
     console.log('📅 Using dates from contract:', {

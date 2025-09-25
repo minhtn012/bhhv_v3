@@ -8,6 +8,7 @@ interface Contract {
   createdAt: string;
   updatedAt: string;
   createdBy: string;
+  bhvContractNumber?: string;
 }
 
 interface User {
@@ -141,7 +142,7 @@ export default function ContractDetailHeader({
           </button>
 
           {/* BHV Submission Button */}
-          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onSubmitToBhv && (
+          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onSubmitToBhv && currentUser?.role === 'admin' && !contract.bhvContractNumber && (
             <button
               onClick={onSubmitToBhv}
               disabled={bhvSubmissionLoading}
@@ -164,7 +165,7 @@ export default function ContractDetailHeader({
           )}
 
           {/* Word Export Button */}
-          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onExportWord && (
+          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onExportWord && currentUser?.role === 'admin' && (
             <button
               onClick={onExportWord}
               disabled={wordExportLoading}

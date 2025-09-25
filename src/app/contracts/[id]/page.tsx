@@ -88,6 +88,9 @@ interface Contract {
   ngayBatDauBaoHiem?: string;
   ngayKetThucBaoHiem?: string;
 
+  // BHV contract number sau khi confirm thành công
+  bhvContractNumber?: string;
+
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -301,7 +304,7 @@ export default function ContractDetailPage() {
 
       // Step 2: Get fresh BHV authentication cookies
       console.log('🔐 Getting fresh BHV authentication...');
-      const authResponse = await fetch('/api/users/bhv-test-auth', {
+      const authResponse = await fetch(`/api/users/bhv-test-auth?userId=${contract.createdBy}`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -456,6 +459,7 @@ export default function ContractDetailPage() {
         contractNumber={contract?.contractNumber || ''}
         contractId={contractId}
         cookies={bhvCookies}
+        contract={contract}
         onConfirmContract={() => fetchContract()} // Refresh contract data after confirm
       />
 
