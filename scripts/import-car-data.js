@@ -14,7 +14,7 @@ const COLLECTION_NAME = 'cars';
 function getCarDataPath() {
   // Check environment variable first
   const envPath = process.env.CAR_DATA_FILE;
-  if (envPath && fs.existsSync(envPath)) {
+  if (envPath && fs.existsSync(envPath) && fs.lstatSync(envPath).isFile()) {
     return envPath;
   }
 
@@ -28,7 +28,7 @@ function getCarDataPath() {
   ];
 
   for (const filePath of possiblePaths) {
-    if (fs.existsSync(filePath)) {
+    if (fs.existsSync(filePath) && fs.lstatSync(filePath).isFile()) {
       return filePath;
     }
   }
