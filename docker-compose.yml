@@ -13,6 +13,28 @@ services:
       MONGO_INITDB_DATABASE: bhhv
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - bhhv-network
+
+  app:
+    build: .
+    container_name: bhhv_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://dev:dev123@mongodb:27017/bhhv?authSource=admin
+    depends_on:
+      - mongodb
+    networks:
+      - bhhv-network
+    volumes:
+      - ./scripts:/app/scripts
 
 volumes:
   mongodb_data:
+
+networks:
+  bhhv-network:
+    driver: bridge
