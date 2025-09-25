@@ -4,9 +4,9 @@ import User from '@/models/User';
 import { requireAdmin } from '@/lib/auth';
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // GET /api/users/[id] - Get user by ID (admin only)
@@ -15,7 +15,8 @@ export async function GET(request: NextRequest, { params }: Params) {
     requireAdmin(request);
     await connectToDatabase();
 
-    const user = await User.findById(params.id).select('-password');
+    const { id } = await params;
+    const user = await User.findById(id).select('-password');
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -48,11 +49,12 @@ export async function PUT(request: NextRequest, { params }: Params) {
     requireAdmin(request);
     await connectToDatabase();
 
+    const { id } = await params;
     const body = await request.json();
     const { username, email, role, isActive, password } = body;
 
     // Find user
-    const user = await User.findById(params.id);
+    const user = await User.findById(id);
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -62,7 +64,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     // Check if username/email already exists (excluding current user)
     if (username && username !== user.username) {
-      const existingUser = await User.findOne({ username, _id: { $ne: params.id } });
+      const existingUser = await User.findOne({ username, _id: { $ne: id } });
       if (existingUser) {
         return NextResponse.json(
           { error: 'Username already exists' },
@@ -73,7 +75,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     }
 
     if (email && email !== user.email) {
-      const existingUser = await User.findOne({ email, _id: { $ne: params.id } });
+      const existingUser = await User.findOne({ email, _id: { $ne: id } });
       if (existingUser) {
         return NextResponse.json(
           { error: 'Email already exists' },
@@ -139,15 +141,16 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     const currentUser = requireAdmin(request);
     await connectToDatabase();
 
+    const { id } = await params;
     // Prevent admin from deleting themselves
-    if (params.id === currentUser.userId) {
+    if (id === currentUser.userId) {
       return NextResponse.json(
         { error: 'Cannot delete your own account' },
         { status: 400 }
       );
     }
 
-    const user = await User.findById(params.id);
+    const user = await User.findById(id);
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -155,7 +158,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
       );
     }
 
-    await User.findByIdAndDelete(params.id);
+    await User.findByIdAndDelete(id);
 
     return NextResponse.json({
       message: 'User deleted successfully'
