@@ -3,7 +3,7 @@ import { carSearchService } from '@/lib/carSearchService';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { brand: string } }
+  { params }: { params: Promise<{ brand: string }> }
 ) {
   try {
     const { brand } = await params;
