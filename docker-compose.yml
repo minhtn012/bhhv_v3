@@ -1,40 +1,20 @@
 version: '3.8'
 
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: bhhv_mongodb
-    restart: always
-    ports:
-      - "27018:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: dev
-      MONGO_INITDB_ROOT_PASSWORD: dev123
-      MONGO_INITDB_DATABASE: bhhv
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - bhhv-network
-
   app:
     build: .
     container_name: bhhv_app
     restart: always
     ports:
-      - "3000:3000"
+      - "3010:3000"  # Changed port to avoid conflicts
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://dev:dev123@mongodb:27017/bhhv?authSource=admin
-    depends_on:
-      - mongodb
+      - MONGODB_URI=mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin
     networks:
-      - bhhv-network
+      - db_network  # Use shared database network
     volumes:
       - ./scripts:/app/scripts
 
-volumes:
-  mongodb_data:
-
 networks:
-  bhhv-network:
-    driver: bridge
+  db_network:
+    external: true  # Use external shared network

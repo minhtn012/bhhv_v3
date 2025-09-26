@@ -85,6 +85,9 @@ export interface IContract extends Document {
   ngayBatDauBaoHiem?: string;
   ngayKetThucBaoHiem?: string;
 
+  // BHV contract number
+  bhvContractNumber?: string;
+
   // Metadata
   createdBy: string;
   createdAt: Date;
@@ -412,7 +415,13 @@ const contractSchema = new Schema<IContract>({
     type: String,
     trim: true
   },
-  
+
+  // BHV contract number
+  bhvContractNumber: {
+    type: String,
+    trim: true
+  },
+
   // Metadata
   createdBy: {
     type: String,
