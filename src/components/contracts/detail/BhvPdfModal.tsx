@@ -164,6 +164,7 @@ export default function BhvPdfModal({
         if (onConfirmContract) {
           onConfirmContract();
         }
+        onClose(); // Close modal after successful confirmation
       } else {
         alert(`Lỗi xác nhận hợp đồng: ${result.error}`);
       }

@@ -235,47 +235,47 @@ export class BhvApiClient {
       const saleCode = step1Data.data;
       console.log('✓ Sale code received:', saleCode);
 
-      // Step 2: Confirm with the received sale_code
-      console.log('📋 Step 2: Confirming contract with sale_code...');
+      // // Step 2: Confirm with the received sale_code
+      // console.log('📋 Step 2: Confirming contract with sale_code...');
 
-      // Update request data with sale_code
-      const step2RequestData = {
-        ...requestData,
-        data: JSON.stringify({
-          ...JSON.parse(requestData.data),
-          sale_code: saleCode
-        })
-      };
+      // // Update request data with sale_code
+      // const step2RequestData = {
+      //   ...requestData,
+      //   data: JSON.stringify({
+      //     ...JSON.parse(requestData.data),
+      //     sale_code: saleCode
+      //   })
+      // };
 
-      const step2Response = await fetch(this.BHV_ENDPOINT, {
-        method: 'POST',
-        headers: this.getHeaders(cookie),
-        body: JSON.stringify(step2RequestData)
-      });
+      // const step2Response = await fetch(this.BHV_ENDPOINT, {
+      //   method: 'POST',
+      //   headers: this.getHeaders(cookie),
+      //   body: JSON.stringify(step2RequestData)
+      // });
 
-      if (!step2Response.ok) {
-        const errorText = await step2Response.text();
-        console.error('❌ Step 2 failed:', errorText);
-        return {
-          success: false,
-          error: `Step 2 failed - HTTP ${step2Response.status}: ${errorText}`,
-          rawResponse: { status: step2Response.status, text: errorText }
-        };
-      }
+      // if (!step2Response.ok) {
+      //   const errorText = await step2Response.text();
+      //   console.error('❌ Step 2 failed:', errorText);
+      //   return {
+      //     success: false,
+      //     error: `Step 2 failed - HTTP ${step2Response.status}: ${errorText}`,
+      //     rawResponse: { status: step2Response.status, text: errorText }
+      //   };
+      // }
 
-      const step2Data = await step2Response.json();
-      console.log('📋 Step 2 response keys:', Object.keys(step2Data));
+      // const step2Data = await step2Response.json();
+      // console.log('📋 Step 2 response keys:', Object.keys(step2Data));
 
-      if (step2Data.status_code !== 200) {
-        return {
-          success: false,
-          error: `Step 2 failed - Status ${step2Data.status_code}`,
-          rawResponse: step2Data
-        };
-      }
+      // if (step2Data.status_code !== 200) {
+      //   return {
+      //     success: false,
+      //     error: `Step 2 failed - Status ${step2Data.status_code}`,
+      //     rawResponse: step2Data
+      //   };
+      // }
 
       // Extract contract number from HTML response
-      const htmlData = step2Data.data;
+      const htmlData = saleCode;
       if (typeof htmlData === 'string') {
         // Extract contract number from HTML using regex
         const contractNumberMatch = htmlData.match(/HVXCG\d+/);
@@ -286,21 +286,21 @@ export class BhvApiClient {
           return {
             success: true,
             bhvContractNumber: bhvContractNumber,
-            rawResponse: step2Data
+            rawResponse: htmlData
           };
         } else {
           console.warn('⚠️ Contract number not found in HTML response');
           return {
             success: false,
             error: 'Contract number not found in response',
-            rawResponse: step2Data
+            rawResponse: htmlData
           };
         }
       } else {
         return {
           success: false,
           error: 'Invalid HTML response format',
-          rawResponse: step2Data
+          rawResponse: htmlData
         };
       }
 

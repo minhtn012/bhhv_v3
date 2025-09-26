@@ -68,7 +68,7 @@ export default function StatusChangeModal({
             <select
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500/50"
+              className="w-full bg-slate-700/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500/50"
             >
               <option value="">Chọn trạng thái</option>
               {getAvailableStatusTransitions(contract, currentUser).map(transition => (
