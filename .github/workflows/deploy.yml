@@ -2,7 +2,7 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, test-deploy ]  # Thêm branch test
   workflow_dispatch:
 
 jobs:
@@ -21,19 +21,39 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT || 22 }}
         script: |
+          echo "🚀 Starting deployment..."
+
+          # Check current directory and user
+          pwd
+          whoami
+
+          # Check if directory exists
+          if [ ! -d "/var/www/bhhv_v3" ]; then
+            echo "❌ Directory /var/www/bhhv_v3 does not exist"
+            exit 1
+          fi
+
           cd /var/www/bhhv_v3
+          echo "✅ Changed to project directory"
 
           # Pull latest code
+          echo "📥 Pulling latest code..."
           git pull origin main
 
           # Stop existing containers
+          echo "🛑 Stopping existing containers..."
           docker compose down
 
           # Build and start new containers
+          echo "🏗️ Building and starting containers..."
           docker compose up -d --build
 
           # Clean up unused images
+          echo "🧹 Cleaning up unused images..."
           docker image prune -f
 
           # Show running containers
+          echo "📋 Running containers:"
           docker ps
+
+          echo "✅ Deployment completed!"
