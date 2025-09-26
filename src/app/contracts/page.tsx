@@ -110,20 +110,17 @@ export default function ContractsPage() {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      // Only select contracts that can be deleted (status === 'nhap')
-      const deletableIds = contracts
-        .filter(contract => contract.status === 'nhap')
-        .map(contract => contract._id);
-      setSelectedContracts(deletableIds);
+      // Select all contracts regardless of status
+      const allIds = contracts.map(contract => contract._id);
+      setSelectedContracts(allIds);
     } else {
       setSelectedContracts([]);
     }
   };
 
   const isAllSelected = () => {
-    const deletableContracts = contracts.filter(contract => contract.status === 'nhap');
-    return deletableContracts.length > 0 && 
-           deletableContracts.every(contract => selectedContracts.includes(contract._id));
+    return contracts.length > 0 &&
+           contracts.every(contract => selectedContracts.includes(contract._id));
   };
 
   const getSelectedCount = () => selectedContracts.length;
@@ -285,16 +282,12 @@ export default function ContractsPage() {
                       {contracts.map((contract) => (
                         <tr key={contract._id} className="border-b border-white/5 hover:bg-white/5">
                           <td className="py-3 px-4">
-                            {contract.status === 'nhap' ? (
-                              <input
-                                type="checkbox"
-                                checked={selectedContracts.includes(contract._id)}
-                                onChange={(e) => handleSelectContract(contract._id, e.target.checked)}
-                                className="w-4 h-4 text-blue-500 bg-white/5 border border-white/30 rounded focus:ring-blue-500 focus:ring-2 focus:ring-offset-0 transition-colors"
-                              />
-                            ) : (
-                              <div className="w-4 h-4"></div>
-                            )}
+                            <input
+                              type="checkbox"
+                              checked={selectedContracts.includes(contract._id)}
+                              onChange={(e) => handleSelectContract(contract._id, e.target.checked)}
+                              className="w-4 h-4 text-blue-500 bg-white/5 border border-white/30 rounded focus:ring-blue-500 focus:ring-2 focus:ring-offset-0 transition-colors"
+                            />
                           </td>
                           <td className="py-3 px-4 text-white font-mono text-sm">{contract.contractNumber}</td>
                           <td className="py-3 px-4 text-white">{contract.chuXe}</td>
@@ -347,14 +340,12 @@ export default function ContractsPage() {
                     <div key={contract._id} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
-                          {contract.status === 'nhap' && (
-                            <input
-                              type="checkbox"
-                              checked={selectedContracts.includes(contract._id)}
-                              onChange={(e) => handleSelectContract(contract._id, e.target.checked)}
-                              className="w-4 h-4 text-blue-500 bg-white/5 border border-white/30 rounded focus:ring-blue-500 focus:ring-2 focus:ring-offset-0 transition-colors mt-0.5"
-                            />
-                          )}
+                          <input
+                            type="checkbox"
+                            checked={selectedContracts.includes(contract._id)}
+                            onChange={(e) => handleSelectContract(contract._id, e.target.checked)}
+                            className="w-4 h-4 text-blue-500 bg-white/5 border border-white/30 rounded focus:ring-blue-500 focus:ring-2 focus:ring-offset-0 transition-colors mt-0.5"
+                          />
                           <div className="flex-1 min-w-0">
                             <h3 className="text-white font-medium text-sm font-mono truncate">{contract.contractNumber}</h3>
                             <p className="text-gray-300 text-sm mt-1">{contract.chuXe}</p>

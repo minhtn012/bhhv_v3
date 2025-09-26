@@ -40,14 +40,6 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Check if contract can be deleted (only 'nhap' status)
-        if (!contract.canEdit()) {
-          results.errors.push({
-            id: contract._id.toString(),
-            error: 'Chỉ có thể xóa hợp đồng ở trạng thái nháp'
-          });
-          continue;
-        }
 
         // Delete the contract
         await Contract.findByIdAndDelete(contract._id);
