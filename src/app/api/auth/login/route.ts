@@ -56,9 +56,9 @@ export async function POST(request: NextRequest) {
     });
 
     response.cookies.set('token', token, {
-      httpOnly: true,
-      secure: false, // Force false for debugging
-      sameSite: 'none', // Allow cross-site for IP access
+      httpOnly: false, // Temporary disable for debugging
+      secure: false,
+      sameSite: 'lax',
       path: '/',
       maxAge: 7 * 24 * 60 * 60 // 7 days
     });
