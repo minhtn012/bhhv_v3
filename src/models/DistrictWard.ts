@@ -17,8 +17,7 @@ const DistrictWardSchema = new Schema<DistrictWardDocument>({
   },
   province_code: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   province_name: {
     type: String,

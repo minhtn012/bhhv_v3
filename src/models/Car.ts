@@ -8,8 +8,7 @@ export interface CarDocument extends Omit<CarRecord, '_id'>, Document {}
 const CarSchema = new Schema<CarDocument>({
   brand_name: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   brand_id: {
     type: String,
@@ -18,8 +17,7 @@ const CarSchema = new Schema<CarDocument>({
   },
   model_name: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   model_id: {
     type: String,

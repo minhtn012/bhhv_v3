@@ -35,15 +35,15 @@ export async function POST(
       );
     }
 
-    console.log('✓ Contract found:', contract.contractNumber);
+    console.log('✓ Contract found:', (contract as any).contractNumber);
 
     // Check if contract is in valid status for BHV submission
     const validStatuses = ['khach_duyet', 'ra_hop_dong'];
-    if (!validStatuses.includes(contract.status)) {
+    if (!validStatuses.includes((contract as any).status)) {
       return NextResponse.json(
         {
           success: false,
-          error: `Hợp đồng phải ở trạng thái 'Khách duyệt' hoặc 'Ra hợp đồng' để tạo hợp đồng BHV. Trạng thái hiện tại: ${contract.status}`
+          error: `Hợp đồng phải ở trạng thái 'Khách duyệt' hoặc 'Ra hợp đồng' để tạo hợp đồng BHV. Trạng thái hiện tại: ${(contract as any).status}`
         },
         { status: 400 }
       );

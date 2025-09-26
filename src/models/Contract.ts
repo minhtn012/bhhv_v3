@@ -499,12 +499,6 @@ const contractSchema = new Schema<IContract>({
   timestamps: true
 });
 
-// Index cho tìm kiếm nhanh
-contractSchema.index({ contractNumber: 1 });
-contractSchema.index({ bienSo: 1 });
-contractSchema.index({ createdBy: 1 });
-contractSchema.index({ status: 1 });
-contractSchema.index({ createdAt: -1 });
 
 // Middleware để tự động thêm vào statusHistory khi thay đổi trạng thái
 contractSchema.pre('save', function(next) {

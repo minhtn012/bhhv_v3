@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
 import { requireAuth } from '@/lib/auth';
+import { getStatusText } from '@/utils/contract-status';
 
 // POST /api/contracts/[id]/change-status - Thay đổi trạng thái contract
 export async function POST(
@@ -52,13 +53,13 @@ export async function POST(
     contract.status = status;
 
     // Set custom note và changedBy cho middleware
-    contract.set('_statusChangeNote', note || `Chuyển từ ${Contract.getStatusText(oldStatus)} sang ${Contract.getStatusText(status)}`);
+    contract.set('_statusChangeNote', note || `Chuyển từ ${getStatusText(oldStatus)} sang ${getStatusText(status)}`);
     contract.set('_statusChangedBy', user.userId);
 
     await contract.save();
 
     return NextResponse.json({
-      message: `Đã chuyển trạng thái từ "${Contract.getStatusText(oldStatus)}" sang "${Contract.getStatusText(status)}"`,
+      message: `Đã chuyển trạng thái từ "${getStatusText(oldStatus)}" sang "${getStatusText(status)}"`,
       contract: {
         id: contract._id,
         contractNumber: contract.contractNumber,
