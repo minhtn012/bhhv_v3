@@ -43,6 +43,23 @@ export default function BuyerInfoForm({
     getDistrictWardById
   } = useBuyerLocation();
 
+  // Debug mode: populate default values
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && process.env.DEBUG === 'true') {
+      const hasEmptyFields = !formData.chuXe || !formData.email || !formData.soDienThoai ||
+                            !formData.cccd || !formData.specificAddress;
+
+      if (hasEmptyFields) {
+        onFormInputChange('chuXe', 'Nguyễn Văn A');
+        onFormInputChange('email', 'nguyenvana@example.com');
+        onFormInputChange('gioiTinh', 'nam');
+        onFormInputChange('soDienThoai', '0901234567');
+        onFormInputChange('cccd', '123456789012');
+        onFormInputChange('specificAddress', '123 Đường ABC, Phường XYZ');
+      }
+    }
+  }, [formData, onFormInputChange]);
+
   // Handle province selection
   const handleProvinceChange = (provinceCode: string) => {
     const province = getProvinceByCode(provinceCode);
@@ -195,8 +212,8 @@ export default function BuyerInfoForm({
         {/* Số điện thoại */}
         <div>
           <label className="block text-white font-medium mb-2">Số điện thoại *</label>
-          <input 
-            type="tel" 
+          <input
+            type="tel"
             value={formData.soDienThoai}
             onChange={(e) => onFormInputChange('soDienThoai', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${

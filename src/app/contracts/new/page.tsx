@@ -240,7 +240,6 @@ export default function NewContractPage() {
 
   // Calculate insurance rates
   const handleCalculateRates = async () => {
-
     const isValid = await validateForm(formData, carData);
     if (!isValid) {
       return;

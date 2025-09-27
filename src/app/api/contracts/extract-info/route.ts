@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 
 // const MODEL_GEMINI = "gemini-2.0-flash-lite"
-const MODEL_GEMINI = "gemini-2.0-flash-exp"
+const MODEL_GEMINI = "gemini-2.5-flash-lite"
 // POST /api/contracts/extract-info - Trích xuất thông tin từ ảnh sử dụng Gemini API
 export async function POST(request: NextRequest) {
   try {

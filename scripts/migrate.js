@@ -8,8 +8,11 @@
 const mongoose = require('mongoose');
 
 // MongoDB connection configuration
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://dev:dev123@localhost:27018/bhhv?authSource=admin';
-
+const MONGODB_URI = process.env.MONGODB_URI;
+if (MONGODB_URI == null ) 
+{
+  console.log("Not found config....")
+}
 // Import your models here (adjust paths as needed)
 // const User = require('../src/models/User');
 // const Contract = require('../src/models/Contract');
@@ -37,68 +40,6 @@ async function createIndexes() {
     console.log('✅ Database indexes created successfully');
   } catch (error) {
     console.error('❌ Failed to create indexes:', error);
-    throw error;
-  }
-}
-
-async function seedInitialData() {
-  try {
-    console.log('🌱 Seeding initial data...');
-
-    // Example: Create default admin user
-    // const adminExists = await User.findOne({ role: 'admin' });
-    // if (!adminExists) {
-    //   const defaultAdmin = new User({
-    //     email: 'admin@bhhv.com',
-    //     password: 'hashed_password_here', // Remember to hash passwords
-    //     role: 'admin',
-    //     name: 'System Admin'
-    //   });
-    //   await defaultAdmin.save();
-    //   console.log('✅ Default admin user created');
-    // }
-
-    // Example: Create default TNDS categories
-    // const categories = [
-    //   { name: 'Xe máy', rate: 0.03 },
-    //   { name: 'Ô tô dưới 6 chỗ', rate: 0.05 },
-    //   { name: 'Ô tô từ 6-24 chỗ', rate: 0.07 }
-    // ];
-    //
-    // for (const category of categories) {
-    //   const exists = await TNDSCategory.findOne({ name: category.name });
-    //   if (!exists) {
-    //     await TNDSCategory.create(category);
-    //     console.log(`✅ Created TNDS category: ${category.name}`);
-    //   }
-    // }
-
-    console.log('✅ Initial data seeding completed');
-  } catch (error) {
-    console.error('❌ Failed to seed initial data:', error);
-    throw error;
-  }
-}
-
-async function runMigrations() {
-  try {
-    console.log('🔄 Running database migrations...');
-
-    // Example migration: Update existing contracts status format
-    // await Contract.updateMany(
-    //   { status: 'draft' },
-    //   { $set: { status: 'nhap' } }
-    // );
-
-    // Example migration: Add missing fields to existing documents
-    // await User.updateMany(
-    //   { createdAt: { $exists: false } },
-    //   { $set: { createdAt: new Date(), updatedAt: new Date() } }
-    // );
-
-    console.log('✅ Database migrations completed');
-  } catch (error) {
-    console.error('❌ Migration failed:', error);
     throw error;
   }
 }
@@ -166,7 +107,5 @@ if (require.main === module) {
 module.exports = {
   connectToDatabase,
   createIndexes,
-  seedInitialData,
-  runMigrations,
   validateDatabase
 };

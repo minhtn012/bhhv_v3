@@ -98,10 +98,17 @@ export default function useFormValidation() {
         const price = parseCurrency(value);
         return !isNaN(price) && price > 0;
       }),
-    trongTai: Yup.number().when('loaiHinhKinhDoanh', {
+    trongTai: Yup.mixed().when('loaiHinhKinhDoanh', {
       is: (loaiHinh: string) => loaiHinh?.includes('cho_hang') || loaiHinh?.includes('dau_keo'),
-      then: (schema) => schema.required('Vui lòng nhập trọng tải cho xe tải').min(1, 'Trọng tải phải lớn hơn 0'),
-      otherwise: (schema) => schema.notRequired()
+      then: (schema) => schema
+        .required('Vui lòng nhập trọng tải cho xe tải')
+        .test('is-number', 'Trọng tải phải là số', (value) => {
+          return value !== '' && !isNaN(Number(value));
+        })
+        .test('min-value', 'Trọng tải phải lớn hơn 0', (value) => {
+          return Number(value) > 0;
+        }),
+      otherwise: (schema) => schema.nullable().notRequired()
     }),
     loaiDongCo: Yup.string().required('Vui lòng chọn loại động cơ'),
     giaTriPin: Yup.string().when('loaiDongCo', {
@@ -158,13 +165,13 @@ export default function useFormValidation() {
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors: Record<string, string> = {};
-        
+
         err.inner.forEach((error) => {
           if (error.path) {
             errors[error.path] = error.message;
           }
         });
-        
+
         setFieldErrors(errors);
       }
       return false;
