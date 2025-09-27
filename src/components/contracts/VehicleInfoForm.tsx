@@ -306,8 +306,13 @@ export default function VehicleInfoForm({
       {!hideCalculateButton && (
         <div className="flex justify-center mt-6">
           <button
+            type="button"
+            role="button"
+            tabIndex={0}
             onClick={onCalculateRates}
-            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors"
+            onTouchStart={onCalculateRates}
+            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors cursor-pointer [-webkit-appearance:none] [touch-action:manipulation]"
+            style={{ WebkitAppearance: 'none', WebkitTapHighlightColor: 'transparent' }}
           >
             Tính phí & Lập báo giá
           </button>
