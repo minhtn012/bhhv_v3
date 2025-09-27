@@ -307,12 +307,8 @@ export default function VehicleInfoForm({
         <div className="flex justify-center mt-6">
           <button
             type="button"
-            role="button"
-            tabIndex={0}
             onClick={onCalculateRates}
-            onTouchStart={onCalculateRates}
-            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors cursor-pointer [-webkit-appearance:none] [touch-action:manipulation]"
-            style={{ WebkitAppearance: 'none', WebkitTapHighlightColor: 'transparent' }}
+            className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-8 rounded-xl transition-colors min-h-[48px] flex items-center justify-center"
           >
             Tính phí & Lập báo giá
           </button>
