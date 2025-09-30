@@ -1,15 +1,17 @@
+/**
+ * New Contract Page - Refactored Version
+ *
+ * Simplified using:
+ * - useContractForm hook for state management
+ * - transformFormToContract for API payload
+ * - Automatic fee calculations via reducer
+ */
+
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
-import {
-  parseCurrency,
-  tndsCategories,
-  calculateTotalVehicleValue,
-  packageLabels,
-  packageLabelsDetail
-} from '@/utils/insurance-calculator';
 import StepIndicator from '@/components/contracts/StepIndicator';
 import StepWrapper from '@/components/contracts/StepWrapper';
 import FileUploadStep from '@/components/contracts/FileUploadStep';
@@ -17,148 +19,53 @@ import BuyerInfoForm from '@/components/contracts/BuyerInfoForm';
 import VehicleInfoForm from '@/components/contracts/VehicleInfoForm';
 import PackageSelectionStep from '@/components/contracts/PackageSelectionStep';
 import { FileUploadSummary, VehicleInfoSummary } from '@/components/contracts/CompletedStepSummary';
+import useContractForm from '@/hooks/useContractForm';
 import useCarSelection from '@/hooks/useCarSelection';
 import useInsuranceCalculation from '@/hooks/useInsuranceCalculation';
 import useFormValidation from '@/hooks/useFormValidation';
-import { type BaseContractFormData } from '@/types/contract';
-
-// Extended interface for additional fields specific to new contract page
-interface FormData extends BaseContractFormData {
-  // Additional UI-specific fields not in BaseContractFormData
-  selectedProvince: string; // province_code
-  selectedProvinceText: string; // province_name for display
-  selectedDistrictWard: string; // district/ward id
-  selectedDistrictWardText: string; // district/ward name for display
-  specificAddress: string;
-  nhanHieu: string;
-  soLoai: string;
-  customRates: number[];
-  selectedNNTXPackage: string;
-  tinhTrang: string;
-  // Calculated fee fields for database storage
-  phiVatChatGoc: number;
-  phiTruocKhiGiam: number;
-  phiSauKhiGiam: number;
-  totalAmount: number;
-  // Ensure diaChi is included (from BaseContractFormData)
-}
+import { transformFormToContract, validateContractPayload } from '@/lib/contractDataMapper';
+import { calculateSubmissionFees } from '@/services/contractCalculationService';
 
 export default function NewContractPage() {
+  // UI state
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [nntxFee, setNntxFee] = useState(0);
-  const [customRate, setCustomRate] = useState<number | null>(null);
-  const [isCustomRateModified, setIsCustomRateModified] = useState(false);
   const [uploadedFiles] = useState({
     cavetFileName: '',
     dangkiemFileName: ''
   });
-  
-  // Form data
-  const [formData, setFormData] = useState<FormData>({
-    // Customer/Owner Information (consolidated)
-    chuXe: '',
-    email: '',
-    soDienThoai: '',
-    cccd: '',
-    gioiTinh: 'nam',
-    userType: 'ca_nhan',
-    
-    // Address Structure (from BaseContractFormData)
-    diaChi: '',
-    selectedProvince: '',
-    selectedProvinceText: '',
-    selectedDistrictWard: '',
-    selectedDistrictWardText: '',
-    specificAddress: '',
-    
-    // Vehicle Information (BaseContractFormData)
-    bienSo: '',
-    soKhung: '',
-    soMay: '',
-    tenXe: '',
-    namSanXuat: '',
-    soChoNgoi: '',
-    trongTai: '',
-    giaTriXe: '',
-    loaiHinhKinhDoanh: 'khong_kd_cho_nguoi',
-    loaiDongCo: '',
-    giaTriPin: '',
-    ngayDKLD: '',
-    loaiXe: '',
-    
-    // Vehicle Details from Car Selection
-    nhanHieu: '',
-    soLoai: '',
-    kieuDang: '',
-    namPhienBan: '',
-    
-    // Package Selection & Insurance (BaseContractFormData)
-    selectedPackageIndex: 0,
-    includeTNDS: true,
-    tndsCategory: '',
-    includeNNTX: true,
-    taiTucPercentage: 0,
-    mucKhauTru: 500000,
-    
-    // Additional UI-specific fields
-    customRates: [],
-    selectedNNTXPackage: '',
-    tinhTrang: 'cap_moi',
 
-    // Calculated fee fields (initialized to 0)
-    phiVatChatGoc: 0,
-    phiTruocKhiGiam: 0,
-    phiSauKhiGiam: 0,
-    totalAmount: 0
-  });
-  
   const router = useRouter();
-  
-  // Scroll utility function
-  const scrollToStep = (stepNumber: number, delay: number = 500) => {
-    setTimeout(() => {
-      const stepElement = document.querySelector(`[data-step="${stepNumber}"]`);
-      if (stepElement) {
-        stepElement.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest' 
-        });
-      }
-    }, delay);
-  };
-  
-  // Handle vehicle data changes from car selection
-  const handleVehicleDataChange = (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => {
-    setFormData(prev => ({
-      ...prev,
-      tenXe: vehicleData.tenXe,
-      nhanHieu: vehicleData.nhanHieu,
-      soLoai: vehicleData.soLoai,
-      kieuDang: vehicleData.kieuDang,
-      namPhienBan: vehicleData.namPhienBan
-    }));
-  };
 
-  // Custom hooks
-  const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, searchCarFromExtractedData } = useCarSelection({
-    onVehicleDataChange: handleVehicleDataChange
+  // Form state management (unified hook)
+  const { state: formData, actions } = useContractForm();
+
+  // Car selection hook
+  const {
+    carData,
+    handleBrandChange,
+    handleModelChange,
+    handleInputChange: handleCarInputChange,
+    acceptSuggestedCar,
+    searchCarFromExtractedData
+  } = useCarSelection({
+    onVehicleDataChange: actions.setVehicleData
   });
-  const { 
-    calculationResult, 
+
+  // Insurance calculation hook
+  const {
+    calculationResult,
     enhancedResult,
-    availablePackages, 
-    customRates: _customRates, // eslint-disable-line @typescript-eslint/no-unused-vars
-    calculateRates, 
+    availablePackages,
+    calculateRates,
     calculateEnhanced,
     calculateTotal,
     syncPackageFee,
   } = useInsuranceCalculation();
+
+  // Form validation hook
   const { fieldErrors, validateForm } = useFormValidation();
-
-
 
   // Check authentication
   useEffect(() => {
@@ -168,228 +75,95 @@ export default function NewContractPage() {
     }
   }, [router]);
 
-
-  // Populate form with extracted data
-  const populateForm = async (data: any) => {
-    const newFormData = { ...formData };
-    
-    if (data.chuXe) newFormData.chuXe = data.chuXe;
-    if (data.diaChi) newFormData.diaChi = data.diaChi;
-    if (data.bienSo) newFormData.bienSo = data.bienSo;
-    if (data.nhanHieu) newFormData.nhanHieu = data.nhanHieu;
-    if (data.soLoai) newFormData.soLoai = data.soLoai;
-    if (data.tenXe) newFormData.tenXe = data.tenXe;
-    if (data.soKhung) newFormData.soKhung = data.soKhung;
-    if (data.soMay) newFormData.soMay = data.soMay;
-    if (data.ngayDangKyLanDau) newFormData.ngayDKLD = data.ngayDangKyLanDau;
-    if (data.namSanXuat) newFormData.namSanXuat = data.namSanXuat;
-    if (data.soChoNgoi) newFormData.soChoNgoi = data.soChoNgoi;
-    if (data.trongTaiHangHoa) newFormData.trongTai = data.trongTaiHangHoa;
-    if (data.loaiXe) newFormData.loaiXe = data.loaiXe;
-    
-    // Auto-select loại hình kinh doanh
-    if (data.kinhDoanhVanTai && data.loaiXe) {
-      const loaiXeText = data.loaiXe.toLowerCase();
-      const isKinhDoanh = data.kinhDoanhVanTai.toLowerCase() === 'có';
-      
-      if (isKinhDoanh) {
-        if (loaiXeText.includes('tải')) {
-          newFormData.loaiHinhKinhDoanh = 'kd_cho_hang';
-        } else if (loaiXeText.includes('bán tải') || loaiXeText.includes('pickup')) {
-          newFormData.loaiHinhKinhDoanh = 'kd_pickup_van';
-        } else {
-          newFormData.loaiHinhKinhDoanh = 'kd_cho_khach_lien_tinh';
-        }
-      } else {
-        if (loaiXeText.includes('tải')) {
-          newFormData.loaiHinhKinhDoanh = 'khong_kd_cho_hang';
-        } else if (loaiXeText.includes('bán tải') || loaiXeText.includes('pickup')) {
-          newFormData.loaiHinhKinhDoanh = 'khong_kd_pickup_van';
-        } else {
-          newFormData.loaiHinhKinhDoanh = 'khong_kd_cho_nguoi';
-        }
+  // Utility: Scroll to step
+  const scrollToStep = useCallback((stepNumber: number, delay: number = 500) => {
+    setTimeout(() => {
+      const stepElement = document.querySelector(`[data-step="${stepNumber}"]`);
+      if (stepElement) {
+        stepElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
       }
-    }
-
-    setFormData(newFormData);
-
-    // Auto-search for car information
-    await searchCarFromExtractedData(data);
-  };
-
-
-  // Handle form input change
-  const handleInputChange = useCallback((field: keyof FormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    }, delay);
   }, []);
 
-  // Handle extract success
-  const handleExtractSuccess = (data: any) => {
-    populateForm(data);
+  // Step 1: Handle extract success
+  const handleExtractSuccess = useCallback(async (data: any) => {
+    actions.populateFromExtract(data);
+    await searchCarFromExtractedData(data);
     setCurrentStep(2);
     scrollToStep(2);
-  };
+  }, [actions, searchCarFromExtractedData, scrollToStep]);
 
-  // Handle buyer info completion
-  const handleBuyerInfoNext = () => {
+  // Step 2: Buyer info completion
+  const handleBuyerInfoNext = useCallback(() => {
     setCurrentStep(3);
     scrollToStep(3);
-  };
+  }, [scrollToStep]);
 
-
-
-  // Calculate insurance rates
-  const handleCalculateRates = async () => {
+  // Step 3: Calculate insurance rates
+  const handleCalculateRates = useCallback(async () => {
     const isValid = await validateForm(formData, carData);
     if (!isValid) {
       return;
     }
 
-    const { result, packages, defaultTndsCategory } = calculateRates(formData);
+    const { packages, defaultTndsCategory } = calculateRates(formData);
 
-    // Calculate initial fee values
-    const selectedPackage = packages && packages.length > 0 ? packages[0] : null;
-    const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
+    // Update form with calculation results
+    if (packages && packages.length > 0) {
+      const selectedPackage = packages[0];
+      actions.setMultipleFields({
+        tndsCategory: defaultTndsCategory || formData.tndsCategory,
+        customRates: packages.map(pkg => pkg.rate),
+        availablePackages: packages,
+      });
 
-    // Calculate basic totals (will be updated when package is selected)
-    const phiTNDS = formData.includeTNDS && defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories]
-      ? tndsCategories[defaultTndsCategory as keyof typeof tndsCategories].fee
-      : 0;
-    const phiNNTX = formData.includeNNTX ? nntxFee : 0;
-    const phiTaiTuc = 0; // Will be calculated based on taiTucPercentage
+      // Set package and trigger fee calculation
+      actions.setPackage(0, selectedPackage.rate);
+    }
 
-    const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
-    const phiSauKhiGiam = phiTruocKhiGiam; // Initially same, will change with custom rates
-
-    // Create updated form data with new values
-    const updatedFormData = {
-      ...formData,
-      tndsCategory: defaultTndsCategory && tndsCategories[defaultTndsCategory as keyof typeof tndsCategories]
-        ? defaultTndsCategory
-        : formData.tndsCategory,
-      customRates: result?.finalRates.map(r => r || 0) || [],
-      phiVatChatGoc: phiVatChatGoc,
-      phiTruocKhiGiam: phiTruocKhiGiam,
-      phiSauKhiGiam: phiSauKhiGiam,
-      totalAmount: phiSauKhiGiam
-    };
-
-    // Update state and calculate enhanced results with updated data immediately
-    setFormData(updatedFormData);
-
-    // Note: No need for refreshPackageFees here - calculateRates already created packages with correct fees
-    calculateEnhanced(updatedFormData);
-
+    calculateEnhanced(formData);
     setCurrentStep(4);
     setError('');
     scrollToStep(4);
-  };
+  }, [formData, carData, validateForm, calculateRates, calculateEnhanced, actions, scrollToStep]);
 
-  // Handle package selection changes
-  const handlePackageSelection = (packageIndex: number) => {
-    // Calculate updated fee values based on new package selection
+  // Step 4: Package selection
+  const handlePackageSelection = useCallback((packageIndex: number) => {
     const selectedPackage = availablePackages[packageIndex];
-    const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
-
-    // Calculate other fees
-    const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
-      ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
-      : 0;
-    const phiNNTX = formData.includeNNTX ? nntxFee : 0;
-    const phiTaiTuc = (() => {
-      if (formData.taiTucPercentage !== 0) {
-        const totalVehicleValue = calculateTotalVehicleValue(
-          parseCurrency(formData.giaTriXe),
-          formData.giaTriPin,
-          formData.loaiDongCo
-        );
-        return (totalVehicleValue * formData.taiTucPercentage) / 100;
-      }
-      return 0;
-    })();
-
-    const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
-    const phiSauKhiGiam = phiTruocKhiGiam; // Will be updated if custom rate is applied
-
-    // Create updated form data with new package selection and calculated fees
-    const updatedFormData = {
-      ...formData,
-      selectedPackageIndex: packageIndex,
-      phiVatChatGoc: phiVatChatGoc,
-      phiTruocKhiGiam: phiTruocKhiGiam,
-      phiSauKhiGiam: phiSauKhiGiam,
-      totalAmount: phiSauKhiGiam
-    };
-
-    // Update state
-    setFormData(updatedFormData);
-
-    // Sync package fee to ensure correct calculation
-    syncPackageFee(packageIndex, parseCurrency(formData.giaTriXe), formData.loaiHinhKinhDoanh, formData.loaiDongCo, formData.giaTriPin);
-
-    // Trigger enhanced calculation with updated data immediately
-    calculateEnhanced(updatedFormData);
-  };
-
-  // Handle recalculate
-  const handleRecalculate = () => {
-    // Then calculate enhanced results
-    calculateEnhanced(formData);
-  };
-
-
-  const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
-
-  // Handle NNTX fee changes from DynamicTNDSSelector
-  const handleNNTXFeeChange = (fee: number) => {
-    setNntxFee(fee);
-  };
-
-  // Handle custom rate changes from PriceSummaryCard
-  const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
-    setCustomRate(customRateValue);
-    setIsCustomRateModified(isModified);
-
-    // Update formData with new calculated fees when custom rate changes
-    if (isModified && customRateValue !== null && availablePackages.length > 0) {
-      const selectedPackage = availablePackages[formData.selectedPackageIndex];
-      const phiVatChatGoc = selectedPackage ? selectedPackage.fee : 0;
-
-      // Calculate custom vat chat fee
-      const totalVehicleValue = calculateTotalVehicleValue(
-        parseCurrency(formData.giaTriXe),
-        formData.giaTriPin,
-        formData.loaiDongCo
+    if (selectedPackage) {
+      actions.setPackage(packageIndex, selectedPackage.rate);
+      syncPackageFee(
+        packageIndex,
+        typeof formData.giaTriXe === 'string' ? parseFloat(formData.giaTriXe.replace(/\D/g, '')) : formData.giaTriXe,
+        formData.loaiHinhKinhDoanh,
+        formData.loaiDongCo,
+        formData.giaTriPin
       );
-      const customVatChatFee = (totalVehicleValue * customRateValue) / 100;
-
-      // Calculate other fees
-      const phiTNDS = formData.includeTNDS && formData.tndsCategory && tndsCategories[formData.tndsCategory as keyof typeof tndsCategories]
-        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
-        : 0;
-      const phiNNTX = formData.includeNNTX ? nntxFee : 0;
-      const phiTaiTuc = (() => {
-        if (formData.taiTucPercentage !== 0) {
-          return (totalVehicleValue * formData.taiTucPercentage) / 100;
-        }
-        return 0;
-      })();
-
-      const phiTruocKhiGiam = phiVatChatGoc + phiTNDS + phiNNTX + phiTaiTuc;
-      const phiSauKhiGiam = customVatChatFee + phiTNDS + phiNNTX + phiTaiTuc;
-
-      setFormData(prev => ({
-        ...prev,
-        phiVatChatGoc: phiVatChatGoc,
-        phiTruocKhiGiam: phiTruocKhiGiam,
-        phiSauKhiGiam: phiSauKhiGiam,
-        totalAmount: phiSauKhiGiam
-      }));
+      calculateEnhanced(formData);
     }
-  }, [availablePackages, formData, nntxFee]);
+  }, [availablePackages, formData, actions, syncPackageFee, calculateEnhanced]);
+
+  // Recalculate
+  const handleRecalculate = useCallback(() => {
+    calculateEnhanced(formData);
+  }, [formData, calculateEnhanced]);
+
+  // NNTX fee change
+  const handleNNTXFeeChange = useCallback((fee: number) => {
+    actions.setNntxFee(fee);
+  }, [actions]);
+
+  // Custom rate change
+  const handleCustomRateChange = useCallback((customRateValue: number | null, isModified: boolean) => {
+    actions.setCustomRate(customRateValue, isModified);
+  }, [actions]);
 
   // Submit contract
-  const submitContract = async () => {
+  const submitContract = useCallback(async () => {
     if (!calculationResult || availablePackages.length === 0) {
       setError('Chưa tính toán phí bảo hiểm');
       return;
@@ -405,132 +179,72 @@ export default function NewContractPage() {
     setError('');
 
     try {
-      // NNTX fee is already calculated by DynamicTNDSSelector
-      
-      const getDKBS = (index: number): string[] => {
-        if (index >= 0 && index < packageLabels.length) {
-          const pkg = packageLabels[index];
-          // Extract BS codes from name: "Gói BS001 + BS003" → ["BS001", "BS003"]
-          const bsCodes = pkg.name.match(/BS\d+/g) || [];
-          return bsCodes.map(code => {
-            const detail = packageLabelsDetail.find(item => item.code === code);
-            return detail ? `- ${code}: ${detail.name}` : `- ${code}`;
-          });
-        }
-        return [];
-      };
-
-      // Use calculated fee data from formData (already calculated in handleCustomRateChange and handlePackageSelection)
-      const phiVatChatGoc = formData.phiVatChatGoc;
-      const phiTruocKhiGiam = formData.phiTruocKhiGiam;
-      const phiSauKhiGiam = formData.phiSauKhiGiam;
-
-      // Calculate final vat chat fee based on custom rate if available
-      const finalVatChatFee = isCustomRateModified && customRate
-        ? (() => {
-            const totalVehicleValue = calculateTotalVehicleValue(
-              parseCurrency(formData.giaTriXe),
-              formData.giaTriPin,
-              formData.loaiDongCo
-            );
-            return (totalVehicleValue * customRate) / 100;
-          })()
-        : phiVatChatGoc;
-
-      // Calculate other fees for contract data
-      const phiTNDS = formData.includeTNDS && formData.tndsCategory
-        ? tndsCategories[formData.tndsCategory as keyof typeof tndsCategories].fee
-        : 0;
-      const phiNNTX = formData.includeNNTX ? nntxFee : 0;
-      const phiTaiTuc = (() => {
-        if (formData.taiTucPercentage !== 0) {
-          const totalVehicleValue = calculateTotalVehicleValue(
-            parseCurrency(formData.giaTriXe),
-            formData.giaTriPin,
-            formData.loaiDongCo
-          );
-          return (totalVehicleValue * formData.taiTucPercentage) / 100;
-        }
-        return 0;
-      })();
-
-      const contractData = {
-        chuXe: formData.chuXe,
-        diaChi: formData.diaChi, // Specific address
-        // Buyer information
-        buyerEmail: formData.email,
-        buyerPhone: formData.soDienThoai,
-        buyerGender: formData.gioiTinh,
-        buyerCitizenId: formData.cccd,
-        selectedProvince: formData.selectedProvince,
-        selectedProvinceText: formData.selectedProvinceText,
-        selectedDistrictWard: formData.selectedDistrictWard,
-        selectedDistrictWardText: formData.selectedDistrictWardText,
-        specificAddress: formData.specificAddress,
-        // Vehicle information
-        bienSo: formData.bienSo,
-        nhanHieu: formData.nhanHieu,
-        soLoai: formData.soLoai,
-        soKhung: formData.soKhung,
-        soMay: formData.soMay,
-        ngayDKLD: formData.ngayDKLD,
-        namSanXuat: Number(formData.namSanXuat),
-        soChoNgoi: Number(formData.soChoNgoi),
-        trongTai: Number(formData.trongTai) || undefined,
-        giaTriXe: parseCurrency(formData.giaTriXe),
-        loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
+      // Calculate final fees
+      const fees = calculateSubmissionFees({
+        giaTriXe: formData.giaTriXe,
+        giaTriPin: formData.giaTriPin,
         loaiDongCo: formData.loaiDongCo,
-        giaTriPin: formData.giaTriPin ? parseCurrency(formData.giaTriPin) : undefined,
-        loaiXe: formData.loaiXe,
-        carBrand: carData.selectedBrand,
-        carModel: carData.selectedModel,
-        carBodyStyle: carData.selectedBodyStyle,
-        carYear: carData.selectedYear,
-        vatChatPackage: {
-          name: selectedPackage.name,
-          tyLePhi: selectedPackage.rate, // Original package rate
-          customRate: isCustomRateModified ? customRate : undefined, // Custom rate if modified
-          isCustomRate: isCustomRateModified, // Flag to indicate if custom rate is used
-          phiVatChatGoc: phiVatChatGoc, // Phí vật chất theo rate gốc
-          phiVatChat: finalVatChatFee, // Phí vật chất cuối cùng (đã custom)
-          taiTucPercentage: formData.taiTucPercentage,
-          dkbs: getDKBS(formData.selectedPackageIndex)
-        },
+        loaiHinhKinhDoanh: formData.loaiHinhKinhDoanh,
+        packageRate: selectedPackage.rate,
+        customRate: formData.isCustomRateModified ? formData.customRate ?? undefined : undefined,
+        isCustomRate: formData.isCustomRateModified,
         includeTNDS: formData.includeTNDS,
         tndsCategory: formData.tndsCategory,
-        phiTNDS: phiTNDS,
         includeNNTX: formData.includeNNTX,
-        selectedNNTXPackage: formData.selectedNNTXPackage,
-        phiNNTX: phiNNTX,
-        phiPin: enhancedResult?.totalBatteryFee || 0,
-        mucKhauTru: formData.mucKhauTru,
+        nntxFee: formData.nntxFee,
         taiTucPercentage: formData.taiTucPercentage,
-        phiTaiTuc: phiTaiTuc,
-        phiTruocKhiGiam: phiTruocKhiGiam,
-        phiSauKhiGiam: phiSauKhiGiam,
-        tongPhi: phiSauKhiGiam
-      };
+      });
 
+      // Transform form data to API payload
+      const payload = transformFormToContract(
+        formData as any, // Type assertion for now
+        carData,
+        {
+          name: selectedPackage.name,
+          rate: selectedPackage.rate,
+          customRate: formData.isCustomRateModified ? formData.customRate ?? undefined : undefined,
+          isCustomRate: formData.isCustomRateModified,
+        },
+        {
+          phiVatChatGoc: fees.phiVatChat,
+          phiVatChat: fees.phiVatChat,
+          phiTNDS: fees.phiTNDS,
+          phiNNTX: fees.phiNNTX,
+          phiPin: fees.phiPin,
+          phiTaiTuc: fees.phiTaiTuc,
+          phiTruocKhiGiam: fees.phiTruocKhiGiam,
+          phiSauKhiGiam: fees.phiSauKhiGiam,
+          tongPhi: fees.tongPhi,
+        }
+      );
+
+      // Validate payload
+      const validation = validateContractPayload(payload);
+      if (!validation.valid) {
+        setError(validation.errors.join(', '));
+        return;
+      }
+
+      // Submit to API
       const response = await fetch('/api/contracts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(contractData)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         const result = await response.json();
 
-        // Immediately redirect to contract detail page
+        // Redirect to contract detail page
         router.push(`/contracts/${result.contract.id}`);
 
         // Background BHV premium check (fire-and-forget)
         fetch('/api/contracts/check-bhv-contract', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contractNumber: result.contract.contractNumber })
+          body: JSON.stringify({ contractNumber: result.contract.contractNumber }),
         }).catch(error => {
           console.log('Background BHV premium check failed:', error);
-          // Silent fail - không ảnh hưởng user experience
         });
       } else {
         const errorData = await response.json();
@@ -542,7 +256,16 @@ export default function NewContractPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    calculationResult,
+    availablePackages,
+    formData,
+    carData,
+    router,
+  ]);
+
+  // Calculate total amount
+  const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
   return (
     <DashboardLayout>
@@ -570,13 +293,13 @@ export default function NewContractPage() {
                 currentStep={currentStep}
                 isCompleted={currentStep > 1}
                 summary={currentStep > 1 ? (
-                  <FileUploadSummary 
+                  <FileUploadSummary
                     cavetFileName={uploadedFiles.cavetFileName}
                     dangkiemFileName={uploadedFiles.dangkiemFileName}
                   />
                 ) : undefined}
               >
-                <FileUploadStep 
+                <FileUploadStep
                   onExtractSuccess={handleExtractSuccess}
                   error={error}
                 />
@@ -601,9 +324,9 @@ export default function NewContractPage() {
                   ) : undefined}
                 >
                   <BuyerInfoForm
-                    formData={formData}
+                    formData={formData as any}
                     fieldErrors={fieldErrors}
-                    onFormInputChange={handleInputChange}
+                    onFormInputChange={actions.setField}
                     onNext={handleBuyerInfoNext}
                   />
                 </StepWrapper>
@@ -619,20 +342,20 @@ export default function NewContractPage() {
                   currentStep={currentStep}
                   isCompleted={currentStep > 3}
                   summary={currentStep > 3 ? (
-                    <VehicleInfoSummary formData={formData} />
+                    <VehicleInfoSummary formData={formData as any} />
                   ) : undefined}
                 >
                   <VehicleInfoForm
-                    formData={formData}
+                    formData={formData as any}
                     carData={carData}
                     fieldErrors={fieldErrors}
-                    onFormInputChange={handleInputChange}
+                    onFormInputChange={actions.setField}
                     onBrandChange={handleBrandChange}
                     onModelChange={handleModelChange}
                     onCarInputChange={handleCarInputChange}
                     onAcceptSuggestion={acceptSuggestedCar}
                     onCalculateRates={handleCalculateRates}
-                    onVehicleDataChange={handleVehicleDataChange}
+                    onVehicleDataChange={actions.setVehicleData}
                   />
                 </StepWrapper>
               </div>
@@ -652,11 +375,11 @@ export default function NewContractPage() {
                     availablePackages={availablePackages}
                     calculationResult={calculationResult}
                     enhancedResult={enhancedResult || undefined}
-                    formData={formData}
+                    formData={formData as any}
                     totalAmount={totalAmount}
-                    nntxFee={nntxFee}
+                    nntxFee={formData.nntxFee}
                     loading={loading}
-                    onFormInputChange={handleInputChange}
+                    onFormInputChange={actions.setField}
                     onPackageSelect={handlePackageSelection}
                     onSubmit={submitContract}
                     onRecalculate={handleRecalculate}

@@ -1,0 +1,264 @@
+=== BUSINESS LOGIC QUESTIONS - CONTRACT CREATION ===
+Date: 2025-09-30
+Context: Reviewing contract creation logic in src/app/contracts/new/page.tsx
+
+---
+
+## 1. FEE CALCULATION & CUSTOM RATES
+
+Q1.1: Who can modify package rates (custom rates)?
+- [x ] All users can modify rates
+- [ ] Only admin can modify rates
+- [ ] Other: _______________
+
+Q1.2: Custom rate limits - Schema shows 0.1%-10% range. Is this correct?
+- Current: min 0.1%, max 10% (Contract.ts:306-308)
+- [x ] Correct
+- [ ] Should be different: min ____ %, max ____ %
+
+Q1.3: Can custom rates be negative (e.g., -5% for special discount)?
+- [ ] Yes, negative allowed
+- [x] No, must be positive
+ But dont care on now, i have plan for update
+
+Q1.4: Should we track audit trail for rate modifications?
+- [ ] Yes, save who modified + when + original rate + new rate
+- [ x] No, just save final rate
+
+Q1.5: Are there business rules for when discounts are allowed?
+- [ ] Any time
+- [ ] Only for renewal customers
+- [ ] Only for specific user roles
+- [ ] Other: dont care
+
+---
+
+## 2. TNDS CATEGORY AUTO-SELECTION
+
+Q2.1: Can users override the auto-suggested TNDS category?
+- [x ] Yes, they can choose any category
+- [ ] No, must use suggested category
+- [ ] Admin can override, regular users cannot
+
+Q2.2: What should happen if no TNDS category matches the vehicle?
+- [ ] Show error and block submission
+- [x ] Let user select manually
+- [ ] Use default category: _______________
+
+Q2.3: Are TNDS categories legally mandated or just suggestions?
+- [ ] Legally required (regulatory compliance)
+- [ x] Suggestions only (business logic)
+=> this logic is work fine
+---
+
+## 3. BHV PREMIUM CHECK (Background Process)
+
+Q3.1: Why do we check BHV premiums? What's the business purpose?
+- [ ] Price comparison for users
+- [ ] Regulatory compliance requirement
+- [ ] Internal audit/verification
+- [ ] Other: this is original price for BHV online, with my project, price is lower, i need check with BHV online to calculated diff price, then create API to create on BHV online. this is main flow. upload docs => extract + fill info => call to BHV online to check price => user confirm => call to BHV online to create contract.
+
+Q3.2: If BHV check fails, what should happen?
+- [ ] Contract creation should fail (block user)
+- [ ] Just log warning, contract still created
+- [ ] Notify admin, let user proceed
+=> i think can still create in internal, but when create online, need run check again, if can not auth => show error and can not countinue
+
+Q3.3: Should users see BHV premium results?
+- [ x] Yes, show in contract detail page
+- [ ] No, internal use only
+- [ ] Only admin can see
+
+Q3.4: Should failed BHV checks be retried automatically?
+- [ x] Yes, retry up to X times: 2
+- [ ] No, manual retry only
+
+Q3.5: Should we show BHV check status to users?
+- [x ] Yes, show "Checking BHV...", "Complete", "Failed"
+- [ ] No, hide from users
+
+---
+
+## 4. TÁI TỤC (RENEWAL) PERCENTAGE
+
+Q4.1: Negative percentage meaning? (e.g., -20%)
+- [ ] Discount for loyal customers
+- [ ] Discount for early renewal
+- [ ] Other: _______________
+
+Q4.2: Positive percentage meaning? (e.g., +10%)
+- [ ] Penalty for late renewal
+- [ ] Premium for high-risk customers
+- [ ] Other: _______________
+=> only positive
+Q4.3: When is renewal percentage applied?
+- [ ] Only when tinhTrang === 'tai_tuc'
+- [ ] Always calculated
+- [ ] User decides when to apply
+=> if it have value
+Q4.4: Calculation base - what is the percentage applied to?
+- Current: Applied to total vehicle value (giaTriXe + giaTriPin if EV)
+- [ x] Correct
+- [ ] Should be applied to total premium instead
+- [ ] Other: _______________
+
+---
+
+## 5. CONTRACT STATUS WORKFLOW
+
+Q5.1: Status transition rules - Who can change status?
+- nhap → cho_duyet: [ ] User themselves  [ ] Admin only  [ ] Other: ___
+- cho_duyet → khach_duyet: [ ] User  [ ] Customer approval needed  [ ] Admin
+- khach_duyet → ra_hop_dong: [ ] Admin only  [ ] Automatic  [ ] Other: ___
+=> keep the current logic
+Q5.2: How does customer approve (cho_duyet → khach_duyet)?
+- [ ] Email link sent to customer
+- [ ] Customer logs into system
+- [ ] Phone/manual confirmation
+- [ ] Other: _______________
+
+Q5.3: Can status transitions skip steps?
+Example: Admin directly nhap → ra_hop_dong
+- [ ] Yes, admin can skip steps
+- [ ] No, must follow workflow strictly
+
+Q5.4: Can contracts be cancelled from any status?
+- [ ] Yes, from any status
+- [ ] Only from nhap/cho_duyet
+- [ ] Other rules: _______________
+=> keep the current logic
+---
+
+## 6. MỨC KHẤU TRỪ (DEDUCTIBLE)
+
+Q6.1: Can users select deductible amount?
+- [ ] Yes, choose from options: _______________
+- [ ] No, fixed at 500,000 VND
+- [ ] Different per package
+
+Q6.2: Does deductible affect premium pricing?
+- [ ] Yes, higher deductible = lower premium
+- [ ] No, deductible doesn't affect price
+- [ ] Formula: _______________
+
+Q6.3: Is deductible same for all coverage types?
+- [ ] Same for BHVC/TNDS/NNTX
+- [ ] Different per coverage type
+=> have 1 file for BHVC, it base on type car, year...
+---
+
+## 7. PACKAGE SELECTION LOGIC
+
+Q7.1: When is a package unavailable? Based on:
+- [ ] Vehicle age > X years: _____
+- [ ] Vehicle type (taxi, truck, etc.)
+- [ ] Business usage type
+- [ ] Vehicle value too low/high
+- [ ] Other: _______________
+
+Q7.2: Can users mix coverage items or must use pre-defined packages?
+- [ ] Must use pre-defined packages (BS001-BS006)
+- [ ] Can mix and match coverage items
+
+---
+
+## 8. VEHICLE AGE RESTRICTIONS
+
+Q8.1: Are there age limits for insurance coverage?
+Example: No BHVC for vehicles > 20 years old
+- [ ] Yes, limits: _______________
+- [ ] No age limits
+
+Q8.2: Do older vehicles get different rates?
+- [ ] Yes, rate adjustment formula: _______________
+- [ ] No, age doesn't affect rate
+
+---
+
+## 9. NNTX (PASSENGER INSURANCE)
+
+Q9.1: How is NNTX fee calculated?
+- [ ] Fixed fee per seat: _____ VND/seat
+- [ ] Tiered pricing (first 5 seats = X, next seats = Y)
+- [ ] Formula: _______________
+
+Q9.2: Must insure all seats or can choose subset?
+- [ ] Must insure all seats (soChoNgoi)
+- [ ] Can choose number of seats to insure
+- [ ] Minimum seats required: _____
+
+Q9.3: Different rates by usage type?
+- [ ] Yes, taxi/commercial = higher rate
+- [ ] No, same rate for all
+
+---
+
+## 10. DATA COMPLETENESS FOR CONTRACT
+
+Q10.1: Can create contract without uploaded files?
+- cavetImage (vehicle registration image)
+- dangkiemImage (inspection certificate image)
+- [ ] Yes, files optional
+- [ ] No, files required
+- [ ] Required at certain status: _______________
+
+Q10.2: Insurance dates - calculated or user input?
+- ngayBatDauBaoHiem (start date)
+- ngayKetThucBaoHiem (end date)
+- [ ] User inputs both dates
+- [ ] Auto-calculated: start = ___, end = ___
+- [ ] Start date from user, end = start + 1 year
+
+---
+
+## 11. USER ROLES & PERMISSIONS
+
+Q11.1: Regular user capabilities:
+- Create contract: [ ] Yes [ ] No
+- Edit contract in status 'nhap': [ ] Yes [ ] No
+- Edit contract in other statuses: [ ] Yes [ ] No
+- Delete contracts: [ ] Yes [ ] No
+- View only their contracts: [ ] Yes [ ] View all
+
+Q11.2: Admin capabilities:
+- View all contracts: [ ] Yes [ ] No
+- Edit any contract: [ ] Yes [ ] Only certain statuses: ___
+- Override prices/rates: [ ] Yes [ ] No
+- Delete contracts: [ ] Yes [ ] No
+- Approve status transitions: [ ] Yes [ ] Which ones: ___
+
+---
+
+## 12. CALCULATION ERRORS & EDGE CASES
+
+Q12.1: What should happen if insurance calculation fails?
+- [ ] Show error, block submission
+- [ ] Use default/fallback rates
+- [ ] Allow manual price entry
+
+Q12.2: What if vehicle value is unusually high/low?
+High: > 50 billion VND, Low: < 50 million VND
+- [ ] Show warning but allow
+- [ ] Block submission
+- [ ] Require admin approval
+
+Q12.3: What if car brand/model not found in database?
+- [ ] Allow manual entry of nhanHieu/soLoai
+- [ ] Block submission
+- [ ] Use "Other" category
+
+---
+
+## NOTES / ADDITIONAL CONTEXT
+
+[Please add any additional business rules, special cases, or context here]
+
+
+
+
+
+
+---
+Completed by: _______________
+Date: _______________

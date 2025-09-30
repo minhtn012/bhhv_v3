@@ -7,6 +7,7 @@ import { transformContractToPremiumCheckFormat } from '@/lib/bhvDataMapper';
 import { bhvApiClient } from '@/lib/bhvApiClient';
 import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
 import { decryptBhvCredentials } from '@/lib/encryption';
+import { validateContract } from '@/lib/contractValidationSchema';
 
 // GET /api/contracts - Lấy danh sách contracts
 export async function GET(request: NextRequest) {
@@ -86,7 +87,7 @@ export async function POST(request: NextRequest) {
     await connectToDatabase();
 
     const body = await request.json();
-    
+
     console.log('Contract API received body:', body);
     console.log('Car fields in body:', {
       carBrand: body.carBrand,
@@ -94,26 +95,28 @@ export async function POST(request: NextRequest) {
       carBodyStyle: body.carBodyStyle,
       carYear: body.carYear
     });
-    
-    // Validate required fields
-    const requiredFields = [
-      'chuXe', 'diaChi', 'bienSo', 'nhanHieu', 'soLoai', 'soKhung', 
-      'soMay', 'ngayDKLD', 'namSanXuat', 'soChoNgoi', 'giaTriXe', 
-      'loaiHinhKinhDoanh', 'loaiDongCo', 'vatChatPackage', 'tongPhi', 'mucKhauTru'
-    ];
 
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { error: `Trường ${field} là bắt buộc` },
-          { status: 400 }
-        );
-      }
+    // Validate contract data with Zod schema
+    const validation = validateContract(body);
+
+    if (!validation.success) {
+      console.error('Contract validation failed:', validation.errors);
+
+      return NextResponse.json(
+        {
+          error: 'Dữ liệu hợp đồng không hợp lệ',
+          details: validation.errors
+        },
+        { status: 400 }
+      );
     }
 
-    // Create new contract
+    // Use validated data
+    const validatedData = validation.data;
+
+    // Create new contract with validated data
     const contract = new Contract({
-      ...body,
+      ...validatedData,
       createdBy: user.userId,
       status: 'nhap'
     });

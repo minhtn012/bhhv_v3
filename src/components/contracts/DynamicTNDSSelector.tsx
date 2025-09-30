@@ -70,11 +70,12 @@ export default function DynamicTNDSSelector({
   useEffect(() => {
     const suggested = suggestTNDSCategory(loaiHinhKinhDoanh, soChoNgoi, trongTai);
     setSuggestedCategory(suggested);
-    
+
     // Auto-select suggested category if no category is currently selected
     if (suggested && !tndsCategory) {
       onTNDSChange(includeTNDS, suggested);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaiHinhKinhDoanh, soChoNgoi, trongTai]);
 
   // Update NNTX fee when package, số chỗ ngồi, or business type changes
@@ -91,7 +92,7 @@ export default function DynamicTNDSSelector({
     }
     setNntxFee(fee);
     onNNTXFeeChange(fee); // Notify parent about fee change
-  }, [selectedNNTXPackage, soChoNgoi, nntxPackages, onNNTXFeeChange, loaiHinhKinhDoanh, includeNNTX]);
+  }, [selectedNNTXPackage, soChoNgoi, nntxPackages, loaiHinhKinhDoanh, includeNNTX]);
 
   // Force recalculation when business type changes (even if package was already selected)
   useEffect(() => {
@@ -106,7 +107,7 @@ export default function DynamicTNDSSelector({
         onNNTXFeeChange(fee);
       }
     }
-  }, [loaiHinhKinhDoanh, includeNNTX, selectedNNTXPackage, nntxPackages, soChoNgoi, onNNTXFeeChange]);
+  }, [loaiHinhKinhDoanh, includeNNTX, selectedNNTXPackage, nntxPackages, soChoNgoi]);
 
   // Get available categories for dropdown
   const availableCategories = getAvailableTNDSCategories();
