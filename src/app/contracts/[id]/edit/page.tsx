@@ -66,7 +66,8 @@ interface Contract {
   loaiHinhKinhDoanh: string;
   loaiDongCo?: string;
   giaTriPin?: number;
-  
+  loaiXe?: string;
+
   // Car selection data
   carBrand?: string;
   carModel?: string;
@@ -89,7 +90,11 @@ interface Contract {
   
   includeNNTX: boolean;
   phiNNTX: number;
-  
+
+  // Tái tục/Cấp mới
+  taiTucPercentage?: number;
+  phiTaiTuc?: number;
+
   phiTruocKhiGiam?: number;
   phiSauKhiGiam?: number;
   tongPhi: number;
@@ -150,7 +155,8 @@ export default function EditContractPage() {
     loaiDongCo: '',
     giaTriPin: '',
     ngayDKLD: '',
-    
+    loaiXe: '',
+
     // Vehicle Details from Car Selection
     nhanHieu: '',
     soLoai: '',
@@ -253,36 +259,59 @@ export default function EditContractPage() {
   };
 
   const populateFormFromContract = async (contractData: Contract) => {
+    // Set NNTX fee from contract data
+    setNntxFee(contractData.phiNNTX || 0);
+
+    // Initialize custom rate from contract if it was modified
+    if (contractData.vatChatPackage.isCustomRate && contractData.vatChatPackage.customRate) {
+      setCustomRate(contractData.vatChatPackage.customRate);
+      setIsCustomRateModified(true);
+    }
+
+    // Try to determine the selected NNTX package from the stored fee
+    let selectedNNTXPackage = '';
+    if (contractData.includeNNTX && contractData.phiNNTX > 0) {
+      try {
+        const { loadNNTXPackages, calculateNNTXFee } = await import('@/utils/insurance-calculator');
+        const packages = await loadNNTXPackages();
+        const isBusinessVehicle = contractData.loaiHinhKinhDoanh?.startsWith('kd_') || false;
+
+        // Find package that matches the stored fee
+        for (const pkg of packages) {
+          const packagePrice = isBusinessVehicle ? (pkg.price_kd || pkg.price) : pkg.price;
+          const calculatedFee = calculateNNTXFee(packagePrice, contractData.soChoNgoi, contractData.loaiHinhKinhDoanh);
+          if (Math.abs(calculatedFee - contractData.phiNNTX) < 1) { // Allow small rounding difference
+            selectedNNTXPackage = pkg.value;
+            break;
+          }
+        }
+      } catch (error) {
+        console.error('Error determining NNTX package:', error);
+      }
+    }
+
     // Set basic form data first
     setFormData({
       // Customer Information (BaseContractFormData)
       chuXe: contractData.chuXe,
-      diaChi: contractData.diaChi,
-      tinhThanh: '',
-      quanHuyen: '',
-      phuongXa: '',
-      soDienThoai: '',
-      email: '',
-      cccd: '',
-      ngayCapCccd: '',
-      noiCapCccd: '',
+      email: contractData.buyerEmail || '',
+      soDienThoai: contractData.buyerPhone || '',
+      cccd: contractData.buyerCitizenId || '',
+      gioiTinh: contractData.buyerGender || 'nam',
       userType: 'ca_nhan',
-      // Buyer Information (BaseContractFormData)
-      buyerName: '',
-      buyerAddress: '',
-      buyerProvince: '',
-      buyerDistrict: '',
-      buyerWard: '',
-      buyerPhone: contractData.buyerPhone || '',
-      buyerEmail: contractData.buyerEmail || '',
-      buyerCccd: contractData.buyerCitizenId || '',
-      buyerCccdDate: '',
-      buyerGender: contractData.buyerGender || 'nam',
+
+      // Address Structure (BaseContractFormData)
+      diaChi: contractData.diaChi,
+      selectedProvince: contractData.selectedProvince || '',
+      selectedProvinceText: contractData.selectedProvinceText || '',
+      selectedDistrictWard: contractData.selectedDistrictWard || '',
+      selectedDistrictWardText: contractData.selectedDistrictWardText || '',
+      specificAddress: contractData.specificAddress || '',
+
       // Vehicle Information (BaseContractFormData)
       bienSo: contractData.bienSo,
       soKhung: contractData.soKhung,
       soMay: contractData.soMay,
-      tenXe: '',
       namSanXuat: contractData.namSanXuat,
       soChoNgoi: contractData.soChoNgoi,
       trongTai: contractData.trongTai || '',
@@ -291,24 +320,37 @@ export default function EditContractPage() {
       loaiDongCo: contractData.loaiDongCo || '',
       giaTriPin: contractData.giaTriPin ? formatCurrency(contractData.giaTriPin) : '',
       ngayDKLD: contractData.ngayDKLD,
+      loaiXe: contractData.loaiXe || '',
+
+      // Vehicle Details from Car Selection (BaseContractFormData)
+      tenXe: '',
+      nhanHieu: contractData.nhanHieu,
+      soLoai: contractData.soLoai,
+      kieuDang: contractData.carBodyStyle || '',
+      namPhienBan: contractData.carYear || '',
+
       // Package Selection & Insurance (BaseContractFormData)
       selectedPackageIndex: 0, // Will be determined after calculation
       includeTNDS: contractData.includeTNDS,
       tndsCategory: contractData.tndsCategory,
       includeNNTX: contractData.includeNNTX,
-      taiTucPercentage: 0,
+      taiTucPercentage: contractData.taiTucPercentage || 0,
       mucKhauTru: contractData.mucKhauTru,
-      // Additional UI-specific fields
-      selectedProvince: contractData.selectedProvince || '',
-      selectedProvinceText: contractData.selectedProvinceText || '',
-      selectedDistrictWard: contractData.selectedDistrictWard || '',
-      selectedDistrictWardText: contractData.selectedDistrictWardText || '',
-      specificAddress: contractData.specificAddress || '',
-      nhanHieu: contractData.nhanHieu,
-      soLoai: contractData.soLoai,
+
+      // Extended fields specific to edit page
+      buyerEmail: contractData.buyerEmail || '',
+      buyerPhone: contractData.buyerPhone || '',
+      buyerGender: contractData.buyerGender || 'nam',
+      buyerCccd: contractData.buyerCitizenId || '',
       customRates: [],
-      selectedNNTXPackage: '',
-      tinhTrang: 'cap_moi'
+      selectedNNTXPackage: selectedNNTXPackage,
+      tinhTrang: 'cap_moi',
+
+      // Calculated fee fields (initialized from contract)
+      phiVatChatGoc: contractData.vatChatPackage.phiVatChatGoc || contractData.vatChatPackage.phiVatChat,
+      phiTruocKhiGiam: contractData.phiTruocKhiGiam || contractData.tongPhi,
+      phiSauKhiGiam: contractData.phiSauKhiGiam || contractData.tongPhi,
+      totalAmount: contractData.tongPhi
     });
 
     // Initialize car data if available
@@ -475,11 +517,26 @@ export default function EditContractPage() {
 
   // Handle recalculate
   const handleRecalculate = () => {
-    setTimeout(() => {
-      calculateEnhanced(formData);
-    }, 50);
-  };
+    const { result, packages } = calculateRates(formData);
 
+    if (result && packages) {
+      // Preserve the currently selected package index if still valid
+      const currentIndex = formData.selectedPackageIndex;
+      const isCurrentPackageValid = currentIndex < packages.length && packages[currentIndex].available;
+      const selectedIndex = isCurrentPackageValid ? currentIndex : 0;
+
+      setFormData(prev => ({
+        ...prev,
+        selectedPackageIndex: selectedIndex,
+        customRates: result?.finalRates.map(r => r || 0) || []
+      }));
+
+      // Recalculate enhanced result with new rates
+      setTimeout(() => {
+        calculateEnhanced({ ...formData, selectedPackageIndex: selectedIndex });
+      }, 50);
+    }
+  };
 
   const totalAmount = enhancedResult ? enhancedResult.grandTotal : calculateTotal(formData);
 
@@ -721,10 +778,10 @@ export default function EditContractPage() {
                 <BuyerInfoForm
                   formData={{
                     chuXe: formData.chuXe,
-                    buyerEmail: formData.buyerEmail,
-                    buyerPhone: formData.buyerPhone,
-                    buyerGender: formData.buyerGender,
-                    buyerCitizenId: formData.buyerCccd,
+                    email: formData.email,
+                    soDienThoai: formData.soDienThoai,
+                    cccd: formData.cccd,
+                    gioiTinh: formData.gioiTinh,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,
@@ -765,7 +822,7 @@ export default function EditContractPage() {
                   onAcceptSuggestion={acceptSuggestedCar}
                   onCalculateRates={handleRecalculate}
                   onVehicleDataChange={handleVehicleDataChange}
-                  hideCalculateButton={true}
+                  hideCalculateButton={false}
                 />
               </div>
 
@@ -787,6 +844,7 @@ export default function EditContractPage() {
                     onRecalculate={handleRecalculate}
                     onNNTXFeeChange={handleNNTXFeeChange}
                     onCustomRateChange={handleCustomRateChange}
+                    initialCustomRate={customRate}
                     submitButtonText={initializingCarData ? "Đang tải dữ liệu xe..." : "Cập nhật hợp đồng"}
                   />
                 </div>

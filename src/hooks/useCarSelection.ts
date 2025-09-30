@@ -322,21 +322,23 @@ export default function useCarSelection(props?: UseCarSelectionProps) {
         throw new Error('Failed to load car details');
       }
 
-      // Step 3: Set all data at once
-      const updatedCarData = {
-        ...carData,
-        selectedBrand: contractData.carBrand!,
-        selectedModel: contractData.carModel!,
-        selectedBodyStyle: contractData.carBodyStyle || '',
-        selectedYear: contractData.carYear || '',
-        availableModels: modelsResult.data,
-        availableBodyStyles: detailsResult.data.bodyStyles || [],
-        availableYears: detailsResult.data.years || [],
-        isLoadingModels: false,
-        isLoadingDetails: false
-      };
-      setCarData(updatedCarData);
-      notifyVehicleDataChange(updatedCarData);
+      // Step 3: Set all data at once (preserve availableBrands)
+      setCarData(prev => {
+        const updatedCarData = {
+          ...prev, // Preserve availableBrands and other existing data
+          selectedBrand: contractData.carBrand!,
+          selectedModel: contractData.carModel!,
+          selectedBodyStyle: contractData.carBodyStyle || '',
+          selectedYear: contractData.carYear || '',
+          availableModels: modelsResult.data,
+          availableBodyStyles: detailsResult.data.bodyStyles || [],
+          availableYears: detailsResult.data.years || [],
+          isLoadingModels: false,
+          isLoadingDetails: false
+        };
+        notifyVehicleDataChange(updatedCarData);
+        return updatedCarData;
+      });
 
     } catch (error) {
       console.error('Error initializing car data from contract:', error);

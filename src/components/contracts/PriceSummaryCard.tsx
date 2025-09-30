@@ -29,22 +29,24 @@ interface PriceSummaryCardProps {
   showSubmitButton?: boolean;
   availablePackages?: PackageOption[];
   onCustomRateChange?: (customRate: number | null, isModified: boolean) => void;
+  initialCustomRate?: number | null;
 }
 
-export default function PriceSummaryCard({ 
+export default function PriceSummaryCard({
   enhancedResult,
-  formData, 
+  formData,
   totalAmount,
   nntxFee,
-  loading, 
+  loading,
   onSubmit,
   submitButtonText = "Tạo Hợp đồng",
   showSubmitButton = true,
   availablePackages,
-  onCustomRateChange
+  onCustomRateChange,
+  initialCustomRate = null
 }: PriceSummaryCardProps) {
-  // Track user-modified percentage (only set when manually changed)
-  const [userModifiedPercentage, setUserModifiedPercentage] = useState<number | null>(null);
+  // Track user-modified percentage (initialize with contract's custom rate if available)
+  const [userModifiedPercentage, setUserModifiedPercentage] = useState<number | null>(initialCustomRate);
 
   // Calculate original and effective rates with fallback to availablePackages
   const originalRate = enhancedResult?.customRates?.[formData.selectedPackageIndex] ?? 
