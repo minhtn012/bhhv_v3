@@ -72,27 +72,40 @@ export const ContractSchema = z.object({
     .min(1, 'Địa chỉ là bắt buộc')
     .max(500, 'Địa chỉ không được vượt quá 500 ký tự'),
 
-  // Buyer information (optional fields)
+  // Buyer information (optional fields - transform empty strings to undefined)
   buyerEmail: z.string()
-    .email('Email không hợp lệ')
-    .optional(),
+    .transform((val) => val === '' ? undefined : val)
+    .pipe(z.string().email('Email không hợp lệ').optional()),
 
   buyerPhone: z.string()
-    .min(10, 'Số điện thoại phải có 10 chữ số')
-    .max(10, 'Số điện thoại phải có 10 chữ số')
-    .optional(),
+    .transform((val) => val === '' ? undefined : val)
+    .pipe(z.string()
+      .regex(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số')
+      .optional()),
 
   buyerGender: GenderSchema.optional(),
 
   buyerCitizenId: z.string()
-    .regex(/^[0-9]{12}$/, 'CCCD phải có đúng 12 chữ số')
-    .optional(),
+    .transform((val) => val === '' ? undefined : val)
+    .pipe(z.string()
+      .regex(/^[0-9]{12}$/, 'CCCD phải có đúng 12 chữ số')
+      .optional()),
 
-  selectedProvince: z.string().optional(),
-  selectedProvinceText: z.string().optional(),
-  selectedDistrictWard: z.string().optional(),
-  selectedDistrictWardText: z.string().optional(),
-  specificAddress: z.string().optional(),
+  selectedProvince: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  selectedProvinceText: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  selectedDistrictWard: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  selectedDistrictWardText: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  specificAddress: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
 
   // Vehicle information
   bienSo: z.string()

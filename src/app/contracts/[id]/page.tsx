@@ -121,6 +121,10 @@ export default function ContractDetailPage() {
   const [bhvCredentialsError, setBhvCredentialsError] = useState('');
   const [showBhvContractDateModal, setShowBhvContractDateModal] = useState(false);
   const [showContractTypeModal, setShowContractTypeModal] = useState(false);
+  const [validationError, setValidationError] = useState<{
+    message: string;
+    missingFields?: string[];
+  } | null>(null);
   
   const router = useRouter();
   const params = useParams();
@@ -174,22 +178,35 @@ export default function ContractDetailPage() {
     if (!contract) return;
 
     setActionLoading(true);
+    setValidationError(null);
     try {
       const response = await fetch(`/api/contracts/${contractId}/change-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           status: status,
-          note: note 
+          note: note
         })
       });
 
       if (response.ok) {
         await fetchContract(); // Refresh contract data
         setShowStatusModal(false);
+        setValidationError(null);
       } else {
         const errorData = await response.json();
-        setError(errorData.error || 'Lỗi khi thay đổi trạng thái');
+
+        // Check if this is a validation error
+        if (errorData.missingFields && errorData.missingFields.length > 0) {
+          setValidationError({
+            message: errorData.message || 'Thiếu thông tin bắt buộc',
+            missingFields: errorData.missingFields
+          });
+          // Keep modal open to show validation error
+        } else {
+          setError(errorData.error || 'Lỗi khi thay đổi trạng thái');
+          setShowStatusModal(false);
+        }
       }
     } catch (error) {
       console.error('Status change error:', error);
@@ -436,10 +453,14 @@ export default function ContractDetailPage() {
         contract={contract}
         currentUser={currentUser}
         isVisible={showStatusModal}
-        onClose={() => setShowStatusModal(false)}
+        onClose={() => {
+          setShowStatusModal(false);
+          setValidationError(null);
+        }}
         onStatusChange={handleStatusChange}
         actionLoading={actionLoading}
         getAvailableStatusTransitions={getAvailableStatusTransitions}
+        validationError={validationError}
       />
 
       <QuoteModal

@@ -37,23 +37,26 @@ export default function useFormValidation() {
     // Customer/Owner Information (consolidated)
     chuXe: Yup.string().required('Vui lòng nhập họ và tên'),
     email: Yup.string()
+      .transform((value) => value === '' ? undefined : value)
       .email('Vui lòng nhập email hợp lệ')
-      .required('Vui lòng nhập email'),
+      .notRequired(),
     soDienThoai: Yup.string()
+      .transform((value) => value === '' ? undefined : value)
       .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
-      .required('Vui lòng nhập số điện thoại'),
+      .notRequired(),
     cccd: Yup.string()
+      .transform((value) => value === '' ? undefined : value)
       .matches(/^[0-9]{12}$/, 'Căn cước công dân phải có đúng 12 chữ số')
-      .required('Vui lòng nhập căn cước công dân'),
+      .notRequired(),
     gioiTinh: Yup.mixed<'nam' | 'nu' | 'khac'>().oneOf(['nam', 'nu', 'khac']).required('Vui lòng chọn giới tính'),
     userType: Yup.mixed<'ca_nhan' | 'cong_ty'>().oneOf(['ca_nhan', 'cong_ty']).required('Vui lòng chọn loại khách hàng'),
-    
-    // Address Structure (actual form fields)
-    selectedProvince: Yup.string().required('Vui lòng chọn tỉnh/thành phố'),
-    selectedProvinceText: Yup.string(),
-    selectedDistrictWard: Yup.string().required('Vui lòng chọn quận/huyện/xã'),
-    selectedDistrictWardText: Yup.string(),
-    specificAddress: Yup.string().required('Vui lòng nhập địa chỉ cụ thể'),
+
+    // Address Structure (actual form fields) - now optional
+    selectedProvince: Yup.string().notRequired(),
+    selectedProvinceText: Yup.string().notRequired(),
+    selectedDistrictWard: Yup.string().notRequired(),
+    selectedDistrictWardText: Yup.string().notRequired(),
+    specificAddress: Yup.string().notRequired(),
     
     // Buyer fields removed - consolidated into customer fields above
     

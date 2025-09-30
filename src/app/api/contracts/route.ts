@@ -84,6 +84,15 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = requireAuth(request);
+
+    // Only regular users can create contracts, admins cannot
+    if (user.role === 'admin') {
+      return NextResponse.json(
+        { error: 'Admin không có quyền tạo hợp đồng mới. Chỉ user thường mới có thể tạo hợp đồng.' },
+        { status: 403 }
+      );
+    }
+
     await connectToDatabase();
 
     const body = await request.json();

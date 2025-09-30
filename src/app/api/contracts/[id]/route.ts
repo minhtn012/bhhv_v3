@@ -74,10 +74,10 @@ export async function PUT(
       );
     }
 
-    // Chỉ có thể sửa khi ở trạng thái 'nhap'
+    // Chỉ có thể sửa khi ở trạng thái 'nhap' hoặc 'cho_duyet'
     if (!contract.canEdit()) {
       return NextResponse.json(
-        { error: 'Chỉ có thể chỉnh sửa hợp đồng ở trạng thái nháp' },
+        { error: 'Chỉ có thể chỉnh sửa hợp đồng ở trạng thái "Nháp" hoặc "Chờ duyệt"' },
         { status: 400 }
       );
     }
@@ -221,10 +221,10 @@ export async function DELETE(
       );
     }
 
-    // Chỉ có thể xóa khi ở trạng thái 'nhap'
+    // Chỉ có thể xóa khi ở trạng thái 'nhap' hoặc 'cho_duyet'
     if (!contract.canEdit()) {
       return NextResponse.json(
-        { error: 'Chỉ có thể xóa hợp đồng ở trạng thái nháp' },
+        { error: 'Chỉ có thể xóa hợp đồng ở trạng thái "Nháp" hoặc "Chờ duyệt"' },
         { status: 400 }
       );
     }

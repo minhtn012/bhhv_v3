@@ -628,11 +628,11 @@ export default function EditContractPage() {
       const updateData = {
         chuXe: formData.chuXe,
         diaChi: formData.diaChi,
-        // Buyer information
-        buyerEmail: formData.buyerEmail,
-        buyerPhone: formData.buyerPhone,
-        buyerGender: formData.buyerGender,
-        buyerCitizenId: formData.buyerCccd,
+        // Buyer information (mapped from form fields)
+        buyerEmail: formData.email,
+        buyerPhone: formData.soDienThoai,
+        buyerGender: formData.gioiTinh,
+        buyerCitizenId: formData.cccd,
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
         selectedDistrictWard: formData.selectedDistrictWard,
@@ -727,12 +727,12 @@ export default function EditContractPage() {
     );
   }
 
-  if (contract.status !== 'nhap') {
+  if (contract.status !== 'nhap' && contract.status !== 'cho_duyet') {
     return (
       <DashboardLayout>
         <div className="p-4 lg:p-6">
           <div className="text-center text-gray-400">
-            <p>Chỉ có thể chỉnh sửa hợp đồng ở trạng thái nháp</p>
+            <p>Chỉ có thể chỉnh sửa hợp đồng ở trạng thái "Nháp" hoặc "Chờ duyệt"</p>
             <button
               onClick={() => router.push(`/contracts/${contractId}`)}
               className="mt-4 text-blue-400 hover:text-blue-300"

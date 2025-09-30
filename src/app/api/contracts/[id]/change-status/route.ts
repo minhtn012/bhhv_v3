@@ -48,6 +48,41 @@ export async function POST(
       );
     }
 
+    // Validate required fields when changing to khach_duyet
+    if (status === 'khach_duyet') {
+      const missingFields: string[] = [];
+
+      if (!contract.buyerEmail || contract.buyerEmail.trim() === '') {
+        missingFields.push('Email');
+      }
+      if (!contract.buyerPhone || contract.buyerPhone.trim() === '') {
+        missingFields.push('Số điện thoại');
+      }
+      if (!contract.buyerCitizenId || contract.buyerCitizenId.trim() === '') {
+        missingFields.push('Căn cước công dân');
+      }
+      if (!contract.selectedProvince || contract.selectedProvince.trim() === '') {
+        missingFields.push('Tỉnh/Thành phố');
+      }
+      if (!contract.selectedDistrictWard || contract.selectedDistrictWard.trim() === '') {
+        missingFields.push('Quận/Huyện/Xã');
+      }
+      if (!contract.specificAddress || contract.specificAddress.trim() === '') {
+        missingFields.push('Địa chỉ cụ thể');
+      }
+
+      if (missingFields.length > 0) {
+        return NextResponse.json(
+          {
+            error: 'Thiếu thông tin bắt buộc',
+            missingFields: missingFields,
+            message: `Vui lòng cập nhật đầy đủ thông tin trước khi chuyển sang trạng thái "Khách đã duyệt". Các trường còn thiếu: ${missingFields.join(', ')}`
+          },
+          { status: 400 }
+        );
+      }
+    }
+
     // Thay đổi trạng thái
     const oldStatus = contract.status;
     contract.status = status;

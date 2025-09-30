@@ -193,12 +193,14 @@ export default function ContractsPage() {
                     {isDeleting ? 'Đang xóa...' : `Xóa ${getSelectedCount()} HĐ`}
                   </button>
                 )}
-                <button
-                  onClick={() => router.push('/contracts/new')}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 w-full sm:w-auto"
-                >
-                  Tạo báo giá mới
-                </button>
+                {currentUser?.role === 'user' && (
+                  <button
+                    onClick={() => router.push('/contracts/new')}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 w-full sm:w-auto"
+                  >
+                    Tạo báo giá mới
+                  </button>
+                )}
               </div>
             </div>
 
@@ -246,13 +248,17 @@ export default function ContractsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <p className="text-lg font-medium">Chưa có hợp đồng nào</p>
-                <p className="mt-2 text-sm">Bắt đầu bằng cách tạo báo giá mới cho khách hàng</p>
-                <button
-                  onClick={() => router.push('/contracts/new')}
-                  className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200"
-                >
-                  Tạo báo giá đầu tiên
-                </button>
+                {currentUser?.role === 'user' && (
+                  <>
+                    <p className="mt-2 text-sm">Bắt đầu bằng cách tạo báo giá mới cho khách hàng</p>
+                    <button
+                      onClick={() => router.push('/contracts/new')}
+                      className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200"
+                    >
+                      Tạo báo giá đầu tiên
+                    </button>
+                  </>
+                )}
               </div>
             ) : (
               <>

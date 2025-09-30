@@ -109,50 +109,40 @@ export default function BuyerInfoForm({
   const handleNext = async () => {
     // Basic validation for required fields
     const errors: Record<string, string> = {};
-    
-    // Validate name (chuXe)
+
+    // Validate name (chuXe) - ONLY REQUIRED FIELD
     if (!formData.chuXe || formData.chuXe.trim().length === 0) {
       errors.chuXe = 'Vui lòng nhập họ và tên';
     } else if (formData.chuXe.trim().length < 2) {
       errors.chuXe = 'Họ và tên phải có ít nhất 2 ký tự';
     }
-    
-    if (!formData.email) {
-      errors.email = 'Vui lòng nhập email';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+
+    // Optional: Validate email format if provided
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = 'Vui lòng nhập email hợp lệ';
     }
-    
-    if (!formData.soDienThoai) {
-      errors.soDienThoai = 'Vui lòng nhập số điện thoại';
-    } else if (!/^(0[3-9])[0-9]{8}$/.test(formData.soDienThoai)) {
+
+    // Optional: Validate phone format if provided
+    if (formData.soDienThoai && !/^(0[3-9])[0-9]{8}$/.test(formData.soDienThoai)) {
       errors.soDienThoai = 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09';
     }
-    
-    if (!formData.cccd) {
-      errors.cccd = 'Vui lòng nhập căn cước công dân';
-    } else if (!/^[0-9]{12}$/.test(formData.cccd)) {
+
+    // Optional: Validate CCCD format if provided
+    if (formData.cccd && !/^[0-9]{12}$/.test(formData.cccd)) {
       errors.cccd = 'Căn cước công dân phải có đúng 12 chữ số';
     }
-    
-    if (!formData.selectedProvince) {
-      errors.selectedProvince = 'Vui lòng chọn tỉnh/thành phố';
+
+    // Optional: Validate address length if provided
+    if (formData.specificAddress && formData.specificAddress.trim().length > 0 && formData.specificAddress.trim().length < 10) {
+      errors.specificAddress = 'Địa chỉ cụ thể phải có ít nhất 10 ký tự';
     }
-    
-    if (!formData.selectedDistrictWard) {
-      errors.selectedDistrictWard = 'Vui lòng chọn quận/huyện/xã';
-    }
-    
-    if (!formData.specificAddress || formData.specificAddress.trim().length < 10) {
-      errors.specificAddress = 'Vui lòng nhập địa chỉ cụ thể (ít nhất 10 ký tự)';
-    }
-    
+
     // If there are validation errors, don't proceed
     if (Object.keys(errors).length > 0) {
       setLocalErrors(errors);
       return;
     }
-    
+
     // Clear errors if validation passes
     setLocalErrors({});
     onNext();
@@ -182,16 +172,15 @@ export default function BuyerInfoForm({
 
         {/* Email */}
         <div>
-          <label className="block text-white font-medium mb-2">Email *</label>
-          <input 
-            type="email" 
+          <label className="block text-white font-medium mb-2">Email</label>
+          <input
+            type="email"
             value={formData.email}
             onChange={(e) => onFormInputChange('email', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               combinedErrors.email ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="email@example.com"
-            required
           />
           <FieldError fieldName="email" errors={combinedErrors} />
         </div>
@@ -211,7 +200,7 @@ export default function BuyerInfoForm({
 
         {/* Số điện thoại */}
         <div>
-          <label className="block text-white font-medium mb-2">Số điện thoại *</label>
+          <label className="block text-white font-medium mb-2">Số điện thoại</label>
           <input
             type="tel"
             value={formData.soDienThoai}
@@ -220,16 +209,15 @@ export default function BuyerInfoForm({
               combinedErrors.soDienThoai ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="0123456789"
-            required
           />
           <FieldError fieldName="soDienThoai" errors={combinedErrors} />
         </div>
 
         {/* Số căn cước công dân */}
         <div>
-          <label className="block text-white font-medium mb-2">Căn cước công dân *</label>
-          <input 
-            type="text" 
+          <label className="block text-white font-medium mb-2">Căn cước công dân</label>
+          <input
+            type="text"
             value={formData.cccd}
             onChange={(e) => onFormInputChange('cccd', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -237,19 +225,18 @@ export default function BuyerInfoForm({
             }`}
             placeholder="123456789012"
             maxLength={12}
-            required
           />
           <FieldError fieldName="cccd" errors={combinedErrors} />
         </div>
 
         {/* Tỉnh/Thành phố */}
         <div>
-          <label className="block text-white font-medium mb-2">Tỉnh/Thành phố *</label>
+          <label className="block text-white font-medium mb-2">Tỉnh/Thành phố</label>
           <div className={`${combinedErrors.selectedProvince ? 'border border-red-500 rounded-xl' : ''}`}>
             <SearchableSelect
-              options={provinces.map(province => ({ 
-                id: province.province_code, 
-                name: province.province_name 
+              options={provinces.map(province => ({
+                id: province.province_code,
+                name: province.province_name
               }))}
               value={formData.selectedProvinceText}
               onChange={(value) => {
@@ -261,7 +248,6 @@ export default function BuyerInfoForm({
               placeholder="Chọn tỉnh/thành phố"
               loading={loadingProvinces}
               disabled={loadingProvinces}
-              required
             />
           </div>
           {loadingProvinces && (
@@ -278,12 +264,12 @@ export default function BuyerInfoForm({
 
         {/* Quận/Huyện/Xã */}
         <div>
-          <label className="block text-white font-medium mb-2">Quận/Huyện/Xã *</label>
+          <label className="block text-white font-medium mb-2">Quận/Huyện/Xã</label>
           <div className={`${combinedErrors.selectedDistrictWard ? 'border border-red-500 rounded-xl' : ''}`}>
             <SearchableSelect
-              options={districtsWards.map(district => ({ 
-                id: district.id, 
-                name: district.name 
+              options={districtsWards.map(district => ({
+                id: district.id,
+                name: district.name
               }))}
               value={formData.selectedDistrictWardText}
               onChange={(value) => {
@@ -295,7 +281,6 @@ export default function BuyerInfoForm({
               placeholder="Chọn quận/huyện/xã"
               loading={loadingDistrictsWards}
               disabled={!formData.selectedProvince || loadingDistrictsWards}
-              required
             />
           </div>
           {loadingDistrictsWards && (
@@ -312,15 +297,14 @@ export default function BuyerInfoForm({
 
         {/* Địa chỉ cụ thể */}
         <div className="lg:col-span-3">
-          <label className="block text-white font-medium mb-2">Địa chỉ cụ thể *</label>
-          <textarea 
+          <label className="block text-white font-medium mb-2">Địa chỉ cụ thể</label>
+          <textarea
             value={formData.specificAddress}
             onChange={(e) => onFormInputChange('specificAddress', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white h-20 resize-none min-h-[80px] ${
               combinedErrors.specificAddress ? 'border-red-500' : 'border-slate-500/30'
             }`}
             placeholder="Số nhà, tên đường, khu vực..."
-            required
           />
           <FieldError fieldName="specificAddress" errors={combinedErrors} />
         </div>

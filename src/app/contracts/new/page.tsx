@@ -67,11 +67,19 @@ export default function NewContractPage() {
   // Form validation hook
   const { fieldErrors, validateForm } = useFormValidation();
 
-  // Check authentication
+  // Check authentication and role
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (!userData || !JSON.parse(userData).isLoggedIn) {
       router.push('/');
+      return;
+    }
+
+    const user = JSON.parse(userData);
+    // Block admin users from creating contracts
+    if (user.role === 'admin') {
+      router.push('/contracts');
+      return;
     }
   }, [router]);
 

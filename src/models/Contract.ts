@@ -539,7 +539,7 @@ contractSchema.statics.getStatusText = function(status: string): string {
 
 // Instance method để kiểm tra có thể chỉnh sửa không
 contractSchema.methods.canEdit = function(): boolean {
-  return this.status === 'nhap';
+  return this.status === 'nhap' || this.status === 'cho_duyet';
 };
 
 // Instance method để kiểm tra có thể thay đổi trạng thái không
@@ -562,5 +562,10 @@ contractSchema.methods.canChangeStatus = function(newStatus: string, userRole: s
       return false;
   }
 };
+
+// Delete cached model in development to pick up schema changes
+if (process.env.NODE_ENV === 'development' && mongoose.models.Contract) {
+  delete mongoose.models.Contract;
+}
 
 export default mongoose.models.Contract || mongoose.model<IContract>('Contract', contractSchema);
