@@ -22,17 +22,54 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      if (parsedUser.isLoggedIn) {
-        setUser(parsedUser);
-      } else {
+    // Validate authentication with server
+    const validateAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include' // Include cookies
+        });
+
+        if (!response.ok) {
+          // Token invalid or expired
+          localStorage.removeItem('user');
+          router.push('/');
+          return;
+        }
+
+        const data = await response.json();
+
+        // Update user state from server response
+        setUser(data.user);
+
+        // Also update localStorage for quick UI rendering on refresh
+        localStorage.setItem('user', JSON.stringify({
+          ...data.user,
+          isLoggedIn: true
+        }));
+      } catch (error) {
+        console.error('Auth validation error:', error);
+        localStorage.removeItem('user');
         router.push('/');
       }
-    } else {
-      router.push('/');
+    };
+
+    // Quick check: if we have cached data, render immediately
+    // But still validate with server in background
+    const cachedUser = localStorage.getItem('user');
+    if (cachedUser) {
+      try {
+        const parsed = JSON.parse(cachedUser);
+        if (parsed.isLoggedIn) {
+          setUser(parsed); // Render immediately with cached data
+        }
+      } catch (e) {
+        // Invalid cached data
+        localStorage.removeItem('user');
+      }
     }
+
+    // Always validate with server
+    validateAuth();
   }, [router]);
 
   const handleLogout = async () => {

@@ -13,6 +13,9 @@ export interface IUser extends Document {
   bhvPassword?: string; // encrypted
   bhvConnectedAt?: Date;
   bhvStatus?: 'connected' | 'disconnected';
+  // Refresh token for session management
+  refreshToken?: string;
+  refreshTokenExpiry?: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -39,7 +42,18 @@ const userSchema = new Schema<IUser>({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters long']
+    minlength: [12, 'Password must be at least 12 characters long'],
+    validate: {
+      validator: function(v: string) {
+        // Require at least: 1 uppercase, 1 lowercase, 1 number, 1 special char
+        const hasUpperCase = /[A-Z]/.test(v);
+        const hasLowerCase = /[a-z]/.test(v);
+        const hasNumber = /[0-9]/.test(v);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(v);
+        return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+      },
+      message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    }
   },
   role: {
     type: String,
@@ -67,6 +81,15 @@ const userSchema = new Schema<IUser>({
   bhvStatus: {
     type: String,
     enum: ['connected', 'disconnected'],
+    required: false
+  },
+  // Refresh token for authentication
+  refreshToken: {
+    type: String,
+    required: false
+  },
+  refreshTokenExpiry: {
+    type: Date,
     required: false
   }
 }, {

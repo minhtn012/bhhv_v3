@@ -130,6 +130,7 @@ const contractSchema = new Schema<IContract>({
     type: String,
     required: true,
     unique: true,
+    index: true, // Index for fast lookup
     default: function() {
       const now = new Date();
       const year = now.getFullYear();
@@ -195,7 +196,8 @@ const contractSchema = new Schema<IContract>({
     type: String,
     required: [true, 'Biển số xe là bắt buộc'],
     trim: true,
-    uppercase: true
+    uppercase: true,
+    index: true // Index for searching by license plate
   },
   nhanHieu: {
     type: String,
@@ -395,7 +397,8 @@ const contractSchema = new Schema<IContract>({
   status: {
     type: String,
     enum: ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong', 'huy'],
-    default: 'nhap'
+    default: 'nhap',
+    index: true // Index for filtering by status
   },
   
   // File đính kèm
@@ -425,7 +428,8 @@ const contractSchema = new Schema<IContract>({
   // Metadata
   createdBy: {
     type: String,
-    required: [true, 'ID người tạo là bắt buộc']
+    required: [true, 'ID người tạo là bắt buộc'],
+    index: true // Index for querying contracts by user
   },
   
   // Lịch sử thay đổi trạng thái
@@ -507,6 +511,11 @@ const contractSchema = new Schema<IContract>({
 }, {
   timestamps: true
 });
+
+// Compound indexes for common queries
+contractSchema.index({ status: 1, createdBy: 1 }); // Filter by status and user
+contractSchema.index({ createdAt: -1 }); // Sort by creation date (descending)
+contractSchema.index({ status: 1, createdAt: -1 }); // Filter by status, sort by date
 
 
 // Middleware để tự động thêm vào statusHistory khi thay đổi trạng thái

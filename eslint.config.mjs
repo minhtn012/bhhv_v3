@@ -18,6 +18,8 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "scripts/**", // Utility scripts use CommonJS
+      "jest.config.js", // Jest config uses CommonJS
     ],
   },
 ];
