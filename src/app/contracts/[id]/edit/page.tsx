@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import {
   parseCurrency,
@@ -185,7 +185,9 @@ export default function EditContractPage() {
   
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const contractId = params.id as string;
+  const changeStatusTo = searchParams.get('change_status');
   
   // Handle vehicle data changes from car selection
   const handleVehicleDataChange = (vehicleData: { tenXe: string; nhanHieu: string; soLoai: string; kieuDang: string; namPhienBan: string }) => {
@@ -686,7 +688,40 @@ export default function EditContractPage() {
       });
 
       if (response.ok) {
-        router.push(`/contracts/${contractId}`);
+        // If change_status parameter exists, automatically change status
+        if (changeStatusTo) {
+          try {
+            const statusResponse = await fetch(`/api/contracts/${contractId}/change-status`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                status: changeStatusTo,
+                note: 'Tự động chuyển trạng thái sau khi cập nhật thông tin đầy đủ'
+              })
+            });
+
+            if (statusResponse.ok) {
+              // Status changed successfully, redirect to detail page
+              router.push(`/contracts/${contractId}`);
+            } else {
+              const statusErrorData = await statusResponse.json();
+              setError(`Cập nhật thành công nhưng không thể chuyển trạng thái: ${statusErrorData.error}`);
+              // Still redirect after showing error briefly
+              setTimeout(() => {
+                router.push(`/contracts/${contractId}`);
+              }, 2000);
+            }
+          } catch (statusError) {
+            console.error('Status change error:', statusError);
+            setError('Cập nhật thành công nhưng không thể chuyển trạng thái');
+            setTimeout(() => {
+              router.push(`/contracts/${contractId}`);
+            }, 2000);
+          }
+        } else {
+          // No status change needed, just redirect
+          router.push(`/contracts/${contractId}`);
+        }
       } else {
         const errorData = await response.json();
         setError(errorData.error || 'Lỗi khi cập nhật hợp đồng');
@@ -761,6 +796,22 @@ export default function EditContractPage() {
             <h1 className="text-xl lg:text-2xl font-bold text-white mb-3">
               Chỉnh sửa hợp đồng {contract.contractNumber}
             </h1>
+
+            {changeStatusTo === 'khach_duyet' && (
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-blue-400 font-medium">Vui lòng cập nhật đầy đủ thông tin</p>
+                    <p className="text-blue-300 text-sm mt-1">
+                      Sau khi lưu, hợp đồng sẽ tự động chuyển sang trạng thái "Khách đã duyệt"
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {error && (
@@ -845,7 +896,13 @@ export default function EditContractPage() {
                     onNNTXFeeChange={handleNNTXFeeChange}
                     onCustomRateChange={handleCustomRateChange}
                     initialCustomRate={customRate}
-                    submitButtonText={initializingCarData ? "Đang tải dữ liệu xe..." : "Cập nhật hợp đồng"}
+                    submitButtonText={
+                      initializingCarData
+                        ? "Đang tải dữ liệu xe..."
+                        : changeStatusTo === 'khach_duyet'
+                          ? "Cập nhật & Chuyển sang Khách đã duyệt"
+                          : "Cập nhật hợp đồng"
+                    }
                   />
                 </div>
               )}

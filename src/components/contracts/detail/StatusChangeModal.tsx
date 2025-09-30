@@ -63,7 +63,7 @@ export default function StatusChangeModal({
   };
 
   const handleGoToEdit = () => {
-    router.push(`/contracts/${contract._id}/edit`);
+    router.push(`/contracts/${contract._id}/edit?change_status=khach_duyet`);
   };
 
   if (!isVisible) return null;
