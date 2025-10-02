@@ -322,6 +322,13 @@ export class BhvApiClient {
     const startTime = Date.now();
 
     try {
+      // Log to console for immediate visibility
+      console.log('📤 BHV API Request:', {
+        action: requestData.action_name,
+        hasCookie: !!cookie,
+        payloadSize: `${(JSON.stringify(requestData).length / 1024).toFixed(2)}KB`,
+      });
+
       // Log full request for debugging
       logger.info('BHV API - Sending Request', {
         endpoint: this.BHV_ENDPOINT,
@@ -360,6 +367,14 @@ export class BhvApiClient {
 
       const responseData = await response.json();
 
+      // Log to console for immediate visibility
+      console.log('📥 BHV API Response:', {
+        status_code: responseData.status_code,
+        hasData: !!responseData.data,
+        message: responseData.message,
+        duration: `${duration}ms`,
+      });
+
       // Log full response for debugging
       logger.info('BHV API - Response Received', {
         statusCode: responseData.status_code,
@@ -396,13 +411,28 @@ export class BhvApiClient {
 
       // Handle error responses
       if (responseData.status_code && responseData.status_code !== 200) {
+        // Extract error message from BHV response
+        const bhvErrorMessage = responseData.message || responseData.data || 'Unknown error';
+        const errorCode = responseData.data_code || responseData.data;
+
+        // Log to console for immediate visibility (bypass log filters)
+        console.error('❌ BHV API Error:', {
+          status_code: responseData.status_code,
+          message: bhvErrorMessage,
+          error_code: errorCode,
+          full_response: responseData,
+        });
+
         logger.error('BHV API returned non-200 status', {
           statusCode: responseData.status_code,
+          errorMessage: bhvErrorMessage,
+          errorCode: errorCode,
           response: responseData,
         });
+
         return {
           success: false,
-          error: `BHV API error: Status ${responseData.status_code}`,
+          error: `BHV API error: ${bhvErrorMessage} (Status ${responseData.status_code})`,
           rawResponse: responseData
         };
       }

@@ -105,7 +105,11 @@ export function mapVehicleGoal(loaiHinhKinhDoanh: string): string {
 /**
  * Get kind_config based on business type
  */
-export function getKindConfig(loaiHinhKinhDoanh: string): object {
+export function getKindConfig(loaiHinhKinhDoanh: string): {
+  car_goal: "yes" | "no";
+  car_seat: "yes" | "no";
+  car_weigh_goods: "yes" | "no";
+} {
   // For goods transport business (including trucks, trailers, pickup/van)
   if (loaiHinhKinhDoanh === 'kd_cho_hang' ||
       loaiHinhKinhDoanh === 'kd_pickup_van' ||
@@ -365,9 +369,12 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     // Vehicle data
     car_automaker: mapCarAutomaker(contract.carBrand || contract.nhanHieu),
     car_model: mapCarModel(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai),
-    car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh),
-    car_seat: mapCarSeat(contract.soChoNgoi),
-    car_seat_buy: contract.soChoNgoi?.toString(),
+    // Only add passenger fields if kind_config says yes
+    ...(kindConfig.car_goal === "yes" && { car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh) }),
+    ...(kindConfig.car_seat === "yes" && {
+      car_seat: mapCarSeat(contract.soChoNgoi),
+      car_seat_buy: contract.soChoNgoi?.toString()
+    }),
     car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
     car_year: contract.namSanXuat?.toString(),
     car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
@@ -452,12 +459,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
+    // Only add goods transport field if kind_config says yes
+    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
-
-  // Add car_weigh_goods field if applicable
-  if (carWeightGoods) {
-    dataObject.car_weigh_goods = carWeightGoods;
-  }
 
   // Add insurance options
   Object.assign(dataObject, insuranceOptions);
@@ -503,9 +507,12 @@ export function transformContractToBhvFormat(contract: any): any {
     // Vehicle data
     car_automaker: mapCarAutomaker(contract.carBrand || contract.nhanHieu),
     car_model: mapCarModel(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai),
-    car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh),
-    car_seat: mapCarSeat(contract.soChoNgoi),
-    car_seat_buy: contract.soChoNgoi?.toString(),
+    // Only add passenger fields if kind_config says yes
+    ...(kindConfig.car_goal === "yes" && { car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh) }),
+    ...(kindConfig.car_seat === "yes" && {
+      car_seat: mapCarSeat(contract.soChoNgoi),
+      car_seat_buy: contract.soChoNgoi?.toString()
+    }),
     car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
     car_year: contract.namSanXuat?.toString(),
     car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
@@ -590,12 +597,9 @@ export function transformContractToBhvFormat(contract: any): any {
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
+    // Only add goods transport field if kind_config says yes
+    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
-
-  // Add car_weigh_goods field if applicable
-  if (carWeightGoods) {
-    dataObject.car_weigh_goods = carWeightGoods;
-  }
 
   // Add insurance options
   Object.assign(dataObject, insuranceOptions);
