@@ -110,10 +110,19 @@ export function getKindConfig(loaiHinhKinhDoanh: string): {
   car_seat: "yes" | "no";
   car_weigh_goods: "yes" | "no";
 } {
-  // For goods transport business (including trucks, trailers, pickup/van)
-  if (loaiHinhKinhDoanh === 'kd_cho_hang' ||
-      loaiHinhKinhDoanh === 'kd_pickup_van' ||
-      loaiHinhKinhDoanh === 'kd_dau_keo') {
+  // For pickup/van vehicles (hybrid: both passenger and goods capable)
+  // These vehicles can carry both people and goods, so ALL config = "yes"
+  // But only car_goal + car_seat fields are filled, car_weigh_goods stays empty
+  if (loaiHinhKinhDoanh === 'kd_pickup_van' || loaiHinhKinhDoanh === 'khong_kd_pickup_van') {
+    return {
+      car_goal: "yes",
+      car_seat: "yes",
+      car_weigh_goods: "yes"  // Yes in config but field stays empty
+    };
+  }
+
+  // For pure goods transport business (trucks, trailers)
+  if (loaiHinhKinhDoanh === 'kd_cho_hang' || loaiHinhKinhDoanh === 'kd_dau_keo') {
     return {
       car_goal: "no",
       car_seat: "no",
@@ -459,8 +468,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
-    // Only add goods transport field if kind_config says yes
-    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
+    // Only add car_weigh_goods UUID for pure goods transport (not hybrid pickup/van)
+    // Hybrid vehicles have car_seat="yes" and car_weigh_goods="yes" but leave the field empty
+    ...((kindConfig.car_weigh_goods === "yes" && kindConfig.car_seat === "no") && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
 
   // Add insurance options
@@ -597,8 +607,9 @@ export function transformContractToBhvFormat(contract: any): any {
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
-    // Only add goods transport field if kind_config says yes
-    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
+    // Only add car_weigh_goods UUID for pure goods transport (not hybrid pickup/van)
+    // Hybrid vehicles have car_seat="yes" and car_weigh_goods="yes" but leave the field empty
+    ...((kindConfig.car_weigh_goods === "yes" && kindConfig.car_seat === "no") && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
 
   // Add insurance options
