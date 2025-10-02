@@ -4,11 +4,12 @@ import { getStatusText } from '@/utils/contract-status';
 export interface IContract extends Document {
   _id: string;
   contractNumber: string;
-  
+
   // Thông tin khách hàng
   chuXe: string;
   diaChi: string;
-  
+  loaiKhachHang?: 'ca_nhan' | 'cong_ty'; // Loại khách hàng: cá nhân hoặc công ty
+
   // Thông tin người mua (buyer information)
   buyerEmail?: string;
   buyerPhone?: string;
@@ -152,7 +153,12 @@ const contractSchema = new Schema<IContract>({
     required: [true, 'Địa chỉ là bắt buộc'],
     trim: true
   },
-  
+  loaiKhachHang: {
+    type: String,
+    enum: ['ca_nhan', 'cong_ty'],
+    default: 'ca_nhan'
+  },
+
   // Thông tin người mua (buyer information)
   buyerEmail: {
     type: String,

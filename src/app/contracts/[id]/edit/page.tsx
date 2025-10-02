@@ -41,7 +41,8 @@ interface Contract {
   contractNumber: string;
   chuXe: string;
   diaChi: string;
-  
+  loaiKhachHang?: 'ca_nhan' | 'cong_ty';
+
   // Buyer information
   buyerEmail?: string;
   buyerPhone?: string;
@@ -300,7 +301,7 @@ export default function EditContractPage() {
       soDienThoai: contractData.buyerPhone || '',
       cccd: contractData.buyerCitizenId || '',
       gioiTinh: contractData.buyerGender || 'nam',
-      userType: 'ca_nhan',
+      userType: contractData.loaiKhachHang || 'ca_nhan',
 
       // Address Structure (BaseContractFormData)
       diaChi: contractData.diaChi,
@@ -630,6 +631,7 @@ export default function EditContractPage() {
       const updateData = {
         chuXe: formData.chuXe,
         diaChi: formData.diaChi,
+        loaiKhachHang: formData.userType,
         // Buyer information (mapped from form fields)
         buyerEmail: formData.email,
         buyerPhone: formData.soDienThoai,
@@ -833,6 +835,7 @@ export default function EditContractPage() {
                     soDienThoai: formData.soDienThoai,
                     cccd: formData.cccd,
                     gioiTinh: formData.gioiTinh,
+                    userType: formData.userType,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,

@@ -64,8 +64,8 @@ export type VehicleFormData = Pick<BaseContractFormData,
 >;
 
 export type BuyerFormData = Pick<BaseContractFormData,
-  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'gioiTinh' | 
-  'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' | 
+  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'gioiTinh' | 'userType' |
+  'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' |
   'selectedDistrictWardText' | 'specificAddress'
 >;
 

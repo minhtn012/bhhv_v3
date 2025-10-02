@@ -95,6 +95,114 @@ function numberToVietnameseWords(num: number): string {
   return result.trim() + ' đồng';
 }
 
+/**
+ * Format date string to Vietnamese format with numbers in bold
+ * Input: "2025-09-27" or Date object
+ * Output: Object with separated parts for bold formatting
+ */
+function formatVietnameseDateTime(dateInput: string | Date) {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  if (!date || isNaN(date.getTime())) {
+    return {
+      hour: '-',
+      minute: '-',
+      day: '-',
+      month: '-',
+      year: '-',
+      full: '-'
+    };
+  }
+
+  const hour = '08';
+  const minute = '00';
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString();
+
+  const full = `${hour} giờ ${minute} ngày ${day} tháng ${month} năm ${year}`;
+
+  return { hour, minute, day, month, year, full };
+}
+
+/**
+ * Calculate payment deadline based on bhv_confirmed date and customer type
+ */
+function calculatePaymentDeadline(statusHistory: any[], loaiKhachHang?: string): string {
+  if (!statusHistory || statusHistory.length === 0) {
+    return '-';
+  }
+
+  // Find bhv_confirmed status in history
+  const bhvConfirmedEntry = statusHistory.find(entry => entry.status === 'bhv_confirmed');
+
+  if (!bhvConfirmedEntry || !bhvConfirmedEntry.changedAt) {
+    return '-';
+  }
+
+  const confirmedDate = new Date(bhvConfirmedEntry.changedAt);
+
+  // Add days based on customer type
+  const daysToAdd = loaiKhachHang === 'cong_ty' ? 15 : 10;
+
+  const deadlineDate = new Date(confirmedDate);
+  deadlineDate.setDate(deadlineDate.getDate() + daysToAdd);
+
+  const day = deadlineDate.getDate().toString().padStart(2, '0');
+  const month = (deadlineDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = deadlineDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
+/**
+ * Format DKBS array to string
+ */
+function formatDkbs(dkbs?: string[]): string {
+  if (!dkbs || dkbs.length === 0) {
+    return '-';
+  }
+
+  return dkbs.map((item, index) => `${index + 1}. ${item}`).join('\n');
+}
+
+/**
+ * Get NNTX package name from fee amount
+ * Reverse lookup from fee to find the package name
+ */
+async function getNNTXPackageName(phiNNTX: number, soChoNgoi: number, loaiHinhKinhDoanh?: string): Promise<string> {
+  if (!phiNNTX || phiNNTX === 0) {
+    return '-';
+  }
+
+  try {
+    // Import packages data
+    const carPackage = (await import('@db/car_package.json')).default;
+    const isBusinessVehicle = loaiHinhKinhDoanh?.startsWith('kd_') || false;
+
+    // Calculate fee for each package and find matching one
+    for (const pkg of carPackage) {
+      const packagePrice = isBusinessVehicle ? (pkg.price_kd || pkg.price) : pkg.price;
+
+      // Calculate NNTX fee using same logic as insurance-calculator
+      const baseFee = packagePrice;
+      const seatMultiplier = soChoNgoi <= 6 ? 1 : soChoNgoi <= 12 ? 1.5 : 2;
+      const calculatedFee = baseFee * seatMultiplier;
+
+      // Allow small rounding difference
+      if (Math.abs(calculatedFee - phiNNTX) < 1) {
+        return pkg.name;
+      }
+    }
+
+    // If no match found, return the fee amount
+    return `${phiNNTX.toLocaleString('vi-VN')} VNĐ`;
+  } catch (error) {
+    console.error('Error getting NNTX package name:', error);
+    return '-';
+  }
+}
+
 interface ContractData {
   chuXe?: string;
   bienSo?: string;
@@ -118,6 +226,7 @@ interface ContractData {
     customRate?: number;
     isCustomRate?: boolean;
     phiVatChatGoc?: number;
+    dkbs?: string[];
   };
   tongPhiBaoHiem?: number;
   ngayBatDau?: string;
@@ -143,6 +252,17 @@ interface ContractData {
   updatedAt?: string;
   createdBy?: string;
   includeTNDS?: boolean;
+  includeNNTX?: boolean;
+  phiNNTX?: number;
+  loaiKhachHang?: 'ca_nhan' | 'cong_ty';
+  ngayBatDauBaoHiem?: string;
+  ngayKetThucBaoHiem?: string;
+  statusHistory?: Array<{
+    status: string;
+    changedBy: string;
+    changedAt: Date;
+    note?: string;
+  }>;
 }
 
 function getTemplatePath(contractType: string, includeTNDS: boolean): string {
@@ -169,6 +289,11 @@ export async function generateWordContract(contractData: ContractData, contractT
 
   // Get current date for contract generation
   const currentDate = new Date();
+
+  // Get NNTX package name if applicable
+  const trachNhiemBH = contractData.includeNNTX && contractData.phiNNTX
+    ? await getNNTXPackageName(contractData.phiNNTX, contractData.soChoNgoi || 0, contractData.loaiHinhKinhDoanh)
+    : '-';
 
   // Map contract data to template variables
   const templateData = {
@@ -212,6 +337,57 @@ export async function generateWordContract(contractData: ContractData, contractT
     ngayKetThuc: contractData.ngayKetThuc || "-",
     ngayDKLD: contractData.ngayDKLD || "-",
 
+    // Insurance period dates (formatted in Vietnamese)
+    // Full format
+    ngayBatDauBaoHiem: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).full
+      : "-",
+    ngayKetThucBaoHiem: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).full
+      : "-",
+
+    // Start date parts (for bold formatting - numbers only)
+    batDau_Gio: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).hour
+      : "-",
+    batDau_Phut: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).minute
+      : "-",
+    batDau_Ngay: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).day
+      : "-",
+    batDau_Thang: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).month
+      : "-",
+    batDau_Nam: contractData.ngayBatDauBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayBatDauBaoHiem).year
+      : "-",
+
+    // End date parts (for bold formatting - numbers only)
+    ketThuc_Gio: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).hour
+      : "-",
+    ketThuc_Phut: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).minute
+      : "-",
+    ketThuc_Ngay: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).day
+      : "-",
+    ketThuc_Thang: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).month
+      : "-",
+    ketThuc_Nam: contractData.ngayKetThucBaoHiem
+      ? formatVietnameseDateTime(contractData.ngayKetThucBaoHiem).year
+      : "-",
+
+    // Payment deadline calculation
+    paymentDeadline: contractData.statusHistory
+      ? calculatePaymentDeadline(contractData.statusHistory, contractData.loaiKhachHang)
+      : "-",
+
+    // Insurance conditions (DKBS)
+    dkbs: formatDkbs(contractData.vatChatPackage?.dkbs),
+
     // Additional fields as needed based on template structure
     mucKhauTru: contractData.vatChatPackage?.mucKhauTru ? contractData.vatChatPackage.mucKhauTru.toLocaleString('vi-VN') : "500,000",
     soNamSuDung: contractData.soNamSuDung || "-",
@@ -252,13 +428,18 @@ export async function generateWordContract(contractData: ContractData, contractT
     // Bank information for 3-party contracts
     c_bankName: bankInfo?.bankName || "-",
     bankOldAddress: bankInfo?.bankOldAddress || "-",
-    bankNewAddress: bankInfo?.bankNewAddress || "-"
+    bankNewAddress: bankInfo?.bankNewAddress || "-",
+
+    // NNTX package name (Mức trách nhiệm bảo hiểm)
+    trachNhiemBH: trachNhiemBH
   };
 
   const zip = new PizZip(content);
   const doc = new Docxtemplater(zip, {
     paragraphLoop: true,
     linebreaks: true,
+    // Don't throw error on missing tags in template
+    nullGetter: () => '',
   });
 
   doc.render(templateData);

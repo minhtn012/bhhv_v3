@@ -93,6 +93,20 @@ export default function BuyerInfoForm({
     }
   }, [formData.selectedProvince, districtsWards.length, loadDistrictsWards]);
 
+  // Auto-detect company type based on name
+  useEffect(() => {
+    if (formData.chuXe) {
+      const nameLower = formData.chuXe.toLowerCase();
+      const companyKeywords = ['tnhh', 'công ty', 'cong ty', 'cty', 'ctcp', 'cổ phần', 'co phan'];
+
+      const isCompany = companyKeywords.some(keyword => nameLower.includes(keyword));
+
+      if (isCompany && formData.userType !== 'cong_ty') {
+        onFormInputChange('userType', 'cong_ty');
+      }
+    }
+  }, [formData.chuXe, formData.userType, onFormInputChange]);
+
   // Clear local errors when field values change
   useEffect(() => {
     setLocalErrors({});
@@ -153,21 +167,53 @@ export default function BuyerInfoForm({
       <h2 className="text-xl lg:text-lg font-semibold text-white mb-6 lg:mb-4">Thông tin người mua</h2>
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Họ tên (editable, pre-filled from extracted data) */}
-        <div className="lg:col-span-3">
-          <label className="block text-white font-medium mb-2">Họ và tên *</label>
-          <input 
-            type="text" 
-            value={formData.chuXe}
-            onChange={(e) => onFormInputChange('chuXe', e.target.value)}
-            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.chuXe ? 'border-red-500' : 'border-slate-500/30'
-            }`}
-            placeholder="Nhập họ và tên"
-            required
-          />
-          <FieldError fieldName="chuXe" errors={combinedErrors} />
-          <p className="text-xs text-white/50 mt-1">Tự động điền từ thông tin trích xuất, có thể chỉnh sửa</p>
+        {/* Họ tên và Loại khách hàng (same row) */}
+        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Họ tên (editable, pre-filled from extracted data) */}
+          <div>
+            <label className="block text-white font-medium mb-2">Họ và tên *</label>
+            <input
+              type="text"
+              value={formData.chuXe}
+              onChange={(e) => onFormInputChange('chuXe', e.target.value)}
+              className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+                combinedErrors.chuXe ? 'border-red-500' : 'border-slate-500/30'
+              }`}
+              placeholder="Nhập họ và tên"
+              required
+            />
+            <FieldError fieldName="chuXe" errors={combinedErrors} />
+            <p className="text-xs text-white/50 mt-1">Tự động điền từ thông tin trích xuất, có thể chỉnh sửa</p>
+          </div>
+
+          {/* Loại khách hàng */}
+          <div>
+            <label className="block text-white font-medium mb-2">Loại khách hàng *</label>
+            <div className="flex items-center gap-6 h-[48px]">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="ca_nhan"
+                  checked={formData.userType === 'ca_nhan'}
+                  onChange={(e) => onFormInputChange('userType', e.target.value as 'ca_nhan' | 'cong_ty')}
+                  className="w-4 h-4 text-blue-500 bg-slate-700/50 border-slate-500/30 focus:ring-blue-500 focus:ring-2"
+                />
+                <span className="ml-2 text-white">Cá nhân</span>
+              </label>
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="cong_ty"
+                  checked={formData.userType === 'cong_ty'}
+                  onChange={(e) => onFormInputChange('userType', e.target.value as 'ca_nhan' | 'cong_ty')}
+                  className="w-4 h-4 text-blue-500 bg-slate-700/50 border-slate-500/30 focus:ring-blue-500 focus:ring-2"
+                />
+                <span className="ml-2 text-white">Công ty</span>
+              </label>
+            </div>
+          </div>
         </div>
 
         {/* Email */}

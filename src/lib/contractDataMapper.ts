@@ -20,6 +20,7 @@ export interface ContractFormData {
   soDienThoai: string;
   cccd: string;
   gioiTinh: 'nam' | 'nu' | 'khac';
+  userType: 'ca_nhan' | 'cong_ty';
 
   // Address
   diaChi: string;
@@ -94,6 +95,7 @@ export interface ContractPayload {
   // Customer information
   chuXe: string;
   diaChi: string;
+  loaiKhachHang: 'ca_nhan' | 'cong_ty';
 
   // Buyer information
   buyerEmail: string;
@@ -232,6 +234,7 @@ export function transformFormToContract(
     // Customer information
     chuXe: formData.chuXe,
     diaChi: formData.diaChi,
+    loaiKhachHang: formData.userType,
 
     // Buyer information
     buyerEmail: formData.email,
