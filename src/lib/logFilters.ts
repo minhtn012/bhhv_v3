@@ -75,15 +75,8 @@ export function shouldSaveToDatabase(
 
 /**
  * Get log retention period based on level
+ * All logs kept for 7 days
  */
 export function getLogRetentionDays(level: string): number {
-  const retention: Record<string, number> = {
-    error: 90,   // Keep errors for 90 days
-    warn: 30,    // Keep warnings for 30 days
-    info: 7,     // Keep info for 7 days
-    http: 3,     // Keep HTTP logs for 3 days
-    debug: 1,    // Keep debug for 1 day
-  };
-
-  return retention[level] || 7;
+  return 7; // All logs: 7 days retention
 }

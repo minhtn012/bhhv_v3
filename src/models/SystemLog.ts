@@ -63,10 +63,8 @@ const SystemLogSchema = new Schema<ISystemLog>({
   timestamps: true,
 });
 
-// TTL index - auto delete logs based on level
-// Errors: 90 days, Warnings: 30 days, Others: 7 days
-// Note: MongoDB TTL index is set to 90 days max, cleanup job handles the rest
-SystemLogSchema.index({ timestamp: 1 }, { expireAfterSeconds: 90 * 24 * 60 * 60 });
+// TTL index - auto delete logs after 7 days
+SystemLogSchema.index({ timestamp: 1 }, { expireAfterSeconds: 7 * 24 * 60 * 60 });
 
 // Compound indexes for common queries
 SystemLogSchema.index({ level: 1, timestamp: -1 });

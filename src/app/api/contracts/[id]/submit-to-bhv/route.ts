@@ -5,6 +5,7 @@ import { transformContractToBhvFormat } from '@/lib/bhvDataMapper';
 import { bhvApiClient } from '@/lib/bhvApiClient';
 import { logger } from '@/lib/logger';
 import { withApiLogger } from '@/middleware/apiLogger';
+import { bhvLogger } from '@/lib/bhvLogger';
 
 export async function POST(
   request: NextRequest,
@@ -19,6 +20,7 @@ async function postHandler(
 ) {
   const startTime = Date.now();
   let contractId: string | undefined;
+  let bhvLogId: string | null = null;
 
   try {
     await connectToDatabase();
@@ -104,33 +106,53 @@ async function postHandler(
 
     const bhvRequestData = transformContractToBhvFormat(contract);
 
-    // Log FULL request data for debugging/replay
+    // Get IP for tracking
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+      || request.headers.get('x-real-ip')
+      || 'unknown';
+
+    // BHV Logger - Log request before sending
+    bhvLogId = await bhvLogger.logRequest({
+      contractId,
+      contractNumber: (contract as any).contractNumber,
+      requestPayload: bhvRequestData,
+      cookies,
+      userIp: ip,
+    });
+
+    // Legacy general logger
     logger.info('BHV API Request - Full Data', {
       contractId,
       contractNumber: (contract as any).contractNumber,
-      bhvRequestData: bhvRequestData, // Full request payload
-      bhvRequestDataKeys: Object.keys(bhvRequestData),
+      bhvLogId,
       hasCookies: !!cookies,
       cookiePreview: cookies ? `${Object.keys(cookies).join(', ')}` : 'none',
     });
 
     // Submit to BHV API with fresh cookies
-    logger.bhvSubmission(contractId, 'Submitting to BHV API', {
-      endpoint: 'submitContract',
-      hasCookies: !!cookies,
-      requestPayloadSize: `${(JSON.stringify(bhvRequestData).length / 1024).toFixed(2)}KB`,
-    });
-
     const bhvResult = await bhvApiClient.submitContract(bhvRequestData, cookies);
 
     if (bhvResult.success) {
       const duration = Date.now() - startTime;
 
+      // BHV Logger - Log success response
+      if (bhvLogId) {
+        await bhvLogger.logResponse(bhvLogId, {
+          success: true,
+          responseData: bhvResult.rawResponse,
+          responseStatus: 200,
+          bhvStatusCode: (bhvResult.rawResponse as any)?.status_code,
+          pdfReceived: !!bhvResult.pdfBase64,
+          pdfSize: bhvResult.pdfBase64?.length,
+          duration,
+        });
+      }
+
       logger.bhvSubmission(contractId!, 'Success', {
         duration: `${duration}ms`,
+        bhvLogId,
         hasPdf: !!bhvResult.pdfBase64,
         pdfSize: bhvResult.pdfBase64 ? `${(bhvResult.pdfBase64.length / 1024).toFixed(2)}KB` : 'N/A',
-        rawResponse: bhvResult.rawResponse, // Full response from BHV
       });
 
       // Optionally add submission history
@@ -155,12 +177,23 @@ async function postHandler(
     } else {
       const duration = Date.now() - startTime;
 
+      // BHV Logger - Log error
+      if (bhvLogId) {
+        await bhvLogger.logError(bhvLogId, {
+          errorMessage: bhvResult.error || 'Unknown error',
+          errorDetails: JSON.stringify(bhvResult.rawResponse),
+          responseData: bhvResult.rawResponse,
+          duration,
+        });
+      }
+
       logger.bhvError(contractId!, 'BHV API Returned Error', bhvResult.error, {
         duration: `${duration}ms`,
+        bhvLogId,
         errorMessage: bhvResult.error,
-        rawResponse: bhvResult.rawResponse, // Full error response
-        requestData: bhvRequestData, // Include request for replay
-        cookies: cookies ? Object.keys(cookies) : [], // Cookie keys only
+        rawResponse: bhvResult.rawResponse,
+        requestData: bhvRequestData,
+        cookies: cookies ? Object.keys(cookies) : [],
       });
 
       return NextResponse.json(
@@ -175,12 +208,22 @@ async function postHandler(
   } catch (error) {
     const duration = Date.now() - startTime;
 
+    // BHV Logger - Log exception (if logId exists)
+    if (bhvLogId) {
+      await bhvLogger.logError(bhvLogId, {
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorDetails: error instanceof Error ? error.stack : undefined,
+        duration,
+      });
+    }
+
     logger.bhvError(
       contractId || 'unknown',
       'Unexpected Exception',
       error,
       {
         duration: `${duration}ms`,
+        bhvLogId,
         errorType: error instanceof Error ? error.constructor.name : typeof error,
         errorMessage: error instanceof Error ? error.message : String(error),
         errorStack: error instanceof Error ? error.stack : undefined,

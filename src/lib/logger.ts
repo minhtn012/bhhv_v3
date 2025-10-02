@@ -185,14 +185,14 @@ class Logger {
     });
   }
 
-  bhvError(contractId: string, stage: string, error: any, requestData?: any) {
+  bhvError(contractId: string, stage: string, error: any, additionalContext?: LogContext) {
     this.error(`BHV Submission Failed - ${stage}`, {
       contractId,
       stage,
-      error: error.message,
-      stack: error.stack,
-      requestData,
-      response: error.response?.data,
+      error: error?.message || error,
+      stack: error?.stack,
+      response: error?.response?.data,
+      ...additionalContext, // Merge additional context (requestData, cookies, etc)
     });
   }
 }
