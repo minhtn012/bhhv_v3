@@ -1,6 +1,7 @@
 /**
  * BHV API Client - Handle requests to BHV insurance system
  */
+import { logger } from './logger';
 
 export interface BhvApiResponse {
   success: boolean;
@@ -318,9 +319,14 @@ export class BhvApiClient {
    * Submit contract to BHV API
    */
   async submitContract(requestData: BhvRequestData, cookie?: string): Promise<BhvApiResponse> {
+    const startTime = Date.now();
+
     try {
-      console.log('🚀 Submitting contract to BHV API...');
-      // console.log('Request data:', JSON.stringify(requestData, null, 2));
+      logger.apiRequest('POST', this.BHV_ENDPOINT, {
+        action: requestData.action_name,
+        hasCookie: !!cookie,
+        dataKeys: Object.keys(requestData.d_info || {}),
+      });
 
       const response = await fetch(this.BHV_ENDPOINT, {
         method: 'POST',
@@ -328,12 +334,18 @@ export class BhvApiClient {
         body: JSON.stringify(requestData)
       });
 
-      console.log('📡 Response status:', response.status);
-      console.log('📡 Response headers:', Object.fromEntries(response.headers.entries()));
+      const duration = Date.now() - startTime;
+
+      logger.debug('BHV API raw response received', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries()),
+        duration: `${duration}ms`,
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ BHV API error:', errorText);
+        logger.apiError('POST', this.BHV_ENDPOINT, new Error(`HTTP ${response.status}: ${errorText}`));
         return {
           success: false,
           error: `HTTP ${response.status}: ${errorText}`,
@@ -342,7 +354,12 @@ export class BhvApiClient {
       }
 
       const responseData = await response.json();
-      console.log('📋 BHV API response keys:', Object.keys(responseData));
+      logger.debug('BHV API response parsed', {
+        statusCode: responseData.status_code,
+        hasData: !!responseData.data,
+        dataSize: responseData.data ? `${(responseData.data.length / 1024).toFixed(2)}KB` : 'N/A',
+        responseKeys: Object.keys(responseData),
+      });
 
       // BHV API returns { "data": "base64PDFcontent", "status_code": 200 }
       if (responseData.status_code === 200 && responseData.data) {
@@ -350,13 +367,16 @@ export class BhvApiClient {
 
         // Validate it's actually PDF content
         if (this.isValidPdfBase64(pdfBase64)) {
+          logger.apiResponse('POST', this.BHV_ENDPOINT, 200, { pdfReceived: true }, duration);
           return {
             success: true,
             pdfBase64: pdfBase64,
             rawResponse: responseData
           };
         } else {
-          console.warn('⚠️ Response data is not valid PDF format');
+          logger.warn('Invalid PDF format received from BHV API', {
+            dataPreview: pdfBase64.substring(0, 50),
+          });
           return {
             success: false,
             error: 'Invalid PDF content received from BHV API',
@@ -367,6 +387,10 @@ export class BhvApiClient {
 
       // Handle error responses
       if (responseData.status_code && responseData.status_code !== 200) {
+        logger.error('BHV API returned non-200 status', {
+          statusCode: responseData.status_code,
+          response: responseData,
+        });
         return {
           success: false,
           error: `BHV API error: Status ${responseData.status_code}`,
@@ -376,6 +400,11 @@ export class BhvApiClient {
 
       // Check for other error patterns
       if (responseData.error || responseData.message) {
+        logger.error('BHV API returned error message', {
+          error: responseData.error,
+          message: responseData.message,
+          response: responseData,
+        });
         return {
           success: false,
           error: responseData.error || responseData.message,
@@ -384,6 +413,9 @@ export class BhvApiClient {
       }
 
       // Unexpected response format
+      logger.warn('Unexpected BHV API response format', {
+        responseData,
+      });
       return {
         success: false,
         error: 'Unexpected response format from BHV API',
@@ -391,7 +423,13 @@ export class BhvApiClient {
       };
 
     } catch (error) {
-      console.error('💥 BHV API client error:', error);
+      const duration = Date.now() - startTime;
+      logger.apiError('POST', this.BHV_ENDPOINT, error);
+      logger.error('BHV API client exception', {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        duration: `${duration}ms`,
+      });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred',
