@@ -180,8 +180,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Background function to check BHV premiums after contract creation
-async function checkBhvPremiumsInBackground(contractId: string, contractNumber: string, userId: string) {
+// Background function to check BHV premiums after contract creation or edit
+export async function checkBhvPremiumsInBackground(contractId: string, contractNumber: string, userId: string) {
   try {
     console.log('🔄 Starting background BHV premium check for contract:', contractNumber);
 

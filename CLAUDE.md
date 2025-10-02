@@ -149,3 +149,4 @@ The application manages vehicle insurance contracts with a specific workflow:
 - **Use isolated test environments** - never run tests against production data
 - **Clean up test data** after test completion
 - **Use proper async/await patterns** in test code
+- "mongo db using docker : bhhv_mongodb"

@@ -34,11 +34,18 @@ function formatDateForBhv(date: Date): string {
 }
 
 /**
- * Parse date string from DD/MM/YYYY format to Date object
+ * Parse date string from DD/MM/YYYY or DD/MM/YYYY HH:mm:ss format to Date object
+ * If no time is provided, defaults to 08:00:00
  */
 function parseDateFromDDMMYYYY(dateStr: string): Date {
-  const [day, month, year] = dateStr.split('/').map(Number);
-  return new Date(year, month - 1, day);
+  const parts = dateStr.split(' ');
+  const datePart = parts[0];
+  const timePart = parts[1] || '08:00:00';
+
+  const [day, month, year] = datePart.split('/').map(Number);
+  const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+  return new Date(year, month - 1, day, hours || 8, minutes || 0, seconds || 0);
 }
 
 /**
@@ -296,8 +303,8 @@ export function calculateRequestChangeFees(contract: any): string {
     return "";
   }
 
-  const bhvAfterTax = contract.bhvPremiums.total.afterTax;
-  const vatChatFee = contract.tongPhi;
+  const bhvAfterTax = Math.round(contract.bhvPremiums.total.afterTax);
+  const vatChatFee = Math.round(contract.tongPhi);
 
   // Prevent division by zero
   if (bhvAfterTax <= 0) {
@@ -307,7 +314,7 @@ export function calculateRequestChangeFees(contract: any): string {
 
   // Calculate discount percentage
   // const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
-  let discount = (bhvAfterTax - vatChatFee)
+  let discount = bhvAfterTax - vatChatFee
   // discount = discount - processFractionalPart(discount)
   // If negative, set to 0 (no discount)
   // const finalDiscountRate = Math.max(0, Math.round(discountRate));

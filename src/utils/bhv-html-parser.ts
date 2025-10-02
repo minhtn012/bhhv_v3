@@ -29,6 +29,32 @@ export interface InsurancePackage {
 }
 
 /**
+ * Decode HTML entities to actual characters
+ */
+function decodeHtmlEntities(text: string): string {
+  const entities: { [key: string]: string } = {
+    '&#x1EA3;': 'ả', '&#x1EC3;': 'ể', '&#x1EE3;': 'ợ', '&#x1ED3;': 'ồ',
+    '&#x1B0;': 'ư', '&#x1EDD;': 'ờ', '&#x111;': 'đ', '&#x1ED1;': 'ố',
+    '&#x1EDB;': 'ớ', '&#xE1;': 'á', '&#xE0;': 'à', '&#x1EA1;': 'ạ',
+    '&#x1EE7;': 'ủ', '&#x1EE5;': 'ụ', '&#xF4;': 'ô', '&#xE2;': 'â',
+    '&#x1EA7;': 'ầ', '&#x1EA5;': 'ấ', '&#x1EAD;': 'ậ', '&#xE9;': 'é',
+    '&#xE8;': 'è', '&#x1EB9;': 'ẹ', '&#x1EBF;': 'ế', '&#x1EC1;': 'ề',
+    '&#x1EC7;': 'ệ', '&#xED;': 'í', '&#xEC;': 'ì', '&#x1ECB;': 'ị',
+    '&#xF3;': 'ó', '&#xF2;': 'ò', '&#x1ECD;': 'ọ', '&#x1ED9;': 'ộ',
+    '&#xFA;': 'ú', '&#xF9;': 'ù', '&#x1EE9;': 'ứ', '&#x1EEB;': 'ừ',
+    '&#x1EF1;': 'ự', '&#xFD;': 'ý', '&#x1EF3;': 'ỳ', '&#x1EF5;': 'ỵ',
+    '&#xEA;': 'ê', '&#x1EAF;': 'ắ', '&#x1EE1;': 'ở', '&#x1EED;': 'ử',
+    '&#x1EEF;': 'ữ'
+  };
+
+  let decoded = text;
+  for (const [entity, char] of Object.entries(entities)) {
+    decoded = decoded.replace(new RegExp(entity, 'gi'), char);
+  }
+  return decoded;
+}
+
+/**
  * Parse premium amounts from HTML text
  */
 function parsePremiumAmount(text: string): number {
@@ -61,7 +87,9 @@ function parseInsurancePackage(htmlSection: string, packageNumber: number): Insu
   try {
     // Extract package name (after the number)
     const nameMatch = htmlSection.match(/<h6>(\d+\.?\s*)([^<]+)<\/h6>/);
-    const name = nameMatch ? nameMatch[2].trim() : `Package ${packageNumber}`;
+    const rawName = nameMatch ? nameMatch[2].trim() : `Package ${packageNumber}`;
+    // Decode HTML entities to get actual Vietnamese characters
+    const name = decodeHtmlEntities(rawName);
 
     // Extract premium amount
     const premiumMatch = htmlSection.match(/Phí bảo hiểm:[^>]*>\s*<h6>([^<]+)<\/h6>/);
@@ -121,7 +149,10 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
     packages.forEach(pkg => {
       const lowerName = pkg.name.toLowerCase();
 
-      if (lowerName.includes('tnds') || lowerName.includes('trách nhiệm dân sự')) {
+      if (lowerName.includes('vật chất') || lowerName.includes('bhvc')) {
+        result.bhvc.beforeTax = pkg.premium;
+        result.bhvc.afterTax = pkg.total;
+      } else if (lowerName.includes('tnds') || lowerName.includes('trách nhiệm dân sự')) {
         result.tnds.beforeTax = pkg.premium;
         result.tnds.afterTax = pkg.total;
       } else if (lowerName.includes('nntx') || lowerName.includes('người ngồi')) {
@@ -130,19 +161,9 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
       }
     });
 
-    // Calculate total before tax (round to avoid floating-point errors)
-    result.totalPremium.beforeTax = Math.round(result.tnds.beforeTax + result.nntx.beforeTax);
-
-    // Calculate BHVC (Physical damage insurance) = Total - TNDS - NNTX (round to avoid floating-point errors)
-    result.bhvc.afterTax = Math.round(result.totalPremium.afterTax - result.tnds.afterTax - result.nntx.afterTax);
-    result.bhvc.beforeTax = Math.round(result.totalPremium.beforeTax - result.tnds.beforeTax - result.nntx.beforeTax);
-
-    // If we don't have detailed breakdown, estimate BHVC before tax
-    if (result.bhvc.beforeTax <= 0 && result.bhvc.afterTax > 0) {
-      // Estimate before tax as ~90% of after tax (assuming 10% VAT) - round to avoid floating-point errors
-      result.bhvc.beforeTax = Math.round(result.bhvc.afterTax / 1.1);
-      result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
-    }
+    // Calculate total premiums from all detected packages
+    result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
+    result.totalPremium.afterTax = Math.round(result.bhvc.afterTax + result.tnds.afterTax + result.nntx.afterTax);
 
     // Ensure no negative values
     result.bhvc.beforeTax = Math.max(0, result.bhvc.beforeTax);

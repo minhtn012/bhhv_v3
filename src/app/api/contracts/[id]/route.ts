@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
 import { requireAuth } from '@/lib/auth';
+import { checkBhvPremiumsInBackground } from '../route';
 
 // GET /api/contracts/[id] - Lấy chi tiết contract
 export async function GET(
@@ -94,6 +95,9 @@ export async function PUT(
     // Update contract
     Object.assign(contract, body);
     await contract.save();
+
+    // Auto-check BHV premiums in background after edit (don't block response)
+    checkBhvPremiumsInBackground(contract._id.toString(), contract.contractNumber, user.userId);
 
     return NextResponse.json({
       message: 'Cập nhật hợp đồng thành công',

@@ -320,7 +320,7 @@ export class BhvApiClient {
   async submitContract(requestData: BhvRequestData, cookie?: string): Promise<BhvApiResponse> {
     try {
       console.log('🚀 Submitting contract to BHV API...');
-      console.log('Request data:', JSON.stringify(requestData, null, 2));
+      // console.log('Request data:', JSON.stringify(requestData, null, 2));
 
       const response = await fetch(this.BHV_ENDPOINT, {
         method: 'POST',
@@ -444,7 +444,7 @@ export class BhvApiClient {
   async checkPremium(requestData: BhvRequestData, cookie?: string): Promise<BhvPremiumResponse> {
     try {
       console.log('🔍 Checking premium with BHV API...');
-      console.log('Request data:', JSON.stringify(requestData, null, 2));
+      // console.log('Request data:', JSON.stringify(requestData, null, 2));
 
       const response = await fetch(this.BHV_ENDPOINT, {
         method: 'POST',

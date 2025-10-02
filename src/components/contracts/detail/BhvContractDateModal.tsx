@@ -15,6 +15,8 @@ export default function BhvContractDateModal({
 }: BhvContractDateModalProps) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [startTime, setStartTime] = useState('08:00');
+  const [endTime, setEndTime] = useState('08:00');
   const [error, setError] = useState('');
 
   // Initialize dates when modal opens
@@ -29,6 +31,10 @@ export default function BhvContractDateModal({
       endDateObj.setFullYear(endDateObj.getFullYear() + 1);
       const endDateStr = endDateObj.toISOString().split('T')[0];
       setEndDate(endDateStr);
+
+      // Reset times to default
+      setStartTime('08:00');
+      setEndTime('08:00');
 
       setError('');
     }
@@ -78,12 +84,13 @@ export default function BhvContractDateModal({
   };
 
 
-  const formatDateToDDMMYYYY = (dateStr: string) => {
+  const formatDateToDDMMYYYY = (dateStr: string, timeStr: string = '08:00') => {
     const date = new Date(dateStr);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const [hours, minutes] = timeStr.split(':');
+    return `${day}/${month}/${year} ${hours}:${minutes}:00`;
   };
 
   const handleConfirm = () => {
@@ -98,9 +105,9 @@ export default function BhvContractDateModal({
       return;
     }
 
-    // Convert to dd/MM/YYYY format before sending
-    const formattedStartDate = formatDateToDDMMYYYY(startDate);
-    const formattedEndDate = formatDateToDDMMYYYY(endDate);
+    // Convert to dd/MM/YYYY HH:mm:ss format before sending
+    const formattedStartDate = formatDateToDDMMYYYY(startDate, startTime);
+    const formattedEndDate = formatDateToDDMMYYYY(endDate, endTime);
 
     onConfirm(formattedStartDate, formattedEndDate);
   };
@@ -141,20 +148,32 @@ export default function BhvContractDateModal({
 
         {/* Modal Content */}
         <div className="p-6 space-y-6">
-          {/* Start Date Input */}
+          {/* Start Date and Time Input */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Ngày bắt đầu bảo hiểm
             </label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={handleStartDateChange}
-              onClick={handleInputClick}
-              disabled={loading}
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 cursor-pointer"
-            />
+            <div className="flex gap-2">
+              <input
+                type="date"
+                value={startDate}
+                onChange={handleStartDateChange}
+                onClick={handleInputClick}
+                disabled={loading}
+                min={new Date().toISOString().split('T')[0]}
+                className="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 cursor-pointer"
+              />
+              <input
+                type="time"
+                value={startTime}
+                onChange={(e) => {
+                  setStartTime(e.target.value);
+                  setEndTime(e.target.value);
+                }}
+                disabled={loading}
+                className="w-32 bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
+              />
+            </div>
           </div>
 
           {/* End Date Display */}
@@ -162,8 +181,8 @@ export default function BhvContractDateModal({
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Ngày kết thúc bảo hiểm
             </label>
-            <div className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-gray-400">
-              {formatDisplayDate(endDate)} (tự động tính 1 năm)
+            <div className="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-gray-400">
+              {formatDisplayDate(endDate)} {startTime}:00 (tự động tính 1 năm)
             </div>
           </div>
 
@@ -172,8 +191,8 @@ export default function BhvContractDateModal({
             <div className="bg-blue-900/30 border border-blue-700 rounded-lg p-4">
               <h3 className="text-blue-300 font-medium mb-2">Thời hạn hợp đồng</h3>
               <div className="text-sm text-gray-300 space-y-1">
-                <div>Từ: {formatDisplayDate(startDate)}</div>
-                <div>Đến: {formatDisplayDate(endDate)}</div>
+                <div>Từ: {formatDisplayDate(startDate)} {startTime}:00</div>
+                <div>Đến: {formatDisplayDate(endDate)} {endTime}:00</div>
                 <div className="text-blue-400 font-medium">Thời hạn: 12 tháng</div>
               </div>
             </div>
