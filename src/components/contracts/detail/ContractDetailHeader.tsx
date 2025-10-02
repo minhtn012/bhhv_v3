@@ -165,7 +165,7 @@ export default function ContractDetailHeader({
           )}
 
           {/* Word Export Button */}
-          {(['khach_duyet', 'ra_hop_dong'].includes(contract.status)) && onExportWord && currentUser?.role === 'admin' && (
+          {(['khach_duyet', 'ra_hop_dong', 'bhv_confirmed'].includes(contract.status)) && onExportWord && currentUser?.role === 'admin' && (
             <button
               onClick={onExportWord}
               disabled={wordExportLoading}

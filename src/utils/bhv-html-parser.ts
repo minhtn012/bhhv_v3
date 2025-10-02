@@ -130,18 +130,18 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
       }
     });
 
-    // Calculate total before tax
-    result.totalPremium.beforeTax = result.tnds.beforeTax + result.nntx.beforeTax;
+    // Calculate total before tax (round to avoid floating-point errors)
+    result.totalPremium.beforeTax = Math.round(result.tnds.beforeTax + result.nntx.beforeTax);
 
-    // Calculate BHVC (Physical damage insurance) = Total - TNDS - NNTX
-    result.bhvc.afterTax = result.totalPremium.afterTax - result.tnds.afterTax - result.nntx.afterTax;
-    result.bhvc.beforeTax = result.totalPremium.beforeTax - result.tnds.beforeTax - result.nntx.beforeTax;
+    // Calculate BHVC (Physical damage insurance) = Total - TNDS - NNTX (round to avoid floating-point errors)
+    result.bhvc.afterTax = Math.round(result.totalPremium.afterTax - result.tnds.afterTax - result.nntx.afterTax);
+    result.bhvc.beforeTax = Math.round(result.totalPremium.beforeTax - result.tnds.beforeTax - result.nntx.beforeTax);
 
     // If we don't have detailed breakdown, estimate BHVC before tax
     if (result.bhvc.beforeTax <= 0 && result.bhvc.afterTax > 0) {
-      // Estimate before tax as ~90% of after tax (assuming 10% VAT)
+      // Estimate before tax as ~90% of after tax (assuming 10% VAT) - round to avoid floating-point errors
       result.bhvc.beforeTax = Math.round(result.bhvc.afterTax / 1.1);
-      result.totalPremium.beforeTax = result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax;
+      result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
     }
 
     // Ensure no negative values

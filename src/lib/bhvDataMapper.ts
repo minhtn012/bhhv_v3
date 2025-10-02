@@ -306,13 +306,13 @@ export function calculateRequestChangeFees(contract: any): string {
   }
 
   // Calculate discount percentage
-  const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
+  // const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
   let discount = (bhvAfterTax - vatChatFee)
-  discount = discount - processFractionalPart(discount)
+  // discount = discount - processFractionalPart(discount)
   // If negative, set to 0 (no discount)
-  const finalDiscountRate = Math.max(0, Math.round(discountRate));
+  // const finalDiscountRate = Math.max(0, Math.round(discountRate));
   console.log("#################")
-  console.log(bhvAfterTax, vatChatFee, discount, finalDiscountRate)
+  console.log(bhvAfterTax, vatChatFee, discount)
   console.log("#################")
   // Generate request_change_fees JSON
   const requestChangeFees = [
