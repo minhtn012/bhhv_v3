@@ -19,7 +19,7 @@ export interface LogFilterConfig {
 
 export const defaultLogFilterConfig: LogFilterConfig = {
   // Only save errors and warnings to DB by default
-  levelsToSave: ['error', 'warn'],
+  levelsToSave: ['error', 'warn', 'info'], // Include info for important operations
 
   // Don't save these to DB (too noisy)
   excludePaths: [
@@ -46,6 +46,11 @@ export function shouldSaveToDatabase(
   path?: string,
   config: LogFilterConfig = defaultLogFilterConfig
 ): boolean {
+  // ALWAYS save BHV-related logs (critical for debugging)
+  if (path && path.includes('/submit-to-bhv')) {
+    return true;
+  }
+
   // Always exclude certain paths
   if (path && config.excludePaths.some(p => path.includes(p))) {
     return false;

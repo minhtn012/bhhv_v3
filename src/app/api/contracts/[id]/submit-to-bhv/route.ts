@@ -104,18 +104,21 @@ async function postHandler(
 
     const bhvRequestData = transformContractToBhvFormat(contract);
 
-    logger.debug('BHV request data prepared', {
+    // Log FULL request data for debugging/replay
+    logger.info('BHV API Request - Full Data', {
       contractId,
+      contractNumber: (contract as any).contractNumber,
+      bhvRequestData: bhvRequestData, // Full request payload
       bhvRequestDataKeys: Object.keys(bhvRequestData),
-      // Log sample data (be careful not to log sensitive info in production)
-      carKindValue: bhvRequestData.carKindValue,
-      insuranceGoalValue: bhvRequestData.insuranceGoalValue,
+      hasCookies: !!cookies,
+      cookiePreview: cookies ? `${Object.keys(cookies).join(', ')}` : 'none',
     });
 
     // Submit to BHV API with fresh cookies
     logger.bhvSubmission(contractId, 'Submitting to BHV API', {
       endpoint: 'submitContract',
       hasCookies: !!cookies,
+      requestPayloadSize: `${(JSON.stringify(bhvRequestData).length / 1024).toFixed(2)}KB`,
     });
 
     const bhvResult = await bhvApiClient.submitContract(bhvRequestData, cookies);
@@ -127,6 +130,7 @@ async function postHandler(
         duration: `${duration}ms`,
         hasPdf: !!bhvResult.pdfBase64,
         pdfSize: bhvResult.pdfBase64 ? `${(bhvResult.pdfBase64.length / 1024).toFixed(2)}KB` : 'N/A',
+        rawResponse: bhvResult.rawResponse, // Full response from BHV
       });
 
       // Optionally add submission history
@@ -154,6 +158,9 @@ async function postHandler(
       logger.bhvError(contractId!, 'BHV API Returned Error', bhvResult.error, {
         duration: `${duration}ms`,
         errorMessage: bhvResult.error,
+        rawResponse: bhvResult.rawResponse, // Full error response
+        requestData: bhvRequestData, // Include request for replay
+        cookies: cookies ? Object.keys(cookies) : [], // Cookie keys only
       });
 
       return NextResponse.json(
@@ -175,6 +182,8 @@ async function postHandler(
       {
         duration: `${duration}ms`,
         errorType: error instanceof Error ? error.constructor.name : typeof error,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
       }
     );
 

@@ -322,10 +322,15 @@ export class BhvApiClient {
     const startTime = Date.now();
 
     try {
-      logger.apiRequest('POST', this.BHV_ENDPOINT, {
+      // Log full request for debugging
+      logger.info('BHV API - Sending Request', {
+        endpoint: this.BHV_ENDPOINT,
         action: requestData.action_name,
         hasCookie: !!cookie,
-        dataKeys: Object.keys(requestData.d_info || {}),
+        requestData: requestData, // Full request payload
+        requestDataKeys: Object.keys(requestData),
+        d_infoKeys: Object.keys(requestData.d_info || {}),
+        payloadSize: `${(JSON.stringify(requestData).length / 1024).toFixed(2)}KB`,
       });
 
       const response = await fetch(this.BHV_ENDPOINT, {
@@ -354,11 +359,15 @@ export class BhvApiClient {
       }
 
       const responseData = await response.json();
-      logger.debug('BHV API response parsed', {
+
+      // Log full response for debugging
+      logger.info('BHV API - Response Received', {
         statusCode: responseData.status_code,
         hasData: !!responseData.data,
         dataSize: responseData.data ? `${(responseData.data.length / 1024).toFixed(2)}KB` : 'N/A',
         responseKeys: Object.keys(responseData),
+        responseData: responseData.status_code !== 200 ? responseData : { status_code: responseData.status_code, dataReceived: true }, // Log full response on error
+        duration: `${duration}ms`,
       });
 
       // BHV API returns { "data": "base64PDFcontent", "status_code": 200 }
