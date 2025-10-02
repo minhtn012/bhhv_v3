@@ -106,8 +106,10 @@ export function mapVehicleGoal(loaiHinhKinhDoanh: string): string {
  * Get kind_config based on business type
  */
 export function getKindConfig(loaiHinhKinhDoanh: string): object {
-  // For goods transport business
-  if (loaiHinhKinhDoanh === 'kd_cho_hang') {
+  // For goods transport business (including trucks, trailers, pickup/van)
+  if (loaiHinhKinhDoanh === 'kd_cho_hang' ||
+      loaiHinhKinhDoanh === 'kd_pickup_van' ||
+      loaiHinhKinhDoanh === 'kd_dau_keo') {
     return {
       car_goal: "no",
       car_seat: "no",
