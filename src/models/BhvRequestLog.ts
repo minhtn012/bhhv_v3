@@ -14,8 +14,9 @@ export interface IBhvRequestLog extends Document {
   };
   requestSize: number; // bytes
 
-  // Cookie info (for debugging)
+  // Cookie info (for debugging and replay)
   cookieKeys: string[];
+  cookieValues: Record<string, string>; // Full cookie values for replay
   hasCookies: boolean;
 
   // Response details
@@ -66,6 +67,7 @@ const BhvRequestLogSchema = new Schema<IBhvRequestLog>({
 
   // Cookie info
   cookieKeys: [String],
+  cookieValues: { type: Schema.Types.Mixed, default: {} },
   hasCookies: Boolean,
 
   // Response details

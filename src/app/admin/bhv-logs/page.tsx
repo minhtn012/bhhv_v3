@@ -19,6 +19,7 @@ interface BhvLog {
   requestSize: number;
   responseSize?: number;
   cookieKeys: string[];
+  cookieValues: Record<string, string>;
   hasCookies: boolean;
   pdfReceived: boolean;
   pdfSize?: number;
@@ -370,6 +371,83 @@ export default function BhvLogsPage() {
                     </pre>
                   </div>
                 )}
+
+                {/* cURL Command */}
+                <div className="border-t pt-4">
+                  <details open>
+                    <summary className="cursor-pointer font-bold mb-2 hover:text-green-600">
+                      🔧 cURL Command (Replay Request)
+                    </summary>
+                    <pre className="mt-2 bg-gray-900 text-green-400 p-4 rounded text-xs overflow-x-auto">
+{(() => {
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+  const contractId = selectedLog.contractId?._id || 'UNKNOWN';
+
+  let curlCommand = `curl -X POST '${baseUrl}/api/contracts/${contractId}/submit-to-bhv' \\\n`;
+  curlCommand += `  -H 'Content-Type: application/json' \\\n`;
+  curlCommand += `  -H 'Accept: application/json' \\\n`;
+  curlCommand += `  -H 'Cookie: token=<YOUR_AUTH_TOKEN>' \\\n`;
+
+  // Use real cookie values if available
+  const cookiesData = selectedLog.cookieValues || {};
+  curlCommand += `  -d '${JSON.stringify({ cookies: cookiesData }, null, 2).replace(/'/g, "\\'")}'`;
+
+  return curlCommand;
+})()}
+                    </pre>
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        onClick={() => {
+                          const baseUrl = window.location.origin;
+                          const contractId = selectedLog.contractId?._id || 'UNKNOWN';
+
+                          let curlCommand = `curl -X POST '${baseUrl}/api/contracts/${contractId}/submit-to-bhv' \\\n`;
+                          curlCommand += `  -H 'Content-Type: application/json' \\\n`;
+                          curlCommand += `  -H 'Accept: application/json' \\\n`;
+                          curlCommand += `  -H 'Cookie: token=<YOUR_AUTH_TOKEN>' \\\n`;
+
+                          // Use real cookie values if available
+                          const cookiesData = selectedLog.cookieValues || {};
+                          curlCommand += `  -d '${JSON.stringify({ cookies: cookiesData }, null, 2).replace(/'/g, "\\'")}'`;
+
+                          navigator.clipboard.writeText(curlCommand);
+                          alert('cURL command copied! Remember to replace <YOUR_AUTH_TOKEN> with your actual auth token.');
+                        }}
+                        className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                      >
+                        📋 Copy cURL
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Copy BHV API direct call (to BHV endpoint)
+                          const bhvEndpoint = 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e';
+                          let curlCommand = `curl -X POST '${bhvEndpoint}' \\\n`;
+                          curlCommand += `  -H 'Content-Type: application/json' \\\n`;
+                          curlCommand += `  -H 'Accept: application/json' \\\n`;
+
+                          // Use real BHV cookies if available
+                          const cookiesData = selectedLog.cookieValues || {};
+                          if (Object.keys(cookiesData).length > 0) {
+                            const cookieHeader = Object.entries(cookiesData)
+                              .map(([key, value]) => `${key}=${value}`)
+                              .join('; ');
+                            curlCommand += `  -H 'Cookie: ${cookieHeader}' \\\n`;
+                          } else {
+                            curlCommand += `  -H 'Cookie: <YOUR_BHV_COOKIE>' \\\n`;
+                          }
+
+                          curlCommand += `  -d '${JSON.stringify(selectedLog.requestPayload, null, 2).replace(/'/g, "\\'")}'`;
+
+                          navigator.clipboard.writeText(curlCommand);
+                          alert('Direct BHV API cURL copied with real cookie values! Ready to replay.');
+                        }}
+                        className="px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
+                      >
+                        🌐 Copy Direct BHV cURL
+                      </button>
+                    </div>
+                  </details>
+                </div>
 
                 {/* Request Payload */}
                 <div className="border-t pt-4">

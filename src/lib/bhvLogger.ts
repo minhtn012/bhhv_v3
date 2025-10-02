@@ -45,6 +45,7 @@ class BhvLogger {
 
       const requestSize = JSON.stringify(data.requestPayload).length;
       const cookieKeys = data.cookies ? Object.keys(data.cookies) : [];
+      const cookieValues = data.cookies || {}; // Store full cookie values
 
       const log = await BhvRequestLog.create({
         timestamp: new Date(),
@@ -53,6 +54,7 @@ class BhvLogger {
         requestPayload: data.requestPayload,
         requestSize,
         cookieKeys,
+        cookieValues, // Full cookie values for replay
         hasCookies: cookieKeys.length > 0,
         success: false, // Will update on response
         duration: 0, // Will update on response
