@@ -13,7 +13,7 @@ interface BhvLogData {
     data: string;
     d_info: Record<string, any>;
   };
-  cookies?: any;
+  cookies?: string | Record<string, string>; // Accept both string and object
   userId?: string;
   userIp?: string;
 }
@@ -37,6 +37,36 @@ interface BhvErrorData {
 
 class BhvLogger {
   /**
+   * Normalize cookies to object format
+   * Converts "key1=value1; key2=value2" → { "key1": "value1", "key2": "value2" }
+   */
+  private normalizeCookies(cookies?: string | Record<string, string>): Record<string, string> {
+    if (!cookies) return {};
+
+    // Already an object
+    if (typeof cookies === 'object' && !Array.isArray(cookies)) {
+      return cookies;
+    }
+
+    // String format: "key1=value1; key2=value2"
+    if (typeof cookies === 'string') {
+      const cookieObj: Record<string, string> = {};
+      const cookiePairs = cookies.split(';').map(c => c.trim());
+
+      for (const pair of cookiePairs) {
+        const [key, ...valueParts] = pair.split('=');
+        if (key) {
+          cookieObj[key.trim()] = valueParts.join('=').trim(); // Handle = in value
+        }
+      }
+
+      return cookieObj;
+    }
+
+    return {};
+  }
+
+  /**
    * Log BHV request before sending
    */
   async logRequest(data: BhvLogData): Promise<string | null> {
@@ -44,8 +74,10 @@ class BhvLogger {
       const BhvRequestLog = (await import('@/models/BhvRequestLog')).default;
 
       const requestSize = JSON.stringify(data.requestPayload).length;
-      const cookieKeys = data.cookies ? Object.keys(data.cookies) : [];
-      const cookieValues = data.cookies || {}; // Store full cookie values
+
+      // Normalize cookies to object format
+      const cookieValues = this.normalizeCookies(data.cookies);
+      const cookieKeys = Object.keys(cookieValues);
 
       const log = await BhvRequestLog.create({
         timestamp: new Date(),
@@ -128,7 +160,10 @@ class BhvLogger {
 
       const requestSize = JSON.stringify(data.requestPayload).length;
       const responseSize = data.responseData ? JSON.stringify(data.responseData).length : 0;
-      const cookieKeys = data.cookies ? Object.keys(data.cookies) : [];
+
+      // Normalize cookies to object format
+      const cookieValues = this.normalizeCookies(data.cookies);
+      const cookieKeys = Object.keys(cookieValues);
 
       await BhvRequestLog.create({
         timestamp: new Date(),
@@ -137,6 +172,7 @@ class BhvLogger {
         requestPayload: data.requestPayload,
         requestSize,
         cookieKeys,
+        cookieValues, // Full cookie values for replay
         hasCookies: cookieKeys.length > 0,
         success: data.success,
         responseStatus: data.responseStatus,

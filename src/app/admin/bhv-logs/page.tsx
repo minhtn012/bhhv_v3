@@ -363,6 +363,27 @@ export default function BhvLogsPage() {
                   </div>
                 </div>
 
+                {/* Cookie Details */}
+                {selectedLog.hasCookies && selectedLog.cookieValues && Object.keys(selectedLog.cookieValues).length > 0 && (
+                  <div className="border-t pt-4">
+                    <details>
+                      <summary className="cursor-pointer font-bold mb-2 hover:text-blue-600">
+                        🍪 Cookie Details ({Object.keys(selectedLog.cookieValues).length} cookies)
+                      </summary>
+                      <div className="mt-2 bg-blue-50 p-4 rounded">
+                        <div className="text-xs space-y-2">
+                          {Object.entries(selectedLog.cookieValues).map(([key, value]) => (
+                            <div key={key} className="flex gap-2">
+                              <span className="font-mono font-bold text-blue-700">{key}:</span>
+                              <span className="font-mono text-gray-700 break-all">{value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                )}
+
                 {selectedLog.errorMessage && (
                   <div>
                     <strong className="text-red-600">Error:</strong>
