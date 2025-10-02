@@ -22,6 +22,7 @@
     "eruda": "^3.4.3",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
+    "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
     "next": "15.5.2",

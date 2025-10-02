@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,13 +25,21 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('Login successful, user data:', data.user);
+
         // Store user info in localStorage for client-side access
         localStorage.setItem('user', JSON.stringify({
           ...data.user,
           isLoggedIn: true
         }));
-        
-        router.push('/dashboard');
+
+        console.log('Redirecting to dashboard...');
+
+        // Use window.location instead of router.push to ensure cookies are sent
+        // Add a small delay to ensure cookies are set
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 100);
       } else {
         setError(data.error || 'Login failed');
       }

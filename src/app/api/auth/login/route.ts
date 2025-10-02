@@ -100,15 +100,16 @@ export async function POST(request: NextRequest) {
     response.cookies.set('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 30 * 60 // 30 minutes
+      sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
+      maxAge: 30 * 60, // 30 minutes
+      path: '/' // Ensure cookie is available for all paths
     });
 
     // Refresh token - long lived (7 days)
     response.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // Changed from 'strict' to 'lax'
       path: '/api/auth/refresh', // Only sent to refresh endpoint
       maxAge: 7 * 24 * 60 * 60 // 7 days
     });
