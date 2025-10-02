@@ -290,12 +290,58 @@ export default function LogsPage() {
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-2xl font-bold">Log Details</h2>
-                <button
-                  onClick={() => setSelectedLog(null)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      // Generate cURL command
+                      const log = selectedLog as any;
+                      const method = log.method || 'GET';
+                      const path = log.path || '';
+                      const baseUrl = window.location.origin;
+
+                      let curlCommand = `curl -X ${method} '${baseUrl}${path}'`;
+
+                      // Add headers
+                      curlCommand += ` \\\n  -H 'Content-Type: application/json'`;
+                      curlCommand += ` \\\n  -H 'Accept: application/json'`;
+
+                      // Add request body if exists
+                      if (log.context?.body || log.context?.requestData || log.metadata?.requestData) {
+                        const body = log.context?.body || log.context?.requestData || log.metadata?.requestData;
+                        curlCommand += ` \\\n  -d '${JSON.stringify(body, null, 2)}'`;
+                      }
+
+                      // Copy to clipboard
+                      navigator.clipboard.writeText(curlCommand);
+                      alert('cURL command copied to clipboard!');
+                    }}
+                    className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                  >
+                    📋 Copy as cURL
+                  </button>
+                  <button
+                    onClick={() => {
+                      // Download as JSON file
+                      const dataStr = JSON.stringify(selectedLog, null, 2);
+                      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                      const exportFileDefaultName = `log_${selectedLog._id}_${new Date(selectedLog.timestamp).toISOString()}.json`;
+
+                      const linkElement = document.createElement('a');
+                      linkElement.setAttribute('href', dataUri);
+                      linkElement.setAttribute('download', exportFileDefaultName);
+                      linkElement.click();
+                    }}
+                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                  >
+                    💾 Download JSON
+                  </button>
+                  <button
+                    onClick={() => setSelectedLog(null)}
+                    className="text-gray-500 hover:text-gray-700 text-2xl"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -353,6 +399,131 @@ export default function LogsPage() {
                     </pre>
                   </div>
                 )}
+
+                {/* cURL Command Section */}
+                {selectedLog.method && selectedLog.path && (
+                  <div className="border-t pt-4 mt-4">
+                    <details>
+                      <summary className="cursor-pointer font-bold mb-2 hover:text-green-600">
+                        🔧 cURL Command (Click to expand)
+                      </summary>
+                      <div className="mt-2">
+                        <pre className="bg-gray-900 text-green-400 p-4 rounded text-xs overflow-x-auto">
+{(() => {
+  const log = selectedLog as any;
+  const method = log.method || 'GET';
+  const path = log.path || '';
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+
+  let curlCommand = `curl -X ${method} '${baseUrl}${path}'`;
+  curlCommand += ` \\\n  -H 'Content-Type: application/json'`;
+  curlCommand += ` \\\n  -H 'Accept: application/json'`;
+
+  // Add cookies if needed
+  curlCommand += ` \\\n  -H 'Cookie: <your-auth-cookies>'`;
+
+  // Add request body if exists
+  if (log.context?.body || log.context?.requestData || log.metadata?.requestData) {
+    const body = log.context?.body || log.context?.requestData || log.metadata?.requestData;
+    curlCommand += ` \\\n  -d '${JSON.stringify(body).replace(/'/g, "\\'")}'`;
+  }
+
+  return curlCommand;
+})()}
+                        </pre>
+                        <button
+                          onClick={() => {
+                            const log = selectedLog as any;
+                            const method = log.method || 'GET';
+                            const path = log.path || '';
+                            const baseUrl = window.location.origin;
+
+                            let curlCommand = `curl -X ${method} '${baseUrl}${path}'`;
+                            curlCommand += ` \\\n  -H 'Content-Type: application/json'`;
+                            curlCommand += ` \\\n  -H 'Accept: application/json'`;
+                            curlCommand += ` \\\n  -H 'Cookie: <your-auth-cookies>'`;
+
+                            if (log.context?.body || log.context?.requestData || log.metadata?.requestData) {
+                              const body = log.context?.body || log.context?.requestData || log.metadata?.requestData;
+                              curlCommand += ` \\\n  -d '${JSON.stringify(body).replace(/'/g, "\\'")}'`;
+                            }
+
+                            navigator.clipboard.writeText(curlCommand);
+                            alert('cURL command copied! Remember to replace <your-auth-cookies> with actual cookies.');
+                          }}
+                          className="mt-2 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                        >
+                          📋 Copy cURL Command
+                        </button>
+                      </div>
+                    </details>
+                  </div>
+                )}
+
+                {/* Full Context/Metadata - Expandable JSON viewer */}
+                <div className="border-t pt-4 mt-4">
+                  <details open>
+                    <summary className="cursor-pointer font-bold mb-2 hover:text-blue-600">
+                      📋 Full Context & Metadata (Click to expand/collapse)
+                    </summary>
+                    <div className="space-y-4">
+                      {/* Context */}
+                      {(selectedLog as any).context && (
+                        <div>
+                          <strong className="text-blue-600">Context:</strong>
+                          <pre className="mt-2 bg-blue-50 p-4 rounded text-xs overflow-x-auto max-h-96 overflow-y-auto">
+                            {JSON.stringify((selectedLog as any).context, null, 2)}
+                          </pre>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(JSON.stringify((selectedLog as any).context, null, 2));
+                              alert('Context copied to clipboard!');
+                            }}
+                            className="mt-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                          >
+                            📋 Copy Context
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Metadata */}
+                      {(selectedLog as any).metadata && (
+                        <div>
+                          <strong className="text-green-600">Metadata:</strong>
+                          <pre className="mt-2 bg-green-50 p-4 rounded text-xs overflow-x-auto max-h-96 overflow-y-auto">
+                            {JSON.stringify((selectedLog as any).metadata, null, 2)}
+                          </pre>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(JSON.stringify((selectedLog as any).metadata, null, 2));
+                              alert('Metadata copied to clipboard!');
+                            }}
+                            className="mt-2 px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                          >
+                            📋 Copy Metadata
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Full Log Object */}
+                      <div>
+                        <strong className="text-purple-600">Full Log Object:</strong>
+                        <pre className="mt-2 bg-purple-50 p-4 rounded text-xs overflow-x-auto max-h-96 overflow-y-auto">
+                          {JSON.stringify(selectedLog, null, 2)}
+                        </pre>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(selectedLog, null, 2));
+                            alert('Full log copied to clipboard!');
+                          }}
+                          className="mt-2 px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
+                        >
+                          📋 Copy Full Log
+                        </button>
+                      </div>
+                    </div>
+                  </details>
+                </div>
               </div>
             </div>
           </div>
