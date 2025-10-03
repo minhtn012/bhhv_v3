@@ -521,7 +521,7 @@ export class BhvApiClient {
   async checkPremium(requestData: BhvRequestData, cookie?: string): Promise<BhvPremiumResponse> {
     try {
       console.log('🔍 Checking premium with BHV API...');
-      // console.log('Request data:', JSON.stringify(requestData, null, 2));
+      console.log('Request data:', JSON.stringify(requestData, null, 2));
 
       const response = await fetch(this.BHV_ENDPOINT, {
         method: 'POST',
@@ -543,7 +543,7 @@ export class BhvApiClient {
 
       const responseData = await response.json();
       console.log('📋 BHV premium response keys:', Object.keys(responseData));
-
+      console.log("RAWWWW:::::", responseData)
       // For premium check, BHV returns HTML in the "data" field
       if (responseData.status_code === 200 && responseData.data) {
         return {

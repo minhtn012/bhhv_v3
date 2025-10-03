@@ -12,6 +12,7 @@ import carTypeEngine from '@db/car_type_engine.json';
 import carGoal from '@db/input-drl_goal.json';
 import allCarDetails from '@db/all_car_details.json';
 import carTypeInsurance from '@db/car_type_insturance.json';
+import carWeightGood from '@db/car_weight_good.json';
 
 // Fixed BHV API constants
 const BHV_CONSTANTS = {
@@ -72,9 +73,9 @@ export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
 
   // Add AU codes if present
   dkbs.forEach(line => {
-    const auMatch = line.match(/AU(\d{3})/);
+    const auMatch = line.match(/BS(\d{3})/);
     if (auMatch) {
-      const auCode = `AU${auMatch[1]}`;
+      const auCode = `BS${auMatch[1]}`;
       const insurance = carInsurance.find(item => item.code === auCode);
       if (insurance) {
         insuranceOptions[insurance.value] = insurance.value;
@@ -139,6 +140,14 @@ export function getKindConfig(loaiHinhKinhDoanh: string): {
     };
   }
 
+  if (loaiHinhKinhDoanh.includes('pickup')) {
+    return {
+      car_goal: "yes",
+      car_seat: "yes",
+      car_weigh_goods: "yes"
+    };
+  }
+
   // Default for non-business (passenger vehicles)
   return {
     car_goal: "yes",
@@ -154,14 +163,26 @@ export function mapCarWeightGoods(trongTai: number): string {
   // Weight in kg, convert to tons for comparison
   const weightInTons = trongTai / 1000;
 
-  // Over 15 tons - use the UUID from manual BHV request
-  if (weightInTons > 15) {
-    return "297966cd-be47-4d7e-a52c-9a1297ca8012";
+  // Special case: 1.4 tons
+  if (weightInTons === 1.4) {
+    const item = carWeightGood.find(w => w.name === "1.4 tấn");
+    return item?.value || "";
   }
 
-  // Add more weight categories as needed
-  // For now, return empty for lighter vehicles
-  return "";
+  // Over 15 tons
+  if (weightInTons > 15) {
+    const item = carWeightGood.find(w => w.name === "Trên 15 tấn");
+    return item?.value || "";
+  }
+
+  // Round to nearest ton and find matching weight
+  const roundedWeight = Math.round(weightInTons);
+
+  // Format: "01 tấn", "02 tấn", etc.
+  const formattedWeight = roundedWeight.toString().padStart(2, '0') + " tấn";
+  const item = carWeightGood.find(w => w.name === formattedWeight);
+
+  return item?.value || "";
 }
 
 /**

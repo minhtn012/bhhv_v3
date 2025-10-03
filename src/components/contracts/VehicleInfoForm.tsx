@@ -285,7 +285,7 @@ export default function VehicleInfoForm({
         </div>
 
 
-        {(formData.loaiHinhKinhDoanh.includes('cho_hang') || formData.loaiHinhKinhDoanh.includes('dau_keo')) && (
+        {(formData.loaiHinhKinhDoanh.includes('cho_hang') || formData.loaiHinhKinhDoanh.includes('dau_keo') || formData.loaiHinhKinhDoanh.includes('pickup')) && (
           <div className="lg:col-span-3">
             <label className="block text-white font-medium mb-2">Trọng tải (kg) *</label>
             <input 
