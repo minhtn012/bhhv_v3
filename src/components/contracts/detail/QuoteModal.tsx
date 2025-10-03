@@ -98,7 +98,7 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
 
   const downloadQuote = async () => {
     if (!contract) return;
-    
+
     const quoteElement = document.getElementById('quote-content-to-download');
     if (!quoteElement) {
       console.error('Quote element not found');
@@ -126,18 +126,35 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
 
     function performDownload() {
       try {
-        window.html2canvas(quoteElement, { 
+        // Clone the element to avoid modifying the original
+        const clonedElement = quoteElement.cloneNode(true) as HTMLElement;
+        clonedElement.style.width = '1000px'; // Fixed width for desktop layout
+        clonedElement.style.position = 'absolute';
+        clonedElement.style.left = '-9999px';
+        clonedElement.style.top = '0';
+        document.body.appendChild(clonedElement);
+
+        window.html2canvas(clonedElement, {
           scale: 2,
           useCORS: true,
           allowTaint: false,
-          backgroundColor: '#ffffff'
+          backgroundColor: '#ffffff',
+          width: 1000,
+          windowWidth: 1000
         }).then((canvas) => {
+          // Remove cloned element
+          document.body.removeChild(clonedElement);
+
           const link = document.createElement('a');
           link.download = `BaoGia_${contract.contractNumber.replace(/\s/g, '')}.png`;
           link.href = canvas.toDataURL('image/png');
           link.click();
         }).catch((error) => {
           console.error('html2canvas error:', error);
+          // Clean up on error
+          if (document.body.contains(clonedElement)) {
+            document.body.removeChild(clonedElement);
+          }
         });
       } catch (error) {
         console.error('Error in performDownload:', error);
@@ -246,6 +263,8 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
               </tr>
             </tbody>
           </table>
+          <br></br>
+          Hiệu lực bản chào: <b>30</b> ngày kể từ ngày chào phí hoặc thời gian kế tiếp hiệu lực cũ tùy thời gian nào đến trước
         </div>
         <div className="mt-4 flex justify-end gap-3">
           <button

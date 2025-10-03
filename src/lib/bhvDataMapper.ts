@@ -489,9 +489,8 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
-    // Only add car_weigh_goods UUID for pure goods transport (not hybrid pickup/van)
-    // Hybrid vehicles have car_seat="yes" and car_weigh_goods="yes" but leave the field empty
-    ...((kindConfig.car_weigh_goods === "yes" && kindConfig.car_seat === "no") && carWeightGoods && { car_weigh_goods: carWeightGoods }),
+    // Add car_weigh_goods UUID when config allows and weight data exists
+    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
 
   // Add insurance options
@@ -628,9 +627,8 @@ export function transformContractToBhvFormat(contract: any): any {
     "c91893f5-49f0-477a-a52d-263cdaed19b9": "",
     "35add4ab-a834-4a1a-ad72-a42adb83f7ee": "",
     "25daddf5-cc38-49ef-bc4a-15e20a98d3cc": "",
-    // Only add car_weigh_goods UUID for pure goods transport (not hybrid pickup/van)
-    // Hybrid vehicles have car_seat="yes" and car_weigh_goods="yes" but leave the field empty
-    ...((kindConfig.car_weigh_goods === "yes" && kindConfig.car_seat === "no") && carWeightGoods && { car_weigh_goods: carWeightGoods }),
+    // Add car_weigh_goods UUID when config allows and weight data exists
+    ...(kindConfig.car_weigh_goods === "yes" && carWeightGoods && { car_weigh_goods: carWeightGoods }),
   };
 
   // Add insurance options
