@@ -4,7 +4,7 @@ import { CarSelection } from '@/types/car';
 import { type BaseContractFormData } from '@/types/contract';
 import carEngineTypes from '@db/car_type_engine.json';
 
-export default function useFormValidation() {
+export default function useFormValidation(requireFullInfo: boolean = false) {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const parseDate = (dateStr: string): Date | null => {
@@ -36,14 +36,22 @@ export default function useFormValidation() {
   const validationSchema = Yup.object().shape({
     // Customer/Owner Information (consolidated)
     chuXe: Yup.string().required('Vui lòng nhập họ và tên'),
-    email: Yup.string()
-      .transform((value) => value === '' ? undefined : value)
-      .email('Vui lòng nhập email hợp lệ')
-      .notRequired(),
-    soDienThoai: Yup.string()
-      .transform((value) => value === '' ? undefined : value)
-      .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
-      .notRequired(),
+    email: requireFullInfo
+      ? Yup.string()
+          .required('Vui lòng nhập email')
+          .email('Vui lòng nhập email hợp lệ')
+      : Yup.string()
+          .transform((value) => value === '' ? undefined : value)
+          .email('Vui lòng nhập email hợp lệ')
+          .notRequired(),
+    soDienThoai: requireFullInfo
+      ? Yup.string()
+          .required('Vui lòng nhập số điện thoại')
+          .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
+      : Yup.string()
+          .transform((value) => value === '' ? undefined : value)
+          .matches(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09')
+          .notRequired(),
     cccd: Yup.string()
       .transform((value) => value === '' ? undefined : value)
       .matches(/^[0-9]{12}$/, 'Căn cước công dân phải có đúng 12 chữ số')
@@ -51,12 +59,18 @@ export default function useFormValidation() {
     gioiTinh: Yup.mixed<'nam' | 'nu' | 'khac'>().oneOf(['nam', 'nu', 'khac']).required('Vui lòng chọn giới tính'),
     userType: Yup.mixed<'ca_nhan' | 'cong_ty'>().oneOf(['ca_nhan', 'cong_ty']).required('Vui lòng chọn loại khách hàng'),
 
-    // Address Structure (actual form fields) - now optional
-    selectedProvince: Yup.string().notRequired(),
+    // Address Structure (actual form fields) - required when requireFullInfo is true
+    selectedProvince: requireFullInfo
+      ? Yup.string().required('Vui lòng chọn tỉnh/thành phố')
+      : Yup.string().notRequired(),
     selectedProvinceText: Yup.string().notRequired(),
-    selectedDistrictWard: Yup.string().notRequired(),
+    selectedDistrictWard: requireFullInfo
+      ? Yup.string().required('Vui lòng chọn quận/huyện/xã')
+      : Yup.string().notRequired(),
     selectedDistrictWardText: Yup.string().notRequired(),
-    specificAddress: Yup.string().notRequired(),
+    specificAddress: requireFullInfo
+      ? Yup.string().required('Vui lòng nhập địa chỉ cụ thể')
+      : Yup.string().notRequired(),
     
     // Buyer fields removed - consolidated into customer fields above
     
@@ -181,9 +195,15 @@ export default function useFormValidation() {
     }
   };
 
+  const getFirstErrorField = (): string | null => {
+    const errorKeys = Object.keys(fieldErrors);
+    return errorKeys.length > 0 ? errorKeys[0] : null;
+  };
+
   return {
     fieldErrors,
     validateForm,
-    setFieldErrors
+    setFieldErrors,
+    getFirstErrorField
   };
 }

@@ -66,15 +66,31 @@ function parsePremiumAmount(text: string): number {
 }
 
 /**
- * Parse total premium from hidden input
+ * Parse total premium before tax (Tổng phí bảo hiểm) from HTML
  */
-function parseTotalPremium(htmlContent: string): number {
-  const totalMatch = htmlContent.match(/id="hdf_total_premium"[^>]*value="([^"]*)"/) ||
-                    htmlContent.match(/name="total_premium"[^>]*value="([^"]*)"/) ||
-                    htmlContent.match(/id="total_payment_row"[^>]*>\s*([^<]*)/);
+function parseTotalPremiumBeforeTax(htmlContent: string): number {
+  // Look for "Tổng phí bảo hiểm" or "T&#x1ED5;ng ph&#xED; b&#x1EA3;o hi&#x1EC3;m" pattern
+  const beforeTaxMatch = htmlContent.match(/<h6>T[^<]*ng\s+ph[^<]*\s+b[^<]*o\s+hi[^<]*m<\/h6>\s*<h6>([^<]+)<\/h6>/) ||
+                        htmlContent.match(/Tổng phí bảo hiểm<\/h6>\s*<h6>([^<]+)<\/h6>/i);
 
-  if (totalMatch) {
-    return parsePremiumAmount(totalMatch[1]);
+  if (beforeTaxMatch) {
+    return parsePremiumAmount(beforeTaxMatch[1]);
+  }
+
+  return 0;
+}
+
+/**
+ * Parse total premium after tax (Tổng phí thanh toán) from HTML
+ */
+function parseTotalPremiumAfterTax(htmlContent: string): number {
+  // Look for "Tổng phí thanh toán" pattern or existing total_payment_row
+  const afterTaxMatch = htmlContent.match(/<h5>T[^<]*ng\s+ph[^<]*\s+thanh\s+to[^<]*n<\/h5>\s*<h5>[^>]*>\s*([^<]+)/) ||
+                       htmlContent.match(/Tổng phí thanh toán<\/h5>\s*<h5>[^>]*>\s*([^<]+)/i) ||
+                       htmlContent.match(/id="total_payment_row"[^>]*>\s*([^<]*)/);
+
+  if (afterTaxMatch) {
+    return parsePremiumAmount(afterTaxMatch[1]);
   }
 
   return 0;
@@ -124,9 +140,9 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
       totalPremium: { beforeTax: 0, afterTax: 0 }
     };
 
-    // Parse total premium first
-    const totalAfterTax = parseTotalPremium(htmlContent);
-    result.totalPremium.afterTax = totalAfterTax;
+    // Parse total premiums directly from HTML
+    result.totalPremium.beforeTax = parseTotalPremiumBeforeTax(htmlContent);
+    result.totalPremium.afterTax = parseTotalPremiumAfterTax(htmlContent);
 
     // Split HTML into sections by <hr class="my-4">
     const sections = htmlContent.split(/<hr\s+class="my-4">/);
@@ -161,9 +177,14 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
       }
     });
 
-    // Calculate total premiums from all detected packages
-    result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
-    result.totalPremium.afterTax = Math.round(result.bhvc.afterTax + result.tnds.afterTax + result.nntx.afterTax);
+    // Total premiums are already parsed from HTML
+    // If not found, fallback to calculating from individual packages
+    if (result.totalPremium.beforeTax === 0) {
+      result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
+    }
+    if (result.totalPremium.afterTax === 0) {
+      result.totalPremium.afterTax = Math.round(result.bhvc.afterTax + result.tnds.afterTax + result.nntx.afterTax);
+    }
 
     // Ensure no negative values
     result.bhvc.beforeTax = Math.max(0, result.bhvc.beforeTax);

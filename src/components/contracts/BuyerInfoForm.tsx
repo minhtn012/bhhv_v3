@@ -52,7 +52,6 @@ export default function BuyerInfoForm({
       if (hasEmptyFields) {
         onFormInputChange('chuXe', 'Nguyễn Văn A');
         onFormInputChange('email', 'nguyenvana@example.com');
-        onFormInputChange('gioiTinh', 'nam');
         onFormInputChange('soDienThoai', '0901234567');
         onFormInputChange('cccd', '123456789012');
         onFormInputChange('specificAddress', '123 Đường ABC, Phường XYZ');
@@ -229,19 +228,6 @@ export default function BuyerInfoForm({
             placeholder="email@example.com"
           />
           <FieldError fieldName="email" errors={combinedErrors} />
-        </div>
-
-        {/* Giới tính */}
-        <div>
-          <label className="block text-white font-medium mb-2">Giới tính *</label>
-          <select 
-            value={formData.gioiTinh}
-            onChange={(e) => onFormInputChange('gioiTinh', e.target.value as 'nam' | 'nu' | 'khac')}
-            className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-3 text-white min-h-[48px]"
-          >
-            <option value="nam">Nam</option>
-            <option value="nu">Nữ</option>
-          </select>
         </div>
 
         {/* Số điện thoại */}

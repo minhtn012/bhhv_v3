@@ -10,12 +10,11 @@
  * This is the single source of truth for contract form structure
  */
 export interface BaseContractFormData {
-  // Customer/Owner Information (12 fields - consolidated)
+  // Customer/Owner Information (11 fields - consolidated)
   chuXe: string;               // Owner name
   email: string;               // Email
   soDienThoai: string;         // Phone
   cccd: string;                // Citizen ID
-  gioiTinh: 'nam' | 'nu' | 'khac'; // Gender (from buyer)
   userType: 'ca_nhan' | 'cong_ty';
   
   // Address Structure (actual form fields)
@@ -64,7 +63,7 @@ export type VehicleFormData = Pick<BaseContractFormData,
 >;
 
 export type BuyerFormData = Pick<BaseContractFormData,
-  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'gioiTinh' | 'userType' |
+  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'userType' |
   'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' |
   'selectedDistrictWardText' | 'specificAddress'
 >;
@@ -100,7 +99,6 @@ export const defaultContractFormData: BaseContractFormData = {
   email: '',
   soDienThoai: '',
   cccd: '',
-  gioiTinh: 'nam',
   userType: 'ca_nhan',
   
   // Address Structure
@@ -144,10 +142,6 @@ export const defaultContractFormData: BaseContractFormData = {
 // Type guards for validation
 export const isValidUserType = (value: string): value is BaseContractFormData['userType'] => {
   return value === 'ca_nhan' || value === 'cong_ty';
-};
-
-export const isValidGender = (value: string): value is BaseContractFormData['gioiTinh'] => {
-  return value === 'nam' || value === 'nu' || value === 'khac';
 };
 
 // Type compatibility checks

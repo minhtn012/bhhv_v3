@@ -27,6 +27,31 @@ function mapLoaiHinhKinhDoanh(code: string): string {
 }
 
 /**
+ * Parse combined loaiHinhKinhDoanh string to separate loaiXe and loaiHinhKinhDoanh
+ * Examples:
+ *   "Xe ô tô chở người (không kinh doanh)" → {loaiXe: "Xe ô tô chở người", loaiHinhKinhDoanh: "không kinh doanh"}
+ *   "Xe vận tải hàng hóa" → {loaiXe: "Xe vận tải hàng hóa", loaiHinhKinhDoanh: "kinh doanh"}
+ */
+function parseLoaiHinhKinhDoanh(combinedString: string): {
+  loaiXe: string;
+  loaiHinhKinhDoanh: string;
+} {
+  const match = combinedString.match(/^(.+?)\s*\((.+?)\)$/);
+
+  if (match) {
+    return {
+      loaiXe: match[1].trim(),
+      loaiHinhKinhDoanh: match[2].trim()
+    };
+  }
+
+  return {
+    loaiXe: combinedString.trim(),
+    loaiHinhKinhDoanh: 'kinh doanh'
+  };
+}
+
+/**
  * Convert number to Vietnamese words
  */
 function numberToVietnameseWords(num: number): string {
@@ -315,7 +340,7 @@ export async function generateWordContract(contractData: ContractData, contractT
     // Variables with  prefix (lowercase/normal case)
     diaChi: contractData.diaChi || "-",
     soHD: contractData.bhvContractNumber || "-",
-    loaiXe: contractData.nhanHieu || "-",
+    nhanHieu: contractData.nhanHieu || "-",
     namSanXuat: contractData.namSanXuat || "-",
     soKhung: contractData.soKhung || "-",
     soMay: contractData.soMay || "-",
@@ -393,7 +418,18 @@ export async function generateWordContract(contractData: ContractData, contractT
     soNamSuDung: contractData.soNamSuDung || "-",
     namSuDung: contractData.soNamSuDung || "-",
     trongTai: contractData.trongTai || "-",
-    loaiHinhKinhDoanh: contractData.loaiHinhKinhDoanh ? mapLoaiHinhKinhDoanh(contractData.loaiHinhKinhDoanh) : "Không Kinh doanh",
+
+    // Parse combined loaiHinhKinhDoanh into separate variables for Word template
+    ...(() => {
+      const combinedString = contractData.loaiHinhKinhDoanh
+        ? mapLoaiHinhKinhDoanh(contractData.loaiHinhKinhDoanh)
+        : "Không Kinh doanh";
+      const parsed = parseLoaiHinhKinhDoanh(combinedString);
+      return {
+        loaiXe: parsed.loaiXe,
+        loaiHinhKinhDoanh: parsed.loaiHinhKinhDoanh
+      };
+    })(),
 
     // Car details
     carBrand: contractData.carBrand || "-",

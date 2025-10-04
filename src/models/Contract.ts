@@ -13,7 +13,6 @@ export interface IContract extends Document {
   // Thông tin người mua (buyer information)
   buyerEmail?: string;
   buyerPhone?: string;
-  buyerGender?: 'nam' | 'nu' | 'khac';
   buyerCitizenId?: string;
   selectedProvince?: string; // province_code
   selectedProvinceText?: string; // province_name for display
@@ -167,10 +166,6 @@ const contractSchema = new Schema<IContract>({
   buyerPhone: {
     type: String,
     trim: true
-  },
-  buyerGender: {
-    type: String,
-    enum: ['nam', 'nu', 'khac']
   },
   buyerCitizenId: {
     type: String,

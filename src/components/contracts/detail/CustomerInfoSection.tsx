@@ -3,13 +3,14 @@ interface Contract {
   diaChi: string;
   buyerEmail?: string;
   buyerPhone?: string;
-  buyerGender?: 'nam' | 'nu' | 'khac';
   buyerCitizenId?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;
   selectedDistrictWardText?: string;
   specificAddress?: string;
+  ngayBatDauBaoHiem?: string;
+  ngayKetThucBaoHiem?: string;
 }
 
 interface CustomerInfoSectionProps {
@@ -35,12 +36,6 @@ export default function CustomerInfoSection({ contract }: CustomerInfoSectionPro
           <div>
             <label className="block text-gray-300 text-sm mb-1">Số điện thoại</label>
             <p className="text-white">{contract.buyerPhone}</p>
-          </div>
-        )}
-        {contract.buyerGender && (
-          <div>
-            <label className="block text-gray-300 text-sm mb-1">Giới tính</label>
-            <p className="text-white">{contract.buyerGender === 'nam' ? 'Nam' : contract.buyerGender === 'nu' ? 'Nữ' : 'Khác'}</p>
           </div>
         )}
         {contract.buyerCitizenId && (
@@ -71,6 +66,18 @@ export default function CustomerInfoSection({ contract }: CustomerInfoSectionPro
           <label className="block text-gray-300 text-sm mb-1">Địa chỉ gốc</label>
           <p className="text-white">{contract.diaChi}</p>
         </div>
+        {contract.ngayBatDauBaoHiem && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Ngày bắt đầu bảo hiểm</label>
+            <p className="text-white font-medium">{contract.ngayBatDauBaoHiem}</p>
+          </div>
+        )}
+        {contract.ngayKetThucBaoHiem && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Ngày kết thúc bảo hiểm</label>
+            <p className="text-white font-medium">{contract.ngayKetThucBaoHiem}</p>
+          </div>
+        )}
       </div>
     </div>
   );

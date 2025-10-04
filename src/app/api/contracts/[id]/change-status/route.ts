@@ -58,9 +58,6 @@ export async function POST(
       if (!contract.buyerPhone || contract.buyerPhone.trim() === '') {
         missingFields.push('Số điện thoại');
       }
-      if (!contract.buyerCitizenId || contract.buyerCitizenId.trim() === '') {
-        missingFields.push('Căn cước công dân');
-      }
       if (!contract.selectedProvince || contract.selectedProvince.trim() === '') {
         missingFields.push('Tỉnh/Thành phố');
       }

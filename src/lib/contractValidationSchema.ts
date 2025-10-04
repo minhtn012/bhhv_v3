@@ -8,11 +8,6 @@
 import { z } from 'zod';
 
 /**
- * Gender enum
- */
-const GenderSchema = z.enum(['nam', 'nu', 'khac']);
-
-/**
  * Business usage type enum (loaiHinhKinhDoanh)
  */
 const BusinessTypeSchema = z.enum([
@@ -82,8 +77,6 @@ export const ContractSchema = z.object({
     .pipe(z.string()
       .regex(/^(0[3-9])[0-9]{8}$/, 'Số điện thoại phải có 10 chữ số')
       .optional()),
-
-  buyerGender: GenderSchema.optional(),
 
   buyerCitizenId: z.string()
     .transform((val) => val === '' ? undefined : val)

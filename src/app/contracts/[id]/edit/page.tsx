@@ -24,7 +24,6 @@ interface FormData extends BaseContractFormData {
   // Additional UI-specific fields not in BaseContractFormData
   buyerEmail: string;
   buyerPhone: string;
-  buyerGender: 'nam' | 'nu' | 'khac';
   buyerCccd: string;
   customRates: number[];
   selectedNNTXPackage: string;
@@ -46,7 +45,6 @@ interface Contract {
   // Buyer information
   buyerEmail?: string;
   buyerPhone?: string;
-  buyerGender?: 'nam' | 'nu' | 'khac';
   buyerCitizenId?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
@@ -126,9 +124,8 @@ export default function EditContractPage() {
     email: '',
     soDienThoai: '',
     cccd: '',
-    gioiTinh: 'nam',
     userType: 'ca_nhan',
-    
+
     // Address Structure (from BaseContractFormData)
     diaChi: '',
     selectedProvince: '',
@@ -136,11 +133,10 @@ export default function EditContractPage() {
     selectedDistrictWard: '',
     selectedDistrictWardText: '',
     specificAddress: '',
-    
+
     // Extended buyer information for edit
     buyerEmail: '',
     buyerPhone: '',
-    buyerGender: 'nam',
     buyerCccd: '',
     
     // Vehicle Information (BaseContractFormData)
@@ -206,16 +202,40 @@ export default function EditContractPage() {
   const { carData, handleBrandChange, handleModelChange, handleInputChange: handleCarInputChange, acceptSuggestedCar, initializeFromExistingContract } = useCarSelection({
     onVehicleDataChange: handleVehicleDataChange
   });
-  const { 
-    calculationResult, 
+  const {
+    calculationResult,
     enhancedResult,
-    availablePackages, 
-    calculateRates, 
+    availablePackages,
+    calculateRates,
     calculateEnhanced,
     calculateTotal,
     syncPackageFee
   } = useInsuranceCalculation();
-  const { fieldErrors, validateForm } = useFormValidation();
+  const { fieldErrors, validateForm, getFirstErrorField } = useFormValidation(changeStatusTo === 'khach_duyet');
+
+  // Utility: Scroll to section
+  const scrollToSection = useCallback((section: 'buyer' | 'vehicle' | 'package') => {
+    setTimeout(() => {
+      const sectionElement = document.querySelector(`[data-section="${section}"]`);
+      if (sectionElement) {
+        sectionElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }
+    }, 100);
+  }, []);
+
+  // Determine which section a field belongs to
+  const getFieldSection = (fieldName: string): 'buyer' | 'vehicle' | 'package' => {
+    const buyerFields = ['chuXe', 'email', 'soDienThoai', 'cccd', 'userType', 'selectedProvince', 'selectedProvinceText', 'selectedDistrictWard', 'selectedDistrictWardText', 'specificAddress'];
+    const vehicleFields = ['bienSo', 'soKhung', 'soMay', 'namSanXuat', 'soChoNgoi', 'giaTriXe', 'trongTai', 'loaiDongCo', 'giaTriPin', 'ngayDKLD', 'loaiXe', 'nhanHieu', 'soLoai', 'kieuDang', 'namPhienBan', 'selectedBrand', 'selectedModel', 'selectedBodyStyle', 'selectedYear'];
+
+    if (buyerFields.includes(fieldName)) return 'buyer';
+    if (vehicleFields.includes(fieldName)) return 'vehicle';
+    return 'package';
+  };
 
   // Check authentication and fetch contract
   useEffect(() => {
@@ -300,7 +320,6 @@ export default function EditContractPage() {
       email: contractData.buyerEmail || '',
       soDienThoai: contractData.buyerPhone || '',
       cccd: contractData.buyerCitizenId || '',
-      gioiTinh: contractData.buyerGender || 'nam',
       userType: contractData.loaiKhachHang || 'ca_nhan',
 
       // Address Structure (BaseContractFormData)
@@ -343,7 +362,6 @@ export default function EditContractPage() {
       // Extended fields specific to edit page
       buyerEmail: contractData.buyerEmail || '',
       buyerPhone: contractData.buyerPhone || '',
-      buyerGender: contractData.buyerGender || 'nam',
       buyerCccd: contractData.buyerCitizenId || '',
       customRates: [],
       selectedNNTXPackage: selectedNNTXPackage,
@@ -564,6 +582,14 @@ export default function EditContractPage() {
     const isValid = await validateForm(formData, carData);
     if (!isValid) {
       setError('Vui lòng kiểm tra lại thông tin nhập');
+
+      // Scroll to the section with the first error
+      const firstErrorField = getFirstErrorField();
+      if (firstErrorField) {
+        const section = getFieldSection(firstErrorField);
+        scrollToSection(section);
+      }
+
       return;
     }
 
@@ -635,7 +661,6 @@ export default function EditContractPage() {
         // Buyer information (mapped from form fields)
         buyerEmail: formData.email,
         buyerPhone: formData.soDienThoai,
-        buyerGender: formData.gioiTinh,
         buyerCitizenId: formData.cccd,
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
@@ -826,7 +851,7 @@ export default function EditContractPage() {
             {/* Main Content */}
             <div className="space-y-6">
               {/* Buyer Information */}
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+              <div data-section="buyer" className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Thông tin khách hàng</h2>
                 <BuyerInfoForm
                   formData={{
@@ -834,7 +859,6 @@ export default function EditContractPage() {
                     email: formData.email,
                     soDienThoai: formData.soDienThoai,
                     cccd: formData.cccd,
-                    gioiTinh: formData.gioiTinh,
                     userType: formData.userType,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
@@ -850,7 +874,7 @@ export default function EditContractPage() {
               </div>
 
               {/* Vehicle Information */}
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+              <div data-section="vehicle" className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Thông tin xe</h2>
                 
                 {/* Address field */}
@@ -882,7 +906,7 @@ export default function EditContractPage() {
 
               {/* Package Selection */}
               {calculationResult && availablePackages.length > 0 && (
-                <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+                <div data-section="package" className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                   <h2 className="text-xl font-semibold text-white mb-4">Gói bảo hiểm</h2>
                   <PackageSelectionStep
                     availablePackages={availablePackages}
