@@ -348,20 +348,25 @@ export function calculateRequestChangeFees(contract: any): string {
     return "";
   }
 
-  // Calculate discount percentage
-  // const discountRate = ((bhvAfterTax - vatChatFee) / bhvAfterTax) * 100;
-  let discount = bhvAfterTax - vatChatFee
-  // discount = discount - processFractionalPart(discount)
-  // If negative, set to 0 (no discount)
-  // const finalDiscountRate = Math.max(0, Math.round(discountRate));
+  // Calculate discount
+  let discount = bhvAfterTax - vatChatFee;
+  let discountType = "RQ_FEES_DISCOUNT";
+
+  // If negative discount, switch to increase type and use positive value
+  if (discount < 0) {
+    discountType = "RQ_FEES_INCREASE";
+    discount = Math.abs(discount);
+  }
+
   console.log("#################")
-  console.log(bhvAfterTax, vatChatFee, discount)
+  console.log(bhvAfterTax, vatChatFee, discount, discountType)
   console.log("#################")
+
   // Generate request_change_fees JSON
   const requestChangeFees = [
     {
       option_id: "c2db43ab-ccdc-44d3-8fdc-2167b86e01900",
-      option_type: "RQ_FEES_DISCOUNT",
+      option_type: discountType,
       option_value: 0,
       option_value1: discount
     }
