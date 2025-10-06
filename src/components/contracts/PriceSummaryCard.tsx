@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { formatCurrency, tndsCategories, parseCurrency, isElectricOrHybridEngine, calculateTotalVehicleValue, type EnhancedCalculationResult } from '@/utils/insurance-calculator';
 import Spinner from '@/components/ui/Spinner';
 import { PriceSummaryFormData } from '@/types/contract';
+import StepperInput from '@/components/ui/StepperInput';
 
 interface PackageOption {
   index: number;
@@ -64,6 +65,17 @@ export default function PriceSummaryCard({
     onCustomRateChange?.(null, false);
   }, [formData.selectedPackageIndex]);
 
+  // Handle manual rate adjustments with stepper buttons
+  const handleRateChange = (adjustment: number) => {
+    const currentValue = userModifiedPercentage ?? originalEffectiveRate;
+    const newValue = Math.max(0.1, Math.min(10, parseFloat((currentValue + adjustment).toFixed(2))));
+    if (!isNaN(newValue)) {
+      setUserModifiedPercentage(newValue);
+      const isModified = Math.abs(newValue - originalEffectiveRate) > 0.001;
+      onCustomRateChange?.(newValue, isModified);
+    }
+  };
+
   // Calculate fees based on custom percentage
   const calculateCustomFee = (percentage: number): number => {
     const totalVehicleValue = calculateTotalVehicleValue(
@@ -94,22 +106,25 @@ export default function PriceSummaryCard({
             <div className="text-right">
               {/* Percentage input */}
               <div className="flex items-center gap-1 mb-1">
-                <input 
-                  type="number"
-                  step="0.01"
-                  min="0.1"
-                  max="10"
+                <StepperInput
                   value={currentPercentage > 0 ? currentPercentage.toFixed(2) : ''}
                   onChange={(e) => {
                     const value = parseFloat(e.target.value);
+                    if (e.target.value === '') {
+                      setUserModifiedPercentage(null);
+                      onCustomRateChange?.(null, false);
+                      return;
+                    }
                     if (!isNaN(value) && value >= 0.1 && value <= 10) {
                       setUserModifiedPercentage(value);
-                      // Notify parent about custom rate change
                       const isModified = Math.abs(value - originalEffectiveRate) > 0.001;
                       onCustomRateChange?.(value, isModified);
                     }
                   }}
-                  className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                  onStep={handleRateChange}
+                  min={0.1}
+                  max={10}
+                  step={0.01}
                   placeholder="1.20"
                 />
                 <span className="text-gray-400 text-sm">%</span>

@@ -4,6 +4,7 @@ import FieldError from './FieldError';
 import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
 import { VehicleFormData } from '@/types/contract';
+import StepperInput from '../ui/StepperInput';
 
 interface EngineType {
   name: string;
@@ -172,16 +173,22 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Số chỗ ngồi *</label>
-          <input 
-            type="number" 
-            min="1"
-            max="64"
+          <StepperInput
             value={formData.soChoNgoi}
-            onChange={(e) => onFormInputChange('soChoNgoi', e.target.value ? parseInt(e.target.value) : '')}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+            onChange={(e) => onFormInputChange('soChoNgoi', e.target.value ? parseInt(e.target.value, 10) : '')}
+            onStep={(adjustment) => {
+              const currentValue = Number(formData.soChoNgoi) || 1;
+              const newValue = Math.max(1, Math.min(64, currentValue + adjustment));
+              onFormInputChange('soChoNgoi', newValue);
+            }}
+            min={1}
+            max={64}
+            step={1}
+            className={`w-full bg-white/10 border rounded-xl flex items-center ${
               fieldErrors.soChoNgoi ? 'border-red-500' : 'border-white/20'
             }`}
-            required
+            inputClassName="flex-grow text-center bg-transparent text-white focus:outline-none p-2"
+            buttonClassName="px-3 py-2 text-white font-bold disabled:opacity-50"
           />
           <FieldError fieldName="soChoNgoi" errors={fieldErrors} />
         </div>

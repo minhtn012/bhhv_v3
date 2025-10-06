@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { formatCurrency, tndsCategories, suggestTNDSCategory, getAvailableTNDSCategories, calculateNNTXFee, loadNNTXPackages } from '@/utils/insurance-calculator';
+import StepperInput from '../ui/StepperInput';
 
 interface NNTXPackage {
   name: string;
@@ -250,8 +251,7 @@ export default function DynamicTNDSSelector({
             </div>
             
             <div className="flex items-center gap-1">
-              <input 
-                type="number"
+              <StepperInput
                 value={soChoNgoi || ''}
                 onChange={(e) => {
                   const value = parseInt(e.target.value) || 0;
@@ -260,9 +260,15 @@ export default function DynamicTNDSSelector({
                     setTimeout(() => onRecalculate?.(), 50);
                   }
                 }}
-                min="0"
-                max="999"
-                className="w-16 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                onStep={(adjustment) => {
+                  const currentValue = soChoNgoi || 0;
+                  const newValue = Math.max(0, Math.min(999, currentValue + adjustment));
+                  onSoChoNgoiChange(newValue);
+                  setTimeout(() => onRecalculate?.(), 50);
+                }}
+                min={0}
+                max={999}
+                step={1}
                 disabled={!includeNNTX}
               />
               <span className="text-gray-400 text-sm">chỗ</span>
@@ -317,16 +323,21 @@ export default function DynamicTNDSSelector({
             <div className="text-right">
               {/* Percentage input */}
               <div className="flex items-center gap-1 mb-1">
-                <input 
-                  type="number"
-                  step="0.01"
+                <StepperInput
                   value={taiTucPercentage.toFixed(2)}
                   onChange={(e) => {
                     const value = parseFloat(e.target.value) || 0;
                     onTaiTucPercentageChange(value);
                     setTimeout(() => onRecalculate?.(), 50);
                   }}
-                  className="w-20 text-right p-1 border border-white/20 rounded-md bg-gray-800 text-white font-semibold focus:border-blue-400 focus:outline-none"
+                  onStep={(adjustment) => {
+                    const currentValue = taiTucPercentage || 0;
+                    const newValue = parseFloat((currentValue + adjustment).toFixed(2));
+                    onTaiTucPercentageChange(newValue);
+                    setTimeout(() => onRecalculate?.(), 50);
+                  }}
+                  step={0.01}
+                  inputClassName="w-20 text-right p-1 bg-transparent text-white font-semibold focus:outline-none"
                 />
                 <span className="text-gray-400 text-sm">%</span>
               </div>
