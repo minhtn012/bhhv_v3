@@ -14,6 +14,9 @@ interface Contract {
   tongPhi: number;
   createdAt: string;
   updatedAt: string;
+  createdBy: {
+    username: string;
+  } | string;
 }
 
 interface Pagination {
@@ -68,6 +71,8 @@ export default function ContractsPage() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('Contracts data:', data.contracts);
+        console.log('First contract createdBy:', data.contracts[0]?.createdBy);
         setContracts(data.contracts);
         setPagination(data.pagination);
         setError('');
@@ -230,7 +235,7 @@ export default function ContractsPage() {
                   setStatusFilter(e.target.value);
                   setPagination(prev => ({ ...prev, page: 1 }));
                 }}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500/50"
+                className="bg-gray-800/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500/50"
               >
                 <option value="">Tất cả trạng thái</option>
                 <option value="nhap">Nháp</option>
@@ -276,6 +281,7 @@ export default function ContractsPage() {
                           />
                         </th>
                         <th className="text-left py-3 px-4 text-white font-medium">Mã HĐ</th>
+                        <th className="text-left py-3 px-4 text-white font-medium">Người tạo</th>
                         <th className="text-left py-3 px-4 text-white font-medium">Chủ xe</th>
                         <th className="text-left py-3 px-4 text-white font-medium">Biển số</th>
                         <th className="text-left py-3 px-4 text-white font-medium">Trạng thái</th>
@@ -296,6 +302,9 @@ export default function ContractsPage() {
                             />
                           </td>
                           <td className="py-3 px-4 text-white font-mono text-sm">{contract.contractNumber}</td>
+                          <td className="py-3 px-4 text-gray-300">
+                            {typeof contract.createdBy === 'object' ? contract.createdBy.username : 'N/A'}
+                          </td>
                           <td className="py-3 px-4 text-white">{contract.chuXe}</td>
                           <td className="py-3 px-4 text-gray-300 font-mono">{contract.bienSo}</td>
                           <td className="py-3 px-4">
@@ -371,10 +380,18 @@ export default function ContractsPage() {
                           <span className="text-gray-400 block">Tổng phí</span>
                           <span className="text-green-300 font-medium">{formatCurrency(contract.tongPhi)}</span>
                         </div>
+                        <div>
+                          <span className="text-gray-400 block">Người tạo</span>
+                          <span className="text-white">{typeof contract.createdBy === 'object' ? contract.createdBy.username : 'N/A'}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-400 block">Ngày tạo</span>
+                          <span className="text-gray-300">{formatDate(contract.createdAt)}</span>
+                        </div>
                       </div>
-                      
+
                       <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                        <span className="text-gray-400 text-xs">{formatDate(contract.createdAt)}</span>
+                        <span className="text-gray-400 text-xs"></span>
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() => router.push(`/contracts/${contract._id}`)}

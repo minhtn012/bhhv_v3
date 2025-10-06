@@ -428,7 +428,8 @@ const contractSchema = new Schema<IContract>({
 
   // Metadata
   createdBy: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: [true, 'ID người tạo là bắt buộc'],
     index: true // Index for querying contracts by user
   },

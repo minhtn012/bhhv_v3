@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .populate('createdBy', 'username')
         .lean(),
       Contract.countDocuments(filter)
     ]);
