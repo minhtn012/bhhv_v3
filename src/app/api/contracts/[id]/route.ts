@@ -23,7 +23,7 @@ export async function GET(
     }
 
     // User chỉ xem được contract của mình, admin xem tất cả
-    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -68,7 +68,7 @@ export async function PUT(
     }
 
     // User chỉ sửa được contract của mình, admin sửa tất cả
-    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -148,7 +148,7 @@ export async function PATCH(
     }
 
     // User chỉ sửa được contract của mình, admin sửa tất cả
-    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -218,7 +218,7 @@ export async function DELETE(
     }
 
     // User chỉ xóa được contract của mình, admin xóa tất cả
-    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
