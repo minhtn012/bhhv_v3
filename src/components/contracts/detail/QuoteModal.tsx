@@ -187,84 +187,84 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           <table style={{ width: '100%', fontSize: '14px', borderCollapse: 'collapse', border: '1px solid black' }}>
             <tbody>
               <tr>
-                <td style={{ width: '25%', fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Chủ xe:</td>
-                <td colSpan={3} id="q-chuXe" style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ width: '25%', fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Chủ xe:</td>
+                <td colSpan={3} id="q-chuXe" style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Địa chỉ:</td>
-                <td colSpan={3} id="q-diaChi" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Địa chỉ:</td>
+                <td colSpan={3} id="q-diaChi" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Biển kiểm soát:</td>
-                <td id="q-bienSo" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Năm sản xuất:</td>
-                <td id="q-namSanXuat" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Biển kiểm soát:</td>
+                <td id="q-bienSo" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Năm sản xuất:</td>
+                <td id="q-namSanXuat" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>ĐKLĐ:</td>
-                <td id="q-dkld" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Số chỗ ngồi:</td>
-                <td id="q-soChoNgoi" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>ĐKLĐ:</td>
+                <td id="q-dkld" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Số chỗ ngồi:</td>
+                <td id="q-soChoNgoi" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Hiệu xe:</td>
-                <td id="q-hieuXe" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Loại xe:</td>
-                <td id="q-loaiXe" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Hiệu xe:</td>
+                <td id="q-hieuXe" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Loại xe:</td>
+                <td id="q-loaiXe" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Số khung:</td>
-                <td id="q-soKhung" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Số máy:</td>
-                <td id="q-soMay" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Số khung:</td>
+                <td id="q-soKhung" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Số máy:</td>
+                <td id="q-soMay" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>
                   Giá trị xe:
                   {contract?.giaTriPin && contract.giaTriPin > 0 && <><br/>giá trị pin:</>}
                 </td>
-                <td id="q-giaTriXe" style={{ border: '1px solid black', padding: '8px' }}>
+                <td id="q-giaTriXe" style={{ border: '1px solid black', padding: '8px', color: '#000' }}>
                   {contract?.giaTriPin && contract.giaTriPin > 0 && <br/>}
                 </td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Mục đích sử dụng:</td>
-                <td id="q-mucDich" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Mục đích sử dụng:</td>
+                <td id="q-mucDich" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Số tiền bảo hiểm:</td>
-                <td id="q-soTienBH" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Mức khấu trừ:</td>
-                <td id="q-mucKhauTru" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Số tiền bảo hiểm:</td>
+                <td id="q-soTienBH" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Mức khấu trừ:</td>
+                <td id="q-mucKhauTru" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Tỷ lệ phí:</td>
-                <td id="q-tyLePhi" style={{ border: '1px solid black', padding: '8px' }}></td>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }} rowSpan={4}>ĐIỀU KHOẢN BỔ SUNG ÁP DỤNG:</td>
-                <td id="q-dkbs" rowSpan={4} style={{ verticalAlign: 'top', border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Tỷ lệ phí:</td>
+                <td id="q-tyLePhi" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }} rowSpan={4}>ĐIỀU KHOẢN BỔ SUNG ÁP DỤNG:</td>
+                <td id="q-dkbs" rowSpan={4} style={{ verticalAlign: 'top', border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm Vật Chất Xe:</td>
-                <td id="q-phiVatChat" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Bảo Hiểm Vật Chất Xe:</td>
+                <td id="q-phiVatChat" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm TNDS:</td>
-                <td id="q-phiTNDS" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Bảo Hiểm TNDS:</td>
+                <td id="q-phiTNDS" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px' }}>Bảo Hiểm NNTX:</td>
-                <td id="q-phiNNTX" style={{ border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', border: '1px solid black', padding: '8px', color: '#000' }}>Bảo Hiểm NNTX:</td>
+                <td id="q-phiNNTX" style={{ border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', backgroundColor: '#fed7aa', border: '1px solid black', padding: '8px' }}>Tổng phí (đã VAT):</td>
-                <td colSpan={3} id="q-tongPhi" style={{ fontWeight: 'bold', backgroundColor: '#fed7aa', border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', backgroundColor: '#fed7aa', border: '1px solid black', padding: '8px', color: '#000' }}>Tổng phí (đã VAT):</td>
+                <td colSpan={3} id="q-tongPhi" style={{ fontWeight: 'bold', backgroundColor: '#fed7aa', border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
               <tr>
-                <td style={{ fontWeight: 'bold', backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px' }}>Tái Tục/ Cấp Mới</td>
-                <td colSpan={3} id="q-tinhTrang" style={{ backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px' }}></td>
+                <td style={{ fontWeight: 'bold', backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px', color: '#000' }}>Tái Tục/ Cấp Mới</td>
+                <td colSpan={3} id="q-tinhTrang" style={{ backgroundColor: '#fef3c7', border: '1px solid black', padding: '8px', color: '#000' }}></td>
               </tr>
             </tbody>
           </table>
           <br></br>
-          Hiệu lực bản chào: <b>30</b> ngày kể từ ngày chào phí hoặc thời gian kế tiếp hiệu lực cũ tùy thời gian nào đến trước
+          <span style={{ color: '#000' }}>Hiệu lực bản chào: <b>30</b> ngày kể từ ngày chào phí hoặc thời gian kế tiếp hiệu lực cũ tùy thời gian nào đến trước</span>
         </div>
         <div className="mt-4 flex justify-end gap-3">
           <button
