@@ -33,7 +33,7 @@ export async function POST(
     }
 
     // User chỉ thay đổi được contract của mình, admin thay đổi tất cả
-    if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }

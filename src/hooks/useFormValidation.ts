@@ -56,7 +56,6 @@ export default function useFormValidation(requireFullInfo: boolean = false) {
       .transform((value) => value === '' ? undefined : value)
       .matches(/^[0-9]{12}$/, 'Căn cước công dân phải có đúng 12 chữ số')
       .notRequired(),
-    gioiTinh: Yup.mixed<'nam' | 'nu' | 'khac'>().oneOf(['nam', 'nu', 'khac']).required('Vui lòng chọn giới tính'),
     userType: Yup.mixed<'ca_nhan' | 'cong_ty'>().oneOf(['ca_nhan', 'cong_ty']).required('Vui lòng chọn loại khách hàng'),
 
     // Address Structure (actual form fields) - required when requireFullInfo is true

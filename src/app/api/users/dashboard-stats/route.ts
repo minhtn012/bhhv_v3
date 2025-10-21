@@ -58,8 +58,14 @@ export async function GET(request: NextRequest) {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    // Filter contracts by user - contracts thuộc về user này
-    const contractFilter = { createdBy: decoded.username };
+    // Filter contracts by user - match both userId (string) and username
+    // Note: MongoDB will auto-convert string to ObjectId if needed
+    const contractFilter = {
+      $or: [
+        { createdBy: decoded.userId },
+        { createdBy: decoded.username }
+      ]
+    };
 
     // 1. Overview Statistics
     const [
@@ -110,16 +116,16 @@ export async function GET(request: NextRequest) {
     const recentContracts = await Contract.find(contractFilter)
       .sort({ createdAt: -1 })
       .limit(5)
-      .select('contractNumber status tongPhi createdAt thongTinXe.chuXe.ten')
+      .select('contractNumber status tongPhi createdAt chuXe')
       .lean();
 
     const formattedRecentContracts = recentContracts.map(contract => ({
-      _id: contract._id,
-      contractNumber: contract.contractNumber,
-      status: contract.status,
-      tongPhi: contract.tongPhi || 0,
-      createdAt: contract.createdAt,
-      customerName: contract.thongTinXe?.chuXe?.ten || 'N/A'
+      _id: String(contract._id),
+      contractNumber: contract.contractNumber as string,
+      status: contract.status as string,
+      tongPhi: (contract.tongPhi as number) || 0,
+      createdAt: contract.createdAt as Date,
+      customerName: (contract.chuXe as string) || 'N/A'
     }));
 
     const userDashboardStats: UserDashboardStats = {
