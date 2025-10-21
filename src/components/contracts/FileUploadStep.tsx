@@ -119,7 +119,7 @@ export default function FileUploadStep({ onExtractSuccess, error }: FileUploadSt
       <div className="flex justify-center mt-6">
         <button
           onClick={handleExtract}
-          disabled={extracting || (!cavetFile && !dangkiemFile)}
+          disabled={extracting}
           className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-medium py-3 px-8 rounded-xl transition-colors flex items-center justify-center gap-3 min-h-[48px]"
         >
           {extracting && (

@@ -46,17 +46,17 @@ export default function useFileUpload() {
   };
 
   const extractInformation = async (): Promise<ExtractedData | null> => {
+    // Allow extraction even without files - user can manually fill form
     if (!cavetFile && !dangkiemFile) {
-      setError('Vui lòng tải lên ít nhất một ảnh giấy tờ xe');
-      return null;
+      return {};
     }
 
     setExtracting(true);
     setError('');
-    
+
     try {
       let extractedData: ExtractedData = {};
-      
+
       const files = [
         { type: 'cavet', file: cavetFile },
         { type: 'dangkiem', file: dangkiemFile }
@@ -68,9 +68,9 @@ export default function useFileUpload() {
           const response = await fetch('/api/contracts/extract-info', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
               imageData: base64Data,
-              imageType: item.file.type 
+              imageType: item.file.type
             })
           });
 
@@ -95,7 +95,7 @@ export default function useFileUpload() {
       }
 
       return extractedData;
-      
+
     } catch (error: any) {
       console.error('Extract error:', error);
       setError(error.message || 'Đã có lỗi xảy ra khi trích xuất thông tin');
