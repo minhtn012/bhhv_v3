@@ -154,13 +154,10 @@ export interface ContractPayload {
  * @returns Array of coverage details
  */
 function getDKBS(packageIndex: number): string[] {
+  // Package definitions matching insurance-calculator.ts packageLabels
   const packageLabels = [
     { name: 'Gói BS001 + BS003' },
     { name: 'Gói BS001 + BS002 + BS003' },
-    { name: 'Gói BS001 + BS002 + BS003 + BS004' },
-    { name: 'Gói BS001 + BS002 + BS003 + BS005' },
-    { name: 'Gói BS001 + BS002 + BS003 + BS004 + BS005' },
-    { name: 'Gói BS001 + BS002 + BS003 + BS005 + BS006' },
   ];
 
   if (packageIndex >= 0 && packageIndex < packageLabels.length) {

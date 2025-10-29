@@ -71,12 +71,12 @@ export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
     insuranceOptions[basicPackage.value] = basicPackage.value;
   }
 
-  // Add AU codes if present
+  // Add BS coverage codes to insurance options
   dkbs.forEach(line => {
-    const auMatch = line.match(/BS(\d{3})/);
-    if (auMatch) {
-      const auCode = `BS${auMatch[1]}`;
-      const insurance = carInsurance.find(item => item.code === auCode);
+    const bsMatch = line.match(/BS(\d{3})/);
+    if (bsMatch) {
+      const bsCode = `BS${bsMatch[1]}`;
+      const insurance = carInsurance.find(item => item.code === bsCode);
       if (insurance) {
         insuranceOptions[insurance.value] = insurance.value;
       }
