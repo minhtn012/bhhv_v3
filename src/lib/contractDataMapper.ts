@@ -229,11 +229,21 @@ export function transformFormToContract(
     dkbs: getDKBS(formData.selectedPackageIndex),
   };
 
+  // Construct diaChi from components if not from image extraction
+  // Priority: extracted diaChi (from image) > constructed from user input components
+  const diaChi = formData.diaChi || [
+    formData.specificAddress,
+    formData.selectedDistrictWardText,
+    formData.selectedProvinceText
+  ]
+    .filter(Boolean)  // Remove empty values
+    .join(', ');      // Combine with comma separator
+
   // Build complete payload
   const payload: ContractPayload = {
     // Customer information
     chuXe: formData.chuXe,
-    diaChi: formData.diaChi,
+    diaChi: diaChi,
     loaiKhachHang: formData.userType,
 
     // Buyer information
