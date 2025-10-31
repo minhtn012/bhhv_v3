@@ -1,0 +1,240 @@
+[
+  {
+    "name": "Xe ô tô chở người",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4874",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe hoạt động trong nội bộ cảng, KCN, sân bay",
+    "value": "9cff14bc-a34b-45f0-8929-66ef8158d29d",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes",
+      "fee_mode": "yes"
+    }
+  },
+  {
+    "name": "Xe buýt",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4886",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe Grab và xe tương tự",
+    "value": "0c92b741-c6ab-4ae9-8d33-940ebc1ff89b",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe vận tải hành khách liên tỉnh",
+    "value": "4c0b01d8-eb7b-4420-ac6e-ef0aa0f34bf1",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe taxi",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4879",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe cho thuê tự lái",
+    "value": "2dda3451-fc03-4385-a201-50d63b834655",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe vận tải hành khách nội tỉnh",
+    "value": "376187ff-8d66-467a-bdbe-600ee71a79fe",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe ô tô cứu thương",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4880",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe ô tô chở tiền",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4881",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe chở người bốn bánh có gắn động cơ",
+    "value": "b4464184-82cf-4c8f-8efa-18fd1ee9208a",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Rơ mooc",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4884",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Rơ mooc chuyên dụng (ben)",
+    "value": "dabc0084-71df-4387-a708-205dbc99fcb4",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe vận tải hàng hóa",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4876",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe đầu kéo",
+    "value": "1089fc5b-cd51-4d73-a777-b23f0788a7da",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe đông lạnh",
+    "value": "7302041d-7244-4a1e-8c94-29bb863a2b5e",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe hoạt động trong vùng khai thác khoáng sản",
+    "value": "d1414475-6068-438c-9bb8-fb77d5008017",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe tải ben",
+    "value": "2411b220-28f6-4093-a092-4e4fd767b926",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe chuyên dùng",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4883",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe chở hàng bốn bánh có gắn động cơ",
+    "value": "a23030e2-efdc-40f6-8c10-251a943b26c9",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe bán tải (Pickup)",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4875",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN",
+    "value": "8ed9f2ad-ae11-4fca-9c8e-fb39f821a8da",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "name": "Xe biển xanh",
+    "value": "1291af55-45a3-41c2-a87b-4bce89a605b9",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes",
+      "fee_mode": "yes"
+    }
+  },
+  {
+    "name": "Xe biển đỏ",
+    "value": "59f24750-9ea1-4d07-88fe-fa3925dc1865",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes",
+      "fee_mode": "yes"
+    }
+  },
+  {
+    "name": "Xe tập lái",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4877",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
+  },
+  {
+    "name": "Xe hoạt động tại cửa khẩu",
+    "value": "b5f76737-ec5f-4dab-8bd1-b7d2daea537c",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes",
+      "fee_mode": "yes"
+    }
+  }
+]

@@ -2,66 +2,131 @@
   {
     "code": "khong_kd_cho_nguoi",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4874",
-    "name": "Xe ô tô chở người"
+    "name": "Xe ô tô chở người",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
   },
   {
     "code": "khong_kd_cho_hang",
     "value": "8ed9f2ad-ae11-4fca-9c8e-fb39f821a8da",
-    "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN"
+    "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "khong_kd_pickup_van",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4875",
-    "name": "Xe bán tải (Pickup)"
+    "name": "Xe bán tải (Pickup)",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_cho_hang",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4876",
-    "name": "Xe vận tải hàng hóa"
+    "name": "Xe vận tải hàng hóa",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_dau_keo",
     "value": "1089fc5b-cd51-4d73-a777-b23f0788a7da",
-    "name": "Xe đầu kéo"
+    "name": "Xe đầu kéo",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_cho_khach_lien_tinh",
     "value": "4c0b01d8-eb7b-4420-ac6e-ef0aa0f34bf1",
-    "name": "Xe vận tải hành khách liên tỉnh"
+    "name": "Xe vận tải hành khách liên tỉnh",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
   },
   {
     "code": "kd_grab_be",
     "value": "0c92b741-c6ab-4ae9-8d33-940ebc1ff89b",
-    "name": "Xe Grab và xe tương tự"
+    "name": "Xe Grab và xe tương tự",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_taxi_tu_lai",
     "value": "2dda3451-fc03-4385-a201-50d63b834655",
-    "name": "Xe cho thuê tự lái"
+    "name": "Xe cho thuê tự lái",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_hop_dong_tren_9c",
     "value": "376187ff-8d66-467a-bdbe-600ee71a79fe",
-    "name": "Xe vận tải hành khách nội tỉnh"
+    "name": "Xe vận tải hành khách nội tỉnh",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "no"
+    }
   },
   {
     "code": "kd_bus",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4886",
-    "name": "Xe buýt"
-  },
-  {
-    "code": "kd_pickup_van",
-    "value": "8ed9f2ad-ae11-4fca-9c8e-ef0aa0f34bf1",
-    "name": "Xe vừa chở người vừa chở hàng còn lại; Xe tải VAN"
+    "name": "Xe buýt",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "yes",
+      "car_weigh_goods": "no"
+    }
   },
   {
     "code": "kd_chuyen_dung",
     "value": "8feb985b-dc77-46e3-b5af-186b10be4883",
-    "name": "Xe chuyên dùng"
+    "name": "Xe chuyên dùng",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
   },
   {
     "code": "kd_romooc_ben",
     "value": "dabc0084-71df-4387-a708-205dbc99fcb4",
-    "name": "Rơ mooc chuyên dụng (ben)"
+    "name": "Rơ mooc chuyên dụng (ben)",
+    "config": {
+      "car_goal": "no",
+      "car_seat": "no",
+      "car_weigh_goods": "yes"
+    }
+  },
+  {
+    "code": "kd_pickup_van",
+    "value": "8feb985b-dc77-46e3-b5af-186b10be4875",
+    "name": "Xe bán tải (Pickup) - Kinh doanh",
+    "config": {
+      "car_goal": "yes",
+      "car_seat": "yes",
+      "car_weigh_goods": "yes"
+    }
   }
 ]

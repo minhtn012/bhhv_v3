@@ -105,50 +105,25 @@ export function mapVehicleGoal(loaiHinhKinhDoanh: string): string {
 
 /**
  * Get kind_config based on business type
+ * Loads configuration directly from car_kind.json
  */
 export function getKindConfig(loaiHinhKinhDoanh: string): {
   car_goal: "yes" | "no";
   car_seat: "yes" | "no";
   car_weigh_goods: "yes" | "no";
 } {
-  // For pickup/van vehicles (hybrid: both passenger and goods capable)
-  // These vehicles can carry both people and goods, so ALL config = "yes"
-  // But only car_goal + car_seat fields are filled, car_weigh_goods stays empty
-  if (loaiHinhKinhDoanh === 'kd_pickup_van' || loaiHinhKinhDoanh === 'khong_kd_pickup_van') {
+  // Find matching entry in car_kind.json
+  const kind = carKind.find(item => item.code === loaiHinhKinhDoanh);
+
+  if (kind && kind.config) {
     return {
-      car_goal: "yes",
-      car_seat: "yes",
-      car_weigh_goods: "yes"  // Yes in config but field stays empty
+      car_goal: kind.config.car_goal as "yes" | "no",
+      car_seat: kind.config.car_seat as "yes" | "no",
+      car_weigh_goods: kind.config.car_weigh_goods as "yes" | "no"
     };
   }
 
-  // For pure goods transport business (trucks, trailers)
-  if (loaiHinhKinhDoanh === 'kd_cho_hang' || loaiHinhKinhDoanh === 'kd_dau_keo') {
-    return {
-      car_goal: "no",
-      car_seat: "no",
-      car_weigh_goods: "yes"
-    };
-  }
-
-  // For passenger transport business
-  if (loaiHinhKinhDoanh === 'kd_cho_nguoi') {
-    return {
-      car_goal: "yes",
-      car_seat: "yes",
-      car_weigh_goods: "no"
-    };
-  }
-
-  if (loaiHinhKinhDoanh.includes('pickup')) {
-    return {
-      car_goal: "yes",
-      car_seat: "yes",
-      car_weigh_goods: "yes"
-    };
-  }
-
-  // Default for non-business (passenger vehicles)
+  // Default fallback for non-business passenger vehicles
   return {
     car_goal: "yes",
     car_seat: "yes",
