@@ -379,15 +379,13 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     // Vehicle data
     car_automaker: mapCarAutomaker(contract.carBrand || contract.nhanHieu),
     car_model: mapCarModel(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai),
-    // Only add passenger fields if kind_config says yes
-    ...(kindConfig.car_goal === "yes" && { car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh) }),
-    ...(kindConfig.car_seat === "yes" && {
-      car_seat: mapCarSeat(contract.soChoNgoi),
-      car_seat_buy: contract.soChoNgoi?.toString()
-    }),
+    // Always include these fields - BHV handles logic via kind_config
+    car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh),
+    car_seat: mapCarSeat(contract.soChoNgoi),
+    car_seat_buy: contract.soChoNgoi?.toString(),
     car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
     car_year: contract.namSanXuat?.toString(),
-    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
+    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carYear),
     car_value: contract.giaTriXe?.toString(),
     car_value_info: contract.giaTriXe?.toString(),
     car_value_battery: contract.giaTriPin?.toString() || "0",
@@ -517,15 +515,13 @@ export function transformContractToBhvFormat(contract: any): any {
     // Vehicle data
     car_automaker: mapCarAutomaker(contract.carBrand || contract.nhanHieu),
     car_model: mapCarModel(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai),
-    // Only add passenger fields if kind_config says yes
-    ...(kindConfig.car_goal === "yes" && { car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh) }),
-    ...(kindConfig.car_seat === "yes" && {
-      car_seat: mapCarSeat(contract.soChoNgoi),
-      car_seat_buy: contract.soChoNgoi?.toString()
-    }),
+    // Always include these fields - BHV handles logic via kind_config
+    car_goal: mapVehicleGoal(contract.loaiHinhKinhDoanh),
+    car_seat: mapCarSeat(contract.soChoNgoi),
+    car_seat_buy: contract.soChoNgoi?.toString(),
     car_body_styles: mapCarBodyStyle(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carBodyStyle),
     car_year: contract.namSanXuat?.toString(),
-    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carModelYear),
+    car_model_year: mapCarModelYear(contract.carBrand || contract.nhanHieu, contract.carModel || contract.soLoai, contract.carYear),
     car_value: contract.giaTriXe?.toString(),
     car_value_info: contract.giaTriXe?.toString(),
     car_value_battery: contract.giaTriPin?.toString() || "0",

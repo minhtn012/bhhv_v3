@@ -25,7 +25,7 @@ export default function StepperInput({
   placeholder,
   className = 'flex items-center border border-white/20 rounded-md bg-gray-800', // Default wrapper style
   inputClassName = 'w-16 text-right p-1 bg-transparent text-white font-semibold focus:outline-none', // Default input style
-  buttonClassName = 'px-2 py-1 text-white font-bold disabled:opacity-50' // Default button style
+  buttonClassName = 'px-3 py-2 text-lg text-white font-bold disabled:opacity-50' // Default button style
 }: StepperInputProps) {
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
 
@@ -41,6 +41,7 @@ export default function StepperInput({
       </button>
       <input
         type="number"
+        inputMode="decimal"
         step={step}
         min={min}
         max={max}
