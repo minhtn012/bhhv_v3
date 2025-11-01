@@ -349,13 +349,14 @@ export async function generateWordContract(contractData: ContractData, contractT
     giaTriXe: contractData.giaTriXe ? contractData.giaTriXe.toLocaleString('vi-VN') : "-",
 
     // Insurance package details
-    phiBatBuoc: contractData.tndsPackage?.phiBatBuoc ? contractData.tndsPackage.phiBatBuoc.toLocaleString('vi-VN') : "-",
-    phiTNDS: contractData.tndsPackage?.phiBatBuoc ? contractData.tndsPackage.phiBatBuoc.toLocaleString('vi-VN') : "-",
+    phiBatBuoc: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
+    phiTNDS: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
+    phiNNTX: contractData.phiNNTX ? contractData.phiNNTX.toLocaleString('vi-VN') : "-",
     phiTaiNan: contractData.taiNanPackage?.phiTaiNan ? contractData.taiNanPackage.phiTaiNan.toLocaleString('vi-VN') : "-",
     phiVatChat: contractData.vatChatPackage?.phiVatChat ? contractData.vatChatPackage.phiVatChat.toLocaleString('vi-VN') : "-",
-    phiSauKhiGiam: contractData.tongPhiBaoHiem ? contractData.tongPhiBaoHiem.toLocaleString('vi-VN') : "-",
-    phiSauKhiGiamBangChu: contractData.tongPhiBaoHiem ? numberToVietnameseWords(contractData.tongPhiBaoHiem) : "-",
-    tongPhi: contractData.tongPhiBaoHiem ? contractData.tongPhiBaoHiem.toLocaleString('vi-VN') : "-",
+    phiSauKhiGiam: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
+    phiSauKhiGiamBangChu: contractData.tongPhi ? numberToVietnameseWords(contractData.tongPhi) : "-",
+    tongPhi: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
 
     // Dates
     ngayBatDau: contractData.ngayBatDau || "-",
