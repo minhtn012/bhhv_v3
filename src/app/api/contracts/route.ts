@@ -8,6 +8,7 @@ import { bhvApiClient } from '@/lib/bhvApiClient';
 import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
 import { decryptBhvCredentials } from '@/lib/encryption';
 import { validateContract } from '@/lib/contractValidationSchema';
+import mongoose from 'mongoose';
 
 // GET /api/contracts - Lấy danh sách contracts
 export async function GET(request: NextRequest) {
@@ -25,10 +26,20 @@ export async function GET(request: NextRequest) {
 
     // Build filter
     const filter: any = {};
-    
+
     // User chỉ xem được contracts của mình, admin xem tất cả
     if (user.role !== 'admin') {
-      filter.createdBy = user.userId;
+      // Handle both ObjectId (userId) and string (username) for backward compatibility
+      // Use $expr to compare string representation to avoid casting errors
+      if (mongoose.Types.ObjectId.isValid(user.userId)) {
+        filter.$or = [
+          { createdBy: new mongoose.Types.ObjectId(user.userId) },
+          { $expr: { $eq: [{ $toString: '$createdBy' }, user.username] } }
+        ];
+      } else {
+        // If userId is not valid ObjectId, only match by username
+        filter.$expr = { $eq: [{ $toString: '$createdBy' }, user.username] };
+      }
     }
 
     if (status && ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong', 'huy'].includes(status)) {
@@ -36,11 +47,22 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      filter.$or = [
+      const searchConditions = [
         { contractNumber: { $regex: search, $options: 'i' } },
         { bienSo: { $regex: search, $options: 'i' } },
         { chuXe: { $regex: search, $options: 'i' } }
       ];
+
+      // If user already has createdBy filter, combine with $and
+      if (filter.$or) {
+        filter.$and = [
+          { $or: filter.$or },
+          { $or: searchConditions }
+        ];
+        delete filter.$or;
+      } else {
+        filter.$or = searchConditions;
+      }
     }
 
     // Get contracts with pagination

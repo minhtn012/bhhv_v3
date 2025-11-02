@@ -32,7 +32,9 @@ export async function POST(request: NextRequest) {
     for (const contract of contracts) {
       try {
         // Check permissions - User chỉ xóa được contract của mình, admin xóa tất cả
-        if (user.role !== 'admin' && contract.createdBy !== user.userId) {
+        // Handle both ObjectId (userId) and string (username) for backward compatibility
+        const createdByStr = contract.createdBy.toString();
+        if (user.role !== 'admin' && createdByStr !== user.userId && createdByStr !== user.username) {
           results.errors.push({
             id: contract._id.toString(),
             error: 'Không có quyền xóa hợp đồng này'

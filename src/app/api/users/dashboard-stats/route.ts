@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
 import jwt from 'jsonwebtoken';
 import { getStatusChartColor, getStatusText } from '@/utils/contract-status';
+import mongoose from 'mongoose';
 
 interface UserDashboardStats {
   overview: {
@@ -58,14 +59,26 @@ export async function GET(request: NextRequest) {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    // Filter contracts by user - match both userId (string) and username
-    // Note: MongoDB will auto-convert string to ObjectId if needed
-    const contractFilter = {
-      $or: [
-        { createdBy: decoded.userId },
-        { createdBy: decoded.username }
-      ]
-    };
+    // Filter contracts by user - only use ObjectId if valid
+    let contractFilter: Record<string, unknown>;
+    if (mongoose.Types.ObjectId.isValid(decoded.userId)) {
+      contractFilter = { createdBy: new mongoose.Types.ObjectId(decoded.userId) };
+    } else {
+      // If userId is not a valid ObjectId, no contracts will match
+      // Return empty stats instead of causing an error
+      const emptyStats: UserDashboardStats = {
+        overview: {
+          totalContracts: 0,
+          monthlyContracts: 0,
+          activeContracts: 0,
+          completedContracts: 0
+        },
+        statusDistribution: [],
+        recentActivity: [],
+        recentContracts: []
+      };
+      return NextResponse.json(emptyStats);
+    }
 
     // 1. Overview Statistics
     const [

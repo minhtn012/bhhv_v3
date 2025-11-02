@@ -23,7 +23,9 @@ export async function GET(
     }
 
     // User chỉ xem được contract của mình, admin xem tất cả
-    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
+    // Handle both ObjectId (userId) and string (username) for backward compatibility
+    const createdByStr = contract.createdBy.toString();
+    if (user.role !== 'admin' && createdByStr !== user.userId && createdByStr !== user.username) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -68,7 +70,9 @@ export async function PUT(
     }
 
     // User chỉ sửa được contract của mình, admin sửa tất cả
-    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
+    // Handle both ObjectId (userId) and string (username) for backward compatibility
+    const createdByStrPut = contract.createdBy.toString();
+    if (user.role !== 'admin' && createdByStrPut !== user.userId && createdByStrPut !== user.username) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -148,7 +152,9 @@ export async function PATCH(
     }
 
     // User chỉ sửa được contract của mình, admin sửa tất cả
-    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
+    // Handle both ObjectId (userId) and string (username) for backward compatibility
+    const createdByStrPatch = contract.createdBy.toString();
+    if (user.role !== 'admin' && createdByStrPatch !== user.userId && createdByStrPatch !== user.username) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
@@ -218,7 +224,9 @@ export async function DELETE(
     }
 
     // User chỉ xóa được contract của mình, admin xóa tất cả
-    if (user.role !== 'admin' && contract.createdBy.toString() !== user.userId) {
+    // Handle both ObjectId (userId) and string (username) for backward compatibility
+    const createdByStr = contract.createdBy.toString();
+    if (user.role !== 'admin' && createdByStr !== user.userId && createdByStr !== user.username) {
       return NextResponse.json(
         { error: 'Không có quyền truy cập' },
         { status: 403 }
