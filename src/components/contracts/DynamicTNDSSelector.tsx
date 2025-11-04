@@ -362,8 +362,6 @@ export default function DynamicTNDSSelector({
               <div className="flex items-center gap-1">
                 <input
                   type="number"
-                  min="0"
-                  max="100"
                   value={phiTaiTucInfo?.phanTramChiPhi || 0}
                   onChange={(e) => {
                     const value = parseFloat(e.target.value) || 0;

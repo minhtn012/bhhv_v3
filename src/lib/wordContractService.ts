@@ -4,6 +4,14 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 
 /**
+ * Format number with dot as thousands separator
+ * Example: 1000000 -> "1.000.000"
+ */
+function formatNumber(num: number): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+/**
  * Map loaiHinhKinhDoanh code to Vietnamese text
  */
 function mapLoaiHinhKinhDoanh(code: string): string {
@@ -221,7 +229,7 @@ async function getNNTXPackageName(phiNNTX: number, soChoNgoi: number, loaiHinhKi
     }
 
     // If no match found, return the fee amount
-    return `${phiNNTX.toLocaleString('vi-VN')} VNĐ`;
+    return `${formatNumber(phiNNTX)} VNĐ`;
   } catch (error) {
     console.error('Error getting NNTX package name:', error);
     return '-';
@@ -358,17 +366,17 @@ export async function generateWordContract(contractData: ContractData, contractT
     soMay: contractData.soMay || "-",
     soChoNgoi: contractData.soChoNgoi || "-",
     soCho: contractData.soChoNgoi || "-",
-    giaTriXe: contractData.giaTriXe ? contractData.giaTriXe.toLocaleString('vi-VN') : "-",
+    giaTriXe: contractData.giaTriXe ? formatNumber(contractData.giaTriXe) : "-",
 
     // Insurance package details
-    phiBatBuoc: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
-    phiTNDS: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
-    phiNNTX: contractData.phiNNTX ? contractData.phiNNTX.toLocaleString('vi-VN') : "-",
-    phiTaiNan: contractData.taiNanPackage?.phiTaiNan ? contractData.taiNanPackage.phiTaiNan.toLocaleString('vi-VN') : "-",
-    phiVatChat: contractData.vatChatPackage?.phiVatChat ? contractData.vatChatPackage.phiVatChat.toLocaleString('vi-VN') : "-",
-    phiSauKhiGiam: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
+    phiBatBuoc: contractData.phiTNDS ? formatNumber(contractData.phiTNDS) : "-",
+    phiTNDS: contractData.phiTNDS ? formatNumber(contractData.phiTNDS) : "-",
+    phiNNTX: contractData.phiNNTX ? formatNumber(contractData.phiNNTX) : "-",
+    phiTaiNan: contractData.taiNanPackage?.phiTaiNan ? formatNumber(contractData.taiNanPackage.phiTaiNan) : "-",
+    phiVatChat: contractData.vatChatPackage?.phiVatChat ? formatNumber(contractData.vatChatPackage.phiVatChat) : "-",
+    phiSauKhiGiam: contractData.tongPhi ? formatNumber(contractData.tongPhi) : "-",
     phiSauKhiGiamBangChu: contractData.tongPhi ? numberToVietnameseWords(contractData.tongPhi) : "-",
-    tongPhi: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
+    tongPhi: contractData.tongPhi ? formatNumber(contractData.tongPhi) : "-",
 
     // Dates
     ngayBatDau: contractData.ngayBatDau || "-",
@@ -427,7 +435,7 @@ export async function generateWordContract(contractData: ContractData, contractT
     dkbs: formatDkbs(contractData.vatChatPackage?.dkbs),
 
     // Additional fields as needed based on template structure
-    mucKhauTru: contractData.vatChatPackage?.mucKhauTru ? contractData.vatChatPackage.mucKhauTru.toLocaleString('vi-VN') : "500,000",
+    mucKhauTru: contractData.vatChatPackage?.mucKhauTru ? formatNumber(contractData.vatChatPackage.mucKhauTru) : "500.000",
     soNamSuDung: contractData.soNamSuDung || "-",
     namSuDung: contractData.soNamSuDung || "-",
     trongTai: contractData.trongTai || "-",
@@ -451,7 +459,7 @@ export async function generateWordContract(contractData: ContractData, contractT
 
     // Engine and electric vehicle
     loaiDongCo: contractData.loaiDongCo || "-",
-    giaTriPin: contractData.giaTriPin ? contractData.giaTriPin.toLocaleString('vi-VN') : "-",
+    giaTriPin: contractData.giaTriPin ? formatNumber(contractData.giaTriPin) : "-",
 
     // Buyer information
     buyerEmail: contractData.buyerEmail || "-",
@@ -466,7 +474,7 @@ export async function generateWordContract(contractData: ContractData, contractT
     tyLePhi: contractData.vatChatPackage?.tyLePhi || "-",
     customRate: contractData.vatChatPackage?.customRate || "-",
     isCustomRate: contractData.vatChatPackage?.isCustomRate ? "Có" : "Không",
-    phiVatChatGoc: contractData.vatChatPackage?.phiVatChatGoc ? contractData.vatChatPackage.phiVatChatGoc.toLocaleString('vi-VN') : "-",
+    phiVatChatGoc: contractData.vatChatPackage?.phiVatChatGoc ? formatNumber(contractData.vatChatPackage.phiVatChatGoc) : "-",
 
     // Status and workflow
     status: contractData.status || "-",
