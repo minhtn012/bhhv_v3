@@ -629,6 +629,15 @@ export function transformContractToPremiumCheckFormat(contract: any): any {
   // Use the same transformation as contract submission but change action_name
   const bhvData = transformContractToBhvFormat(contract);
 
+  // Parse data object to remove request_change_fees
+  // We don't include discount info when checking premium because bhvPremiums doesn't exist yet
+  // This will get the original price from BHV without any discount applied
+  const dataObj = JSON.parse(bhvData.data);
+  dataObj.request_change_fees = "";
+
+  // Update data with modified object
+  bhvData.data = JSON.stringify(dataObj);
+
   // Change action name for premium checking
   bhvData.action_name = "vehicle/transport/premium";
 

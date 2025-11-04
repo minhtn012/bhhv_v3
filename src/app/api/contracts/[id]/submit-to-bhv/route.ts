@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
-import { transformContractToBhvFormat } from '@/lib/bhvDataMapper';
+import { transformContractToBhvFormat, transformContractToPremiumCheckFormat } from '@/lib/bhvDataMapper';
 import { bhvApiClient } from '@/lib/bhvApiClient';
 import { logger } from '@/lib/logger';
 import { withApiLogger } from '@/middleware/apiLogger';
 import { bhvLogger } from '@/lib/bhvLogger';
+import { parseBhvHtmlResponse } from '@/utils/bhv-html-parser';
 
 export async function POST(
   request: NextRequest,
@@ -96,15 +97,76 @@ async function postHandler(
       );
     }
 
-    // Transform contract data to BHV format (contract already has dates from DB)
-    logger.bhvSubmission(contractId, 'Transforming Data', {
+    // STEP 1: Always check premium first to get latest BHV prices (WITHOUT discount)
+    logger.bhvSubmission(contractId, 'Checking Premium', {
+      message: 'Getting original BHV prices before submission',
       ngayBatDauBaoHiem: contract.ngayBatDauBaoHiem,
       ngayKetThucBaoHiem: contract.ngayKetThucBaoHiem,
-      giaTriXe: (contract as any).giaTriXe,
-      loaiHinhKinhDoanh: (contract as any).loaiHinhKinhDoanh,
     });
 
-    const bhvRequestData = transformContractToBhvFormat(contract);
+    const premiumCheckData = transformContractToPremiumCheckFormat(contract);
+    const premiumResult = await bhvApiClient.checkPremium(premiumCheckData, cookies);
+
+    if (!premiumResult.success || !premiumResult.htmlData) {
+      logger.bhvError(contractId, 'Premium Check Failed', premiumResult.error || 'No HTML data received', {
+        premiumResult,
+      });
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Không thể kiểm tra giá từ BHV: ${premiumResult.error || 'Unknown error'}`
+        },
+        { status: 500 }
+      );
+    }
+
+    // STEP 2: Parse and save original BHV prices to contract
+    logger.bhvSubmission(contractId, 'Parsing Premium Data', {
+      message: 'Extracting BHV premium information from response',
+    });
+
+    const premiumData = parseBhvHtmlResponse(premiumResult.htmlData);
+
+    await Contract.findByIdAndUpdate(contractId, {
+      bhvPremiums: {
+        bhvc: premiumData.bhvc,
+        tnds: premiumData.tnds,
+        nntx: premiumData.nntx,
+        total: premiumData.totalPremium,
+        checkedAt: new Date(),
+        success: true
+      }
+    });
+
+    logger.bhvSubmission(contractId, 'Premium Saved', {
+      bhvc: premiumData.bhvc,
+      tnds: premiumData.tnds,
+      nntx: premiumData.nntx,
+      total: premiumData.totalPremium,
+    });
+
+    // STEP 3: Reload contract with updated bhvPremiums
+    const updatedContract = await Contract.findById(contractId).lean();
+    if (!updatedContract) {
+      return NextResponse.json(
+        { success: false, error: 'Failed to reload contract after premium check' },
+        { status: 500 }
+      );
+    }
+
+    // STEP 4: Transform contract data to BHV format (now WITH discount calculated from bhvPremiums)
+    logger.bhvSubmission(contractId, 'Transforming Data', {
+      message: 'Preparing submission with discount applied',
+      ngayBatDauBaoHiem: updatedContract.ngayBatDauBaoHiem,
+      ngayKetThucBaoHiem: updatedContract.ngayKetThucBaoHiem,
+      giaTriXe: (updatedContract as any).giaTriXe,
+      loaiHinhKinhDoanh: (updatedContract as any).loaiHinhKinhDoanh,
+      originalPrice: premiumData.totalPremium.afterTax,
+      contractPrice: (updatedContract as any).tongPhi,
+      discount: premiumData.totalPremium.afterTax - (updatedContract as any).tongPhi,
+    });
+
+    const bhvRequestData = transformContractToBhvFormat(updatedContract);
 
     // Get IP for tracking
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim()
@@ -171,7 +233,8 @@ async function postHandler(
         success: true,
         message: 'Hợp đồng đã được tạo thành công trên hệ thống BHV',
         pdfBase64: bhvResult.pdfBase64,
-        contractNumber: contract.contractNumber
+        contractNumber: contract.contractNumber,
+        bhvPremiums: premiumData
       });
 
     } else {
