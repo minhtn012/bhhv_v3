@@ -338,7 +338,13 @@ export async function generateWordContract(contractData: ContractData, contractT
     c_carModel: contractData.carModel || contractData.soLoai || "-",
 
     // Variables with  prefix (lowercase/normal case)
-    diaChi: contractData.diaChi || "-",
+    diaChi: [
+      contractData.specificAddress,
+      contractData.selectedDistrictWardText,
+      contractData.selectedProvinceText
+    ]
+      .filter(Boolean)
+      .join(', ') || contractData.diaChi || "-",
     soHD: contractData.bhvContractNumber || "-",
     nhanHieu: contractData.nhanHieu || "-",
     namSanXuat: contractData.namSanXuat || "-",
