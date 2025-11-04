@@ -23,6 +23,10 @@ interface Contract {
   tongPhi: number;
   taiTucPercentage?: number;
   phiTaiTuc?: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 interface ContractPriceSummaryViewProps {
@@ -94,15 +98,6 @@ export default function ContractPriceSummaryView({ contract }: ContractPriceSumm
             {contract.includeNNTX ? formatCurrency(contract.phiNNTX) : '0 ₫'}
           </span>
         </div>
-
-        {contract.taiTucPercentage !== undefined && contract.taiTucPercentage !== 0 && (
-          <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-            <span className="text-gray-300">4. Tái tục/ Cấp mới:</span>
-            <span className="font-semibold text-white">
-              {formatCurrency(contract.phiTaiTuc || 0)}
-            </span>
-          </div>
-        )}
 
         <div className="flex justify-between py-1">
           <span className="text-gray-300">Mức khấu trừ:</span>

@@ -17,6 +17,10 @@ interface PackageOption {
 interface ExtendedPackageFormData extends PackageSelectionFormData {
   selectedNNTXPackage: string;
   tinhTrang: string;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 interface PackageSelectionStepProps {
@@ -113,6 +117,8 @@ export default function PackageSelectionStep({
             onSoChoNgoiChange={(soChoNgoi) => onFormInputChange('soChoNgoi', soChoNgoi)}
             onMucKhauTruChange={(mucKhauTru) => onFormInputChange('mucKhauTru', mucKhauTru)}
             onTaiTucPercentageChange={(percentage) => onFormInputChange('taiTucPercentage', percentage)}
+            phiTaiTucInfo={formData.phiTaiTucInfo}
+            onPhiTaiTucInfoChange={(info) => onFormInputChange('phiTaiTucInfo', info)}
             onRecalculate={onRecalculate}
           />
         </div>

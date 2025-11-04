@@ -17,6 +17,10 @@ interface PackageOption {
 interface ExtendedPriceSummaryFormData extends PriceSummaryFormData {
   selectedNNTXPackage: string;
   mucKhauTru: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 interface PriceSummaryCardProps {
@@ -161,24 +165,6 @@ export default function PriceSummaryCard({
             {formData.includeNNTX ? formatCurrency(nntxFee) : '0 ₫'}
           </span>
         </div>
-        
-        {formData.taiTucPercentage !== 0 && (
-          <div className="flex justify-between py-1 border-b border-dashed border-white/20">
-            <span className="text-gray-300">4. Tái tục/ Cấp mới:</span>
-            <span className="font-semibold text-white">
-              {(() => {
-                // Calculate adjustment based on total vehicle value (including battery for electric/hybrid)
-                const totalVehicleValue = calculateTotalVehicleValue(
-                  parseCurrency(formData.giaTriXe),
-                  formData.giaTriPin,
-                  formData.loaiDongCo
-                );
-                const adjustmentAmount = (totalVehicleValue * formData.taiTucPercentage) / 100;
-                return (adjustmentAmount > 0 ? '+' : '') + formatCurrency(Math.abs(adjustmentAmount));
-              })()}
-            </span>
-          </div>
-        )}
         
         <div className="flex justify-between py-1">
           <span className="text-gray-300">Mức khấu trừ:</span>

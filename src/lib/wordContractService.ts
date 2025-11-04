@@ -282,6 +282,12 @@ interface ContractData {
   loaiKhachHang?: 'ca_nhan' | 'cong_ty';
   ngayBatDauBaoHiem?: string;
   ngayKetThucBaoHiem?: string;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
+  phiTNDS?: number;
+  tongPhi?: number;
   statusHistory?: Array<{
     status: string;
     changedBy: string;

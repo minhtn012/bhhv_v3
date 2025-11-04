@@ -46,13 +46,17 @@ export interface BaseContractFormData {
   kieuDang: string;             // Body style
   namPhienBan: string;          // Year/Version
   
-  // Package Selection & Insurance (6 fields)  
+  // Package Selection & Insurance (6 fields)
   selectedPackageIndex: number;
   includeTNDS: boolean;
   tndsCategory: string;
   includeNNTX: boolean;
   taiTucPercentage: number;
   mucKhauTru: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 // Specialized type definitions using Pick utility
@@ -137,6 +141,7 @@ export const defaultContractFormData: BaseContractFormData = {
   includeNNTX: false,
   taiTucPercentage: 0,
   mucKhauTru: 0,
+  phiTaiTucInfo: undefined,
 };
 
 // Type guards for validation

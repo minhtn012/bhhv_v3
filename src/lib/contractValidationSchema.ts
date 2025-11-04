@@ -196,6 +196,15 @@ export const ContractSchema = z.object({
     .optional()
     .default(0),
 
+  phiTaiTucInfo: z.object({
+    soVu: z.number()
+      .int('Số vụ phải là số nguyên')
+      .min(0, 'Số vụ không được âm'),
+    phanTramChiPhi: z.number()
+      .min(0, '% chi phí không được âm')
+      .max(100, '% chi phí không được lớn hơn 100%')
+  }).optional(),
+
   phiTruocKhiGiam: z.number()
     .min(0, 'Tổng phí trước giảm không được âm')
     .optional(),

@@ -78,9 +78,13 @@ interface Contract {
   
   tongPhi: number;
   mucKhauTru: number;
-  
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
+
   status: 'nhap' | 'cho_duyet' | 'khach_duyet' | 'ra_hop_dong' | 'huy';
-  
+
   cavetImage?: string;
   dangkiemImage?: string;
 
@@ -94,7 +98,7 @@ interface Contract {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
-  
+
   statusHistory: Array<{
     status: string;
     changedBy: string;

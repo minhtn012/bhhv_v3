@@ -33,6 +33,10 @@ interface FormData extends BaseContractFormData {
   phiTruocKhiGiam: number;
   phiSauKhiGiam: number;
   totalAmount: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 interface Contract {
@@ -93,6 +97,10 @@ interface Contract {
   // Tái tục/Cấp mới
   taiTucPercentage?: number;
   phiTaiTuc?: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 
   phiTruocKhiGiam?: number;
   phiSauKhiGiam?: number;
@@ -167,7 +175,8 @@ export default function EditContractPage() {
     includeNNTX: true,
     taiTucPercentage: 0,
     mucKhauTru: 500000,
-    
+    phiTaiTucInfo: undefined,
+
     // Additional UI-specific fields
     customRates: [],
     selectedNNTXPackage: '',
@@ -358,6 +367,7 @@ export default function EditContractPage() {
       includeNNTX: contractData.includeNNTX,
       taiTucPercentage: contractData.taiTucPercentage || 0,
       mucKhauTru: contractData.mucKhauTru,
+      phiTaiTucInfo: contractData.phiTaiTucInfo,
 
       // Extended fields specific to edit page
       buyerEmail: contractData.buyerEmail || '',
@@ -703,6 +713,7 @@ export default function EditContractPage() {
         mucKhauTru: formData.mucKhauTru,
         taiTucPercentage: formData.taiTucPercentage,
         phiTaiTuc: phiTaiTuc,
+        phiTaiTucInfo: formData.phiTaiTucInfo,
         phiTruocKhiGiam: phiTruocKhiGiam,
         phiSauKhiGiam: phiSauKhiGiam,
         tongPhi: phiSauKhiGiam
