@@ -159,6 +159,25 @@ function formatVietnameseDateTime(dateInput: string | Date) {
 }
 
 /**
+ * Format date to dd/MM/yyyy format
+ * Input: "2025-09-27" or Date object
+ * Output: "27/09/2025"
+ */
+function formatDateDDMMYYYY(dateInput: string | Date): string {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  if (!date || isNaN(date.getTime())) {
+    return '-';
+  }
+
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
+/**
  * Calculate payment deadline based on bhv_confirmed date and customer type
  */
 function calculatePaymentDeadline(statusHistory: any[], loaiKhachHang?: string): string {
@@ -378,10 +397,10 @@ export async function generateWordContract(contractData: ContractData, contractT
     phiSauKhiGiamBangChu: contractData.tongPhi ? numberToVietnameseWords(contractData.tongPhi) : "-",
     tongPhi: contractData.tongPhi ? formatNumber(contractData.tongPhi) : "-",
 
-    // Dates
-    ngayBatDau: contractData.ngayBatDau || "-",
-    ngayKetThuc: contractData.ngayKetThuc || "-",
-    ngayDKLD: contractData.ngayDKLD || "-",
+    // Dates (formatted as dd/MM/yyyy)
+    ngayBatDau: contractData.ngayBatDau ? formatDateDDMMYYYY(contractData.ngayBatDau) : "-",
+    ngayKetThuc: contractData.ngayKetThuc ? formatDateDDMMYYYY(contractData.ngayKetThuc) : "-",
+    ngayDKLD: contractData.ngayDKLD ? formatDateDDMMYYYY(contractData.ngayDKLD) : "-",
 
     // Insurance period dates (formatted in Vietnamese)
     // Full format
@@ -478,8 +497,8 @@ export async function generateWordContract(contractData: ContractData, contractT
 
     // Status and workflow
     status: contractData.status || "-",
-    createdAt: contractData.createdAt ? new Date(contractData.createdAt).toLocaleDateString('vi-VN') : "-",
-    updatedAt: contractData.updatedAt ? new Date(contractData.updatedAt).toLocaleDateString('vi-VN') : "-",
+    createdAt: contractData.createdAt ? formatDateDDMMYYYY(contractData.createdAt) : "-",
+    updatedAt: contractData.updatedAt ? formatDateDDMMYYYY(contractData.updatedAt) : "-",
     createdBy: contractData.createdBy || "-",
 
     // Bank information for 3-party contracts
