@@ -202,7 +202,6 @@ export const ContractSchema = z.object({
       .min(0, 'Số vụ không được âm'),
     phanTramChiPhi: z.number()
       .min(0, '% chi phí không được âm')
-      .max(100, '% chi phí không được lớn hơn 100%')
   }).optional(),
 
   phiTruocKhiGiam: z.number()

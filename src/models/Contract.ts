@@ -387,7 +387,6 @@ const contractSchema = new Schema<IContract>({
       phanTramChiPhi: {
         type: Number,
         min: [0, '% chi phí không được âm'],
-        max: [100, '% chi phí không được lớn hơn 100%'],
         default: 0
       }
     },
