@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Parser & Diff (Layout Mới)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto 30px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h2, h3 {
+            color: #111;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h3 {
+            font-size: 1.1em;
+            text-align: left;
+            border-bottom: none;
+            margin-top: 0;
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px;
+        }
+        .box {
+            flex: 1;
+            min-width: 300px; 
+            display: flex;
+            flex-direction: column;
+        }
+        textarea, pre {
+            width: 100%;
+            min-height: 250px; 
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; 
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical; 
+            height: 40vh;
+        }
+        pre {
+            background-color: #fdfdfd;
+            overflow: auto;
+            white-space: pre-wrap; 
+            word-wrap: break-word;
+            height: 100%;
+        }
+        /* Style riêng cho các output của Diff */
+        #jsonParsedA, #jsonParsedB {
+            min-height: 300px;
+            background-color: #f8f9fa;
+        }
+        #jsonDiffOutput {
+            min-height: 150px; /* Có thể thấp hơn vì nó rộng toàn màn hình */
+            background-color: #f8f9fa;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #compareButton {
+            background-color: #28a745;
+        }
+        #compareButton:hover {
+            background-color: #218838;
+        }
+        .error-display {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+            min-height: 1.2em;
+        }
+        hr {
+            border: 0;
+            height: 2px;
+            background: #e0e0e0;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>JSON Viewer (Tự động Parse JSON lồng nhau)</h2>
+        <div class="content">
+            <div class="box">
+                <h3>Input (Dán JSON của bạn vào đây):</h3>
+                <textarea id="jsonInput" rows="20"></textarea>
+                <button id="parseButton">Parse JSON</button>
+                <div id="errorDisplayParser" class="error-display"></div>
+            </div>
+
+            <div class="box">
+                <h3>Output (Kết quả đã định dạng):</h3>
+                <pre id="jsonOutput"></pre>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="container">
+        <h2>JSON Diff (So sánh Key/Value)</h2>
+        <div class="content">
+            <div class="box">
+                <h3>JSON A (Bản gốc):</h3>
+                <textarea id="jsonInputA" rows="15"></textarea>
+            </div>
+
+            <div class="box">
+                <h3>JSON B (Bản so sánh):</h3>
+                <textarea id="jsonInputB" rows="15"></textarea>
+            </div>
+        </div>
+        
+        <button id="compareButton">So Sánh A và B</button>
+        <div id="errorDisplayDiff" class="error-display"></div>
+
+        <div class="content" style="margin-top: 20px;">
+            <div class="box">
+                <h3>JSON A (Đã Parse):</h3>
+                <pre id="jsonParsedA"></pre>
+            </div>
+
+            <div class="box">
+                <h3>JSON B (Đã Parse):</h3>
+                <pre id="jsonParsedB"></pre>
+            </div>
+        </div>
+        
+        <div class="box" style="margin-top: 20px;">
+            <h3>Kết quả so sánh:</h3>
+            <pre id="jsonDiffOutput"></pre>
+        </div>
+
+        </div>
+
+
+    <script>
+        // ===========================================
+        // HÀM CHUNG: PARSE JSON LỒNG NHAU
+        // ===========================================
+        function parseNestedJson(obj) {
+            for (const key in obj) {
+                if (!obj.hasOwnProperty(key)) continue;
+                const value = obj[key];
+                if (typeof value === 'string') {
+                    try {
+                        const parsedValue = JSON.parse(value);
+                        if (parsedValue && typeof parsedValue === 'object') {
+                            obj[key] = parsedValue;
+                            parseNestedJson(obj[key]); 
+                        }
+                    } catch (e) { /* Bỏ qua */ }
+                } else if (typeof value === 'object' && value !== null) {
+                    parseNestedJson(value); 
+                }
+            }
+        }
+
+
+        // ===========================================
+        // LOGIC CHO PHẦN 1: JSON PARSER
+        // ===========================================
+        const jsonInput = document.getElementById('jsonInput');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const parseButton = document.getElementById('parseButton');
+        const errorDisplayParser = document.getElementById('errorDisplayParser');
+
+        jsonInput.value = `"{\\"key\\": \\"value\\", \\"nested\\": \\"{\\\\\\"a\\\\\\": 1}\\"}"`; // Ví dụ
+
+        parseButton.addEventListener('click', () => {
+            errorDisplayParser.textContent = '';
+            jsonOutput.textContent = '';
+            const inputText = jsonInput.value;
+
+            if (!inputText) {
+                errorDisplayParser.textContent = 'Input đang trống!';
+                return;
+            }
+
+            try {
+                let data = JSON.parse(inputText);
+                if (typeof data === 'string') {
+                    data = JSON.parse(data);
+                }
+                parseNestedJson(data);
+                jsonOutput.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                errorDisplayParser.textContent = `Lỗi JSON không hợp lệ: ${error.message}`;
+            }
+        });
+
+
+        // ===========================================
+        // LOGIC CHO PHẦN 2: JSON DIFF
+        // ===========================================
+        const jsonInputA = document.getElementById('jsonInputA');
+        const jsonInputB = document.getElementById('jsonInputB');
+        const compareButton = document.getElementById('compareButton');
+        const errorDisplayDiff = document.getElementById('errorDisplayDiff');
+
+        const jsonParsedA = document.getElementById('jsonParsedA');
+        const jsonParsedB = document.getElementById('jsonParsedB');
+        const jsonDiffOutput = document.getElementById('jsonDiffOutput');
+
+        // Gán data mẫu cho phần Diff để test
+        jsonInputA.value = `{"id": 123, "name": "John", "active": true, "roles": ["user"], "prefs": "{\\"theme\\": \\"dark\\"}"}`;
+        jsonInputB.value = `{"id": 123, "name": "Jane", "active": true, "roles": ["user", "admin"], "new_key": "hello", "prefs": "{\\"theme\\": \\"light\\"}"}`;
+
+        /**
+         * Hàm đệ quy tìm điểm khác biệt
+         */
+        function findDifferences(objA, objB, path = '') {
+            let diffs = [];
+            const allKeys = new Set([...Object.keys(objA), ...Object.keys(objB)]);
+
+            allKeys.forEach(key => {
+                const currentPath = path ? `${path}.${key}` : key;
+                const valA = objA[key];
+                const valB = objB[key];
+
+                if (key in objB && !(key in objA)) {
+                    diffs.push(`[+] Thêm: ${currentPath} = ${JSON.stringify(valB)}`);
+                }
+                else if (key in objA && !(key in objB)) {
+                    diffs.push(`[-] Xóa: ${currentPath} (giá trị cũ: ${JSON.stringify(valA)})`);
+                }
+                else if (key in objA && key in objB) {
+                    if (typeof valA !== typeof valB) {
+                        diffs.push(`[~] Thay đổi loại: ${currentPath} (từ ${typeof valA} sang ${typeof valB})`);
+                    }
+                    else if (typeof valA === 'object' && valA !== null && !Array.isArray(valA) && typeof valB === 'object' && valB !== null && !Array.isArray(valB)) {
+                        diffs.push(...findDifferences(valA, valB, currentPath));
+                    }
+                    else if (Array.isArray(valA) && Array.isArray(valB)) {
+                        if (JSON.stringify(valA) !== JSON.stringify(valB)) {
+                            diffs.push(`[~] Mảng thay đổi: ${currentPath}\n    A: ${JSON.stringify(valA)}\n    B: ${JSON.stringify(valB)}`);
+                        }
+                    }
+                    else if (valA !== valB) {
+                        diffs.push(`[~] Giá trị thay đổi: ${currentPath} (từ ${JSON.stringify(valA)} sang ${JSON.stringify(valB)})`);
+                    }
+                }
+            });
+            return diffs;
+        }
+
+        compareButton.addEventListener('click', () => {
+            errorDisplayDiff.textContent = '';
+            jsonParsedA.textContent = '';
+            jsonParsedB.textContent = '';
+            jsonDiffOutput.textContent = '';
+            
+            const textA = jsonInputA.value;
+            const textB = jsonInputB.value;
+
+            if (!textA || !textB) {
+                errorDisplayDiff.textContent = 'Cả hai ô JSON A và B đều phải có dữ liệu!';
+                return;
+            }
+
+            try {
+                let objA = JSON.parse(textA);
+                let objB = JSON.parse(textB);
+
+                if (typeof objA === 'string') {
+                    objA = JSON.parse(objA);
+                }
+                if (typeof objB === 'string') {
+                    objB = JSON.parse(objB);
+                }
+
+                parseNestedJson(objA);
+                parseNestedJson(objB);
+
+                jsonParsedA.textContent = JSON.stringify(objA, null, 2);
+                jsonParsedB.textContent = JSON.stringify(objB, null, 2);
+
+                const diffs = findDifferences(objA, objB);
+
+                if (diffs.length === 0) {
+                    jsonDiffOutput.textContent = 'Không tìm thấy sự khác biệt. Hai JSON giống hệt nhau (sau khi parse lồng nhau).';
+                } else {
+                    jsonDiffOutput.textContent = diffs.join('\n');
+                }
+
+            } catch (error) {
+                errorDisplayDiff.textContent = `Lỗi JSON không hợp lệ: ${error.message}`;
+            }
+        });
+
+    </script>
+
+</body>
+</html>

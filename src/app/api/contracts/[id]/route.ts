@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
+import User from '@/models/User';
 import { requireAuth } from '@/lib/auth';
-import { checkBhvPremiumsInBackground } from '../route';
+import { transformContractToPremiumCheckFormat } from '@/lib/bhvDataMapper';
+import { bhvApiClient } from '@/lib/bhvApiClient';
+import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
+import { decryptBhvCredentials } from '@/lib/encryption';
 
 // GET /api/contracts/[id] - Lấy chi tiết contract
 export async function GET(
@@ -100,9 +104,6 @@ export async function PUT(
     Object.assign(contract, body);
     await contract.save();
 
-    // Auto-check BHV premiums in background after edit (don't block response)
-    checkBhvPremiumsInBackground(contract._id.toString(), contract.contractNumber, user.userId);
-
     return NextResponse.json({
       message: 'Cập nhật hợp đồng thành công',
       contract
@@ -180,12 +181,124 @@ export async function PATCH(
       );
     }
 
-    // Update contract
+    // Update contract dates
     await Contract.findByIdAndUpdate(id, updateData);
+    console.log('✅ Contract dates updated successfully');
+
+    // Fetch updated contract from database for BHV check
+    const updatedContract = await Contract.findById(id).lean();
+    if (!updatedContract) {
+      console.error('❌ Failed to fetch updated contract');
+      return NextResponse.json(
+        { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+        { status: 500 }
+      );
+    }
+
+    // Get user's BHV credentials
+    const contractUser = await User.findById(updatedContract.createdBy).lean();
+    if (!contractUser || !contractUser.bhvUsername || !contractUser.bhvPassword) {
+      console.warn('⚠️ User has no BHV credentials');
+      return NextResponse.json(
+        { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+        { status: 500 }
+      );
+    }
+
+    // Authenticate with BHV API
+    console.log('🔐 Authenticating with BHV...');
+    let bhvCookies = null;
+    try {
+      const { username, password } = decryptBhvCredentials(contractUser.bhvUsername, contractUser.bhvPassword);
+      const authResult = await bhvApiClient.authenticate(username, password);
+
+      if (!authResult.success) {
+        console.error('❌ BHV authentication failed:', authResult.error);
+        return NextResponse.json(
+          { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+          { status: 500 }
+        );
+      }
+
+      bhvCookies = authResult.cookies;
+      console.log('✅ BHV authentication successful');
+    } catch (authError) {
+      console.error('❌ BHV authentication error:', authError);
+      return NextResponse.json(
+        { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+        { status: 500 }
+      );
+    }
+
+    // Transform contract data for BHV premium check
+    const bhvRequestData = transformContractToPremiumCheckFormat(updatedContract);
+
+    // Validate required data
+    const dataObj = JSON.parse(bhvRequestData.data);
+    if (!dataObj.car_automaker || !dataObj.car_model || !dataObj.car_value) {
+      console.warn('⚠️ Contract missing required data for BHV mapping');
+      return NextResponse.json(
+        { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+        { status: 500 }
+      );
+    }
+
+    // Call BHV checkPremium API
+    console.log('🚀 Calling BHV API for premium check...');
+    const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, bhvCookies);
+
+    if (!bhvResult.success) {
+      console.error('❌ BHV premium check failed:', bhvResult.error);
+      return NextResponse.json(
+        { error: 'Lỗi kết nối BHV API. Vui lòng thử lại sau.' },
+        { status: 500 }
+      );
+    }
+
+    // Parse HTML response to extract premium data
+    console.log('🔄 Parsing BHV HTML response...');
+    const premiumData = parseBhvHtmlResponse(bhvResult.htmlData!);
+
+    // Validate premium data consistency
+    if (!validatePremiumData(premiumData)) {
+      console.warn('⚠️ Premium data validation failed - inconsistent totals');
+    }
+
+    // Update contract with BHV premium data
+    await Contract.findByIdAndUpdate(id, {
+      bhvPremiums: {
+        bhvc: {
+          beforeTax: premiumData.bhvc.beforeTax,
+          afterTax: premiumData.bhvc.afterTax
+        },
+        tnds: {
+          beforeTax: premiumData.tnds.beforeTax,
+          afterTax: premiumData.tnds.afterTax
+        },
+        nntx: {
+          beforeTax: premiumData.nntx.beforeTax,
+          afterTax: premiumData.nntx.afterTax
+        },
+        total: {
+          beforeTax: premiumData.totalPremium.beforeTax,
+          afterTax: premiumData.totalPremium.afterTax
+        },
+        checkedAt: new Date(),
+        success: true
+      }
+    });
+
+    console.log('✅ BHV premium check completed successfully');
 
     return NextResponse.json({
       message: 'Cập nhật thông tin thành công',
-      updatedFields: Object.keys(updateData)
+      updatedFields: Object.keys(updateData),
+      bhvPremiums: {
+        bhvc: premiumData.bhvc,
+        tnds: premiumData.tnds,
+        nntx: premiumData.nntx,
+        total: premiumData.totalPremium
+      }
     });
 
   } catch (error: any) {
