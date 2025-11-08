@@ -4,6 +4,14 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 
 /**
+ * Format number with dot as thousands separator
+ * Example: 1000000 -> "1.000.000"
+ */
+function formatNumber(num: number): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+/**
  * Map loaiHinhKinhDoanh code to Vietnamese text
  */
 function mapLoaiHinhKinhDoanh(code: string): string {
@@ -122,11 +130,30 @@ function numberToVietnameseWords(num: number): string {
 
 /**
  * Format date string to Vietnamese format with numbers in bold
- * Input: "2025-09-27" or Date object
+ * Input: "04/11/2025 08:00:00" (dd/MM/yyyy format) or "2025-09-27" (ISO) or Date object
  * Output: Object with separated parts for bold formatting
  */
 function formatVietnameseDateTime(dateInput: string | Date) {
-  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  let date: Date;
+
+  if (typeof dateInput === 'string') {
+    // Check if it's in dd/MM/yyyy HH:mm:ss format (e.g., "04/11/2025 10:00:00")
+    const ddmmyyyyMatch = dateInput.match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):(\d{2})/);
+    if (ddmmyyyyMatch) {
+      // Parse manually to avoid MM/DD/YYYY interpretation
+      const day = parseInt(ddmmyyyyMatch[1], 10);
+      const month = parseInt(ddmmyyyyMatch[2], 10) - 1; // Month is 0-indexed
+      const year = parseInt(ddmmyyyyMatch[3], 10);
+      const hour = parseInt(ddmmyyyyMatch[4], 10);
+      const minute = parseInt(ddmmyyyyMatch[5], 10);
+      date = new Date(year, month, day, hour, minute);
+    } else {
+      // Fallback for ISO format or other formats
+      date = new Date(dateInput);
+    }
+  } else {
+    date = dateInput;
+  }
 
   if (!date || isNaN(date.getTime())) {
     return {
@@ -139,8 +166,8 @@ function formatVietnameseDateTime(dateInput: string | Date) {
     };
   }
 
-  const hour = '08';
-  const minute = '00';
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear().toString();
@@ -148,6 +175,39 @@ function formatVietnameseDateTime(dateInput: string | Date) {
   const full = `${hour} giờ ${minute} ngày ${day} tháng ${month} năm ${year}`;
 
   return { hour, minute, day, month, year, full };
+}
+
+/**
+ * Format date to dd/MM/yyyy format
+ * Input: "04/11/2025 08:00:00" (dd/MM/yyyy format) or "2025-09-27" (ISO) or Date object
+ * Output: "04/11/2025"
+ */
+function formatDateDDMMYYYY(dateInput: string | Date): string {
+  // If already in dd/MM/yyyy format, extract just the date part
+  if (typeof dateInput === 'string') {
+    const ddmmyyyyMatch = dateInput.match(/^(\d{2}\/\d{2}\/\d{4})/);
+    if (ddmmyyyyMatch) {
+      return ddmmyyyyMatch[1]; // Return as-is
+    }
+  }
+
+  let date: Date;
+
+  if (typeof dateInput === 'string') {
+    date = new Date(dateInput);
+  } else {
+    date = dateInput;
+  }
+
+  if (!date || isNaN(date.getTime())) {
+    return '-';
+  }
+
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 }
 
 /**
@@ -221,7 +281,7 @@ async function getNNTXPackageName(phiNNTX: number, soChoNgoi: number, loaiHinhKi
     }
 
     // If no match found, return the fee amount
-    return `${phiNNTX.toLocaleString('vi-VN')} VNĐ`;
+    return `${formatNumber(phiNNTX)} VNĐ`;
   } catch (error) {
     console.error('Error getting NNTX package name:', error);
     return '-';
@@ -282,6 +342,12 @@ interface ContractData {
   loaiKhachHang?: 'ca_nhan' | 'cong_ty';
   ngayBatDauBaoHiem?: string;
   ngayKetThucBaoHiem?: string;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
+  phiTNDS?: number;
+  tongPhi?: number;
   statusHistory?: Array<{
     status: string;
     changedBy: string;
@@ -338,7 +404,13 @@ export async function generateWordContract(contractData: ContractData, contractT
     c_carModel: contractData.carModel || contractData.soLoai || "-",
 
     // Variables with  prefix (lowercase/normal case)
-    diaChi: contractData.diaChi || "-",
+    diaChi: [
+      contractData.specificAddress,
+      contractData.selectedDistrictWardText,
+      contractData.selectedProvinceText
+    ]
+      .filter(Boolean)
+      .join(', ') || contractData.diaChi || "-",
     soHD: contractData.bhvContractNumber || "-",
     nhanHieu: contractData.nhanHieu || "-",
     namSanXuat: contractData.namSanXuat || "-",
@@ -346,22 +418,22 @@ export async function generateWordContract(contractData: ContractData, contractT
     soMay: contractData.soMay || "-",
     soChoNgoi: contractData.soChoNgoi || "-",
     soCho: contractData.soChoNgoi || "-",
-    giaTriXe: contractData.giaTriXe ? contractData.giaTriXe.toLocaleString('vi-VN') : "-",
+    giaTriXe: contractData.giaTriXe ? formatNumber(contractData.giaTriXe) : "-",
 
     // Insurance package details
-    phiBatBuoc: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
-    phiTNDS: contractData.phiTNDS ? contractData.phiTNDS.toLocaleString('vi-VN') : "-",
-    phiNNTX: contractData.phiNNTX ? contractData.phiNNTX.toLocaleString('vi-VN') : "-",
-    phiTaiNan: contractData.taiNanPackage?.phiTaiNan ? contractData.taiNanPackage.phiTaiNan.toLocaleString('vi-VN') : "-",
-    phiVatChat: contractData.vatChatPackage?.phiVatChat ? contractData.vatChatPackage.phiVatChat.toLocaleString('vi-VN') : "-",
-    phiSauKhiGiam: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
+    phiBatBuoc: contractData.phiTNDS ? formatNumber(contractData.phiTNDS) : "-",
+    phiTNDS: contractData.phiTNDS ? formatNumber(contractData.phiTNDS) : "-",
+    phiNNTX: contractData.phiNNTX ? formatNumber(contractData.phiNNTX) : "-",
+    phiTaiNan: contractData.taiNanPackage?.phiTaiNan ? formatNumber(contractData.taiNanPackage.phiTaiNan) : "-",
+    phiVatChat: contractData.vatChatPackage?.phiVatChat ? formatNumber(contractData.vatChatPackage.phiVatChat) : "-",
+    phiSauKhiGiam: contractData.tongPhi ? formatNumber(contractData.tongPhi) : "-",
     phiSauKhiGiamBangChu: contractData.tongPhi ? numberToVietnameseWords(contractData.tongPhi) : "-",
-    tongPhi: contractData.tongPhi ? contractData.tongPhi.toLocaleString('vi-VN') : "-",
+    tongPhi: contractData.tongPhi ? formatNumber(contractData.tongPhi) : "-",
 
-    // Dates
-    ngayBatDau: contractData.ngayBatDau || "-",
-    ngayKetThuc: contractData.ngayKetThuc || "-",
-    ngayDKLD: contractData.ngayDKLD || "-",
+    // Dates (formatted as dd/MM/yyyy)
+    ngayBatDau: contractData.ngayBatDau ? formatDateDDMMYYYY(contractData.ngayBatDau) : "-",
+    ngayKetThuc: contractData.ngayKetThuc ? formatDateDDMMYYYY(contractData.ngayKetThuc) : "-",
+    ngayDKLD: contractData.ngayDKLD ? formatDateDDMMYYYY(contractData.ngayDKLD) : "-",
 
     // Insurance period dates (formatted in Vietnamese)
     // Full format
@@ -415,7 +487,7 @@ export async function generateWordContract(contractData: ContractData, contractT
     dkbs: formatDkbs(contractData.vatChatPackage?.dkbs),
 
     // Additional fields as needed based on template structure
-    mucKhauTru: contractData.vatChatPackage?.mucKhauTru ? contractData.vatChatPackage.mucKhauTru.toLocaleString('vi-VN') : "500,000",
+    mucKhauTru: contractData.vatChatPackage?.mucKhauTru ? formatNumber(contractData.vatChatPackage.mucKhauTru) : "500.000",
     soNamSuDung: contractData.soNamSuDung || "-",
     namSuDung: contractData.soNamSuDung || "-",
     trongTai: contractData.trongTai || "-",
@@ -439,7 +511,7 @@ export async function generateWordContract(contractData: ContractData, contractT
 
     // Engine and electric vehicle
     loaiDongCo: contractData.loaiDongCo || "-",
-    giaTriPin: contractData.giaTriPin ? contractData.giaTriPin.toLocaleString('vi-VN') : "-",
+    giaTriPin: contractData.giaTriPin ? formatNumber(contractData.giaTriPin) : "-",
 
     // Buyer information
     buyerEmail: contractData.buyerEmail || "-",
@@ -454,12 +526,12 @@ export async function generateWordContract(contractData: ContractData, contractT
     tyLePhi: contractData.vatChatPackage?.tyLePhi || "-",
     customRate: contractData.vatChatPackage?.customRate || "-",
     isCustomRate: contractData.vatChatPackage?.isCustomRate ? "Có" : "Không",
-    phiVatChatGoc: contractData.vatChatPackage?.phiVatChatGoc ? contractData.vatChatPackage.phiVatChatGoc.toLocaleString('vi-VN') : "-",
+    phiVatChatGoc: contractData.vatChatPackage?.phiVatChatGoc ? formatNumber(contractData.vatChatPackage.phiVatChatGoc) : "-",
 
     // Status and workflow
     status: contractData.status || "-",
-    createdAt: contractData.createdAt ? new Date(contractData.createdAt).toLocaleDateString('vi-VN') : "-",
-    updatedAt: contractData.updatedAt ? new Date(contractData.updatedAt).toLocaleDateString('vi-VN') : "-",
+    createdAt: contractData.createdAt ? formatDateDDMMYYYY(contractData.createdAt) : "-",
+    updatedAt: contractData.updatedAt ? formatDateDDMMYYYY(contractData.updatedAt) : "-",
     createdBy: contractData.createdBy || "-",
 
     // Bank information for 3-party contracts

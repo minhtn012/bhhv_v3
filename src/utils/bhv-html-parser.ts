@@ -162,26 +162,29 @@ export function parseBhvHtmlResponse(htmlContent: string): BhvPremiumData {
     console.log('Parsed insurance packages:', packages);
 
     // Identify specific packages by name patterns and extract both tax values
+    // BHVC includes: Vật chất, ngập nước, lựa chọn garage, thay thế mới (all except TNDS and NNTX)
     packages.forEach(pkg => {
       const lowerName = pkg.name.toLowerCase();
 
-      if (lowerName.includes('vật chất') || lowerName.includes('bhvc')) {
-        result.bhvc.beforeTax = pkg.premium;
-        result.bhvc.afterTax = pkg.total;
-      } else if (lowerName.includes('tnds') || lowerName.includes('trách nhiệm dân sự')) {
+      if (lowerName.includes('tnds') || lowerName.includes('trách nhiệm dân sự') || lowerName.includes('bắt buộc')) {
         result.tnds.beforeTax = pkg.premium;
         result.tnds.afterTax = pkg.total;
-      } else if (lowerName.includes('nntx') || lowerName.includes('người ngồi')) {
+      } else if (lowerName.includes('nntx') || lowerName.includes('người ngồi') || lowerName.includes('lái phụ')) {
         result.nntx.beforeTax = pkg.premium;
         result.nntx.afterTax = pkg.total;
+      } else {
+        // All other packages belong to BHVC (including vật chất, ngập nước, lựa chọn garage, thay thế mới)
+        result.bhvc.beforeTax += pkg.premium;
+        result.bhvc.afterTax += pkg.total;
       }
     });
 
-    // Total premiums are already parsed from HTML
+    // Calculate total beforeTax from individual packages (3 main packages only)
+    // This is more accurate than parsing from HTML which includes all packages
+    result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
+
+    // afterTax is already parsed from "Tổng phí thanh toán" which includes all adjustments and discounts
     // If not found, fallback to calculating from individual packages
-    if (result.totalPremium.beforeTax === 0) {
-      result.totalPremium.beforeTax = Math.round(result.bhvc.beforeTax + result.tnds.beforeTax + result.nntx.beforeTax);
-    }
     if (result.totalPremium.afterTax === 0) {
       result.totalPremium.afterTax = Math.round(result.bhvc.afterTax + result.tnds.afterTax + result.nntx.afterTax);
     }

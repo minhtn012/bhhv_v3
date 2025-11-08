@@ -56,6 +56,10 @@ export interface ContractFormData {
   selectedNNTXPackage?: string;
   taiTucPercentage: number;
   mucKhauTru: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 /**
@@ -145,6 +149,10 @@ export interface ContractPayload {
   phiTruocKhiGiam: number;
   phiSauKhiGiam: number;
   tongPhi: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 /**
@@ -291,6 +299,7 @@ export function transformFormToContract(
     phiTruocKhiGiam: feeInfo.phiTruocKhiGiam,
     phiSauKhiGiam: feeInfo.phiSauKhiGiam,
     tongPhi: feeInfo.tongPhi,
+    phiTaiTucInfo: formData.phiTaiTucInfo,
   };
 
   return payload;

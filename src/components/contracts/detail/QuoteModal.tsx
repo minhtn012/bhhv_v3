@@ -37,6 +37,10 @@ interface Contract {
   phiNNTX: number;
   tongPhi: number;
   taiTucPercentage?: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
 }
 
 interface QuoteModalProps {
@@ -76,8 +80,8 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           'q-phiTNDS': formatCurrency(contract.phiTNDS),
           'q-phiNNTX': formatCurrency(contract.phiNNTX),
           'q-tongPhi': formatCurrency(contract.tongPhi),
-          'q-tinhTrang': contract.taiTucPercentage && contract.taiTucPercentage > 0
-            ? contract.taiTucPercentage.toFixed(2) + '%'
+          'q-tinhTrang': contract.phiTaiTucInfo && (contract.phiTaiTucInfo.soVu > 0 || contract.phiTaiTucInfo.phanTramChiPhi > 0)
+            ? `${contract.phiTaiTucInfo.soVu} vụ, ${contract.phiTaiTucInfo.phanTramChiPhi}% chi phí`
             : ''
         };
 

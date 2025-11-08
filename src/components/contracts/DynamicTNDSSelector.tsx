@@ -23,6 +23,10 @@ interface DynamicTNDSSelectorProps {
   mucKhauTru: number;
   taiTucPercentage: number;
   adjustmentAmount: number;
+  phiTaiTucInfo?: {
+    soVu: number;
+    phanTramChiPhi: number;
+  };
   onTNDSChange: (includeTNDS: boolean, tndsCategory: string) => void;
   onNNTXChange: (includeNNTX: boolean, packageValue?: string) => void;
   onNNTXFeeChange: (fee: number) => void;
@@ -30,6 +34,7 @@ interface DynamicTNDSSelectorProps {
   onSoChoNgoiChange: (soChoNgoi: number) => void;
   onMucKhauTruChange: (mucKhauTru: number) => void;
   onTaiTucPercentageChange: (percentage: number) => void;
+  onPhiTaiTucInfoChange: (info: { soVu: number; phanTramChiPhi: number }) => void;
   onRecalculate?: () => void;
 }
 
@@ -45,6 +50,7 @@ export default function DynamicTNDSSelector({
   mucKhauTru,
   taiTucPercentage,
   adjustmentAmount,
+  phiTaiTucInfo,
   onTNDSChange,
   onNNTXChange,
   onNNTXFeeChange,
@@ -52,6 +58,7 @@ export default function DynamicTNDSSelector({
   onSoChoNgoiChange,
   onMucKhauTruChange,
   onTaiTucPercentageChange,
+  onPhiTaiTucInfoChange,
   onRecalculate
 }: DynamicTNDSSelectorProps) {
   const [suggestedCategory, setSuggestedCategory] = useState<string | null>(null);
@@ -315,38 +322,60 @@ export default function DynamicTNDSSelector({
 
         {/* Tái tục / Cấp mới Section */}
         <div className="p-4 bg-white/10 border border-white/20 rounded-lg">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center">
-              <span className="text-gray-300">Tái tục/ Cấp mới:</span>
-            </div>
-            
-            <div className="text-right">
-              {/* Percentage input */}
-              <div className="flex items-center gap-1 mb-1">
+          <div className="mb-3">
+            <span className="text-gray-300 font-semibold">Tái tục/ Cấp mới:</span>
+          </div>
+
+          <div className="space-y-3">
+            {/* Số vụ input */}
+            <div className="flex items-center justify-between gap-3">
+              <label className="text-gray-300 text-sm">Số vụ bảo hiểm:</label>
+              <div className="flex items-center gap-1">
                 <StepperInput
-                  value={taiTucPercentage.toFixed(2)}
+                  value={phiTaiTucInfo?.soVu?.toString() || '0'}
                   onChange={(e) => {
-                    const value = parseFloat(e.target.value) || 0;
-                    onTaiTucPercentageChange(value);
-                    setTimeout(() => onRecalculate?.(), 50);
+                    const value = parseInt(e.target.value) || 0;
+                    onPhiTaiTucInfoChange({
+                      soVu: value,
+                      phanTramChiPhi: phiTaiTucInfo?.phanTramChiPhi || 0
+                    });
                   }}
                   onStep={(adjustment) => {
-                    const currentValue = taiTucPercentage || 0;
-                    const newValue = parseFloat((currentValue + adjustment).toFixed(2));
-                    onTaiTucPercentageChange(newValue);
-                    setTimeout(() => onRecalculate?.(), 50);
+                    const currentValue = phiTaiTucInfo?.soVu || 0;
+                    const newValue = Math.max(0, currentValue + adjustment);
+                    onPhiTaiTucInfoChange({
+                      soVu: newValue,
+                      phanTramChiPhi: phiTaiTucInfo?.phanTramChiPhi || 0
+                    });
                   }}
-                  step={0.01}
+                  min={0}
+                  step={1}
                   inputClassName="w-20 text-right p-1 bg-transparent text-white font-semibold focus:outline-none"
                 />
-                <span className="text-gray-400 text-sm">%</span>
+                <span className="text-gray-400 text-sm">vụ</span>
               </div>
-              
-              {/* Show calculated adjustment amount */}
-              <div className="font-bold text-blue-400 text-sm">
-                {adjustmentAmount === 0 ? '0 ₫' : (
-                  (adjustmentAmount > 0 ? '+' : '') + formatCurrency(Math.abs(adjustmentAmount))
-                )}
+            </div>
+
+            {/* Phần trăm chi phí input */}
+            <div className="flex items-center justify-between gap-3">
+              <label className="text-gray-300 text-sm">% chi phí năm ngoái:</label>
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  min="0"
+                  value={phiTaiTucInfo?.phanTramChiPhi || 0}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0;
+                    if (value >= 0) {
+                      onPhiTaiTucInfoChange({
+                        soVu: phiTaiTucInfo?.soVu || 0,
+                        phanTramChiPhi: value
+                      });
+                    }
+                  }}
+                  className="w-20 text-right p-1 bg-transparent text-white font-semibold focus:outline-none border-b border-white/20"
+                />
+                <span className="text-gray-400 text-sm">%</span>
               </div>
             </div>
           </div>

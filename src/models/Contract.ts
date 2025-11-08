@@ -67,6 +67,10 @@ export interface IContract extends Document {
   // Tái tục/Cấp mới
   taiTucPercentage?: number;
   phiTaiTuc?: number;
+  phiTaiTucInfo?: {
+    soVu: number;           // Số vụ bảo hiểm trong năm
+    phanTramChiPhi: number; // % chi phí của năm ngoái
+  };
   
   // Tổng phí
   phiTruocKhiGiam?: number; // Tổng phí theo rate gốc
@@ -372,6 +376,21 @@ const contractSchema = new Schema<IContract>({
   phiTaiTuc: {
     type: Number,
     default: 0
+  },
+  phiTaiTucInfo: {
+    type: {
+      soVu: {
+        type: Number,
+        min: [0, 'Số vụ không được âm'],
+        default: 0
+      },
+      phanTramChiPhi: {
+        type: Number,
+        min: [0, '% chi phí không được âm'],
+        default: 0
+      }
+    },
+    required: false
   },
   
   // Tổng phí
