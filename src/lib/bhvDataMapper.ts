@@ -333,10 +333,6 @@ export function calculateRequestChangeFees(contract: any): string {
     discount = Math.abs(discount);
   }
 
-  console.log("#################")
-  console.log(bhvAfterTax, vatChatFee, discount, discountType)
-  console.log("#################")
-
   // Generate request_change_fees JSON
   const requestChangeFees = [
     {

@@ -9,6 +9,7 @@ import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-pars
 import { decryptBhvCredentials } from '@/lib/encryption';
 import { validateContract } from '@/lib/contractValidationSchema';
 import mongoose from 'mongoose';
+import { logError, logWarning, createErrorResponse } from '@/lib/errorLogger';
 
 // GET /api/contracts - Lấy danh sách contracts
 export async function GET(request: NextRequest) {
@@ -87,8 +88,12 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Get contracts error:', error);
-    
+    logError(error, {
+      operation: 'GET_CONTRACTS',
+      path: request.url,
+      method: request.method,
+    });
+
     if (error.message === 'Authentication required') {
       return NextResponse.json(
         { error: error.message },
@@ -97,7 +102,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse(error, 'Internal server error'),
       { status: 500 }
     );
   }
@@ -120,19 +125,15 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    console.log('Contract API received body:', body);
-    console.log('Car fields in body:', {
-      carBrand: body.carBrand,
-      carModel: body.carModel,
-      carBodyStyle: body.carBodyStyle,
-      carYear: body.carYear
-    });
-
     // Validate contract data with Zod schema
     const validation = validateContract(body);
 
     if (!validation.success) {
-      console.error('Contract validation failed:', validation.errors);
+      logWarning('Contract validation failed', {
+        operation: 'CREATE_CONTRACT',
+        userId: user.userId,
+        additionalInfo: { validationErrors: validation.errors },
+      });
 
       return NextResponse.json(
         {
@@ -172,7 +173,11 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error: any) {
-    console.error('Create contract error:', error);
+    logError(error, {
+      operation: 'CREATE_CONTRACT',
+      path: request.url,
+      method: request.method,
+    });
 
     if (error.message === 'Authentication required') {
       return NextResponse.json(
@@ -197,7 +202,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse(error, 'Internal server error'),
       { status: 500 }
     );
   }
@@ -206,21 +211,27 @@ export async function POST(request: NextRequest) {
 // Background function to check BHV premiums after contract creation or edit
 export async function checkBhvPremiumsInBackground(contractId: string, contractNumber: string, userId: string) {
   try {
-    console.log('🔄 Starting background BHV premium check for contract:', contractNumber);
-
     // Fetch the contract from database
     await connectToDatabase();
     const contract = await Contract.findById(contractId).lean();
 
     if (!contract) {
-      console.error('❌ Contract not found for BHV check:', contractId);
+      logWarning('Contract not found for background BHV check', {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND',
+        contractId,
+        contractNumber,
+      });
       return;
     }
 
     // Get user's BHV credentials
     const user = await User.findById(userId).lean();
     if (!user || !user.bhvUsername || !user.bhvPassword) {
-      console.warn('⚠️ User has no BHV credentials, skipping BHV check for contract:', contractNumber);
+      logWarning('User has no BHV credentials, skipping background check', {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND',
+        contractNumber,
+        userId,
+      });
       await updateContractWithBhvError(contractId, 'User has no BHV credentials configured');
       return;
     }
@@ -231,13 +242,15 @@ export async function checkBhvPremiumsInBackground(contractId: string, contractN
     // Validate that we have enough data for mapping
     const dataObj = JSON.parse(bhvRequestData.data);
     if (!dataObj.car_automaker || !dataObj.car_model || !dataObj.car_value) {
-      console.warn('⚠️ Contract missing required data for BHV mapping:', contractNumber);
+      logWarning('Contract missing required data for BHV mapping', {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND',
+        contractNumber,
+      });
       await updateContractWithBhvError(contractId, 'Missing required data for BHV mapping (car brand, model, or value)');
       return;
     }
 
     // Get BHV cookies by authenticating with user's credentials
-    console.log('🔐 Authenticating with BHV to get cookies...');
     let bhvCookies = null;
     try {
       const { username, password } = decryptBhvCredentials(user.bhvUsername, user.bhvPassword);
@@ -245,35 +258,48 @@ export async function checkBhvPremiumsInBackground(contractId: string, contractN
 
       if (authResult.success) {
         bhvCookies = authResult.cookies;
-        console.log('✅ BHV authentication successful');
       } else {
-        console.error('❌ BHV authentication failed:', authResult.error);
+        logError(new Error(authResult.error || 'Authentication failed'), {
+          operation: 'BHV_PREMIUM_CHECK_BACKGROUND_AUTH',
+          contractNumber,
+          userId,
+        });
         await updateContractWithBhvError(contractId, `BHV authentication failed: ${authResult.error}`);
         return;
       }
     } catch (authError) {
-      console.error('❌ BHV authentication error:', authError);
+      logError(authError, {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND_AUTH',
+        contractNumber,
+        userId,
+      });
       await updateContractWithBhvError(contractId, `BHV authentication error: ${authError instanceof Error ? authError.message : 'Unknown auth error'}`);
       return;
     }
 
     // Call BHV API for premium check with authenticated cookies
-    console.log('🚀 Calling BHV API for premium check...');
     const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, bhvCookies);
 
     if (!bhvResult.success) {
-      console.error('❌ BHV premium check failed:', bhvResult.error);
+      logError(new Error(bhvResult.error || 'BHV API error'), {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND_API',
+        contractNumber,
+        requestData: bhvRequestData,
+      });
       await updateContractWithBhvError(contractId, `BHV API error: ${bhvResult.error}`);
       return;
     }
 
     // Parse HTML response to extract premium data
-    console.log('🔄 Parsing BHV HTML response...');
     const premiumData = parseBhvHtmlResponse(bhvResult.htmlData!);
 
     // Validate premium data consistency
     if (!validatePremiumData(premiumData)) {
-      console.warn('⚠️ Premium data validation failed - inconsistent totals');
+      logWarning('Premium data validation failed - inconsistent totals', {
+        operation: 'BHV_PREMIUM_CHECK_BACKGROUND_VALIDATION',
+        contractNumber,
+        additionalInfo: { premiumData },
+      });
     }
 
     // Update contract with BHV premium data

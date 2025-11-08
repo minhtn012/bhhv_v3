@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import Contract from '@/models/Contract';
 import { requireAuth } from '@/lib/auth';
 import { checkBhvPremiumsInBackground } from '../route';
+import { logError, createErrorResponse } from '@/lib/errorLogger';
 
 // GET /api/contracts/[id] - Lấy chi tiết contract
 export async function GET(
@@ -35,8 +36,14 @@ export async function GET(
     return NextResponse.json({ contract });
 
   } catch (error: any) {
-    console.error('Get contract error:', error);
-    
+    const { id } = await params;
+    logError(error, {
+      operation: 'GET_CONTRACT',
+      contractId: id,
+      path: request.url,
+      method: request.method,
+    });
+
     if (error.message === 'Authentication required') {
       return NextResponse.json(
         { error: error.message },
@@ -45,7 +52,7 @@ export async function GET(
     }
 
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse(error, 'Internal server error'),
       { status: 500 }
     );
   }
@@ -109,7 +116,13 @@ export async function PUT(
     });
 
   } catch (error: any) {
-    console.error('Update contract error:', error);
+    const { id } = await params;
+    logError(error, {
+      operation: 'UPDATE_CONTRACT',
+      contractId: id,
+      path: request.url,
+      method: request.method,
+    });
 
     if (error.message === 'Authentication required') {
       return NextResponse.json(
@@ -127,7 +140,7 @@ export async function PUT(
     }
 
     return NextResponse.json(
-      { error: 'Internal server error' },
+      createErrorResponse(error, 'Internal server error'),
       { status: 500 }
     );
   }

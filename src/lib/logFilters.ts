@@ -27,15 +27,21 @@ export const defaultLogFilterConfig: LogFilterConfig = {
     '/api/ping',
     '/_next/',
     '/favicon.ico',
+    '/static/',
+    '/__nextjs',
+    '/api/auth/me', // Too frequent, only log errors
   ],
 
   // Only log errors for these paths
   errorOnlyPaths: [
     '/api/auth/refresh',
+    '/api/auth/me',
+    '/api/users/dashboard-stats',
+    '/api/admin/dashboard-stats',
   ],
 
-  // Log 10% of HTTP requests to DB (reduce noise)
-  httpLogSampleRate: 0.1,
+  // Log 5% of HTTP requests to DB (reduced from 10% to further reduce noise)
+  httpLogSampleRate: 0.05,
 };
 
 /**

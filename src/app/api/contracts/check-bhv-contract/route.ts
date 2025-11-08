@@ -7,16 +7,25 @@ import { bhvApiClient } from '@/lib/bhvApiClient';
 import { parseBhvHtmlResponse, validatePremiumData } from '@/utils/bhv-html-parser';
 import { requireAuth } from '@/lib/auth';
 import { decryptBhvCredentials } from '@/lib/encryption';
+import { logError, logInfo, logWarning, OperationTimer, createErrorResponse } from '@/lib/errorLogger';
 
 export async function POST(request: NextRequest) {
+  const timer = new OperationTimer();
+  let contractNumber: string | undefined;
+
   try {
     const user = requireAuth(request);
     await connectToDatabase();
 
     const body = await request.json();
-    const { contractNumber } = body;
+    contractNumber = body.contractNumber;
 
-    console.log('🔄 Processing BHV premium check for contract:', contractNumber);
+    logInfo('BHV premium check started', {
+      operation: 'BHV_PREMIUM_CHECK',
+      contractNumber,
+      userId: user.userId,
+      username: user.username,
+    });
 
     // Validate input
     if (!contractNumber) {
@@ -41,8 +50,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✓ Contract found:', contract.contractNumber);
-
     // Check if user has access to this contract (admin or owner)
     if (user.role !== 'admin' && contract.createdBy !== user.userId) {
       return NextResponse.json(
@@ -55,7 +62,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Transform contract data to BHV premium check format
-    console.log('🔄 Transforming contract data to BHV premium check format...');
     const bhvRequestData = transformContractToPremiumCheckFormat(contract);
 
     // Validate that we have enough data for mapping
@@ -71,7 +77,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user credentials for BHV authentication
-    console.log('🔍 Getting user BHV credentials...');
     const userWithCredentials = await User.findById(user.userId).select('bhvUsername bhvPassword');
     if (!userWithCredentials?.bhvUsername || !userWithCredentials?.bhvPassword) {
       return NextResponse.json(
@@ -84,11 +89,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Decrypt credentials and authenticate with BHV
-    console.log('🔐 Authenticating with BHV API...');
     const { username, password } = decryptBhvCredentials(userWithCredentials.bhvUsername, userWithCredentials.bhvPassword);
     const authResult = await bhvApiClient.authenticate(username, password);
 
     if (!authResult.success) {
+      logError(new Error(authResult.error || 'Authentication failed'), {
+        operation: 'BHV_PREMIUM_CHECK_AUTH',
+        contractNumber,
+        userId: user.userId,
+        username: user.username,
+        additionalInfo: { bhvUsername: username },
+      });
+
       return NextResponse.json(
         {
           success: false,
@@ -99,11 +111,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Call BHV API for premium check with fresh cookies
-    console.log('🚀 Calling BHV API for premium check...');
     const bhvResult = await bhvApiClient.checkPremium(bhvRequestData, authResult.cookies);
 
     if (!bhvResult.success) {
-      console.error('❌ BHV premium check failed:', bhvResult.error);
+      logError(new Error(bhvResult.error || 'BHV API error'), {
+        operation: 'BHV_PREMIUM_CHECK_API',
+        contractNumber,
+        userId: user.userId,
+        requestData: bhvRequestData,
+        responseData: bhvResult,
+      });
+
       return NextResponse.json(
         {
           success: false,
@@ -114,18 +132,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse HTML response to extract premium data
-    console.log('🔄 Parsing BHV HTML response...');
     const premiumData = parseBhvHtmlResponse(bhvResult.htmlData!);
 
     // Validate premium data consistency
     if (!validatePremiumData(premiumData)) {
-      console.warn('⚠️ Premium data validation failed - inconsistent totals');
+      logWarning('Premium data validation failed - inconsistent totals', {
+        operation: 'BHV_PREMIUM_CHECK_VALIDATION',
+        contractNumber,
+        additionalInfo: { premiumData },
+      });
     }
 
-    console.log('✅ BHV premium check successful');
-
     // Update contract with BHV premiums data
-    console.log('💾 Updating contract with BHV premiums data...');
     try {
       await Contract.findByIdAndUpdate(contract._id, {
         bhvPremiums: {
@@ -137,11 +155,22 @@ export async function POST(request: NextRequest) {
           success: true
         }
       });
-      console.log('✅ Contract updated with BHV premiums data');
     } catch (updateError) {
-      console.error('❌ Failed to update contract with BHV premiums:', updateError);
+      logError(updateError, {
+        operation: 'BHV_PREMIUM_CHECK_UPDATE',
+        contractNumber,
+        contractId: contract._id.toString(),
+        additionalInfo: { premiumData },
+      });
       // Continue with response even if update fails
     }
+
+    timer.logCompletion('BHV premium check', {
+      operation: 'BHV_PREMIUM_CHECK',
+      contractNumber,
+      userId: user.userId,
+      additionalInfo: { totalPremium: premiumData.totalPremium },
+    });
 
     return NextResponse.json({
       success: true,
@@ -155,7 +184,11 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('💥 BHV premium check API error:', error);
+    timer.logError(error, 'BHV_PREMIUM_CHECK', {
+      contractNumber,
+      path: request.url,
+      method: request.method,
+    });
 
     if (error instanceof Error && error.message === 'Authentication required') {
       return NextResponse.json(
@@ -170,7 +203,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Internal server error'
+        ...createErrorResponse(error, 'BHV premium check failed')
       },
       { status: 500 }
     );

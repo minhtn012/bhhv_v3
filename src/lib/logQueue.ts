@@ -23,8 +23,8 @@ interface QueuedLog {
 
 class LogQueue {
   private queue: QueuedLog[] = [];
-  private maxQueueSize = 100; // Flush when queue reaches this size
-  private flushInterval = 5000; // Flush every 5 seconds
+  private maxQueueSize = 500; // Flush when queue reaches this size (increased from 100)
+  private flushInterval = 10000; // Flush every 10 seconds (increased from 5s to reduce DB writes)
   private timer: NodeJS.Timeout | null = null;
   private isProcessing = false;
 
