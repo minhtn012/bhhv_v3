@@ -33,7 +33,9 @@ export default function ContractsPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10, total: 0, pages: 0 });
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [createdByFilter, setCreatedByFilter] = useState<string[]>([]);
+  const [users, setUsers] = useState<{ _id: string; username: string; role: string }[]>([]);
   const [selectedContracts, setSelectedContracts] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -56,7 +58,29 @@ export default function ContractsPage() {
     }
 
     fetchContracts();
-  }, [router, pagination.page, search, statusFilter]);
+  }, [router, pagination.page, search, statusFilter, createdByFilter]);
+
+  // Fetch users list when currentUser is set (for admin filter)
+  useEffect(() => {
+    if (currentUser?.role === 'admin') {
+      fetchUsers();
+    }
+  }, [currentUser]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('/api/users?limit=1000&role=user');
+      const data = await response.json();
+
+      if (response.ok) {
+        // Filter out admin users on client side as well for extra safety
+        const nonAdminUsers = data.users.filter((u: any) => u.role !== 'admin');
+        setUsers(nonAdminUsers);
+      }
+    } catch (error) {
+      console.error('Fetch users error:', error);
+    }
+  };
 
   const fetchContracts = async () => {
     try {
@@ -64,15 +88,27 @@ export default function ContractsPage() {
         page: pagination.page.toString(),
         limit: pagination.limit.toString(),
         ...(search && { search }),
-        ...(statusFilter && { status: statusFilter })
+        ...(statusFilter.length > 0 && { status: statusFilter.join(',') }),
+        ...(createdByFilter.length > 0 && { createdBy: createdByFilter.join(',') })
+      });
+
+      console.log('🔍 Frontend Filter Debug:', {
+        statusFilter,
+        createdByFilter,
+        search,
+        queryString: params.toString()
       });
 
       const response = await fetch(`/api/contracts?${params}`);
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Contracts data:', data.contracts);
-        console.log('First contract createdBy:', data.contracts[0]?.createdBy);
+        console.log('✅ Contracts Response:', {
+          contractsCount: data.contracts.length,
+          pagination: data.pagination,
+          firstContract: data.contracts[0]?.contractNumber,
+          firstContractCreatedBy: data.contracts[0]?.createdBy
+        });
         setContracts(data.contracts);
         setPagination(data.pagination);
         setError('');
@@ -102,6 +138,43 @@ export default function ContractsPage() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  // Filter handlers
+  const toggleStatusFilter = (status: string) => {
+    setStatusFilter(prev => {
+      const newFilter = prev.includes(status)
+        ? prev.filter(s => s !== status)
+        : [...prev, status];
+      setPagination(p => ({ ...p, page: 1 }));
+      return newFilter;
+    });
+  };
+
+  const toggleUserFilter = (userId: string) => {
+    setCreatedByFilter(prev => {
+      const newFilter = prev.includes(userId)
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId];
+      setPagination(p => ({ ...p, page: 1 }));
+      return newFilter;
+    });
+  };
+
+  const removeStatusFilter = (status: string) => {
+    setStatusFilter(prev => prev.filter(s => s !== status));
+    setPagination(p => ({ ...p, page: 1 }));
+  };
+
+  const removeUserFilter = (userId: string) => {
+    setCreatedByFilter(prev => prev.filter(id => id !== userId));
+    setPagination(p => ({ ...p, page: 1 }));
+  };
+
+  const clearAllFilters = () => {
+    setStatusFilter([]);
+    setCreatedByFilter([]);
+    setPagination(p => ({ ...p, page: 1 }));
   };
 
   // Checkbox selection handlers
@@ -181,8 +254,7 @@ export default function ContractsPage() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
               <h1 className="text-2xl font-bold text-white">Quản lý Hợp đồng</h1>
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -215,36 +287,166 @@ export default function ContractsPage() {
               </div>
             )}
 
-            {/* Search and Filter */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm theo mã HĐ, biển số, tên chủ xe..."
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setPagination(prev => ({ ...prev, page: 1 }));
-                  }}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50"
-                />
-              </div>
-              <select
-                value={statusFilter}
+            {/* Search Bar */}
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Tìm kiếm theo mã HĐ, biển số, tên chủ xe..."
+                value={search}
                 onChange={(e) => {
-                  setStatusFilter(e.target.value);
+                  setSearch(e.target.value);
                   setPagination(prev => ({ ...prev, page: 1 }));
                 }}
-                className="bg-gray-800/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500/50"
-              >
-                <option value="">Tất cả trạng thái</option>
-                <option value="nhap">Nháp</option>
-                <option value="cho_duyet">Chờ duyệt</option>
-                <option value="khach_duyet">Khách duyệt</option>
-                <option value="ra_hop_dong">Ra hợp đồng</option>
-                <option value="huy">Đã hủy</option>
-              </select>
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50 transition-colors"
+              />
             </div>
+
+            {/* Filter Dropdowns */}
+            <div className="flex flex-wrap gap-4 mb-4">
+              {/* Status Multi-Select */}
+              <div className="relative group">
+                <button className="bg-gray-800/50 border border-white/10 rounded-xl px-4 py-2 text-white hover:border-blue-500/50 transition-colors flex items-center gap-2 min-w-[140px]">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                  <span>Trạng thái</span>
+                  {statusFilter.length > 0 && (
+                    <span className="ml-auto bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full">{statusFilter.length}</span>
+                  )}
+                </button>
+                <div className="absolute top-full left-0 mt-2 bg-gray-800 border border-white/10 rounded-xl shadow-xl z-50 min-w-[200px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  <div className="p-2 space-y-1">
+                    <label className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes('nhap')}
+                        onChange={() => toggleStatusFilter('nhap')}
+                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/30 rounded focus:ring-blue-500"
+                      />
+                      <span className={`text-sm ${getStatusColor('nhap')}`}>{getStatusText('nhap')}</span>
+                    </label>
+                    <label className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes('cho_duyet')}
+                        onChange={() => toggleStatusFilter('cho_duyet')}
+                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/30 rounded focus:ring-blue-500"
+                      />
+                      <span className={`text-sm ${getStatusColor('cho_duyet')}`}>{getStatusText('cho_duyet')}</span>
+                    </label>
+                    <label className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes('khach_duyet')}
+                        onChange={() => toggleStatusFilter('khach_duyet')}
+                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/30 rounded focus:ring-blue-500"
+                      />
+                      <span className={`text-sm ${getStatusColor('khach_duyet')}`}>{getStatusText('khach_duyet')}</span>
+                    </label>
+                    <label className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes('ra_hop_dong')}
+                        onChange={() => toggleStatusFilter('ra_hop_dong')}
+                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/30 rounded focus:ring-blue-500"
+                      />
+                      <span className={`text-sm ${getStatusColor('ra_hop_dong')}`}>{getStatusText('ra_hop_dong')}</span>
+                    </label>
+                    <label className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={statusFilter.includes('huy')}
+                        onChange={() => toggleStatusFilter('huy')}
+                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/30 rounded focus:ring-blue-500"
+                      />
+                      <span className={`text-sm ${getStatusColor('huy')}`}>{getStatusText('huy')}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Multi-Select */}
+              {currentUser?.role === 'admin' && (
+                <div className="relative group">
+                  <button className="bg-gray-800/50 border border-white/10 rounded-xl px-4 py-2 text-white hover:border-purple-500/50 transition-colors flex items-center gap-2 min-w-[140px]">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span>Người tạo</span>
+                    {createdByFilter.length > 0 && (
+                      <span className="ml-auto bg-purple-500 text-white text-xs px-1.5 py-0.5 rounded-full">{createdByFilter.length}</span>
+                    )}
+                  </button>
+                  <div className="absolute top-full left-0 mt-2 bg-gray-800 border border-white/10 rounded-xl shadow-xl z-50 min-w-[200px] max-h-[300px] overflow-y-auto opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                    <div className="p-2 space-y-1">
+                      {users.map(user => (
+                        <label key={user._id} className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={createdByFilter.includes(user._id)}
+                            onChange={() => toggleUserFilter(user._id)}
+                            className="w-4 h-4 text-purple-500 bg-white/5 border-white/30 rounded focus:ring-purple-500"
+                          />
+                          <span className="text-sm text-gray-300">{user.username}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Active Filter Pills */}
+            {(statusFilter.length > 0 || createdByFilter.length > 0) && (
+              <div className="mb-6 flex flex-wrap items-center gap-2">
+                <span className="text-sm text-gray-400">Đang lọc:</span>
+
+                {/* Status Pills */}
+                {statusFilter.map(status => (
+                  <button
+                    key={status}
+                    onClick={() => removeStatusFilter(status)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:opacity-80 ${getStatusColor(status)}`}
+                  >
+                    <span>{getStatusText(status)}</span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                ))}
+
+                {/* User Pills */}
+                {createdByFilter.map(userId => {
+                  const user = users.find(u => u._id === userId);
+                  return user ? (
+                    <button
+                      key={userId}
+                      onClick={() => removeUserFilter(userId)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-500/20 text-purple-300 transition-all hover:opacity-80"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      <span>{user.username}</span>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  ) : null;
+                })}
+
+                {/* Clear All Button */}
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500/20 text-red-300 hover:bg-red-500/30 transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <span>Xóa tất cả</span>
+                </button>
+              </div>
+            )}
 
             {/* Contracts Table */}
             {contracts.length === 0 ? (
@@ -564,7 +766,6 @@ export default function ContractsPage() {
               </div>
             )}
           </div>
-        </div>
       </div>
     </DashboardLayout>
   );

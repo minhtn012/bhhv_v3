@@ -20,8 +20,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
-    const status = searchParams.get('status') || '';
+    const statusParam = searchParams.get('status') || '';
     const search = searchParams.get('search') || '';
+    const createdByParam = searchParams.get('createdBy') || '';
 
     const skip = (page - 1) * limit;
 
@@ -41,10 +42,21 @@ export async function GET(request: NextRequest) {
         // If userId is not valid ObjectId, only match by username
         filter.$expr = { $eq: [{ $toString: '$createdBy' }, user.username] };
       }
+    } else if (createdByParam) {
+      // Admin can filter by specific users (comma-separated)
+      const createdByIds = createdByParam.split(',').filter(id => mongoose.Types.ObjectId.isValid(id));
+      if (createdByIds.length > 0) {
+        filter.createdBy = { $in: createdByIds.map(id => new mongoose.Types.ObjectId(id)) };
+      }
     }
 
-    if (status && ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong', 'huy'].includes(status)) {
-      filter.status = status;
+    // Handle multi-select status filter (comma-separated)
+    if (statusParam) {
+      const validStatuses = ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong', 'huy'];
+      const statuses = statusParam.split(',').filter(s => validStatuses.includes(s));
+      if (statuses.length > 0) {
+        filter.status = { $in: statuses };
+      }
     }
 
     if (search) {
@@ -66,6 +78,15 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Debug logging
+    console.log('🔍 Contract Filter Debug:', {
+      userRole: user.role,
+      statusParam,
+      createdByParam,
+      search,
+      filterObject: JSON.stringify(filter, null, 2)
+    });
+
     // Get contracts with pagination
     const [contracts, total] = await Promise.all([
       Contract.find(filter)
@@ -76,6 +97,14 @@ export async function GET(request: NextRequest) {
         .lean(),
       Contract.countDocuments(filter)
     ]);
+
+    console.log('✅ Contract Results:', {
+      foundContracts: contracts.length,
+      totalContracts: total,
+      page,
+      limit,
+      pages: Math.ceil(total / limit)
+    });
 
     return NextResponse.json({
       contracts,
