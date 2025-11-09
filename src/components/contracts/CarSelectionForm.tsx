@@ -74,7 +74,7 @@ export default function CarSelectionForm({
           <select
             value={carData.selectedBodyStyle}
             onChange={(e) => onInputChange('selectedBodyStyle', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+            className={`w-full bg-slate-700/50  border rounded-xl px-4 py-2 text-white ${
               fieldErrors.selectedBodyStyle ? 'border-red-500' : 'border-white/20'
             }`}
             required
@@ -102,7 +102,7 @@ export default function CarSelectionForm({
           <select
             value={carData.selectedYear}
             onChange={(e) => onInputChange('selectedYear', e.target.value)}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
+            className={`w-full bg-slate-700/50  border rounded-xl px-4 py-2 text-white ${
               fieldErrors.selectedYear ? 'border-red-500' : 'border-white/20'
             }`}
             required

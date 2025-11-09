@@ -399,7 +399,7 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     // Request change fees (discount/fee modifications)
     request_change_fees: calculateRequestChangeFees(contract),
 
-    // Customer data
+    // Customer data (buyer - người mua bảo hiểm) - uses NEW address
     buyer_customer_code: "",
     buyer_partner_code: "",
     buyer_agency_code: "",
@@ -408,11 +408,11 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     buyer_phone: contract.buyerPhone,
     buyer_gender: contract.buyerGender?.toUpperCase(),
     buyer_identity_card: contract.buyerCitizenId,
-    buyer_city: contract.selectedProvince,
-    buyer_district: contract.selectedDistrictWard,
-    buyer_address: contract.specificAddress,
+    buyer_city: contract.newSelectedProvince,
+    buyer_district: contract.newSelectedDistrictWard,
+    buyer_address: contract.newSpecificAddress,
 
-    // Owner vehicle information (same as buyer for now)
+    // Owner vehicle information (chủ xe) - uses OLD address
     chk_owner_vehicle: "100",
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
@@ -424,15 +424,15 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     owner_vehicle_district: contract.selectedDistrictWard,
     owner_vehicle_address: contract.specificAddress,
 
-    // Beneficiary information (same as buyer for now)
+    // Beneficiary information (người thụ hưởng) - uses NEW address
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
     beneficiary_identity_card: contract.buyerCitizenId,
     beneficiary_phone: contract.buyerPhone,
-    beneficiary_city: contract.selectedProvince,
-    beneficiary_district: contract.selectedDistrictWard,
-    beneficiary_address: contract.specificAddress,
+    beneficiary_city: contract.newSelectedProvince,
+    beneficiary_district: contract.newSelectedDistrictWard,
+    beneficiary_address: contract.newSpecificAddress,
 
     // Additional missing fields
     tax_content_kind: "nvbh_shd_bks",
@@ -535,7 +535,7 @@ export function transformContractToBhvFormat(contract: any): any {
     // Request change fees (discount/fee modifications)
     request_change_fees: calculateRequestChangeFees(contract),
 
-    // Customer data
+    // Customer data (buyer - người mua bảo hiểm) - uses NEW address
     buyer_customer_code: "",
     buyer_partner_code: "",
     buyer_agency_code: "",
@@ -544,11 +544,11 @@ export function transformContractToBhvFormat(contract: any): any {
     buyer_phone: contract.buyerPhone,
     buyer_gender: contract.buyerGender?.toUpperCase(),
     buyer_identity_card: contract.buyerCitizenId,
-    buyer_city: contract.selectedProvince,
-    buyer_district: contract.selectedDistrictWard,
-    buyer_address: contract.specificAddress,
+    buyer_city: contract.newSelectedProvince,
+    buyer_district: contract.newSelectedDistrictWard,
+    buyer_address: contract.newSpecificAddress,
 
-    // Owner vehicle information (same as buyer for now)
+    // Owner vehicle information (chủ xe) - uses OLD address
     chk_owner_vehicle: "100",
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
@@ -560,15 +560,15 @@ export function transformContractToBhvFormat(contract: any): any {
     owner_vehicle_district: contract.selectedDistrictWard,
     owner_vehicle_address: contract.specificAddress,
 
-    // Beneficiary information (same as buyer for now)
+    // Beneficiary information (người thụ hưởng) - uses NEW address
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
     beneficiary_identity_card: contract.buyerCitizenId,
     beneficiary_phone: contract.buyerPhone,
-    beneficiary_city: contract.selectedProvince,
-    beneficiary_district: contract.selectedDistrictWard,
-    beneficiary_address: contract.specificAddress,
+    beneficiary_city: contract.newSelectedProvince,
+    beneficiary_district: contract.newSelectedDistrictWard,
+    beneficiary_address: contract.newSpecificAddress,
 
     // Additional missing fields
     tax_content_kind: "nvbh_shd_bks",

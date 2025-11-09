@@ -12,6 +12,11 @@ interface ExtendedBuyerFormData extends BuyerFormData {
   selectedDistrictWard: string;
   selectedDistrictWardText: string;
   specificAddress: string;
+  newSelectedProvince: string;
+  newSelectedProvinceText: string;
+  newSelectedDistrictWard: string;
+  newSelectedDistrictWardText: string;
+  newSpecificAddress: string;
 }
 
 interface BuyerInfoFormProps {
@@ -30,6 +35,8 @@ export default function BuyerInfoForm({
   hideNextButton = false
 }: BuyerInfoFormProps) {
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+
+  // Hook for old address (from vehicle registration)
   const {
     provinces,
     loadingProvinces,
@@ -41,6 +48,20 @@ export default function BuyerInfoForm({
     clearDistrictsWards,
     getProvinceByCode,
     getDistrictWardById
+  } = useBuyerLocation();
+
+  // Hook for new address (current address)
+  const {
+    provinces: newProvinces,
+    loadingProvinces: newLoadingProvinces,
+    errorProvinces: newErrorProvinces,
+    districtsWards: newDistrictsWards,
+    loadingDistrictsWards: newLoadingDistrictsWards,
+    errorDistrictsWards: newErrorDistrictsWards,
+    loadDistrictsWards: newLoadDistrictsWards,
+    clearDistrictsWards: newClearDistrictsWards,
+    getProvinceByCode: newGetProvinceByCode,
+    getDistrictWardById: newGetDistrictWardById
   } = useBuyerLocation();
 
   // Debug mode: populate default values
@@ -80,9 +101,35 @@ export default function BuyerInfoForm({
   // Handle district/ward selection
   const handleDistrictWardChange = (districtWardId: string) => {
     const districtWard = getDistrictWardById(districtWardId);
-    
+
     onFormInputChange('selectedDistrictWard', districtWardId);
     onFormInputChange('selectedDistrictWardText', districtWard?.name || '');
+  };
+
+  // Handle new province selection
+  const handleNewProvinceChange = (provinceCode: string) => {
+    const province = newGetProvinceByCode(provinceCode);
+
+    onFormInputChange('newSelectedProvince', provinceCode);
+    onFormInputChange('newSelectedProvinceText', province?.province_name || '');
+
+    // Clear district/ward selection
+    onFormInputChange('newSelectedDistrictWard', '');
+    onFormInputChange('newSelectedDistrictWardText', '');
+    newClearDistrictsWards();
+
+    // Load new districts/wards
+    if (provinceCode) {
+      newLoadDistrictsWards(provinceCode);
+    }
+  };
+
+  // Handle new district/ward selection
+  const handleNewDistrictWardChange = (districtWardId: string) => {
+    const districtWard = newGetDistrictWardById(districtWardId);
+
+    onFormInputChange('newSelectedDistrictWard', districtWardId);
+    onFormInputChange('newSelectedDistrictWardText', districtWard?.name || '');
   };
 
   // Load districts/wards if province is already selected
@@ -91,6 +138,13 @@ export default function BuyerInfoForm({
       loadDistrictsWards(formData.selectedProvince);
     }
   }, [formData.selectedProvince, districtsWards.length, loadDistrictsWards]);
+
+  // Load districts/wards for new address if province is already selected
+  useEffect(() => {
+    if (formData.newSelectedProvince && newDistrictsWards.length === 0) {
+      newLoadDistrictsWards(formData.newSelectedProvince);
+    }
+  }, [formData.newSelectedProvince, newDistrictsWards.length, newLoadDistrictsWards]);
 
   // Auto-detect company type based on name
   useEffect(() => {
@@ -109,7 +163,7 @@ export default function BuyerInfoForm({
   // Clear local errors when field values change
   useEffect(() => {
     setLocalErrors({});
-  }, [formData.chuXe, formData.email, formData.soDienThoai, formData.cccd, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress]);
+  }, [formData.chuXe, formData.email, formData.soDienThoai, formData.cccd, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress, formData.newSelectedProvince, formData.newSelectedDistrictWard, formData.newSpecificAddress]);
 
   // Get combined errors (prioritize local errors over global)
   const getCombinedErrors = () => {
@@ -329,7 +383,7 @@ export default function BuyerInfoForm({
 
         {/* Địa chỉ cụ thể */}
         <div className="lg:col-span-3">
-          <label className="block text-white font-medium mb-2">Địa chỉ cụ thể</label>
+          <label className="block text-white font-medium mb-2">Địa chỉ cụ thể (từ đăng ký xe)</label>
           <textarea
             value={formData.specificAddress}
             onChange={(e) => onFormInputChange('specificAddress', e.target.value)}
@@ -339,6 +393,94 @@ export default function BuyerInfoForm({
             placeholder="Số nhà, tên đường, khu vực..."
           />
           <FieldError fieldName="specificAddress" errors={combinedErrors} />
+          <p className="text-xs text-white/50 mt-1">Tự động điền từ thông tin trích xuất (phần đầu của địa chỉ)</p>
+        </div>
+      </div>
+
+      {/* New Address Section */}
+      <div className="mt-8 pt-6 border-t border-white/10">
+        <h3 className="text-lg font-semibold text-white mb-4">Địa chỉ mới (nếu khác địa chỉ đăng ký xe)</h3>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Tỉnh/Thành phố mới */}
+          <div>
+            <label className="block text-white font-medium mb-2">Tỉnh/Thành phố</label>
+            <div className={`${combinedErrors.newSelectedProvince ? 'border border-red-500 rounded-xl' : ''}`}>
+              <SearchableSelect
+                options={newProvinces.map(province => ({
+                  id: province.province_code,
+                  name: province.province_name
+                }))}
+                value={formData.newSelectedProvinceText}
+                onChange={(value) => {
+                  const selectedProvince = newProvinces.find(p => p.province_name === value);
+                  if (selectedProvince) {
+                    handleNewProvinceChange(selectedProvince.province_code);
+                  }
+                }}
+                placeholder="Chọn tỉnh/thành phố"
+                loading={newLoadingProvinces}
+                disabled={newLoadingProvinces}
+              />
+            </div>
+            {newLoadingProvinces && (
+              <div className="flex items-center gap-2 mt-2">
+                <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
+                <p className="text-xs text-blue-400">Đang tải danh sách tỉnh/thành...</p>
+              </div>
+            )}
+            {newErrorProvinces && (
+              <p className="text-xs text-red-400 mt-1">{newErrorProvinces}</p>
+            )}
+            <FieldError fieldName="newSelectedProvince" errors={combinedErrors} />
+          </div>
+
+          {/* Quận/Huyện/Xã mới */}
+          <div>
+            <label className="block text-white font-medium mb-2">Quận/Huyện/Xã</label>
+            <div className={`${combinedErrors.newSelectedDistrictWard ? 'border border-red-500 rounded-xl' : ''}`}>
+              <SearchableSelect
+                options={newDistrictsWards.map(district => ({
+                  id: district.id,
+                  name: district.name
+                }))}
+                value={formData.newSelectedDistrictWardText}
+                onChange={(value) => {
+                  const selectedDistrict = newDistrictsWards.find(d => d.name === value);
+                  if (selectedDistrict) {
+                    handleNewDistrictWardChange(selectedDistrict.id);
+                  }
+                }}
+                placeholder="Chọn quận/huyện/xã"
+                loading={newLoadingDistrictsWards}
+                disabled={!formData.newSelectedProvince || newLoadingDistrictsWards}
+              />
+            </div>
+            {newLoadingDistrictsWards && (
+              <div className="flex items-center gap-2 mt-2">
+                <Spinner size="small" className="!m-0 !w-3 !h-3 !max-w-3" />
+                <p className="text-xs text-blue-400">Đang tải danh sách quận/huyện/xã...</p>
+              </div>
+            )}
+            {newErrorDistrictsWards && (
+              <p className="text-xs text-red-400 mt-1">{newErrorDistrictsWards}</p>
+            )}
+            <FieldError fieldName="newSelectedDistrictWard" errors={combinedErrors} />
+          </div>
+
+          {/* Địa chỉ cụ thể mới */}
+          <div className="lg:col-span-3">
+            <label className="block text-white font-medium mb-2">Địa chỉ cụ thể</label>
+            <textarea
+              value={formData.newSpecificAddress}
+              onChange={(e) => onFormInputChange('newSpecificAddress', e.target.value)}
+              className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white h-20 resize-none min-h-[80px] ${
+                combinedErrors.newSpecificAddress ? 'border-red-500' : 'border-slate-500/30'
+              }`}
+              placeholder="Số nhà, tên đường, khu vực..."
+            />
+            <FieldError fieldName="newSpecificAddress" errors={combinedErrors} />
+          </div>
         </div>
       </div>
 

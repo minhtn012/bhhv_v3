@@ -20,10 +20,17 @@ export interface BaseContractFormData {
   // Address Structure (actual form fields)
   diaChi: string;               // Main address (from vehicle registration)
   selectedProvince: string;      // Province code
-  selectedProvinceText: string;  // Province name  
+  selectedProvinceText: string;  // Province name
   selectedDistrictWard: string;  // District/Ward code
   selectedDistrictWardText: string; // District/Ward name
   specificAddress: string;       // Specific address
+
+  // New address (current address if different from registration)
+  newSelectedProvince: string;
+  newSelectedProvinceText: string;
+  newSelectedDistrictWard: string;
+  newSelectedDistrictWardText: string;
+  newSpecificAddress: string;
 
   // Vehicle Information (16 fields)
   bienSo: string;
@@ -69,7 +76,9 @@ export type VehicleFormData = Pick<BaseContractFormData,
 export type BuyerFormData = Pick<BaseContractFormData,
   'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'userType' |
   'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' |
-  'selectedDistrictWardText' | 'specificAddress'
+  'selectedDistrictWardText' | 'specificAddress' |
+  'newSelectedProvince' | 'newSelectedProvinceText' | 'newSelectedDistrictWard' |
+  'newSelectedDistrictWardText' | 'newSpecificAddress'
 >;
 
 export type InsuranceCalculationFormData = Pick<BaseContractFormData,
@@ -112,6 +121,13 @@ export const defaultContractFormData: BaseContractFormData = {
   selectedDistrictWard: '',
   selectedDistrictWardText: '',
   specificAddress: '',
+
+  // New address
+  newSelectedProvince: '',
+  newSelectedProvinceText: '',
+  newSelectedDistrictWard: '',
+  newSelectedDistrictWardText: '',
+  newSpecificAddress: '',
 
   // Vehicle Information
   bienSo: '',

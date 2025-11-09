@@ -19,6 +19,13 @@ export interface IContract extends Document {
   selectedDistrictWard?: string; // district/ward id
   selectedDistrictWardText?: string; // district/ward name for display
   specificAddress?: string;
+
+  // New address (current address if different from registration)
+  newSelectedProvince?: string;
+  newSelectedProvinceText?: string;
+  newSelectedDistrictWard?: string;
+  newSelectedDistrictWardText?: string;
+  newSpecificAddress?: string;
   
   // Thông tin xe
   bienSo: string;
@@ -195,7 +202,27 @@ const contractSchema = new Schema<IContract>({
     type: String,
     trim: true
   },
-  
+  newSelectedProvince: {
+    type: String,
+    trim: true
+  },
+  newSelectedProvinceText: {
+    type: String,
+    trim: true
+  },
+  newSelectedDistrictWard: {
+    type: String,
+    trim: true
+  },
+  newSelectedDistrictWardText: {
+    type: String,
+    trim: true
+  },
+  newSpecificAddress: {
+    type: String,
+    trim: true
+  },
+
   // Thông tin xe
   bienSo: {
     type: String,

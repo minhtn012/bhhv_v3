@@ -327,7 +327,10 @@ export default function NewContractPage() {
                       <p><strong>Họ tên:</strong> {formData.chuXe}</p>
                       <p><strong>Email:</strong> {formData.email}</p>
                       <p><strong>Điện thoại:</strong> {formData.soDienThoai}</p>
-                      <p><strong>Địa chỉ:</strong> {formData.selectedProvinceText}, {formData.selectedDistrictWardText}</p>
+                      <p><strong>Địa chỉ cũ:</strong> {formData.selectedProvinceText}, {formData.selectedDistrictWardText}</p>
+                      {formData.newSelectedProvinceText && (
+                        <p><strong>Địa chỉ mới:</strong> {formData.newSelectedProvinceText}, {formData.newSelectedDistrictWardText}</p>
+                      )}
                     </div>
                   ) : undefined}
                 >

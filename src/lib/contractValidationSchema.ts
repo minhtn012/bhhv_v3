@@ -100,6 +100,23 @@ export const ContractSchema = z.object({
     .transform((val) => val === '' ? undefined : val)
     .optional(),
 
+  // New address (current address if different from registration)
+  newSelectedProvince: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  newSelectedProvinceText: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  newSelectedDistrictWard: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  newSelectedDistrictWardText: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+  newSpecificAddress: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+
   // Vehicle information
   bienSo: z.string()
     .min(1, 'Biển số xe là bắt buộc')

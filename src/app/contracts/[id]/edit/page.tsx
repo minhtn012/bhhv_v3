@@ -55,7 +55,14 @@ interface Contract {
   selectedDistrictWard?: string;
   selectedDistrictWardText?: string;
   specificAddress?: string;
-  
+
+  // New address
+  newSelectedProvince?: string;
+  newSelectedProvinceText?: string;
+  newSelectedDistrictWard?: string;
+  newSelectedDistrictWardText?: string;
+  newSpecificAddress?: string;
+
   bienSo: string;
   nhanHieu: string;
   soLoai: string;
@@ -141,6 +148,13 @@ export default function EditContractPage() {
     selectedDistrictWard: '',
     selectedDistrictWardText: '',
     specificAddress: '',
+
+    // New address
+    newSelectedProvince: '',
+    newSelectedProvinceText: '',
+    newSelectedDistrictWard: '',
+    newSelectedDistrictWardText: '',
+    newSpecificAddress: '',
 
     // Extended buyer information for edit
     buyerEmail: '',
@@ -338,6 +352,13 @@ export default function EditContractPage() {
       selectedDistrictWard: contractData.selectedDistrictWard || '',
       selectedDistrictWardText: contractData.selectedDistrictWardText || '',
       specificAddress: contractData.specificAddress || '',
+
+      // New address
+      newSelectedProvince: contractData.newSelectedProvince || '',
+      newSelectedProvinceText: contractData.newSelectedProvinceText || '',
+      newSelectedDistrictWard: contractData.newSelectedDistrictWard || '',
+      newSelectedDistrictWardText: contractData.newSelectedDistrictWardText || '',
+      newSpecificAddress: contractData.newSpecificAddress || '',
 
       // Vehicle Information (BaseContractFormData)
       bienSo: contractData.bienSo,
@@ -677,6 +698,12 @@ export default function EditContractPage() {
         selectedDistrictWard: formData.selectedDistrictWard,
         selectedDistrictWardText: formData.selectedDistrictWardText,
         specificAddress: formData.specificAddress,
+        // New address
+        newSelectedProvince: formData.newSelectedProvince,
+        newSelectedProvinceText: formData.newSelectedProvinceText,
+        newSelectedDistrictWard: formData.newSelectedDistrictWard,
+        newSelectedDistrictWardText: formData.newSelectedDistrictWardText,
+        newSpecificAddress: formData.newSpecificAddress,
         // Vehicle information
         bienSo: formData.bienSo,
         nhanHieu: formData.nhanHieu,
@@ -875,7 +902,12 @@ export default function EditContractPage() {
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,
                     selectedDistrictWardText: formData.selectedDistrictWardText,
-                    specificAddress: formData.specificAddress
+                    specificAddress: formData.specificAddress,
+                    newSelectedProvince: formData.newSelectedProvince,
+                    newSelectedProvinceText: formData.newSelectedProvinceText,
+                    newSelectedDistrictWard: formData.newSelectedDistrictWard,
+                    newSelectedDistrictWardText: formData.newSelectedDistrictWardText,
+                    newSpecificAddress: formData.newSpecificAddress
                   }}
                   fieldErrors={fieldErrors}
                   onFormInputChange={handleInputChange}

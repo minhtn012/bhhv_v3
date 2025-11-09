@@ -30,6 +30,13 @@ export interface ContractFormData {
   selectedDistrictWardText: string;
   specificAddress: string;
 
+  // New address
+  newSelectedProvince: string;
+  newSelectedProvinceText: string;
+  newSelectedDistrictWard: string;
+  newSelectedDistrictWardText: string;
+  newSpecificAddress: string;
+
   // Vehicle information
   bienSo: string;
   soKhung: string;
@@ -111,6 +118,13 @@ export interface ContractPayload {
   selectedDistrictWard: string;
   selectedDistrictWardText: string;
   specificAddress: string;
+
+  // New address
+  newSelectedProvince: string;
+  newSelectedProvinceText: string;
+  newSelectedDistrictWard: string;
+  newSelectedDistrictWardText: string;
+  newSpecificAddress: string;
 
   // Vehicle information
   bienSo: string;
@@ -261,6 +275,13 @@ export function transformFormToContract(
     selectedDistrictWard: formData.selectedDistrictWard,
     selectedDistrictWardText: formData.selectedDistrictWardText,
     specificAddress: formData.specificAddress,
+
+    // New address
+    newSelectedProvince: formData.newSelectedProvince || '',
+    newSelectedProvinceText: formData.newSelectedProvinceText || '',
+    newSelectedDistrictWard: formData.newSelectedDistrictWard || '',
+    newSelectedDistrictWardText: formData.newSelectedDistrictWardText || '',
+    newSpecificAddress: formData.newSpecificAddress || '',
 
     // Vehicle information
     bienSo: formData.bienSo,

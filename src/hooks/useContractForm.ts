@@ -70,6 +70,13 @@ const initialState: ContractFormState = {
   selectedDistrictWardText: '',
   specificAddress: '',
 
+  // New address
+  newSelectedProvince: '',
+  newSelectedProvinceText: '',
+  newSelectedDistrictWard: '',
+  newSelectedDistrictWardText: '',
+  newSpecificAddress: '',
+
   // Vehicle Information
   bienSo: '',
   soKhung: '',
@@ -205,7 +212,14 @@ function contractFormReducer(state: ContractFormState, action: ContractFormActio
       const updates: Partial<ContractFormState> = {};
 
       if (data.chuXe) updates.chuXe = data.chuXe;
-      if (data.diaChi) updates.diaChi = data.diaChi;
+      if (data.diaChi) {
+        updates.diaChi = data.diaChi;
+        // Parse diaChi: split by comma, take first element for specificAddress
+        const parts = data.diaChi.split(',').map((s: string) => s.trim()).filter(Boolean);
+        if (parts.length > 0) {
+          updates.specificAddress = parts[0]; // First part = street address and number
+        }
+      }
       if (data.bienSo) updates.bienSo = data.bienSo;
       if (data.nhanHieu) updates.nhanHieu = data.nhanHieu;
       if (data.soLoai) updates.soLoai = data.soLoai;

@@ -9,6 +9,11 @@ interface Contract {
   selectedDistrictWard?: string;
   selectedDistrictWardText?: string;
   specificAddress?: string;
+  newSelectedProvince?: string;
+  newSelectedProvinceText?: string;
+  newSelectedDistrictWard?: string;
+  newSelectedDistrictWardText?: string;
+  newSpecificAddress?: string;
   ngayBatDauBaoHiem?: string;
   ngayKetThucBaoHiem?: string;
 }
@@ -63,9 +68,32 @@ export default function CustomerInfoSection({ contract }: CustomerInfoSectionPro
           </div>
         )}
         <div className="md:col-span-2 lg:col-span-3">
-          <label className="block text-gray-300 text-sm mb-1">Địa chỉ gốc</label>
+          <label className="block text-gray-300 text-sm mb-1">Địa chỉ gốc (từ đăng ký xe)</label>
           <p className="text-white">{contract.diaChi}</p>
         </div>
+        {contract.newSelectedProvinceText && (
+          <>
+            <div className="md:col-span-2 lg:col-span-3 border-t border-white/10 pt-4 mt-2">
+              <label className="block text-gray-300 text-sm mb-3 font-semibold">Địa chỉ mới</label>
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm mb-1">Tỉnh/Thành phố</label>
+              <p className="text-white">{contract.newSelectedProvinceText}</p>
+            </div>
+            {contract.newSelectedDistrictWardText && (
+              <div>
+                <label className="block text-gray-300 text-sm mb-1">Quận/Huyện</label>
+                <p className="text-white">{contract.newSelectedDistrictWardText}</p>
+              </div>
+            )}
+            {contract.newSpecificAddress && (
+              <div className="md:col-span-2 lg:col-span-3">
+                <label className="block text-gray-300 text-sm mb-1">Địa chỉ cụ thể</label>
+                <p className="text-white">{contract.newSpecificAddress}</p>
+              </div>
+            )}
+          </>
+        )}
         {contract.ngayBatDauBaoHiem && (
           <div>
             <label className="block text-gray-300 text-sm mb-1">Ngày bắt đầu bảo hiểm</label>
