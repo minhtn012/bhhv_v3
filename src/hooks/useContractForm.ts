@@ -214,10 +214,12 @@ function contractFormReducer(state: ContractFormState, action: ContractFormActio
       if (data.chuXe) updates.chuXe = data.chuXe;
       if (data.diaChi) {
         updates.diaChi = data.diaChi;
-        // Parse diaChi: split by comma, take first element for specificAddress
+        // Parse diaChi: split by comma, remove last 2 elements (district/ward), join the rest
         const parts = data.diaChi.split(',').map((s: string) => s.trim()).filter(Boolean);
-        if (parts.length > 0) {
-          updates.specificAddress = parts[0]; // First part = street address and number
+        if (parts.length > 2) {
+          updates.specificAddress = parts.slice(0, -2).join(', ');
+        } else if (parts.length > 0) {
+          updates.specificAddress = parts[0];
         }
       }
       if (data.bienSo) updates.bienSo = data.bienSo;

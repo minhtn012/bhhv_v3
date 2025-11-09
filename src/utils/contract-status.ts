@@ -4,7 +4,7 @@
  */
 
 // Contract status type definition
-export type ContractStatus = 'nhap' | 'cho_duyet' | 'khach_duyet' | 'ra_hop_dong' | 'huy';
+export type ContractStatus = 'nhap' | 'cho_duyet' | 'khach_duyet' | 'ra_hop_dong' | 'huy' | 'bhv_confirmed';
 
 // Contract status mappings to Vietnamese text
 export const CONTRACT_STATUSES: Record<ContractStatus, string> = {
@@ -12,7 +12,8 @@ export const CONTRACT_STATUSES: Record<ContractStatus, string> = {
   'cho_duyet': 'Chờ duyệt',
   'khach_duyet': 'Khách duyệt',
   'ra_hop_dong': 'Ra hợp đồng',
-  'huy': 'Đã hủy'
+  'huy': 'Đã hủy',
+  'bhv_confirmed': 'BHV đã xác nhận'
 };
 
 // Contract status color mappings for UI
@@ -21,7 +22,8 @@ export const STATUS_COLORS: Record<ContractStatus, string> = {
   'cho_duyet': 'bg-yellow-500/20 text-yellow-300',
   'khach_duyet': 'bg-green-500/20 text-green-300',
   'ra_hop_dong': 'bg-blue-500/20 text-blue-300',
-  'huy': 'bg-red-500/20 text-red-300'
+  'huy': 'bg-red-500/20 text-red-300',
+  'bhv_confirmed': 'bg-emerald-500/20 text-emerald-300'
 };
 
 // Status colors for charts/analytics (hex values)
@@ -30,7 +32,8 @@ export const STATUS_CHART_COLORS: Record<ContractStatus, string> = {
   'cho_duyet': '#eab308',
   'khach_duyet': '#22c55e',
   'ra_hop_dong': '#3b82f6',
-  'huy': '#ef4444'
+  'huy': '#ef4444',
+  'bhv_confirmed': '#10b981'
 };
 
 /**
