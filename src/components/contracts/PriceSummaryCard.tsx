@@ -72,7 +72,7 @@ export default function PriceSummaryCard({
   // Handle manual rate adjustments with stepper buttons
   const handleRateChange = (adjustment: number) => {
     const currentValue = userModifiedPercentage ?? originalEffectiveRate;
-    const newValue = Math.max(0.1, Math.min(10, parseFloat((currentValue + adjustment).toFixed(2))));
+    const newValue = Math.max(originalEffectiveRate, Math.min(10, parseFloat((currentValue + adjustment).toFixed(2))));
     if (!isNaN(newValue)) {
       setUserModifiedPercentage(newValue);
       const isModified = Math.abs(newValue - originalEffectiveRate) > 0.001;
@@ -119,14 +119,14 @@ export default function PriceSummaryCard({
                       onCustomRateChange?.(null, false);
                       return;
                     }
-                    if (!isNaN(value) && value >= 0.1 && value <= 10) {
+                    if (!isNaN(value) && value >= originalEffectiveRate && value <= 10) {
                       setUserModifiedPercentage(value);
                       const isModified = Math.abs(value - originalEffectiveRate) > 0.001;
                       onCustomRateChange?.(value, isModified);
                     }
                   }}
                   onStep={handleRateChange}
-                  min={0.1}
+                  min={originalEffectiveRate}
                   max={10}
                   step={0.01}
                   placeholder="1.20"
