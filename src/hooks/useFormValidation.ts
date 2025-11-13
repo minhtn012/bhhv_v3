@@ -79,7 +79,8 @@ export default function useFormValidation(requireFullInfo: boolean = false) {
     soMay: Yup.string().required('Vui lòng nhập số máy'),
     ngayDKLD: Yup.string()
       .required('Vui lòng nhập ngày đăng ký lần đầu')
-      .test('valid-date', 'Ngày không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy', function(value) {
+      .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'Ngày đăng ký lần đầu phải có định dạng DD/MM/YYYY (ví dụ: 15/03/2020)')
+      .test('valid-date', 'Ngày không hợp lệ. Vui lòng kiểm tra lại ngày/tháng/năm', function(value) {
         if (!value) return false;
         const date = parseDate(value);
         return date !== null;

@@ -227,6 +227,7 @@ export default function BuyerInfoForm({
             <label className="block text-white font-medium mb-2">Họ và tên *</label>
             <input
               type="text"
+              name="chuXe"
               value={formData.chuXe}
               onChange={(e) => onFormInputChange('chuXe', e.target.value)}
               className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -274,6 +275,7 @@ export default function BuyerInfoForm({
           <label className="block text-white font-medium mb-2">Email</label>
           <input
             type="email"
+            name="email"
             value={formData.email}
             onChange={(e) => onFormInputChange('email', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -289,6 +291,7 @@ export default function BuyerInfoForm({
           <label className="block text-white font-medium mb-2">Số điện thoại</label>
           <input
             type="tel"
+            name="soDienThoai"
             value={formData.soDienThoai}
             onChange={(e) => onFormInputChange('soDienThoai', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${

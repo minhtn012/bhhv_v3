@@ -5,6 +5,7 @@ import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
 import { VehicleFormData } from '@/types/contract';
 import StepperInput from '../ui/StepperInput';
+import { formatDateInput, normalizeDateFormat } from '@/utils/dateFormatter';
 
 interface EngineType {
   name: string;
@@ -97,6 +98,7 @@ export default function VehicleInfoForm({
           <label className="block text-white font-medium mb-2">Biển số *</label>
           <input
             type="text"
+            name="bienSo"
             value={formData.bienSo}
             onChange={(e) => onFormInputChange('bienSo', e.target.value.toUpperCase())}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white font-mono min-h-[48px] ${
@@ -109,8 +111,9 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Số khung *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
+            name="soKhung"
             value={formData.soKhung}
             onChange={(e) => onFormInputChange('soKhung', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -123,8 +126,9 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Số máy *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
+            name="soMay"
             value={formData.soMay}
             onChange={(e) => onFormInputChange('soMay', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -137,25 +141,38 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Ngày ĐK lần đầu *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
+            name="ngayDKLD"
             value={formData.ngayDKLD}
-            onChange={(e) => onFormInputChange('ngayDKLD', e.target.value)}
-            placeholder="dd/mm/yyyy (VD: 15/03/2020)"
-            pattern="^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$"
-            title="Vui lòng nhập ngày theo định dạng dd/mm/yyyy"
+            onChange={(e) => {
+              // Auto-format as user types
+              const formatted = formatDateInput(e.target.value);
+              onFormInputChange('ngayDKLD', formatted);
+            }}
+            onBlur={(e) => {
+              // Normalize format when user leaves field (add leading zeros)
+              const normalized = normalizeDateFormat(e.target.value);
+              onFormInputChange('ngayDKLD', normalized);
+            }}
+            placeholder="DD/MM/YYYY (VD: 15/03/2020)"
+            maxLength={10}
+            pattern="^\d{2}\/\d{2}\/\d{4}$"
+            title="Vui lòng nhập ngày theo định dạng DD/MM/YYYY (ví dụ: 15/03/2020)"
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               fieldErrors.ngayDKLD ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
           />
           <FieldError fieldName="ngayDKLD" errors={fieldErrors} />
+          <p className="text-xs text-white/50 mt-1">Định dạng: DD/MM/YYYY (2 chữ số ngày/tháng, 4 chữ số năm)</p>
         </div>
 
         <div>
           <label className="block text-white font-medium mb-2">Năm sản xuất *</label>
-          <input 
-            type="number" 
+          <input
+            type="number"
+            name="namSanXuat"
             min="1980"
             max={new Date().getFullYear()}
             value={formData.namSanXuat}
@@ -197,6 +214,7 @@ export default function VehicleInfoForm({
           <label className="block text-white font-medium mb-2">Giá trị xe (VNĐ) *</label>
           <input
             type="text"
+            name="giaTriXe"
             value={formData.giaTriXe}
             onChange={(e) => onFormInputChange('giaTriXe', formatNumberInput(e.target.value))}
             placeholder="Ví dụ: 800,000,000"
@@ -226,6 +244,7 @@ export default function VehicleInfoForm({
         <div>
           <label className="block text-white font-medium mb-2">Loại động cơ *</label>
           <select
+            name="loaiDongCo"
             value={formData.loaiDongCo}
             onChange={(e) => onFormInputChange('loaiDongCo', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${

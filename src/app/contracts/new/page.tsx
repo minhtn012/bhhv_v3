@@ -65,7 +65,7 @@ export default function NewContractPage() {
   } = useInsuranceCalculation();
 
   // Form validation hook
-  const { fieldErrors, validateForm } = useFormValidation();
+  const { fieldErrors, validateForm, setFieldErrors } = useFormValidation();
 
   // Check authentication and role
   useEffect(() => {
@@ -96,6 +96,66 @@ export default function NewContractPage() {
       }
     }, delay);
   }, []);
+
+  // Utility: Scroll to first error field
+  const scrollToFirstError = useCallback((errors: Record<string, string>) => {
+    const firstErrorField = Object.keys(errors)[0];
+    if (!firstErrorField) return;
+
+    // Map field names to step numbers
+    const fieldToStep: Record<string, number> = {
+      chuXe: 2,
+      email: 2,
+      soDienThoai: 2,
+      cccd: 2,
+      gioiTinh: 2,
+      selectedProvince: 2,
+      selectedDistrictWard: 2,
+      specificAddress: 2,
+      bienSo: 3,
+      soKhung: 3,
+      soMay: 3,
+      ngayDKLD: 3,
+      namSanXuat: 3,
+      soChoNgoi: 3,
+      giaTriXe: 3,
+      loaiDongCo: 3,
+      giaTriPin: 3,
+      trongTai: 3,
+      nhanHieu: 3,
+      soLoai: 3,
+      selectedBrand: 3,
+      selectedModel: 3,
+      selectedBodyStyle: 3,
+      selectedYear: 3,
+      tndsCategory: 4,
+      tongPhi: 4,
+      phiSauKhiGiam: 4,
+    };
+
+    const stepNumber = fieldToStep[firstErrorField];
+    if (stepNumber && stepNumber !== currentStep) {
+      setCurrentStep(stepNumber);
+      scrollToStep(stepNumber, 300);
+    }
+
+    // Scroll to the specific field after step scroll
+    setTimeout(() => {
+      const fieldElement = document.querySelector(`[name="${firstErrorField}"]`) ||
+                          document.querySelector(`input[value="${firstErrorField}"]`) ||
+                          document.getElementById(firstErrorField);
+      if (fieldElement) {
+        fieldElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        // Focus the field if it's an input
+        if (fieldElement instanceof HTMLInputElement || fieldElement instanceof HTMLSelectElement) {
+          fieldElement.focus();
+        }
+      }
+    }, 500);
+  }, [currentStep, scrollToStep]);
 
   // Step 1: Handle extract success
   const handleExtractSuccess = useCallback(async (data: any) => {
@@ -229,7 +289,15 @@ export default function NewContractPage() {
       // Validate payload
       const validation = validateContractPayload(payload);
       if (!validation.valid) {
-        setError(validation.errors.join(', '));
+        // Merge validation errors into fieldErrors for field-level display
+        setFieldErrors(validation.errors);
+
+        // Also set top-level error message
+        const errorMessages = Object.values(validation.errors);
+        setError(`Vui lòng kiểm tra lại: ${errorMessages.join(', ')}`);
+
+        // Scroll to first error field
+        scrollToFirstError(validation.errors);
         return;
       }
 
