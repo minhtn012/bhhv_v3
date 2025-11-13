@@ -5,7 +5,6 @@ import CarSelectionForm from './CarSelectionForm';
 import carEngineTypes from '@db/car_type_engine.json';
 import { VehicleFormData } from '@/types/contract';
 import StepperInput from '../ui/StepperInput';
-import { formatDateInput, normalizeDateFormat } from '@/utils/dateFormatter';
 
 interface EngineType {
   name: string;
@@ -44,7 +43,24 @@ export default function VehicleInfoForm({
 }: VehicleInfoFormProps) {
   const selectedEngine: EngineType | undefined = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
   const isElectricOrHybrid = selectedEngine && (selectedEngine.code === 'HYBRID' || selectedEngine.code === 'EV');
-  
+
+  // Helper: Convert DD/MM/YYYY → YYYY-MM-DD for native date input
+  const convertToNativeDate = (ddmmyyyy: string): string => {
+    if (!ddmmyyyy) return '';
+    const match = ddmmyyyy.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!match) return '';
+    const [, day, month, year] = match;
+    return `${year}-${month}-${day}`;
+  };
+
+  // Helper: Convert YYYY-MM-DD → DD/MM/YYYY for backend
+  const convertToBackendDate = (yyyymmdd: string): string => {
+    if (!yyyymmdd) return '';
+    const match = yyyymmdd.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return '';
+    const [, year, month, day] = match;
+    return `${day}/${month}/${year}`;
+  };
 
   // Auto-set engine type based on selected car
   useEffect(() => {
@@ -142,49 +158,44 @@ export default function VehicleInfoForm({
         <div>
           <label className="block text-white font-medium mb-2">Ngày ĐK lần đầu *</label>
           <input
-            type="text"
+            type="date"
             name="ngayDKLD"
-            value={formData.ngayDKLD}
+            value={convertToNativeDate(formData.ngayDKLD)}
             onChange={(e) => {
-              // Auto-format as user types
-              const formatted = formatDateInput(e.target.value);
-              onFormInputChange('ngayDKLD', formatted);
+              // Convert YYYY-MM-DD to DD/MM/YYYY for backend
+              const backendFormat = convertToBackendDate(e.target.value);
+              onFormInputChange('ngayDKLD', backendFormat);
             }}
-            onBlur={(e) => {
-              // Normalize format when user leaves field (add leading zeros)
-              const normalized = normalizeDateFormat(e.target.value);
-              onFormInputChange('ngayDKLD', normalized);
-            }}
-            placeholder="DD/MM/YYYY (VD: 15/03/2020)"
-            maxLength={10}
-            pattern="^\d{2}\/\d{2}\/\d{4}$"
-            title="Vui lòng nhập ngày theo định dạng DD/MM/YYYY (ví dụ: 15/03/2020)"
+            max={new Date().toISOString().split('T')[0]}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               fieldErrors.ngayDKLD ? 'border-red-500' : 'border-slate-500/30'
-            }`}
+            } [color-scheme:dark]`}
             required
           />
           <FieldError fieldName="ngayDKLD" errors={fieldErrors} />
-          <p className="text-xs text-white/50 mt-1">Định dạng: DD/MM/YYYY (2 chữ số ngày/tháng, 4 chữ số năm)</p>
         </div>
 
         <div>
           <label className="block text-white font-medium mb-2">Năm sản xuất *</label>
-          <input
-            type="number"
+          <select
             name="namSanXuat"
-            min="1980"
-            max={new Date().getFullYear()}
             value={formData.namSanXuat}
             onChange={(e) => {
               const newValue = e.target.value ? parseInt(e.target.value) : '';
               onFormInputChange('namSanXuat', newValue);
             }}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.namSanXuat ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.namSanXuat ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
-          />
+          >
+            <option value="">-- Chọn năm sản xuất --</option>
+            {Array.from({ length: new Date().getFullYear() - 1980 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
           <FieldError fieldName="namSanXuat" errors={fieldErrors} />
         </div>
 
