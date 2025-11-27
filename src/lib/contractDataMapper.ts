@@ -353,9 +353,6 @@ export function validateContractPayload(payload: ContractPayload): {
 
   // Fee validations
   if (payload.tongPhi < 0) errors.tongPhi = 'Tổng phí không được âm';
-  if (payload.phiSauKhiGiam > payload.phiTruocKhiGiam) {
-    errors.phiSauKhiGiam = 'Phí sau giảm không được lớn hơn phí trước giảm';
-  }
 
   // TNDS validation
   if (payload.includeTNDS && !payload.tndsCategory) {
