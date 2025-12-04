@@ -43,7 +43,24 @@ export default function VehicleInfoForm({
 }: VehicleInfoFormProps) {
   const selectedEngine: EngineType | undefined = carEngineTypes.find(engine => engine.value === formData.loaiDongCo);
   const isElectricOrHybrid = selectedEngine && (selectedEngine.code === 'HYBRID' || selectedEngine.code === 'EV');
-  
+
+  // Helper: Convert DD/MM/YYYY → YYYY-MM-DD for native date input
+  const convertToNativeDate = (ddmmyyyy: string): string => {
+    if (!ddmmyyyy) return '';
+    const match = ddmmyyyy.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!match) return '';
+    const [, day, month, year] = match;
+    return `${year}-${month}-${day}`;
+  };
+
+  // Helper: Convert YYYY-MM-DD → DD/MM/YYYY for backend
+  const convertToBackendDate = (yyyymmdd: string): string => {
+    if (!yyyymmdd) return '';
+    const match = yyyymmdd.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return '';
+    const [, year, month, day] = match;
+    return `${day}/${month}/${year}`;
+  };
 
   // Auto-set engine type based on selected car
   useEffect(() => {
@@ -97,6 +114,7 @@ export default function VehicleInfoForm({
           <label className="block text-white font-medium mb-2">Biển số *</label>
           <input
             type="text"
+            name="bienSo"
             value={formData.bienSo}
             onChange={(e) => onFormInputChange('bienSo', e.target.value.toUpperCase())}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white font-mono min-h-[48px] ${
@@ -109,8 +127,9 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Số khung *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
+            name="soKhung"
             value={formData.soKhung}
             onChange={(e) => onFormInputChange('soKhung', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -123,8 +142,9 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Số máy *</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
+            name="soMay"
             value={formData.soMay}
             onChange={(e) => onFormInputChange('soMay', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
@@ -137,16 +157,19 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Ngày ĐK lần đầu *</label>
-          <input 
-            type="text" 
-            value={formData.ngayDKLD}
-            onChange={(e) => onFormInputChange('ngayDKLD', e.target.value)}
-            placeholder="dd/mm/yyyy (VD: 15/03/2020)"
-            pattern="^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$"
-            title="Vui lòng nhập ngày theo định dạng dd/mm/yyyy"
+          <input
+            type="date"
+            name="ngayDKLD"
+            value={convertToNativeDate(formData.ngayDKLD)}
+            onChange={(e) => {
+              // Convert YYYY-MM-DD to DD/MM/YYYY for backend
+              const backendFormat = convertToBackendDate(e.target.value);
+              onFormInputChange('ngayDKLD', backendFormat);
+            }}
+            max={new Date().toISOString().split('T')[0]}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               fieldErrors.ngayDKLD ? 'border-red-500' : 'border-slate-500/30'
-            }`}
+            } [color-scheme:dark]`}
             required
           />
           <FieldError fieldName="ngayDKLD" errors={fieldErrors} />
@@ -154,20 +177,25 @@ export default function VehicleInfoForm({
 
         <div>
           <label className="block text-white font-medium mb-2">Năm sản xuất *</label>
-          <input 
-            type="number" 
-            min="1980"
-            max={new Date().getFullYear()}
+          <select
+            name="namSanXuat"
             value={formData.namSanXuat}
             onChange={(e) => {
               const newValue = e.target.value ? parseInt(e.target.value) : '';
               onFormInputChange('namSanXuat', newValue);
             }}
-            className={`w-full bg-white/10 border rounded-xl px-4 py-2 text-white ${
-              fieldErrors.namSanXuat ? 'border-red-500' : 'border-white/20'
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              fieldErrors.namSanXuat ? 'border-red-500' : 'border-slate-500/30'
             }`}
             required
-          />
+          >
+            <option value="">-- Chọn năm sản xuất --</option>
+            {Array.from({ length: new Date().getFullYear() - 1980 + 1 }, (_, i) => new Date().getFullYear() - i).map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
           <FieldError fieldName="namSanXuat" errors={fieldErrors} />
         </div>
 
@@ -197,6 +225,7 @@ export default function VehicleInfoForm({
           <label className="block text-white font-medium mb-2">Giá trị xe (VNĐ) *</label>
           <input
             type="text"
+            name="giaTriXe"
             value={formData.giaTriXe}
             onChange={(e) => onFormInputChange('giaTriXe', formatNumberInput(e.target.value))}
             placeholder="Ví dụ: 800,000,000"
@@ -226,6 +255,7 @@ export default function VehicleInfoForm({
         <div>
           <label className="block text-white font-medium mb-2">Loại động cơ *</label>
           <select
+            name="loaiDongCo"
             value={formData.loaiDongCo}
             onChange={(e) => onFormInputChange('loaiDongCo', e.target.value)}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${

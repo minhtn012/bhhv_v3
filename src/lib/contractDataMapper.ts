@@ -347,40 +347,37 @@ export function transformFormToContract(
  * Validate contract payload before submission
  *
  * @param payload - Contract payload to validate
- * @returns Validation result
+ * @returns Validation result with field-level errors
  */
 export function validateContractPayload(payload: ContractPayload): {
   valid: boolean;
-  errors: string[];
+  errors: Record<string, string>;
 } {
-  const errors: string[] = [];
+  const errors: Record<string, string> = {};
 
   // Required fields validation
-  if (!payload.chuXe) errors.push('Tên chủ xe là bắt buộc');
-  if (!payload.bienSo) errors.push('Biển số xe là bắt buộc');
-  if (!payload.soKhung) errors.push('Số khung là bắt buộc');
-  if (!payload.soMay) errors.push('Số máy là bắt buộc');
-  if (!payload.nhanHieu) errors.push('Nhãn hiệu xe là bắt buộc');
-  if (!payload.soLoai) errors.push('Số loại xe là bắt buộc');
+  if (!payload.chuXe) errors.chuXe = 'Tên chủ xe là bắt buộc';
+  if (!payload.bienSo) errors.bienSo = 'Biển số xe là bắt buộc';
+  if (!payload.soKhung) errors.soKhung = 'Số khung là bắt buộc';
+  if (!payload.soMay) errors.soMay = 'Số máy là bắt buộc';
+  if (!payload.nhanHieu) errors.nhanHieu = 'Nhãn hiệu xe là bắt buộc';
+  if (!payload.soLoai) errors.soLoai = 'Số loại xe là bắt buộc';
 
   // Numeric validations
-  if (payload.giaTriXe <= 0) errors.push('Giá trị xe phải lớn hơn 0');
-  if (payload.namSanXuat < 1980) errors.push('Năm sản xuất không hợp lệ');
-  if (payload.soChoNgoi <= 0) errors.push('Số chỗ ngồi phải lớn hơn 0');
+  if (payload.giaTriXe <= 0) errors.giaTriXe = 'Giá trị xe phải lớn hơn 0';
+  if (payload.namSanXuat < 1980) errors.namSanXuat = 'Năm sản xuất không hợp lệ';
+  if (payload.soChoNgoi <= 0) errors.soChoNgoi = 'Số chỗ ngồi phải lớn hơn 0';
 
   // Fee validations
-  if (payload.tongPhi < 0) errors.push('Tổng phí không được âm');
-  if (payload.phiSauKhiGiam > payload.phiTruocKhiGiam) {
-    errors.push('Phí sau giảm không được lớn hơn phí trước giảm');
-  }
+  if (payload.tongPhi < 0) errors.tongPhi = 'Tổng phí không được âm';
 
   // TNDS validation
   if (payload.includeTNDS && !payload.tndsCategory) {
-    errors.push('Vui lòng chọn loại TNDS');
+    errors.tndsCategory = 'Vui lòng chọn loại TNDS';
   }
 
   return {
-    valid: errors.length === 0,
+    valid: Object.keys(errors).length === 0,
     errors,
   };
 }

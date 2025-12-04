@@ -252,19 +252,6 @@ export const ContractSchema = z.object({
       path: ['tndsCategory'],
     }
   )
-  // Custom validation: phiSauKhiGiam should not exceed phiTruocKhiGiam
-  .refine(
-    (data) => {
-      if (data.phiTruocKhiGiam && data.phiSauKhiGiam) {
-        return data.phiSauKhiGiam <= data.phiTruocKhiGiam;
-      }
-      return true;
-    },
-    {
-      message: 'Phí sau giảm không được lớn hơn phí trước giảm',
-      path: ['phiSauKhiGiam'],
-    }
-  )
   // Custom validation: Battery value required for EV/Hybrid
   .refine(
     (data) => {

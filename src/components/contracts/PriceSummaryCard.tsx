@@ -62,12 +62,21 @@ export default function PriceSummaryCard({
       : originalRate
   ) : 0;
 
-  // Reset user modifications when package changes
+  // Sync initialCustomRate when it changes (for edit mode)
   useEffect(() => {
-    setUserModifiedPercentage(null);
-    // Notify parent that custom rate has been reset
-    onCustomRateChange?.(null, false);
-  }, [formData.selectedPackageIndex]);
+    if (initialCustomRate !== null && initialCustomRate !== undefined) {
+      setUserModifiedPercentage(initialCustomRate);
+    }
+  }, [initialCustomRate]);
+
+  // Reset user modifications when package changes (but preserve initialCustomRate)
+  useEffect(() => {
+    // Only reset if NOT in edit mode with custom rate
+    if (initialCustomRate === null || initialCustomRate === undefined) {
+      setUserModifiedPercentage(null);
+      onCustomRateChange?.(null, false);
+    }
+  }, [formData.selectedPackageIndex, initialCustomRate]);
 
   // Handle manual rate adjustments with stepper buttons
   const handleRateChange = (adjustment: number) => {

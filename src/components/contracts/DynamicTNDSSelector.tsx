@@ -180,7 +180,8 @@ export default function DynamicTNDSSelector({
           
           {/* TNDS Category Selector */}
           <div className="mt-2">
-            <select 
+            <select
+              name="tndsCategory"
               value={tndsCategory || ''}
               onChange={(e) => handleTNDSCategoryChange(e.target.value)}
               className="w-full p-1.5 border border-white/20 rounded-md bg-white/5 text-white text-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-white/10"
