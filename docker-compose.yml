@@ -6,15 +6,25 @@ services:
     container_name: bhhv_app
     restart: always
     ports:
-      - "3010:3000"  # Changed port to avoid conflicts
+      - "3010:3000"
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin
     networks:
-      - db_network  # Use shared database network
+      - db_network
+      - traefik-network
     volumes:
       - ./scripts:/app/scripts
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bhhv.rule=Host(`bhhv.minhtn.space`)"
+      - "traefik.http.routers.bhhv.entrypoints=websecure"
+      - "traefik.http.routers.bhhv.tls.certresolver=letsencrypt"
+      - "traefik.http.services.bhhv.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik-network"
 
 networks:
   db_network:
-    external: true  # Use external shared network
+    external: true
+  traefik-network:
+    external: true
