@@ -2,6 +2,8 @@ import { tndsCategories, type CalculationResult, type EnhancedCalculationResult,
 import PackageCard from './PackageCard';
 import DynamicTNDSSelector from './DynamicTNDSSelector';
 import PriceSummaryCard from './PriceSummaryCard';
+import ExtraPackage from './ExtraPackage';
+import { isExtraPackagesEnabled } from '@/config/extra-packages';
 import { PackageSelectionFormData } from '@/types/contract';
 
 interface PackageOption {
@@ -21,6 +23,11 @@ interface ExtendedPackageFormData extends PackageSelectionFormData {
     soVu: number;
     phanTramChiPhi: number;
   };
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 interface PackageSelectionStepProps {
@@ -31,7 +38,10 @@ interface PackageSelectionStepProps {
   totalAmount: number;
   nntxFee: number;
   loading: boolean;
-  onFormInputChange: (field: keyof ExtendedPackageFormData, value: string | number | boolean) => void;
+  onFormInputChange: (
+    field: keyof ExtendedPackageFormData,
+    value: string | number | boolean | Array<{code: string; name: string; value: string}> | {soVu: number; phanTramChiPhi: number}
+  ) => void;
   onPackageSelect: (packageIndex: number) => void;
   onSubmit: () => void;
   onRecalculate?: () => void;
@@ -81,6 +91,21 @@ export default function PackageSelectionStep({
               ))}
             </div>
           </div>
+
+          {/* Extra Packages Section */}
+          {isExtraPackagesEnabled() && (
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Gói Bổ Sung (Tùy Chọn)</h3>
+              <p className="text-sm text-gray-400 mb-3">
+                Chọn các gói bảo hiểm bổ sung phù hợp với nhu cầu của bạn
+              </p>
+              <ExtraPackage
+                selectedPackages={formData.extraPackages || []}
+                onSelect={(packages) => onFormInputChange('extraPackages', packages)}
+                disabled={false}
+              />
+            </div>
+          )}
 
           <DynamicTNDSSelector
             loaiHinhKinhDoanh={formData.loaiHinhKinhDoanh}

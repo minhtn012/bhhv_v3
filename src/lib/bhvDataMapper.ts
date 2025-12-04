@@ -60,9 +60,16 @@ function formatDateTimeForBhv(date: Date): string {
 }
 
 /**
- * Map insurance packages from dkbs array to BHV UUIDs
+ * Map insurance packages from dkbs array and extra packages to BHV UUIDs
+ *
+ * @param dkbs - Main package DKBS array (e.g., ["- BS001: Mới thay cũ", "- BS003: Thủy kích"])
+ * @param extraPackages - Optional extra packages array (e.g., [{code: "BS007", name: "...", value: "uuid"}])
+ * @returns Record of UUID mappings for BHV API
  */
-export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
+export function mapInsuranceOptions(
+  dkbs: string[],
+  extraPackages?: Array<{code: string; name: string; value: string}>
+): Record<string, string> {
   const insuranceOptions: Record<string, string> = {};
 
   // Always include "Cơ bản" package (default)
@@ -71,7 +78,7 @@ export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
     insuranceOptions[basicPackage.value] = basicPackage.value;
   }
 
-  // Add BS coverage codes to insurance options
+  // Add BS coverage codes from main packages (dkbs)
   dkbs.forEach(line => {
     const bsMatch = line.match(/BS(\d{3})/);
     if (bsMatch) {
@@ -82,6 +89,13 @@ export function mapInsuranceOptions(dkbs: string[]): Record<string, string> {
       }
     }
   });
+
+  // Add extra packages (BS007, BS008, BS009, etc.)
+  if (extraPackages && extraPackages.length > 0) {
+    extraPackages.forEach(pkg => {
+      insuranceOptions[pkg.value] = pkg.value;
+    });
+  }
 
   return insuranceOptions;
 }
@@ -350,7 +364,10 @@ export function calculateRequestChangeFees(contract: any): string {
  * Transform contract data to BHV API confirmation format
  */
 export function transformContractToBhvConfirmFormat(contract: any, saleCode: string = ""): any {
-  const insuranceOptions = mapInsuranceOptions(contract.vatChatPackage?.dkbs || []);
+  const insuranceOptions = mapInsuranceOptions(
+    contract.vatChatPackage?.dkbs || [],
+    contract.extraPackages || []
+  );
   const insuranceTypeOptions = mapInsuranceTypeOptions({
     includeTNDS: contract.includeTNDS || false,
     includeNNTX: contract.includeNNTX || false
@@ -486,7 +503,10 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
  * Transform contract data to BHV API format
  */
 export function transformContractToBhvFormat(contract: any): any {
-  const insuranceOptions = mapInsuranceOptions(contract.vatChatPackage?.dkbs || []);
+  const insuranceOptions = mapInsuranceOptions(
+    contract.vatChatPackage?.dkbs || [],
+    contract.extraPackages || []
+  );
   const insuranceTypeOptions = mapInsuranceTypeOptions({
     includeTNDS: contract.includeTNDS || false,
     includeNNTX: contract.includeNNTX || false

@@ -64,6 +64,13 @@ export interface BaseContractFormData {
     soVu: number;
     phanTramChiPhi: number;
   };
+
+  // Extra insurance packages (BS007, BS008, BS009, etc.)
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 // Specialized type definitions using Pick utility
@@ -158,6 +165,9 @@ export const defaultContractFormData: BaseContractFormData = {
   taiTucPercentage: 0,
   mucKhauTru: 0,
   phiTaiTucInfo: undefined,
+
+  // Extra packages
+  extraPackages: [],
 };
 
 // Type guards for validation

@@ -37,6 +37,11 @@ interface FormData extends BaseContractFormData {
     soVu: number;
     phanTramChiPhi: number;
   };
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 interface Contract {
@@ -108,6 +113,13 @@ interface Contract {
     soVu: number;
     phanTramChiPhi: number;
   };
+
+  // Extra packages
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 
   phiTruocKhiGiam?: number;
   phiSauKhiGiam?: number;
@@ -389,6 +401,7 @@ export default function EditContractPage() {
       taiTucPercentage: contractData.taiTucPercentage || 0,
       mucKhauTru: contractData.mucKhauTru,
       phiTaiTucInfo: contractData.phiTaiTucInfo,
+      extraPackages: contractData.extraPackages || [],
 
       // Extended fields specific to edit page
       buyerEmail: contractData.buyerEmail || '',
@@ -743,7 +756,8 @@ export default function EditContractPage() {
         phiTaiTucInfo: formData.phiTaiTucInfo,
         phiTruocKhiGiam: phiTruocKhiGiam,
         phiSauKhiGiam: phiSauKhiGiam,
-        tongPhi: phiSauKhiGiam
+        tongPhi: phiSauKhiGiam,
+        extraPackages: formData.extraPackages || []
       };
 
       const response = await fetch(`/api/contracts/${contractId}`, {

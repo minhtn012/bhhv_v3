@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { formatCurrency, calculateTotalVehicleValue } from '@/utils/insurance-calculator';
+import { formatCurrency, calculateTotalVehicleValue, packageLabelsDetail } from '@/utils/insurance-calculator';
 import { getVehicleTypeText } from '@/utils/vehicle-type-mapping';
 
 // Type declaration for html2canvas
@@ -41,6 +41,11 @@ interface Contract {
     soVu: number;
     phanTramChiPhi: number;
   };
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 interface QuoteModalProps {
@@ -75,7 +80,17 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           'q-tyLePhi': (contract.vatChatPackage.isCustomRate && contract.vatChatPackage.customRate
             ? contract.vatChatPackage.customRate
             : contract.vatChatPackage.tyLePhi).toFixed(2) + '%',
-          'q-dkbs': contract.vatChatPackage.dkbs.join('<br>'),
+          'q-dkbs': [
+            ...contract.vatChatPackage.dkbs,
+            ...(contract.extraPackages || []).map(pkg => {
+              // Extract BS code from name (e.g., "- BS007: Description" -> "BS007")
+              const match = pkg.name.match(/BS\d{3}/);
+              const code = match ? match[0] : pkg.code;
+              // Find full description from packageLabelsDetail
+              const detail = packageLabelsDetail.find(p => p.code === code);
+              return detail ? `- ${code}: ${detail.name}` : pkg.name;
+            })
+          ].join('<br>'),
           'q-phiVatChat': formatCurrency(contract.vatChatPackage.phiVatChat),
           'q-phiTNDS': formatCurrency(contract.phiTNDS),
           'q-phiNNTX': formatCurrency(contract.phiNNTX),
@@ -124,11 +139,13 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
       } else {
         performDownload();
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error in download setup:', error);
     }
 
     function performDownload() {
+      if (!quoteElement) return;
+
       try {
         // Clone the element to avoid modifying the original
         const clonedElement = quoteElement.cloneNode(true) as HTMLElement;
@@ -145,22 +162,22 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           backgroundColor: '#ffffff',
           width: 1000,
           windowWidth: 1000
-        }).then((canvas) => {
+        }).then((canvas: HTMLCanvasElement) => {
           // Remove cloned element
           document.body.removeChild(clonedElement);
 
           const link = document.createElement('a');
-          link.download = `BaoGia_${contract.contractNumber.replace(/\s/g, '')}.png`;
+          link.download = `BaoGia_${contract!.contractNumber.replace(/\s/g, '')}.png`;
           link.href = canvas.toDataURL('image/png');
           link.click();
-        }).catch((error) => {
+        }).catch((error: unknown) => {
           console.error('html2canvas error:', error);
           // Clean up on error
           if (document.body.contains(clonedElement)) {
             document.body.removeChild(clonedElement);
           }
         });
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error in performDownload:', error);
       }
     }

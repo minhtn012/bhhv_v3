@@ -67,6 +67,13 @@ export interface ContractFormData {
     soVu: number;
     phanTramChiPhi: number;
   };
+
+  // Extra insurance packages
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 /**
@@ -167,6 +174,13 @@ export interface ContractPayload {
     soVu: number;
     phanTramChiPhi: number;
   };
+
+  // Extra insurance packages
+  extraPackages?: Array<{
+    code: string;
+    name: string;
+    value: string;
+  }>;
 }
 
 /**
@@ -321,6 +335,9 @@ export function transformFormToContract(
     phiSauKhiGiam: feeInfo.phiSauKhiGiam,
     tongPhi: feeInfo.tongPhi,
     phiTaiTucInfo: formData.phiTaiTucInfo,
+
+    // Extra packages
+    extraPackages: formData.extraPackages || [],
   };
 
   return payload;

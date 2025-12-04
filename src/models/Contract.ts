@@ -134,6 +134,13 @@ export interface IContract extends Document {
     success: boolean;
     error?: string;
   };
+
+  // Extra insurance packages (BS007, BS008, BS009, etc.)
+  extraPackages?: Array<{
+    code: string;        // Package code (e.g., "BS007")
+    name: string;        // Package name
+    value: string;       // BHV UUID for API mapping
+  }>;
 }
 
 const contractSchema = new Schema<IContract>({
@@ -555,7 +562,26 @@ const contractSchema = new Schema<IContract>({
       }
     },
     required: false
-  }
+  },
+
+  // Extra insurance packages
+  extraPackages: [{
+    code: {
+      type: String,
+      required: true,
+      match: [/^BS\d{3}$/, 'Package code must be in format BS### (e.g., BS007)']
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    value: {
+      type: String,
+      required: true,
+      trim: true
+    }
+  }]
 }, {
   timestamps: true
 });

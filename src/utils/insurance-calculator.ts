@@ -118,21 +118,21 @@ export const packageLabelsDetail = [
     //   "name": "Bảo hiểm vật chất xe cơ giới ngoài lãnh thổ Việt Nam",
     //   "value": "03b7e7be-2a76-4646-b043-828b982146c4"
     // },
-    // {
-    //   "code": "BS007",
-    //   "name": "Bảo hiểm vật chất xe cơ giới lưu hành tạm thời",
-    //   "value": "f4c4529b-49c7-4aa2-b60c-d6cdbe6fe18a"
-    // },
-    // {
-    //   "code": "BS008",
-    //   "name": "Bảo hiểm vật chất đối với xe miễn thuế, tạm nhập, tái xuất",
-    //   "value": "7b9e2a58-efe1-4858-9bb0-e20469079832"
-    // },
-    // {
-    //   "code": "BS009",
-    //   "name": "Bảo hiểm xe tập lái, sát hạch",
-    //   "value": "ceec8fa4-9659-4618-b926-c53d32bce27c"
-    // },
+    {
+      "code": "BS007",
+      "name": "Bảo hiểm vật chất xe cơ giới lưu hành tạm thời",
+      "value": "f4c4529b-49c7-4aa2-b60c-d6cdbe6fe18a"
+    },
+    {
+      "code": "BS008",
+      "name": "Bảo hiểm vật chất đối với xe miễn thuế, tạm nhập, tái xuất",
+      "value": "7b9e2a58-efe1-4858-9bb0-e20469079832"
+    },
+    {
+      "code": "BS009",
+      "name": "Bảo hiểm xe tập lái, sát hạch",
+      "value": "ceec8fa4-9659-4618-b926-c53d32bce27c"
+    },
     // {
     //   "code": "BS010",
     //   "name": "Bảo hiểm bồi thường theo giới hạn trách nhiệm",

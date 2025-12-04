@@ -231,6 +231,13 @@ export const ContractSchema = z.object({
 
   tongPhi: z.number()
     .min(0, 'Tổng phí không được âm'),
+
+  // Extra packages (optional additional insurance packages)
+  extraPackages: z.array(z.object({
+    code: z.string().regex(/^BS\d{3}$/, 'Package code must be in format BS###'),
+    name: z.string().min(1, 'Package name is required'),
+    value: z.string().min(1, 'Package value is required')
+  })).optional().default([]),
 })
   // Custom validation: TNDS category required if includeTNDS is true
   .refine(
