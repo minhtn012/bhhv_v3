@@ -103,21 +103,21 @@ export const packageLabelsDetail = [
       "name": "Bảo hiểm tổn thất của động cơ khi xe hoạt động trong khu vực bị ngập nước",
       "value": "6ea497a9-df0a-49f8-9d92-3dcf0ef53645"
     },
-    // {
-    //   "code": "BS004",
-    //   "name": "Bảo hiểm xe bị mất trộm, cướp bộ phận",
-    //   "value": "c42582c5-c95b-4d92-8a3b-c5770775d3bf"
-    // },
-    // {
-    //   "code": "BS005",
-    //   "name": "Bảo hiểm thuê xe trong thời gian sửa chữa/ Bảo hiểm gián đoạn sử dụng xe",
-    //   "value": "1e1c66f4-bf6e-4dfd-9a55-a21deeb151cf"
-    // },
-    // {
-    //   "code": "BS006",
-    //   "name": "Bảo hiểm vật chất xe cơ giới ngoài lãnh thổ Việt Nam",
-    //   "value": "03b7e7be-2a76-4646-b043-828b982146c4"
-    // },
+    {
+      "code": "BS004",
+      "name": "Bảo hiểm xe bị mất trộm, cướp bộ phận",
+      "value": "c42582c5-c95b-4d92-8a3b-c5770775d3bf"
+    },
+    {
+      "code": "BS005",
+      "name": "Bảo hiểm thuê xe trong thời gian sửa chữa/ Bảo hiểm gián đoạn sử dụng xe",
+      "value": "1e1c66f4-bf6e-4dfd-9a55-a21deeb151cf"
+    },
+    {
+      "code": "BS006",
+      "name": "Bảo hiểm vật chất xe cơ giới ngoài lãnh thổ Việt Nam",
+      "value": "03b7e7be-2a76-4646-b043-828b982146c4"
+    },
     {
       "code": "BS007",
       "name": "Bảo hiểm vật chất xe cơ giới lưu hành tạm thời",
@@ -133,16 +133,16 @@ export const packageLabelsDetail = [
       "name": "Bảo hiểm xe tập lái, sát hạch",
       "value": "ceec8fa4-9659-4618-b926-c53d32bce27c"
     },
-    // {
-    //   "code": "BS010",
-    //   "name": "Bảo hiểm bồi thường theo giới hạn trách nhiệm",
-    //   "value": "fcc672ad-b296-462d-b17f-027579819aea"
-    // },
-    // {
-    //   "code": "BS011",
-    //   "name": "Bảo hiểm vật chất xe hoạt động trong khu vực nội bộ",
-    //   "value": "276a4c5a-fead-4d9d-a1f8-98a92472b7aa"
-    // }
+    {
+      "code": "BS010",
+      "name": "Bảo hiểm bồi thường theo giới hạn trách nhiệm",
+      "value": "fcc672ad-b296-462d-b17f-027579819aea"
+    },
+    {
+      "code": "BS011",
+      "name": "Bảo hiểm vật chất xe hoạt động trong khu vực nội bộ",
+      "value": "276a4c5a-fead-4d9d-a1f8-98a92472b7aa"
+    }
 ]
 
 export const loaiHinhKinhDoanhOptions = [
