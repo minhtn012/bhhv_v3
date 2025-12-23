@@ -167,8 +167,8 @@ const contractSchema = new Schema<IContract>({
   },
   diaChi: {
     type: String,
-    required: [true, 'Địa chỉ là bắt buộc'],
-    trim: true
+    trim: true,
+    default: ''
   },
   loaiKhachHang: {
     type: String,
