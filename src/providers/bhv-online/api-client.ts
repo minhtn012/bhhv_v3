@@ -1,0 +1,335 @@
+/**
+ * BHV Online API Client - Extends base client with BHV-specific functionality
+ * Migrated from src/lib/bhvApiClient.ts
+ */
+
+import { BaseApiClient, ApiResponse } from '@/core/providers/base-api-client';
+
+export interface BhvApiResponse {
+  success: boolean;
+  contractNumber?: string;
+  pdfBase64?: string;
+  error?: string;
+  rawResponse?: unknown;
+}
+
+export interface BhvPremiumResponse {
+  success: boolean;
+  htmlData?: string;
+  error?: string;
+  rawResponse?: unknown;
+}
+
+export interface BhvConfirmResponse {
+  success: boolean;
+  bhvContractNumber?: string;
+  error?: string;
+  rawResponse?: unknown;
+}
+
+export interface BhvAuthResponse {
+  success: boolean;
+  cookies?: string;
+  error?: string;
+  rawResponse?: unknown;
+}
+
+export interface BhvRequestData {
+  action_name: string;
+  data: string;
+  d_info: object;
+}
+
+/**
+ * BHV Online API Client
+ */
+export class BhvApiClient extends BaseApiClient {
+  private static readonly ENDPOINT = 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e';
+
+  constructor() {
+    super(BhvApiClient.ENDPOINT);
+  }
+
+  /**
+   * Get BHV-specific headers
+   */
+  protected override getDefaultHeaders(): Record<string, string> {
+    const headers = super.getDefaultHeaders();
+    return {
+      ...headers,
+      'sec-ch-ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Linux"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'Referer': 'https://my.bhv.com.vn/',
+    };
+  }
+
+  /**
+   * Authenticate with BHV API
+   */
+  async authenticate(
+    username: string,
+    password: string
+  ): Promise<ApiResponse<{ cookies?: string }>> {
+    console.log('🔐 Authenticating with BHV API...');
+
+    const authData = {
+      action_name: 'public/user/login',
+      data: JSON.stringify({
+        total_click: '1',
+        account: username,
+        password: password,
+      }),
+      d_info: {},
+    };
+
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: this.getDefaultHeaders(),
+        body: JSON.stringify(authData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        return {
+          success: false,
+          error: `HTTP ${response.status}: ${errorText}`,
+        };
+      }
+
+      // Extract cookies from response
+      const cookies = this.parseCookiesFromHeaders(response.headers);
+      if (cookies) {
+        this.setSessionCookies(cookies);
+      }
+
+      const responseData = await response.json();
+
+      if (responseData.status_code === 200 && cookies && responseData.data_key) {
+        console.log('✅ BHV Authentication successful');
+        return {
+          success: true,
+          data: { cookies },
+          rawResponse: responseData,
+        };
+      }
+
+      return {
+        success: false,
+        error: responseData.message || 'Authentication failed',
+        rawResponse: responseData,
+      };
+    } catch (error) {
+      console.error('💥 BHV Auth error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  /**
+   * Submit contract to BHV API (get PDF)
+   */
+  async submitContract(
+    requestData: BhvRequestData,
+    cookie?: string
+  ): Promise<BhvApiResponse> {
+    if (cookie) {
+      this.setSessionCookies(cookie);
+    }
+
+    const result = await this.request<{ status_code: number; data: string; message?: string }>(
+      '',
+      {
+        method: 'POST',
+        body: requestData,
+      }
+    );
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
+
+    const data = result.data;
+    if (data?.status_code === 200 && data.data) {
+      if (this.isValidPdfBase64(data.data)) {
+        return {
+          success: true,
+          pdfBase64: data.data,
+          rawResponse: data,
+        };
+      }
+      return {
+        success: false,
+        error: 'Invalid PDF content',
+        rawResponse: data,
+      };
+    }
+
+    return {
+      success: false,
+      error: data?.message || 'Unexpected response',
+      rawResponse: data,
+    };
+  }
+
+  /**
+   * Confirm contract with BHV API (2-step process)
+   */
+  async confirmContract(
+    requestData: BhvRequestData,
+    cookie?: string
+  ): Promise<BhvConfirmResponse> {
+    if (cookie) {
+      this.setSessionCookies(cookie);
+    }
+
+    const result = await this.request<{ status_code: number; data: string; message?: string }>(
+      '',
+      {
+        method: 'POST',
+        body: requestData,
+      }
+    );
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
+
+    const data = result.data;
+    if (data?.status_code !== 200 || !data.data) {
+      return {
+        success: false,
+        error: data?.message || 'No sale_code received',
+        rawResponse: data,
+      };
+    }
+
+    // Extract contract number from HTML
+    const htmlData = data.data;
+    if (typeof htmlData === 'string') {
+      const contractNumberMatch = htmlData.match(/HVXCG\d+/);
+      if (contractNumberMatch) {
+        return {
+          success: true,
+          bhvContractNumber: contractNumberMatch[0],
+          rawResponse: htmlData,
+        };
+      }
+    }
+
+    return {
+      success: false,
+      error: 'Contract number not found in response',
+      rawResponse: htmlData,
+    };
+  }
+
+  /**
+   * Check premium for contract
+   */
+  async checkPremium(
+    requestData: BhvRequestData,
+    cookie?: string
+  ): Promise<BhvPremiumResponse> {
+    if (cookie) {
+      this.setSessionCookies(cookie);
+    }
+
+    const result = await this.request<{ status_code: number; data: string; message?: string }>(
+      '',
+      {
+        method: 'POST',
+        body: requestData,
+      }
+    );
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
+
+    const data = result.data;
+    if (data?.status_code === 200 && data.data) {
+      return {
+        success: true,
+        htmlData: data.data,
+        rawResponse: data,
+      };
+    }
+
+    return {
+      success: false,
+      error: data?.message || 'Unexpected response',
+      rawResponse: data,
+    };
+  }
+
+  /**
+   * Validate PDF base64 data
+   */
+  private isValidPdfBase64(base64Data: string): boolean {
+    try {
+      const cleanBase64 = base64Data.replace(/^data:application\/pdf;base64,/, '');
+      const buffer = Buffer.from(cleanBase64, 'base64');
+      const pdfHeader = buffer.slice(0, 4).toString();
+      return pdfHeader === '%PDF';
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Save PDF from base64 data
+   */
+  savePdfFromBase64(base64Data: string, filename: string): string {
+    try {
+      const cleanBase64 = base64Data.replace(/^data:application\/pdf;base64,/, '');
+
+      if (typeof window === 'undefined') {
+        // Node.js environment
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const fs = require('fs');
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const path = require('path');
+
+        const pdfBuffer = Buffer.from(cleanBase64, 'base64');
+        const filepath = path.join(process.cwd(), 'public', 'contracts', filename);
+
+        const dir = path.dirname(filepath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+
+        fs.writeFileSync(filepath, pdfBuffer);
+        console.log('📄 PDF saved to:', filepath);
+
+        return `/contracts/${filename}`;
+      }
+
+      // Browser environment
+      return `data:application/pdf;base64,${cleanBase64}`;
+    } catch {
+      throw new Error('Failed to save PDF file');
+    }
+  }
+}
+
+// Export default instance for backward compatibility
+export const bhvApiClient = new BhvApiClient();

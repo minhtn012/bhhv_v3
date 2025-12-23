@@ -1,0 +1,273 @@
+{
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "vehicle-info",
+      "title": "Thông tin xe",
+      "description": "Nhập thông tin xe cần bảo hiểm",
+      "fields": [
+        {
+          "name": "loaiHinhKinhDoanh",
+          "label": "Loại hình kinh doanh",
+          "type": "select",
+          "required": true,
+          "placeholder": "Chọn loại hình",
+          "options": [
+            { "value": "khong_kd_cho_nguoi", "label": "Xe chở người (xe gia đình)" },
+            { "value": "khong_kd_cho_hang", "label": "Xe chở hàng (không kinh doanh)" },
+            { "value": "khong_kd_pickup_van", "label": "Xe bán tải / Van (không kinh doanh)" },
+            { "value": "kd_cho_hang", "label": "Xe tải kinh doanh" },
+            { "value": "kd_dau_keo", "label": "Xe đầu kéo" },
+            { "value": "kd_cho_khach_lien_tinh", "label": "Xe khách liên tỉnh, nội tỉnh" },
+            { "value": "kd_grab_be", "label": "Grab, Be, taxi công nghệ (< 9 chỗ)" },
+            { "value": "kd_taxi_tu_lai", "label": "Taxi, xe cho thuê tự lái" },
+            { "value": "kd_hop_dong_tren_9c", "label": "Xe khách hợp đồng (> 9 chỗ)" },
+            { "value": "kd_bus", "label": "Xe bus" },
+            { "value": "kd_pickup_van", "label": "Xe bán tải / Van (kinh doanh)" },
+            { "value": "kd_chuyen_dung", "label": "Xe chuyên dùng khác" },
+            { "value": "kd_romooc_ben", "label": "Rơ moóc ben" }
+          ]
+        },
+        {
+          "name": "carBrand",
+          "label": "Hãng xe",
+          "type": "car-picker",
+          "required": true,
+          "componentRef": "CarSelectionForm",
+          "props": {
+            "pickType": "brand"
+          }
+        },
+        {
+          "name": "carModel",
+          "label": "Dòng xe",
+          "type": "car-picker",
+          "required": true,
+          "componentRef": "CarSelectionForm",
+          "props": {
+            "pickType": "model"
+          }
+        },
+        {
+          "name": "carYear",
+          "label": "Năm sản xuất",
+          "type": "car-picker",
+          "required": true,
+          "componentRef": "CarSelectionForm",
+          "props": {
+            "pickType": "year"
+          }
+        },
+        {
+          "name": "soChoNgoi",
+          "label": "Số chỗ ngồi",
+          "type": "number",
+          "required": true,
+          "placeholder": "Nhập số chỗ ngồi",
+          "validation": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "trongTai",
+          "label": "Trọng tải (kg)",
+          "type": "number",
+          "placeholder": "Nhập trọng tải",
+          "showWhen": {
+            "field": "loaiHinhKinhDoanh",
+            "operator": "in",
+            "value": ["khong_kd_cho_hang", "kd_cho_hang", "kd_dau_keo", "kd_romooc_ben"]
+          },
+          "validation": {
+            "min": 0
+          }
+        },
+        {
+          "name": "giaTriXe",
+          "label": "Giá trị xe (VNĐ)",
+          "type": "currency",
+          "required": true,
+          "placeholder": "Nhập giá trị xe"
+        },
+        {
+          "name": "engineType",
+          "label": "Loại động cơ",
+          "type": "radio",
+          "required": true,
+          "defaultValue": "ICE",
+          "options": [
+            { "value": "ICE", "label": "Động cơ đốt trong" },
+            { "value": "HYBRID", "label": "Hybrid" },
+            { "value": "EV", "label": "Điện (EV)" }
+          ]
+        },
+        {
+          "name": "giaTriPin",
+          "label": "Giá trị pin (VNĐ)",
+          "type": "currency",
+          "placeholder": "Nhập giá trị pin",
+          "showWhen": {
+            "field": "engineType",
+            "operator": "in",
+            "value": ["HYBRID", "EV"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "vehicle-registration",
+      "title": "Thông tin đăng ký xe",
+      "fields": [
+        {
+          "name": "bienSo",
+          "label": "Biển số xe",
+          "type": "text",
+          "required": true,
+          "placeholder": "VD: 30A-12345"
+        },
+        {
+          "name": "soKhung",
+          "label": "Số khung",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập số khung"
+        },
+        {
+          "name": "soMay",
+          "label": "Số máy",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập số máy"
+        },
+        {
+          "name": "ngayDKLD",
+          "label": "Ngày đăng ký lần đầu",
+          "type": "date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "buyer-info",
+      "title": "Thông tin người mua",
+      "fields": [
+        {
+          "name": "chuXe",
+          "label": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập họ và tên"
+        },
+        {
+          "name": "userType",
+          "label": "Loại khách hàng",
+          "type": "radio",
+          "required": true,
+          "defaultValue": "ca_nhan",
+          "options": [
+            { "value": "ca_nhan", "label": "Cá nhân" },
+            { "value": "cong_ty", "label": "Công ty" }
+          ]
+        },
+        {
+          "name": "buyerEmail",
+          "label": "Email",
+          "type": "text",
+          "placeholder": "email@example.com",
+          "validation": {
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+            "patternMessage": "Vui lòng nhập email hợp lệ"
+          }
+        },
+        {
+          "name": "buyerPhone",
+          "label": "Số điện thoại",
+          "type": "text",
+          "placeholder": "0123456789",
+          "validation": {
+            "pattern": "^(0[3-9])[0-9]{8}$",
+            "patternMessage": "Số điện thoại phải có 10 chữ số"
+          }
+        },
+        {
+          "name": "buyerCitizenId",
+          "label": "Căn cước công dân",
+          "type": "text",
+          "placeholder": "123456789012",
+          "validation": {
+            "pattern": "^[0-9]{12}$",
+            "patternMessage": "CCCD phải có 12 chữ số"
+          }
+        },
+        {
+          "name": "buyerGender",
+          "label": "Giới tính",
+          "type": "radio",
+          "options": [
+            { "value": "male", "label": "Nam" },
+            { "value": "female", "label": "Nữ" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buyer-address",
+      "title": "Địa chỉ (từ đăng ký xe)",
+      "fields": [
+        {
+          "name": "location",
+          "label": "Địa chỉ",
+          "type": "location-picker",
+          "componentRef": "LocationPicker"
+        }
+      ]
+    },
+    {
+      "id": "insurance-period",
+      "title": "Thời hạn bảo hiểm",
+      "fields": [
+        {
+          "name": "insuranceDates",
+          "label": "Thời hạn",
+          "type": "date-range",
+          "componentRef": "DateRangePicker",
+          "required": true,
+          "props": {
+            "defaultDurationDays": 365
+          }
+        }
+      ]
+    },
+    {
+      "id": "insurance-options",
+      "title": "Tùy chọn bảo hiểm",
+      "fields": [
+        {
+          "name": "includeTNDS",
+          "label": "Bao gồm TNDS bắt buộc",
+          "type": "checkbox",
+          "defaultValue": true
+        },
+        {
+          "name": "includeNNTX",
+          "label": "Bao gồm bảo hiểm tai nạn người ngồi trên xe",
+          "type": "checkbox",
+          "defaultValue": false
+        }
+      ]
+    }
+  ],
+  "validationRules": [
+    {
+      "fields": ["giaTriXe"],
+      "rule": "giaTriXe > 0",
+      "message": "Giá trị xe phải lớn hơn 0"
+    },
+    {
+      "fields": ["giaTriPin", "engineType"],
+      "rule": "(engineType === 'HYBRID' || engineType === 'EV') ? giaTriPin > 0 : true",
+      "message": "Xe hybrid/điện cần nhập giá trị pin"
+    }
+  ]
+}

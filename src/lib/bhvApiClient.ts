@@ -14,6 +14,8 @@ export interface BhvApiResponse {
 export interface BhvPremiumResponse {
   success: boolean;
   htmlData?: string;
+  error?: string;
+  rawResponse?: unknown;
 }
 export interface BhvConfirmResponse {
   success: boolean;
