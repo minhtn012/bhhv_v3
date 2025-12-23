@@ -158,7 +158,12 @@ export async function POST(request: NextRequest) {
     const validation = validateContract(body);
 
     if (!validation.success) {
-      logWarning('Contract validation failed', {
+      // Format errors for clearer log output (include received value)
+      const errorSummary = validation.errors
+        ?.map((e) => `${e.path}: ${e.message} (got: ${JSON.stringify(e.received)})`)
+        .join(' | ');
+
+      logWarning(`Contract validation failed: ${errorSummary}`, {
         operation: 'CREATE_CONTRACT',
         userId: user.userId,
         additionalInfo: { validationErrors: validation.errors },

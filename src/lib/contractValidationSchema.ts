@@ -302,7 +302,7 @@ export type ContractInput = z.infer<typeof ContractSchema>;
 export function validateContract(data: unknown): {
   success: boolean;
   data?: ContractInput;
-  errors?: Array<{ path: string; message: string }>;
+  errors?: Array<{ path: string; message: string; received?: unknown }>;
 } {
   const result = ContractSchema.safeParse(data);
 
@@ -313,11 +313,20 @@ export function validateContract(data: unknown): {
     };
   }
 
-  // Format Zod errors into user-friendly format
-  const errors = result.error.issues.map((err) => ({
-    path: err.path.join('.'),
-    message: err.message,
-  }));
+  // Format Zod errors with received values for debugging
+  const errors = result.error.issues.map((err) => {
+    // Get actual value from input data using path
+    const receivedValue = err.path.reduce<unknown>(
+      (obj, key) => (obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key as string] : undefined),
+      data
+    );
+
+    return {
+      path: err.path.join('.'),
+      message: err.message,
+      received: receivedValue,
+    };
+  });
 
   return {
     success: false,
