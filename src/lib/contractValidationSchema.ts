@@ -64,8 +64,9 @@ export const ContractSchema = z.object({
     .max(200, 'Tên chủ xe không được vượt quá 200 ký tự'),
 
   diaChi: z.string()
-    .min(1, 'Địa chỉ là bắt buộc')
-    .max(500, 'Địa chỉ không được vượt quá 500 ký tự'),
+    .max(500, 'Địa chỉ không được vượt quá 500 ký tự')
+    .optional()
+    .default(''),
 
   // Buyer information (optional fields - transform empty strings to undefined)
   buyerEmail: z.string()
