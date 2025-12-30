@@ -282,6 +282,125 @@ export class BhvApiClient extends BaseApiClient {
   }
 
   /**
+   * Submit health contract to BHV API (Step 1 - Create/Preview)
+   * Returns saleCode and HTML preview
+   */
+  async submitHealthContract(
+    requestData: BhvRequestData,
+    cookie?: string
+  ): Promise<{
+    success: boolean;
+    saleCode?: string;
+    htmlPreview?: string;
+    error?: string;
+    rawResponse?: unknown;
+  }> {
+    if (cookie) {
+      this.setSessionCookies(cookie);
+    }
+
+    const result = await this.request<{ status_code: number; data: string; message?: string }>(
+      '',
+      {
+        method: 'POST',
+        body: requestData,
+      }
+    );
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
+
+    const data = result.data;
+    if (data?.status_code === 200 && data.data) {
+      // Extract saleCode from response (UUID pattern)
+      const htmlData = data.data;
+      const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+      const matches = typeof htmlData === 'string' ? htmlData.match(uuidPattern) : null;
+
+      return {
+        success: true,
+        saleCode: matches ? matches[0] : undefined,
+        htmlPreview: typeof htmlData === 'string' ? htmlData : undefined,
+        rawResponse: data,
+      };
+    }
+
+    return {
+      success: false,
+      error: data?.message || 'Unexpected response',
+      rawResponse: data,
+    };
+  }
+
+  /**
+   * Confirm health contract with BHV API (Step 2 - with saleCode)
+   * Returns contract number
+   */
+  async confirmHealthContract(
+    requestData: BhvRequestData,
+    cookie?: string
+  ): Promise<{
+    success: boolean;
+    contractNumber?: string;
+    error?: string;
+    rawResponse?: unknown;
+  }> {
+    if (cookie) {
+      this.setSessionCookies(cookie);
+    }
+
+    const result = await this.request<{ status_code: number; data: string; message?: string }>(
+      '',
+      {
+        method: 'POST',
+        body: requestData,
+      }
+    );
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
+
+    const data = result.data;
+    if (data?.status_code !== 200 || !data.data) {
+      return {
+        success: false,
+        error: data?.message || 'No response data',
+        rawResponse: data,
+      };
+    }
+
+    // Extract contract number from HTML response (pattern: HV*** followed by digits)
+    const htmlData = data.data;
+    if (typeof htmlData === 'string') {
+      const contractPattern = /HV[A-Z]{2,3}\d+/gi;
+      const matches = htmlData.match(contractPattern);
+      if (matches) {
+        return {
+          success: true,
+          contractNumber: matches[0],
+          rawResponse: htmlData,
+        };
+      }
+    }
+
+    return {
+      success: false,
+      error: 'Contract number not found in response',
+      rawResponse: htmlData,
+    };
+  }
+
+  /**
    * Validate PDF base64 data
    */
   private isValidPdfBase64(base64Data: string): boolean {

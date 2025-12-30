@@ -16,6 +16,8 @@ import {
 } from '@/core/providers/types';
 import { BhvApiClient } from './api-client';
 import { transformContractToBhvFormat, transformContractToPremiumCheckFormat } from './products/vehicle/mapper';
+import { mapHealthToBhvFormat } from './products/health/mapper';
+import type { HealthBhvCreateResponse, HealthBhvConfirmResponse } from './products/health/types';
 
 // Re-export API client for direct usage if needed
 export { BhvApiClient, bhvApiClient } from './api-client';
@@ -34,6 +36,13 @@ export class BhvProvider implements InsuranceProvider {
       name: 'Bảo hiểm xe cơ giới',
       description: 'Bảo hiểm vật chất xe ô tô và TNDS',
       formSchemaPath: './products/vehicle/schema.json',
+    },
+    {
+      id: 'health',
+      type: InsuranceType.HEALTH,
+      name: 'Bảo hiểm sức khỏe',
+      description: 'Bảo hiểm chăm sóc sức khỏe cá nhân',
+      formSchemaPath: './products/health/schema.json',
     },
   ];
 
@@ -69,24 +78,51 @@ export class BhvProvider implements InsuranceProvider {
    * Create insurance contract
    */
   async createContract(productId: string, data: unknown): Promise<ContractResponse> {
-    if (productId !== 'vehicle') {
+    if (productId === 'vehicle') {
+      // Transform contract data to BHV format
+      const bhvData = transformContractToBhvFormat(data);
+      const result = await this.apiClient.submitContract(bhvData, this.sessionCookies || undefined);
+
       return {
-        success: false,
-        error: `Product ${productId} not supported`,
+        success: result.success,
+        pdfBase64: result.pdfBase64,
+        error: result.error,
+        rawResponse: result.rawResponse,
       };
     }
 
-    // Transform contract data to BHV format
-    const bhvData = transformContractToBhvFormat(data);
+    if (productId === 'health') {
+      // Health uses 2-step flow: create (saleCode="") then confirm (saleCode="{UUID}")
+      const bhvData = mapHealthToBhvFormat(data as Parameters<typeof mapHealthToBhvFormat>[0], '');
+      const result = await this.apiClient.submitHealthContract(bhvData, this.sessionCookies || undefined);
 
-    const result = await this.apiClient.submitContract(bhvData, this.sessionCookies || undefined);
+      return {
+        success: result.success,
+        error: result.error,
+        rawResponse: result.rawResponse,
+      };
+    }
 
     return {
-      success: result.success,
-      pdfBase64: result.pdfBase64,
-      error: result.error,
-      rawResponse: result.rawResponse,
+      success: false,
+      error: `Product ${productId} not supported`,
     };
+  }
+
+  /**
+   * Create health contract (Step 1 - get saleCode and preview)
+   */
+  async createHealthContract(data: unknown): Promise<HealthBhvCreateResponse> {
+    const bhvData = mapHealthToBhvFormat(data as Parameters<typeof mapHealthToBhvFormat>[0], '');
+    return await this.apiClient.submitHealthContract(bhvData, this.sessionCookies || undefined);
+  }
+
+  /**
+   * Confirm health contract (Step 2 - with saleCode)
+   */
+  async confirmHealthContract(data: unknown, saleCode: string): Promise<HealthBhvConfirmResponse> {
+    const bhvData = mapHealthToBhvFormat(data as Parameters<typeof mapHealthToBhvFormat>[0], saleCode);
+    return await this.apiClient.confirmHealthContract(bhvData, this.sessionCookies || undefined);
   }
 
   /**
@@ -106,28 +142,36 @@ export class BhvProvider implements InsuranceProvider {
    * Check premium for contract data
    */
   async checkPremium(productId: string, data: unknown): Promise<PremiumCheckResponse> {
-    if (productId !== 'vehicle') {
+    if (productId === 'vehicle') {
+      // Transform contract data to premium check format
+      const bhvData = transformContractToPremiumCheckFormat(data);
+      const result = await this.apiClient.checkPremium(bhvData, this.sessionCookies || undefined);
+
+      if (result.success && result.htmlData) {
+        return {
+          success: true,
+          htmlData: result.htmlData,
+        };
+      }
+
       return {
         success: false,
-        error: `Product ${productId} not supported`,
+        error: result.error,
       };
     }
 
-    // Transform contract data to premium check format
-    const bhvData = transformContractToPremiumCheckFormat(data);
-
-    const result = await this.apiClient.checkPremium(bhvData, this.sessionCookies || undefined);
-
-    if (result.success && result.htmlData) {
+    if (productId === 'health') {
+      // Health product: premium is input by user, not calculated by BHV
+      // Return success with no premium data (user provides total_premium)
       return {
         success: true,
-        htmlData: result.htmlData,
+        premiumData: undefined,
       };
     }
 
     return {
       success: false,
-      error: result.error,
+      error: `Product ${productId} not supported`,
     };
   }
 
@@ -135,13 +179,17 @@ export class BhvProvider implements InsuranceProvider {
    * Get form schema for a product
    */
   async getFormSchema(productId: string): Promise<FormSchema> {
-    if (productId !== 'vehicle') {
-      throw new Error(`Product ${productId} not found`);
+    if (productId === 'vehicle') {
+      const schema = await import('./products/vehicle/schema.json');
+      return schema.default as FormSchema;
     }
 
-    // Dynamic import of schema
-    const schema = await import('./products/vehicle/schema.json');
-    return schema.default as FormSchema;
+    if (productId === 'health') {
+      const schema = await import('./products/health/schema.json');
+      return schema.default as FormSchema;
+    }
+
+    throw new Error(`Product ${productId} not found`);
   }
 
   /**

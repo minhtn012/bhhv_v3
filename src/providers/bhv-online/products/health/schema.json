@@ -1,0 +1,606 @@
+{
+  "version": "1.0.0",
+  "productType": "health",
+  "sections": [
+    {
+      "id": "order-info",
+      "title": "Thông tin đơn hàng",
+      "description": "Chọn loại đơn hàng",
+      "fields": [
+        {
+          "name": "kindAction",
+          "label": "Loại đơn",
+          "type": "radio",
+          "required": true,
+          "defaultValue": "insert",
+          "options": [
+            { "value": "insert", "label": "Cấp mới" },
+            { "value": "renew", "label": "Tái tục" }
+          ]
+        },
+        {
+          "name": "certificateCode",
+          "label": "Số hợp đồng cũ",
+          "type": "text",
+          "placeholder": "Nhập số hợp đồng cũ (nếu tái tục)",
+          "showWhen": {
+            "field": "kindAction",
+            "operator": "equals",
+            "value": "renew"
+          }
+        }
+      ]
+    },
+    {
+      "id": "package-selection",
+      "title": "Gói bảo hiểm",
+      "description": "Chọn gói bảo hiểm và quyền lợi bổ sung",
+      "fields": [
+        {
+          "name": "packageType",
+          "label": "Gói bảo hiểm",
+          "type": "radio",
+          "required": true,
+          "defaultValue": "d7b12560-5042-4abf-961c-d772377516c3",
+          "options": [
+            { "value": "d7b12560-5042-4abf-961c-d772377516c1", "label": "Hạng Vàng" },
+            { "value": "d7b12560-5042-4abf-961c-d772377516c2", "label": "Hạng Bạch Kim" },
+            { "value": "d7b12560-5042-4abf-961c-d772377516c3", "label": "Hạng Kim Cương" }
+          ]
+        },
+        {
+          "name": "purchaseYears",
+          "label": "Thời hạn mua",
+          "type": "select",
+          "required": true,
+          "defaultValue": 1,
+          "options": [
+            { "value": "1", "label": "1 năm" }
+          ]
+        },
+        {
+          "name": "benefitMaternity",
+          "label": "Quyền lợi thai sản",
+          "type": "checkbox",
+          "defaultValue": false
+        },
+        {
+          "name": "benefitOutpatient",
+          "label": "Quyền lợi ngoại trú",
+          "type": "checkbox",
+          "defaultValue": false
+        },
+        {
+          "name": "benefitDiseaseDeath",
+          "label": "Tử vong do bệnh",
+          "type": "checkbox",
+          "defaultValue": false
+        }
+      ]
+    },
+    {
+      "id": "health-questions",
+      "title": "Khai báo sức khỏe",
+      "description": "Trả lời các câu hỏi về tình trạng sức khỏe",
+      "fields": [
+        {
+          "name": "q1Answer",
+          "label": "Người được bảo hiểm hiện đang điều trị nội trú hoặc đang chờ nhập viện?",
+          "type": "radio",
+          "required": true,
+          "defaultValue": false,
+          "options": [
+            { "value": "true", "label": "Có" },
+            { "value": "false", "label": "Không" }
+          ]
+        },
+        {
+          "name": "q1Details",
+          "label": "Chi tiết tình trạng điều trị",
+          "type": "textarea",
+          "placeholder": "Vui lòng mô tả tình trạng điều trị hiện tại...",
+          "showWhen": {
+            "field": "q1Answer",
+            "operator": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "name": "q2Answer",
+          "label": "Trong 12 tháng qua, người được bảo hiểm có đang điều trị bệnh hoặc có triệu chứng cần thăm khám?",
+          "type": "radio",
+          "required": true,
+          "defaultValue": false,
+          "options": [
+            { "value": "true", "label": "Có" },
+            { "value": "false", "label": "Không" }
+          ]
+        },
+        {
+          "name": "q2Details",
+          "label": "Chi tiết triệu chứng/tình trạng",
+          "type": "textarea",
+          "placeholder": "Vui lòng mô tả triệu chứng hoặc tình trạng sức khỏe...",
+          "showWhen": {
+            "field": "q2Answer",
+            "operator": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "name": "q3Answer",
+          "label": "Trong 3 năm qua, có chẩn đoán/điều trị: ung thư, tăng huyết áp, bệnh tim, loét dạ dày, viêm khớp, lao, tiểu đường, thoát vị đĩa đệm?",
+          "type": "radio",
+          "required": true,
+          "defaultValue": false,
+          "options": [
+            { "value": "true", "label": "Có" },
+            { "value": "false", "label": "Không" }
+          ]
+        },
+        {
+          "name": "q3Details",
+          "label": "Chi tiết các bệnh đã chẩn đoán/điều trị",
+          "type": "textarea",
+          "placeholder": "Vui lòng liệt kê các bệnh đã được chẩn đoán/điều trị...",
+          "showWhen": {
+            "field": "q3Answer",
+            "operator": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "name": "q4Answer",
+          "label": "Đã từng yêu cầu bồi thường tại BHV hoặc công ty bảo hiểm khác?",
+          "type": "radio",
+          "required": true,
+          "defaultValue": false,
+          "options": [
+            { "value": "true", "label": "Có" },
+            { "value": "false", "label": "Không" }
+          ]
+        },
+        {
+          "name": "q4Details",
+          "label": "Chi tiết lịch sử bồi thường",
+          "type": "textarea",
+          "placeholder": "Vui lòng mô tả lịch sử yêu cầu bồi thường...",
+          "showWhen": {
+            "field": "q4Answer",
+            "operator": "equals",
+            "value": "true"
+          }
+        },
+        {
+          "name": "q5Answer",
+          "label": "Đã từng bị từ chối bảo hiểm, áp dụng điều kiện đặc biệt, hoặc tăng phí?",
+          "type": "radio",
+          "required": true,
+          "defaultValue": false,
+          "options": [
+            { "value": "true", "label": "Có" },
+            { "value": "false", "label": "Không" }
+          ]
+        },
+        {
+          "name": "q5Details",
+          "label": "Chi tiết",
+          "type": "textarea",
+          "placeholder": "Vui lòng mô tả chi tiết...",
+          "showWhen": {
+            "field": "q5Answer",
+            "operator": "equals",
+            "value": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "buyer-info",
+      "title": "Thông tin người mua bảo hiểm",
+      "description": "Nhập thông tin người mua",
+      "fields": [
+        {
+          "name": "customerKind",
+          "label": "Loại khách hàng",
+          "type": "radio",
+          "required": true,
+          "defaultValue": "personal",
+          "options": [
+            { "value": "personal", "label": "Cá nhân" },
+            { "value": "company", "label": "Công ty" }
+          ]
+        },
+        {
+          "name": "buyerFullname",
+          "label": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập họ và tên"
+        },
+        {
+          "name": "buyerEmail",
+          "label": "Email",
+          "type": "text",
+          "required": true,
+          "placeholder": "email@example.com",
+          "validation": {
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+            "patternMessage": "Vui lòng nhập email hợp lệ"
+          }
+        },
+        {
+          "name": "buyerIdentityCard",
+          "label": "Số CCCD/CMND",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập số CCCD (12 số)",
+          "validation": {
+            "pattern": "^[0-9]{9,12}$",
+            "patternMessage": "CCCD phải có 9-12 chữ số"
+          }
+        },
+        {
+          "name": "buyerPhone",
+          "label": "Số điện thoại",
+          "type": "text",
+          "required": true,
+          "placeholder": "0123456789",
+          "validation": {
+            "pattern": "^(0[3-9])[0-9]{8}$",
+            "patternMessage": "Số điện thoại phải có 10 chữ số"
+          }
+        },
+        {
+          "name": "buyerBirthday",
+          "label": "Ngày sinh",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "buyerGender",
+          "label": "Giới tính",
+          "type": "radio",
+          "required": true,
+          "options": [
+            { "value": "male", "label": "Nam" },
+            { "value": "female", "label": "Nữ" }
+          ]
+        },
+        {
+          "name": "buyerJob",
+          "label": "Nghề nghiệp",
+          "type": "text",
+          "placeholder": "Nhập nghề nghiệp"
+        },
+        {
+          "name": "buyerLocation",
+          "label": "Địa chỉ",
+          "type": "location-picker",
+          "required": true,
+          "componentRef": "LocationPicker"
+        },
+        {
+          "name": "buyerAddress",
+          "label": "Địa chỉ cụ thể",
+          "type": "text",
+          "required": true,
+          "placeholder": "Số nhà, đường, phường/xã..."
+        }
+      ]
+    },
+    {
+      "id": "insured-person",
+      "title": "Thông tin người được bảo hiểm",
+      "description": "Nhập thông tin người được bảo hiểm",
+      "fields": [
+        {
+          "name": "insuredSameAsBuyer",
+          "label": "Giống người mua bảo hiểm",
+          "type": "checkbox",
+          "defaultValue": true
+        },
+        {
+          "name": "insuredRelationship",
+          "label": "Quan hệ với người mua",
+          "type": "select",
+          "required": true,
+          "defaultValue": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
+          "options": [
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1", "label": "Bản thân" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab2", "label": "Vợ/chồng" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab3", "label": "Cha/mẹ" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab4", "label": "Con" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab5", "label": "Anh/chị/em" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab6", "label": "Khác" }
+          ]
+        },
+        {
+          "name": "insuredFullname",
+          "label": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập họ và tên",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredEmail",
+          "label": "Email",
+          "type": "text",
+          "placeholder": "email@example.com",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredIdentityCard",
+          "label": "Số CCCD/CMND",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập số CCCD",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredPhone",
+          "label": "Số điện thoại",
+          "type": "text",
+          "placeholder": "0123456789",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredBirthday",
+          "label": "Ngày sinh",
+          "type": "date",
+          "required": true,
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredGender",
+          "label": "Giới tính",
+          "type": "radio",
+          "options": [
+            { "value": "male", "label": "Nam" },
+            { "value": "female", "label": "Nữ" }
+          ],
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredJob",
+          "label": "Nghề nghiệp",
+          "type": "text",
+          "placeholder": "Nhập nghề nghiệp",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredLocation",
+          "label": "Địa chỉ",
+          "type": "location-picker",
+          "componentRef": "LocationPicker",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "insuredAddress",
+          "label": "Địa chỉ cụ thể",
+          "type": "text",
+          "placeholder": "Số nhà, đường, phường/xã...",
+          "showWhen": {
+            "field": "insuredSameAsBuyer",
+            "operator": "equals",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "beneficiary-info",
+      "title": "Thông tin người thụ hưởng",
+      "description": "Nhập thông tin người thụ hưởng quyền lợi bảo hiểm",
+      "fields": [
+        {
+          "name": "beneficiarySameAsInsured",
+          "label": "Giống người được bảo hiểm",
+          "type": "checkbox",
+          "defaultValue": true
+        },
+        {
+          "name": "beneficiaryRelationship",
+          "label": "Quan hệ với người được bảo hiểm",
+          "type": "select",
+          "required": true,
+          "defaultValue": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
+          "options": [
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1", "label": "Bản thân" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab2", "label": "Vợ/chồng" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab3", "label": "Cha/mẹ" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab4", "label": "Con" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab5", "label": "Anh/chị/em" },
+            { "value": "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab6", "label": "Khác" }
+          ]
+        },
+        {
+          "name": "beneficiaryFullname",
+          "label": "Họ và tên",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập họ và tên",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryEmail",
+          "label": "Email",
+          "type": "text",
+          "placeholder": "email@example.com",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryIdentityCard",
+          "label": "Số CCCD/CMND",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nhập số CCCD",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryPhone",
+          "label": "Số điện thoại",
+          "type": "text",
+          "placeholder": "0123456789",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryBirthday",
+          "label": "Ngày sinh",
+          "type": "date",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryGender",
+          "label": "Giới tính",
+          "type": "radio",
+          "options": [
+            { "value": "male", "label": "Nam" },
+            { "value": "female", "label": "Nữ" }
+          ],
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryJob",
+          "label": "Nghề nghiệp",
+          "type": "text",
+          "placeholder": "Nhập nghề nghiệp",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryLocation",
+          "label": "Địa chỉ",
+          "type": "location-picker",
+          "componentRef": "LocationPicker",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        },
+        {
+          "name": "beneficiaryAddress",
+          "label": "Địa chỉ cụ thể",
+          "type": "text",
+          "placeholder": "Số nhà, đường, phường/xã...",
+          "showWhen": {
+            "field": "beneficiarySameAsInsured",
+            "operator": "equals",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "validity-dates",
+      "title": "Thời hạn bảo hiểm và phí",
+      "description": "Chọn thời hạn bảo hiểm và nhập phí",
+      "fields": [
+        {
+          "name": "activeDate",
+          "label": "Ngày bắt đầu",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "inactiveDate",
+          "label": "Ngày kết thúc",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "totalPremium",
+          "label": "Phí bảo hiểm (VNĐ)",
+          "type": "currency",
+          "required": true,
+          "placeholder": "Nhập phí bảo hiểm"
+        },
+        {
+          "name": "agreeTerms",
+          "label": "Tôi đã đọc và đồng ý với điều khoản bảo hiểm",
+          "type": "checkbox",
+          "required": true,
+          "defaultValue": false
+        }
+      ]
+    }
+  ],
+  "validationRules": [
+    {
+      "fields": ["totalPremium"],
+      "rule": "totalPremium > 0",
+      "message": "Phí bảo hiểm phải lớn hơn 0"
+    },
+    {
+      "fields": ["activeDate", "inactiveDate"],
+      "rule": "new Date(inactiveDate) > new Date(activeDate)",
+      "message": "Ngày kết thúc phải sau ngày bắt đầu"
+    },
+    {
+      "fields": ["agreeTerms"],
+      "rule": "agreeTerms === true",
+      "message": "Vui lòng đồng ý với điều khoản bảo hiểm"
+    }
+  ]
+}
