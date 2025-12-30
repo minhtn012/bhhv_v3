@@ -386,6 +386,15 @@ export default function EditHealthContractPage() {
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
 
+    // Health questions validation - require details when answer is "Có"
+    for (let i = 1; i <= 5; i++) {
+      const answerKey = `q${i}Answer` as keyof FormDataType;
+      const detailsKey = `q${i}Details` as keyof FormDataType;
+      if (formData[answerKey] === 'true' && !formData[detailsKey]?.toString().trim()) {
+        errors[detailsKey] = 'Vui lòng nhập chi tiết khi chọn "Có"';
+      }
+    }
+
     if (!formData.insuredSameAsBuyer) {
       if (!formData.insuredFullname) errors.insuredFullname = 'Vui lòng nhập họ tên';
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
@@ -505,49 +514,26 @@ export default function EditHealthContractPage() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="max-w-4xl mx-auto">
-          {/* Sticky Header */}
-          <div className="sticky top-0 z-20 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-900/80 backdrop-blur-sm -mx-4 lg:-mx-6 px-4 lg:px-6 py-4 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => router.push(`/health/${params.id}`)}
-                  className="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <div>
-                  <h1 className="text-xl font-bold text-white tracking-tight">
-                    Sửa hợp đồng
-                  </h1>
-                  <p className="text-sm text-gray-400">{contractNumber}</p>
-                </div>
-              </div>
-
-              {/* Change indicator & Save button */}
-              <div className="flex items-center gap-3">
-                {hasChanges && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-                    <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-                    <span className="text-orange-400 text-sm font-medium">{changedFields.size} thay đổi</span>
-                  </div>
-                )}
-                <button
-                  onClick={handleSubmit}
-                  disabled={saving || !hasChanges}
-                  className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-600 disabled:to-slate-600 text-white font-medium rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
-                >
-                  {saving && (
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  )}
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Cập nhật
-                </button>
-              </div>
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <button
+              onClick={() => router.push(`/health/${params.id}`)}
+              className="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div>
+              <h1 className="text-xl font-bold text-white tracking-tight">Sửa hợp đồng</h1>
+              <p className="text-sm text-gray-400">{contractNumber}</p>
             </div>
+            {hasChanges && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-500/10 border border-orange-500/20 rounded-lg ml-auto">
+                <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+                <span className="text-orange-400 text-sm font-medium">{changedFields.size} thay đổi</span>
+              </div>
+            )}
           </div>
 
           {/* Error message */}
@@ -732,18 +718,25 @@ export default function EditHealthContractPage() {
                       ))}
                     </div>
                     {isYes && (
-                      <textarea
-                        name={detailsKey}
-                        value={formData[detailsKey] as string}
-                        onChange={handleChange}
-                        placeholder={q.textPlaceholder}
-                        rows={2}
-                        className={`mt-3 w-full px-4 py-2.5 bg-white/5 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all ${
-                          isDetailsChanged
-                            ? 'border-orange-500/70 focus:border-orange-400'
-                            : 'border-white/10 focus:border-green-500/50'
-                        }`}
-                      />
+                      <div className="mt-3">
+                        <textarea
+                          name={detailsKey}
+                          value={formData[detailsKey] as string}
+                          onChange={handleChange}
+                          placeholder={q.textPlaceholder}
+                          rows={2}
+                          className={`w-full px-4 py-2.5 bg-white/5 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all ${
+                            fieldErrors[detailsKey]
+                              ? 'border-red-500 focus:border-red-500'
+                              : isDetailsChanged
+                                ? 'border-orange-500/70 focus:border-orange-400'
+                                : 'border-white/10 focus:border-green-500/50'
+                          }`}
+                        />
+                        {fieldErrors[detailsKey] && (
+                          <p className="text-red-400 text-xs mt-1">{fieldErrors[detailsKey]}</p>
+                        )}
+                      </div>
                     )}
                   </div>
                 );
@@ -849,199 +842,204 @@ export default function EditHealthContractPage() {
             </div>
           </section>
 
-          {/* Insured Person */}
-          <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <SectionHeader
-                title="Người được bảo hiểm"
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                }
-              />
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="insuredSameAsBuyer"
-                  checked={formData.insuredSameAsBuyer}
-                  onChange={handleChange}
-                  className="sr-only"
-                />
-                <div
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    formData.insuredSameAsBuyer
-                      ? changedFields.has('insuredSameAsBuyer')
-                        ? 'border-orange-400 bg-orange-400'
-                        : 'border-green-500 bg-green-500'
-                      : 'border-white/30'
-                  }`}
-                >
-                  {formData.insuredSameAsBuyer && (
-                    <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          {/* Insured Person & Beneficiary - side by side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Insured Person */}
+            <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-5">
+                <SectionHeader
+                  title="Người được bảo hiểm"
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                  )}
-                </div>
-                <span className="text-gray-400 text-sm">Giống người mua</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Field label="Quan hệ với người mua" isChanged={changedFields.has('insuredRelationship')}>
-                <select
-                  name="insuredRelationship"
-                  value={formData.insuredRelationship}
-                  onChange={handleChange}
-                  className={selectClass('insuredRelationship')}
-                >
-                  {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
-                    <option key={key} value={value}>
-                      {HEALTH_RELATIONSHIP_LABELS[value]}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              {!formData.insuredSameAsBuyer && (
-                <>
-                  <Field label="Họ và tên" required isChanged={changedFields.has('insuredFullname')}>
-                    <input
-                      type="text"
-                      name="insuredFullname"
-                      value={formData.insuredFullname}
-                      onChange={handleChange}
-                      className={inputClass('insuredFullname', !!fieldErrors.insuredFullname)}
-                    />
-                    {fieldErrors.insuredFullname && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredFullname}</p>
-                    )}
-                  </Field>
-
-                  <Field label="Số CCCD" required isChanged={changedFields.has('insuredIdentityCard')}>
-                    <input
-                      type="text"
-                      name="insuredIdentityCard"
-                      value={formData.insuredIdentityCard}
-                      onChange={handleChange}
-                      className={inputClass('insuredIdentityCard', !!fieldErrors.insuredIdentityCard)}
-                    />
-                    {fieldErrors.insuredIdentityCard && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredIdentityCard}</p>
-                    )}
-                  </Field>
-
-                  <Field label="Ngày sinh" isChanged={changedFields.has('insuredBirthday')}>
-                    <input
-                      type="date"
-                      name="insuredBirthday"
-                      value={formData.insuredBirthday}
-                      onChange={handleChange}
-                      className={inputClass('insuredBirthday')}
-                    />
-                  </Field>
-
-                  <Field label="Giới tính" isChanged={changedFields.has('insuredGender')}>
-                    <select
-                      name="insuredGender"
-                      value={formData.insuredGender}
-                      onChange={handleChange}
-                      className={selectClass('insuredGender')}
-                    >
-                      <option value="male">Nam</option>
-                      <option value="female">Nữ</option>
-                    </select>
-                  </Field>
-                </>
-              )}
-            </div>
-          </section>
-
-          {/* Beneficiary */}
-          <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <SectionHeader
-                title="Người thụ hưởng"
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }
-              />
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="beneficiarySameAsInsured"
-                  checked={formData.beneficiarySameAsInsured}
-                  onChange={handleChange}
-                  className="sr-only"
+                  }
                 />
-                <div
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    formData.beneficiarySameAsInsured
-                      ? changedFields.has('beneficiarySameAsInsured')
-                        ? 'border-orange-400 bg-orange-400'
-                        : 'border-green-500 bg-green-500'
-                      : 'border-white/30'
-                  }`}
-                >
-                  {formData.beneficiarySameAsInsured && (
-                    <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="insuredSameAsBuyer"
+                    checked={formData.insuredSameAsBuyer}
+                    onChange={handleChange}
+                    className="sr-only"
+                  />
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                      formData.insuredSameAsBuyer
+                        ? changedFields.has('insuredSameAsBuyer')
+                          ? 'border-orange-400 bg-orange-400'
+                          : 'border-green-500 bg-green-500'
+                        : 'border-white/30'
+                    }`}
+                  >
+                    {formData.insuredSameAsBuyer && (
+                      <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-gray-400 text-sm">Giống người mua</span>
+                </label>
+              </div>
+
+              <div className="space-y-4">
+                <Field label="Quan hệ với người mua" isChanged={changedFields.has('insuredRelationship')}>
+                  <select
+                    name="insuredRelationship"
+                    value={formData.insuredRelationship}
+                    onChange={handleChange}
+                    className={selectClass('insuredRelationship')}
+                  >
+                    {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
+                      <option key={key} value={value}>
+                        {HEALTH_RELATIONSHIP_LABELS[value]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                {!formData.insuredSameAsBuyer && (
+                  <>
+                    <Field label="Họ và tên" required isChanged={changedFields.has('insuredFullname')}>
+                      <input
+                        type="text"
+                        name="insuredFullname"
+                        value={formData.insuredFullname}
+                        onChange={handleChange}
+                        className={inputClass('insuredFullname', !!fieldErrors.insuredFullname)}
+                      />
+                      {fieldErrors.insuredFullname && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredFullname}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số CCCD" required isChanged={changedFields.has('insuredIdentityCard')}>
+                      <input
+                        type="text"
+                        name="insuredIdentityCard"
+                        value={formData.insuredIdentityCard}
+                        onChange={handleChange}
+                        className={inputClass('insuredIdentityCard', !!fieldErrors.insuredIdentityCard)}
+                      />
+                      {fieldErrors.insuredIdentityCard && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredIdentityCard}</p>
+                      )}
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <Field label="Ngày sinh" isChanged={changedFields.has('insuredBirthday')}>
+                        <input
+                          type="date"
+                          name="insuredBirthday"
+                          value={formData.insuredBirthday}
+                          onChange={handleChange}
+                          className={inputClass('insuredBirthday')}
+                        />
+                      </Field>
+
+                      <Field label="Giới tính" isChanged={changedFields.has('insuredGender')}>
+                        <select
+                          name="insuredGender"
+                          value={formData.insuredGender}
+                          onChange={handleChange}
+                          className={selectClass('insuredGender')}
+                        >
+                          <option value="male">Nam</option>
+                          <option value="female">Nữ</option>
+                        </select>
+                      </Field>
+                    </div>
+                  </>
+                )}
+              </div>
+            </section>
+
+            {/* Beneficiary */}
+            <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-5">
+                <SectionHeader
+                  title="Người thụ hưởng"
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  )}
-                </div>
-                <span className="text-gray-400 text-sm">Giống người được BH</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Field label="Quan hệ với người được BH" isChanged={changedFields.has('beneficiaryRelationship')}>
-                <select
-                  name="beneficiaryRelationship"
-                  value={formData.beneficiaryRelationship}
-                  onChange={handleChange}
-                  className={selectClass('beneficiaryRelationship')}
-                >
-                  {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
-                    <option key={key} value={value}>
-                      {HEALTH_RELATIONSHIP_LABELS[value]}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              {!formData.beneficiarySameAsInsured && (
-                <>
-                  <Field label="Họ và tên" required isChanged={changedFields.has('beneficiaryFullname')}>
-                    <input
-                      type="text"
-                      name="beneficiaryFullname"
-                      value={formData.beneficiaryFullname}
-                      onChange={handleChange}
-                      className={inputClass('beneficiaryFullname', !!fieldErrors.beneficiaryFullname)}
-                    />
-                    {fieldErrors.beneficiaryFullname && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryFullname}</p>
+                  }
+                />
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="beneficiarySameAsInsured"
+                    checked={formData.beneficiarySameAsInsured}
+                    onChange={handleChange}
+                    className="sr-only"
+                  />
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                      formData.beneficiarySameAsInsured
+                        ? changedFields.has('beneficiarySameAsInsured')
+                          ? 'border-orange-400 bg-orange-400'
+                          : 'border-green-500 bg-green-500'
+                        : 'border-white/30'
+                    }`}
+                  >
+                    {formData.beneficiarySameAsInsured && (
+                      <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
                     )}
-                  </Field>
+                  </div>
+                  <span className="text-gray-400 text-sm">Giống người được BH</span>
+                </label>
+              </div>
 
-                  <Field label="Số CCCD" required isChanged={changedFields.has('beneficiaryIdentityCard')}>
-                    <input
-                      type="text"
-                      name="beneficiaryIdentityCard"
-                      value={formData.beneficiaryIdentityCard}
-                      onChange={handleChange}
-                      className={inputClass('beneficiaryIdentityCard', !!fieldErrors.beneficiaryIdentityCard)}
-                    />
-                    {fieldErrors.beneficiaryIdentityCard && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
-                    )}
-                  </Field>
-                </>
-              )}
-            </div>
-          </section>
+              <div className="space-y-4">
+                <Field label="Quan hệ với người được BH" isChanged={changedFields.has('beneficiaryRelationship')}>
+                  <select
+                    name="beneficiaryRelationship"
+                    value={formData.beneficiaryRelationship}
+                    onChange={handleChange}
+                    className={selectClass('beneficiaryRelationship')}
+                  >
+                    {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
+                      <option key={key} value={value}>
+                        {HEALTH_RELATIONSHIP_LABELS[value]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                {!formData.beneficiarySameAsInsured && (
+                  <>
+                    <Field label="Họ và tên" required isChanged={changedFields.has('beneficiaryFullname')}>
+                      <input
+                        type="text"
+                        name="beneficiaryFullname"
+                        value={formData.beneficiaryFullname}
+                        onChange={handleChange}
+                        className={inputClass('beneficiaryFullname', !!fieldErrors.beneficiaryFullname)}
+                      />
+                      {fieldErrors.beneficiaryFullname && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryFullname}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số CCCD" required isChanged={changedFields.has('beneficiaryIdentityCard')}>
+                      <input
+                        type="text"
+                        name="beneficiaryIdentityCard"
+                        value={formData.beneficiaryIdentityCard}
+                        onChange={handleChange}
+                        className={inputClass('beneficiaryIdentityCard', !!fieldErrors.beneficiaryIdentityCard)}
+                      />
+                      {fieldErrors.beneficiaryIdentityCard && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
+                      )}
+                    </Field>
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
 
           {/* Dates & Premium */}
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
@@ -1096,26 +1094,20 @@ export default function EditHealthContractPage() {
 
           </form>
 
-          {/* Floating Save Button (mobile) */}
-          <div className="fixed bottom-6 left-4 right-4 lg:hidden">
+          {/* Fixed Save Button - always visible at bottom right */}
+          <div className="fixed bottom-6 right-6 z-50">
             <button
               onClick={handleSubmit}
               disabled={saving || !hasChanges}
-              className="w-full py-3.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-600 disabled:to-slate-600 text-white font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-600 disabled:to-slate-600 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-xl shadow-green-900/30"
             >
               {saving && (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               )}
-              {hasChanges ? (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Cập nhật ({changedFields.size})
-                </>
-              ) : (
-                'Chưa có thay đổi'
-              )}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              {hasChanges ? `Cập nhật (${changedFields.size})` : 'Cập nhật'}
             </button>
           </div>
         </div>

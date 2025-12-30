@@ -194,6 +194,7 @@ export default function NewHealthContractPage() {
     }));
   }, [router]);
 
+  
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       const { name, value, type } = e.target;
@@ -224,6 +225,15 @@ export default function NewHealthContractPage() {
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
 
+    // Health questions validation - require details when answer is "Có"
+    for (let i = 1; i <= 5; i++) {
+      const answerKey = `q${i}Answer` as keyof FormDataType;
+      const detailsKey = `q${i}Details` as keyof FormDataType;
+      if (formData[answerKey] === 'true' && !formData[detailsKey]?.toString().trim()) {
+        errors[detailsKey] = 'Vui lòng nhập chi tiết khi chọn "Có"';
+      }
+    }
+
     if (!formData.insuredSameAsBuyer) {
       if (!formData.insuredFullname) errors.insuredFullname = 'Vui lòng nhập họ tên';
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
@@ -236,7 +246,6 @@ export default function NewHealthContractPage() {
 
     if (!formData.activeDate) errors.activeDate = 'Vui lòng chọn ngày bắt đầu';
     if (!formData.totalPremium) errors.totalPremium = 'Vui lòng nhập phí bảo hiểm';
-    if (!formData.agreeTerms) errors.agreeTerms = 'Vui lòng đồng ý điều khoản';
 
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -303,35 +312,33 @@ export default function NewHealthContractPage() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="max-w-4xl mx-auto">
-          {/* Sticky Header */}
-          <div className="sticky top-0 z-20 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-900/80 backdrop-blur-sm -mx-4 lg:-mx-6 px-4 lg:px-6 py-4 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => router.push('/health')}
-                  className="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <h1 className="text-2xl font-bold text-white">Tạo hợp đồng Sức khỏe mới</h1>
-              </div>
+        <div className="w-full">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <button
+              onClick={() => router.push('/health')}
+              className="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <h1 className="text-2xl font-bold text-white">Tạo hợp đồng Sức khỏe mới</h1>
+          </div>
 
-              {/* Save button */}
-              <button
-                onClick={handleSubmit}
-                disabled={loading || !formData.agreeTerms}
-                className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-600 disabled:to-slate-600 text-white font-medium rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg"
-              >
-                {loading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                Tạo hợp đồng
-              </button>
-            </div>
+          {/* Fixed Save Button - always visible at bottom right */}
+          <div className="fixed bottom-6 right-6 z-50">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-slate-600 text-white font-semibold rounded-xl transition-all disabled:cursor-not-allowed flex items-center gap-2 shadow-xl shadow-green-900/30"
+            >
+              {loading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Tạo hợp đồng
+            </button>
           </div>
 
           {/* Error message */}
@@ -501,14 +508,23 @@ export default function NewHealthContractPage() {
                       ))}
                     </div>
                     {isYes && (
-                      <textarea
-                        name={detailsKey}
-                        value={formData[detailsKey] as string}
-                        onChange={handleChange}
-                        placeholder={q.textPlaceholder}
-                        rows={2}
-                        className="mt-3 w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-green-500/50 transition-all"
-                      />
+                      <div className="mt-3">
+                        <textarea
+                          name={detailsKey}
+                          value={formData[detailsKey] as string}
+                          onChange={handleChange}
+                          placeholder={q.textPlaceholder}
+                          rows={2}
+                          className={`w-full px-4 py-2.5 bg-white/5 border rounded-xl text-white placeholder-zinc-500 focus:outline-none transition-all ${
+                            fieldErrors[detailsKey]
+                              ? 'border-red-500 focus:border-red-500'
+                              : 'border-white/10 focus:border-green-500/50'
+                          }`}
+                        />
+                        {fieldErrors[detailsKey] && (
+                          <p className="text-red-400 text-xs mt-1">{fieldErrors[detailsKey]}</p>
+                        )}
+                      </div>
                     )}
                   </div>
                 );
@@ -608,209 +624,214 @@ export default function NewHealthContractPage() {
             </div>
           </section>
 
-          {/* Insured Person */}
-          <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <SectionHeader
-                title="Người được bảo hiểm"
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                }
-              />
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="insuredSameAsBuyer"
-                  checked={formData.insuredSameAsBuyer}
-                  onChange={handleChange}
-                  className="sr-only"
-                />
-                <div
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    formData.insuredSameAsBuyer ? 'border-green-500 bg-green-500' : 'border-white/30'
-                  }`}
-                >
-                  {formData.insuredSameAsBuyer && (
-                    <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+          {/* Insured Person & Beneficiary - side by side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Insured Person */}
+            <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-5">
+                <SectionHeader
+                  title="Người được bảo hiểm"
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                  )}
-                </div>
-                <span className="text-gray-400 text-sm">Giống người mua</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Field label="Quan hệ với người mua">
-                <select
-                  name="insuredRelationship"
-                  value={formData.insuredRelationship}
-                  onChange={handleChange}
-                  className={selectClass()}
-                >
-                  {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
-                    <option key={key} value={value}>
-                      {HEALTH_RELATIONSHIP_LABELS[value]}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              {!formData.insuredSameAsBuyer && (
-                <>
-                  <Field label="Họ và tên" required>
-                    <input
-                      type="text"
-                      name="insuredFullname"
-                      value={formData.insuredFullname}
-                      onChange={handleChange}
-                      className={inputClass(!!fieldErrors.insuredFullname)}
-                    />
-                    {fieldErrors.insuredFullname && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredFullname}</p>
-                    )}
-                  </Field>
-
-                  <Field label="Số CCCD" required>
-                    <input
-                      type="text"
-                      name="insuredIdentityCard"
-                      value={formData.insuredIdentityCard}
-                      onChange={handleChange}
-                      className={inputClass(!!fieldErrors.insuredIdentityCard)}
-                    />
-                    {fieldErrors.insuredIdentityCard && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredIdentityCard}</p>
-                    )}
-                  </Field>
-
-                  <Field label="Ngày sinh">
-                    <input
-                      type="date"
-                      name="insuredBirthday"
-                      value={formData.insuredBirthday}
-                      onChange={handleChange}
-                      className={inputClass()}
-                    />
-                  </Field>
-
-                  <Field label="Giới tính">
-                    <select
-                      name="insuredGender"
-                      value={formData.insuredGender}
-                      onChange={handleChange}
-                      className={selectClass()}
-                    >
-                      <option value="male">Nam</option>
-                      <option value="female">Nữ</option>
-                    </select>
-                  </Field>
-                </>
-              )}
-            </div>
-          </section>
-
-          {/* Beneficiary */}
-          <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <SectionHeader
-                title="Người thụ hưởng"
-                icon={
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                }
-              />
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="beneficiarySameAsInsured"
-                  checked={formData.beneficiarySameAsInsured}
-                  onChange={handleChange}
-                  className="sr-only"
+                  }
                 />
-                <div
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    formData.beneficiarySameAsInsured ? 'border-green-500 bg-green-500' : 'border-white/30'
-                  }`}
-                >
-                  {formData.beneficiarySameAsInsured && (
-                    <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="insuredSameAsBuyer"
+                    checked={formData.insuredSameAsBuyer}
+                    onChange={handleChange}
+                    className="sr-only"
+                  />
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                      formData.insuredSameAsBuyer ? 'border-green-500 bg-green-500' : 'border-white/30'
+                    }`}
+                  >
+                    {formData.insuredSameAsBuyer && (
+                      <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-gray-400 text-sm">Giống người mua</span>
+                </label>
+              </div>
+
+              <div className="space-y-4">
+                <Field label="Quan hệ với người mua">
+                  <select
+                    name="insuredRelationship"
+                    value={formData.insuredRelationship}
+                    onChange={handleChange}
+                    className={selectClass()}
+                  >
+                    {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
+                      <option key={key} value={value}>
+                        {HEALTH_RELATIONSHIP_LABELS[value]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                {!formData.insuredSameAsBuyer && (
+                  <>
+                    <Field label="Họ và tên" required>
+                      <input
+                        type="text"
+                        name="insuredFullname"
+                        value={formData.insuredFullname}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.insuredFullname)}
+                      />
+                      {fieldErrors.insuredFullname && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredFullname}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số CCCD" required>
+                      <input
+                        type="text"
+                        name="insuredIdentityCard"
+                        value={formData.insuredIdentityCard}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.insuredIdentityCard)}
+                      />
+                      {fieldErrors.insuredIdentityCard && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredIdentityCard}</p>
+                      )}
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <Field label="Ngày sinh">
+                        <input
+                          type="date"
+                          name="insuredBirthday"
+                          value={formData.insuredBirthday}
+                          onChange={handleChange}
+                          className={inputClass()}
+                        />
+                      </Field>
+
+                      <Field label="Giới tính">
+                        <select
+                          name="insuredGender"
+                          value={formData.insuredGender}
+                          onChange={handleChange}
+                          className={selectClass()}
+                        >
+                          <option value="male">Nam</option>
+                          <option value="female">Nữ</option>
+                        </select>
+                      </Field>
+                    </div>
+                  </>
+                )}
+              </div>
+            </section>
+
+            {/* Beneficiary */}
+            <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-5">
+                <SectionHeader
+                  title="Người thụ hưởng"
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                  )}
-                </div>
-                <span className="text-gray-400 text-sm">Giống người được BH</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Field label="Quan hệ với người được BH">
-                <select
-                  name="beneficiaryRelationship"
-                  value={formData.beneficiaryRelationship}
-                  onChange={handleChange}
-                  className={selectClass()}
-                >
-                  {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
-                    <option key={key} value={value}>
-                      {HEALTH_RELATIONSHIP_LABELS[value]}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              {!formData.beneficiarySameAsInsured && (
-                <>
-                  <Field label="Họ và tên" required>
-                    <input
-                      type="text"
-                      name="beneficiaryFullname"
-                      value={formData.beneficiaryFullname}
-                      onChange={handleChange}
-                      className={inputClass(!!fieldErrors.beneficiaryFullname)}
-                    />
-                    {fieldErrors.beneficiaryFullname && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryFullname}</p>
+                  }
+                />
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="beneficiarySameAsInsured"
+                    checked={formData.beneficiarySameAsInsured}
+                    onChange={handleChange}
+                    className="sr-only"
+                  />
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                      formData.beneficiarySameAsInsured ? 'border-green-500 bg-green-500' : 'border-white/30'
+                    }`}
+                  >
+                    {formData.beneficiarySameAsInsured && (
+                      <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     )}
-                  </Field>
+                  </div>
+                  <span className="text-gray-400 text-sm">Giống người được BH</span>
+                </label>
+              </div>
 
-                  <Field label="Số CCCD" required>
-                    <input
-                      type="text"
-                      name="beneficiaryIdentityCard"
-                      value={formData.beneficiaryIdentityCard}
-                      onChange={handleChange}
-                      className={inputClass(!!fieldErrors.beneficiaryIdentityCard)}
-                    />
-                    {fieldErrors.beneficiaryIdentityCard && (
-                      <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
-                    )}
-                  </Field>
-                </>
-              )}
-            </div>
-          </section>
+              <div className="space-y-4">
+                <Field label="Quan hệ với người được BH">
+                  <select
+                    name="beneficiaryRelationship"
+                    value={formData.beneficiaryRelationship}
+                    onChange={handleChange}
+                    className={selectClass()}
+                  >
+                    {Object.entries(HEALTH_RELATIONSHIPS).map(([key, value]) => (
+                      <option key={key} value={value}>
+                        {HEALTH_RELATIONSHIP_LABELS[value]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                {!formData.beneficiarySameAsInsured && (
+                  <>
+                    <Field label="Họ và tên" required>
+                      <input
+                        type="text"
+                        name="beneficiaryFullname"
+                        value={formData.beneficiaryFullname}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.beneficiaryFullname)}
+                      />
+                      {fieldErrors.beneficiaryFullname && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryFullname}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số CCCD" required>
+                      <input
+                        type="text"
+                        name="beneficiaryIdentityCard"
+                        value={formData.beneficiaryIdentityCard}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.beneficiaryIdentityCard)}
+                      />
+                      {fieldErrors.beneficiaryIdentityCard && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
+                      )}
+                    </Field>
+                  </>
+                )}
+              </div>
+            </section>
+          </div>
 
           {/* Dates & Premium */}
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
@@ -863,61 +884,10 @@ export default function NewHealthContractPage() {
               </Field>
             </div>
 
-            {/* Terms Agreement */}
-            <label
-              className={`flex items-center gap-3 p-4 rounded-xl cursor-pointer transition-all ${
-                fieldErrors.agreeTerms
-                  ? 'bg-red-500/10 border border-red-500/50'
-                  : formData.agreeTerms
-                    ? 'bg-green-900/30 border border-green-500/30'
-                    : 'bg-white/5 border border-white/10 hover:bg-white/10'
-              }`}
-            >
-              <input
-                type="checkbox"
-                name="agreeTerms"
-                checked={formData.agreeTerms}
-                onChange={handleChange}
-                className="sr-only"
-              />
-              <div
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                  formData.agreeTerms ? 'border-green-500 bg-green-500' : 'border-white/30'
-                }`}
-              >
-                {formData.agreeTerms && (
-                  <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </div>
-              <span className={`text-sm ${formData.agreeTerms ? 'text-white' : 'text-gray-400'}`}>
-                Tôi đã đọc và đồng ý với điều khoản bảo hiểm
-              </span>
-            </label>
-            {fieldErrors.agreeTerms && <p className="text-red-400 text-xs mt-2">{fieldErrors.agreeTerms}</p>}
           </section>
 
           </form>
 
-          {/* Floating Save Button (mobile) */}
-          <div className="fixed bottom-6 left-4 right-4 lg:hidden">
-            <button
-              onClick={handleSubmit}
-              disabled={loading || !formData.agreeTerms}
-              className="w-full py-3.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-slate-600 disabled:to-slate-600 text-white font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Tạo hợp đồng
-            </button>
-          </div>
         </div>
       </div>
     </DashboardLayout>

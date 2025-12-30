@@ -8,8 +8,8 @@ services:
     ports:
       - "27018:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: dev
-      MONGO_INITDB_ROOT_PASSWORD: dev123
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: MongoPass123!
       MONGO_INITDB_DATABASE: bhhv
     volumes:
       - mongodb_data:/data/db

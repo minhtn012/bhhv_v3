@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env.production' });
+require('dotenv').config({ path: '.env' });
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -52,7 +52,7 @@ const User = mongoose.model('User', userSchema);
 async function createAdminUser() {
   try {
     // Connect to MongoDB
-    const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin';
+    const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://admin:MongoPass123!@localhost:27018/bhhv?authSource=admin';
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
 
