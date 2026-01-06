@@ -116,7 +116,8 @@ export default function ContractDetailHeader({
         
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
-          {(contract.status === 'nhap' || contract.status === 'cho_duyet') && (currentUser?.role === 'admin' || contract.createdBy === currentUser?.id) && (
+          {/* Admin có thể edit mọi trạng thái, user thường chỉ edit được nhap/cho_duyet */}
+          {(currentUser?.role === 'admin' || ((contract.status === 'nhap' || contract.status === 'cho_duyet') && contract.createdBy === currentUser?.id)) && (
             <button
               onClick={() => router.push(`/contracts/${contract._id}/edit`)}
               className="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-xl transition-colors text-center"
