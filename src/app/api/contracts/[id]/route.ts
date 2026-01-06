@@ -90,8 +90,8 @@ export async function PUT(
       );
     }
 
-    // Chỉ có thể sửa khi ở trạng thái 'nhap' hoặc 'cho_duyet'
-    if (!contract.canEdit()) {
+    // Admin có thể sửa bất kỳ trạng thái nào, user thường chỉ sửa được khi 'nhap' hoặc 'cho_duyet'
+    if (user.role !== 'admin' && !contract.canEdit()) {
       return NextResponse.json(
         { error: 'Chỉ có thể chỉnh sửa hợp đồng ở trạng thái "Nháp" hoặc "Chờ duyệt"' },
         { status: 400 }
