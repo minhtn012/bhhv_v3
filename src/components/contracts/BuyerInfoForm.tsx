@@ -323,14 +323,30 @@ export default function BuyerInfoForm({
         <div>
           <label className="block text-white font-medium mb-2">Ngày thanh toán</label>
           <input
-            type="text"
+            type="date"
             name="buyerPaymentDate"
-            value={formData.buyerPaymentDate || ''}
-            onChange={(e) => onFormInputChange('buyerPaymentDate', e.target.value)}
+            value={(() => {
+              // Convert DD/MM/YYYY to YYYY-MM-DD for date picker
+              const val = formData.buyerPaymentDate || '';
+              if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+                const [d, m, y] = val.split('/');
+                return `${y}-${m}-${d}`;
+              }
+              return val;
+            })()}
+            onChange={(e) => {
+              // Convert YYYY-MM-DD to DD/MM/YYYY for storage
+              const val = e.target.value;
+              if (val && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                const [y, m, d] = val.split('-');
+                onFormInputChange('buyerPaymentDate', `${d}/${m}/${y}`);
+              } else {
+                onFormInputChange('buyerPaymentDate', val);
+              }
+            }}
             className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
               combinedErrors.buyerPaymentDate ? 'border-red-500' : 'border-slate-500/30'
-            }`}
-            placeholder="DD/MM/YYYY"
+            } [color-scheme:dark]`}
           />
           <FieldError fieldName="buyerPaymentDate" errors={combinedErrors} />
         </div>

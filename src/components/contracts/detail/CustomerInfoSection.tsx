@@ -1,9 +1,23 @@
+// Format date from YYYY-MM-DD to DD/MM/YYYY
+const formatDateVN = (dateStr: string): string => {
+  if (!dateStr) return '';
+  // If already in DD/MM/YYYY format
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return dateStr;
+  // If in YYYY-MM-DD format (from date picker)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}/${year}`;
+  }
+  return dateStr;
+};
+
 interface Contract {
   chuXe: string;
   diaChi: string;
   buyerEmail?: string;
   buyerPhone?: string;
   buyerCitizenId?: string;
+  buyerPaymentDate?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;
@@ -47,6 +61,12 @@ export default function CustomerInfoSection({ contract }: CustomerInfoSectionPro
           <div>
             <label className="block text-gray-300 text-sm mb-1">Số CCCD</label>
             <p className="text-white font-mono">{contract.buyerCitizenId}</p>
+          </div>
+        )}
+        {contract.buyerPaymentDate && (
+          <div>
+            <label className="block text-gray-300 text-sm mb-1">Ngày thanh toán</label>
+            <p className="text-white">{formatDateVN(contract.buyerPaymentDate)}</p>
           </div>
         )}
         {contract.selectedProvinceText && (

@@ -34,6 +34,7 @@ interface Contract {
   buyerPhone?: string;
   buyerGender?: 'nam' | 'nu' | 'khac';
   buyerCitizenId?: string;
+  buyerPaymentDate?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;

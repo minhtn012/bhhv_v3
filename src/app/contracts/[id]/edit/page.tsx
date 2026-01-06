@@ -709,6 +709,7 @@ export default function EditContractPage() {
         buyerEmail: formData.email,
         buyerPhone: formData.soDienThoai,
         buyerCitizenId: formData.cccd,
+        buyerPaymentDate: formData.buyerPaymentDate,
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
         selectedDistrictWard: formData.selectedDistrictWard,
@@ -844,7 +845,9 @@ export default function EditContractPage() {
     );
   }
 
-  if (contract.status !== 'nhap' && contract.status !== 'cho_duyet') {
+  // Admin có thể edit mọi trạng thái, user thường chỉ edit được nhap/cho_duyet
+  const isAdmin = currentUser && typeof currentUser === 'object' && 'role' in currentUser && (currentUser as { role: string }).role === 'admin';
+  if (!isAdmin && contract.status !== 'nhap' && contract.status !== 'cho_duyet') {
     return (
       <DashboardLayout>
         <div className="p-4 lg:p-6">

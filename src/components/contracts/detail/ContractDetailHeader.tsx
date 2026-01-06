@@ -92,8 +92,8 @@ export default function ContractDetailHeader({
         ← Quay lại danh sách
       </button>
       
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div className="flex-1">
+      <div className="flex flex-col gap-4">
+        <div>
           <h1 className="text-xl lg:text-2xl font-bold text-white mb-3">
             Chi tiết hợp đồng {contract.contractNumber}
           </h1>
@@ -115,7 +115,7 @@ export default function ContractDetailHeader({
         </div>
         
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-wrap gap-2">
           {/* Admin có thể edit mọi trạng thái, user thường chỉ edit được nhap/cho_duyet */}
           {(currentUser?.role === 'admin' || ((contract.status === 'nhap' || contract.status === 'cho_duyet') && contract.createdBy === currentUser?.id)) && (
             <button
