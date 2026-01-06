@@ -85,6 +85,12 @@ export const ContractSchema = z.object({
       .regex(/^[0-9]{12}$/, 'CCCD phải có đúng 12 chữ số')
       .optional()),
 
+  buyerPaymentDate: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .pipe(z.string()
+      .regex(/^\d{2}\/\d{2}\/\d{4}$/, 'Ngày thanh toán phải có định dạng dd/mm/yyyy')
+      .optional()),
+
   selectedProvince: z.string()
     .transform((val) => val === '' ? undefined : val)
     .optional(),

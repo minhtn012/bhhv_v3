@@ -14,6 +14,7 @@ export interface IContract extends Document {
   buyerEmail?: string;
   buyerPhone?: string;
   buyerCitizenId?: string;
+  buyerPaymentDate?: string; // Ngày thanh toán hợp đồng (DD/MM/YYYY)
   selectedProvince?: string; // province_code
   selectedProvinceText?: string; // province_name for display
   selectedDistrictWard?: string; // district/ward id
@@ -186,6 +187,10 @@ const contractSchema = new Schema<IContract>({
     trim: true
   },
   buyerCitizenId: {
+    type: String,
+    trim: true
+  },
+  buyerPaymentDate: {
     type: String,
     trim: true
   },

@@ -55,6 +55,7 @@ interface Contract {
   buyerEmail?: string;
   buyerPhone?: string;
   buyerCitizenId?: string;
+  buyerPaymentDate?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;
@@ -152,6 +153,7 @@ export default function EditContractPage() {
     soDienThoai: '',
     cccd: '',
     userType: 'ca_nhan',
+    buyerPaymentDate: '',
 
     // Address Structure (from BaseContractFormData)
     diaChi: '',
@@ -356,6 +358,7 @@ export default function EditContractPage() {
       soDienThoai: contractData.buyerPhone || '',
       cccd: contractData.buyerCitizenId || '',
       userType: contractData.loaiKhachHang || 'ca_nhan',
+      buyerPaymentDate: contractData.buyerPaymentDate || '',
 
       // Address Structure (BaseContractFormData)
       diaChi: contractData.diaChi,
@@ -912,6 +915,7 @@ export default function EditContractPage() {
                     soDienThoai: formData.soDienThoai,
                     cccd: formData.cccd,
                     userType: formData.userType,
+                    buyerPaymentDate: formData.buyerPaymentDate,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,

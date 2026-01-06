@@ -17,6 +17,7 @@ interface ExtendedBuyerFormData extends BuyerFormData {
   newSelectedDistrictWard: string;
   newSelectedDistrictWardText: string;
   newSpecificAddress: string;
+  buyerPaymentDate: string;
 }
 
 interface BuyerInfoFormProps {
@@ -163,7 +164,7 @@ export default function BuyerInfoForm({
   // Clear local errors when field values change
   useEffect(() => {
     setLocalErrors({});
-  }, [formData.chuXe, formData.email, formData.soDienThoai, formData.cccd, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress, formData.newSelectedProvince, formData.newSelectedDistrictWard, formData.newSpecificAddress]);
+  }, [formData.chuXe, formData.email, formData.soDienThoai, formData.cccd, formData.buyerPaymentDate, formData.selectedProvince, formData.selectedDistrictWard, formData.specificAddress, formData.newSelectedProvince, formData.newSelectedDistrictWard, formData.newSpecificAddress]);
 
   // Get combined errors (prioritize local errors over global)
   const getCombinedErrors = () => {
@@ -316,6 +317,22 @@ export default function BuyerInfoForm({
             maxLength={12}
           />
           <FieldError fieldName="cccd" errors={combinedErrors} />
+        </div>
+
+        {/* Ngày thanh toán */}
+        <div>
+          <label className="block text-white font-medium mb-2">Ngày thanh toán</label>
+          <input
+            type="text"
+            name="buyerPaymentDate"
+            value={formData.buyerPaymentDate || ''}
+            onChange={(e) => onFormInputChange('buyerPaymentDate', e.target.value)}
+            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+              combinedErrors.buyerPaymentDate ? 'border-red-500' : 'border-slate-500/30'
+            }`}
+            placeholder="DD/MM/YYYY"
+          />
+          <FieldError fieldName="buyerPaymentDate" errors={combinedErrors} />
         </div>
 
         {/* Tỉnh/Thành phố */}

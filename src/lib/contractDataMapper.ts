@@ -21,6 +21,7 @@ export interface ContractFormData {
   cccd: string;
   gioiTinh: 'nam' | 'nu' | 'khac';
   userType: 'ca_nhan' | 'cong_ty';
+  buyerPaymentDate?: string;
 
   // Address
   diaChi: string;
@@ -120,6 +121,7 @@ export interface ContractPayload {
   buyerPhone: string;
   buyerGender: 'nam' | 'nu' | 'khac';
   buyerCitizenId: string;
+  buyerPaymentDate?: string;
   selectedProvince: string;
   selectedProvinceText: string;
   selectedDistrictWard: string;
@@ -284,6 +286,7 @@ export function transformFormToContract(
     buyerPhone: formData.soDienThoai,
     buyerGender: formData.gioiTinh,
     buyerCitizenId: formData.cccd,
+    buyerPaymentDate: formData.buyerPaymentDate || '',
     selectedProvince: formData.selectedProvince,
     selectedProvinceText: formData.selectedProvinceText,
     selectedDistrictWard: formData.selectedDistrictWard,

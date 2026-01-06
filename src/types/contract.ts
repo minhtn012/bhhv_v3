@@ -16,6 +16,7 @@ export interface BaseContractFormData {
   soDienThoai: string;         // Phone
   cccd: string;                // Citizen ID
   userType: 'ca_nhan' | 'cong_ty';
+  buyerPaymentDate: string;    // Payment date (DD/MM/YYYY)
   
   // Address Structure (actual form fields)
   diaChi: string;               // Main address (from vehicle registration)
@@ -81,7 +82,7 @@ export type VehicleFormData = Pick<BaseContractFormData,
 >;
 
 export type BuyerFormData = Pick<BaseContractFormData,
-  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'userType' |
+  'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'userType' | 'buyerPaymentDate' |
   'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' |
   'selectedDistrictWardText' | 'specificAddress' |
   'newSelectedProvince' | 'newSelectedProvinceText' | 'newSelectedDistrictWard' |
@@ -120,6 +121,7 @@ export const defaultContractFormData: BaseContractFormData = {
   soDienThoai: '',
   cccd: '',
   userType: 'ca_nhan',
+  buyerPaymentDate: '',
   
   // Address Structure
   diaChi: '',

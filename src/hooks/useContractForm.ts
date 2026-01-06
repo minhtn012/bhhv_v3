@@ -61,6 +61,7 @@ const initialState: ContractFormState = {
   cccd: '',
   gioiTinh: 'nam',
   userType: 'ca_nhan',
+  buyerPaymentDate: '',
 
   // Address Structure
   diaChi: '',
