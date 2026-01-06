@@ -1,0 +1,127 @@
+{
+  "services": {
+    "bao-hiem-xe": {
+      "name": "Bảo hiểm xe",
+      "description": "Trích xuất thông tin cho bảo hiểm xe ô tô. Chấp nhận: cà vẹt, đăng kiểm, giấy BH cũ, hóa đơn mua xe...",
+      "prompt": "Phân tích ảnh giấy tờ liên quan đến xe (có thể là: giấy đăng ký xe, đăng kiểm, giấy bảo hiểm cũ, hóa đơn...) và trích xuất các thông tin bên dưới. Nếu không tìm thấy field nào thì để null. Chỉ trả về JSON, không giải thích.",
+      "fields": [
+        "chuXe: Tên chủ xe/người mua BH",
+        "diaChi: Địa chỉ",
+        "soDienThoai: Số điện thoại",
+        "email: Email",
+        "bienSo: Biển số xe",
+        "nhanHieu: Nhãn hiệu xe (Toyota, Honda, Kia...)",
+        "dongXe: Dòng xe/model (Camry, Civic, Sorento...)",
+        "soLoai: Số loại/mã model",
+        "soKhung: Số khung (chassis number)",
+        "soMay: Số máy (engine number)",
+        "namSanXuat: Năm sản xuất (số)",
+        "soChoNgoi: Số chỗ ngồi (số)",
+        "loaiXe: Loại xe (ô tô con, xe tải, xe khách, bán tải...)",
+        "mauXe: Màu xe",
+        "trongTai: Trọng tải hàng hóa (kg, nếu có)",
+        "ngayDangKyLanDau: Ngày đăng ký lần đầu (dd/mm/yyyy)",
+        "hanDangKiem: Hạn đăng kiểm (dd/mm/yyyy)",
+        "kinhDoanhVanTai: Có kinh doanh vận tải không (Có/Không)",
+        "giaTriXe: Giá trị xe (số)",
+        "soTienBaoHiem: Số tiền bảo hiểm cũ (số, nếu có)",
+        "ngayHieuLucBHCu: Ngày hiệu lực BH cũ (dd/mm/yyyy)",
+        "ngayHetHanBHCu: Ngày hết hạn BH cũ (dd/mm/yyyy)",
+        "congTyBHCu: Công ty BH cũ"
+      ]
+    },
+    "bao-hiem-suc-khoe": {
+      "name": "Bảo hiểm sức khỏe",
+      "description": "Trích xuất thông tin cho bảo hiểm sức khỏe BHV Medical Care. Chấp nhận: phiếu yêu cầu BH, CCCD, CMND...",
+      "prompt": "Phân tích ảnh phiếu yêu cầu bảo hiểm sức khỏe BHV Medical Care. Trích xuất thông tin từ tất cả các mục: (1) Người yêu cầu BH, (2) Người được BH, (3) Lựa chọn gói BH và quyền lợi, (4) Thông tin sức khỏe 5 câu hỏi a-e, (5) Người thụ hưởng. Nếu không tìm thấy field nào thì để null. Chỉ trả về JSON, không giải thích.",
+      "fields": [
+        "hoTen: Họ và tên đầy đủ người yêu cầu BH (mục 1)",
+        "ngaySinh: Ngày sinh người yêu cầu (dd/mm/yyyy)",
+        "gioiTinh: Giới tính người yêu cầu (Nam/Nữ)",
+        "soCCCD: Số CCCD/CMND người yêu cầu",
+        "ngayCapCCCD: Ngày cấp CCCD/CMND",
+        "noiCapCCCD: Nơi cấp",
+        "diaChiThuongTru: Địa chỉ thường trú người yêu cầu",
+        "soDienThoai: Số điện thoại người yêu cầu",
+        "email: Email người yêu cầu",
+        "ngheNghiep: Nghề nghiệp người yêu cầu",
+
+        "ngDuocBH_hoTen: Người được bảo hiểm - Họ và tên (mục 2)",
+        "ngDuocBH_ngaySinh: Người được BH - Ngày sinh (dd/mm/yyyy)",
+        "ngDuocBH_gioiTinh: Người được BH - Giới tính (Nam/Nữ)",
+        "ngDuocBH_soCCCD: Người được BH - Số CCCD/CMND",
+        "ngDuocBH_soDienThoai: Người được BH - Số điện thoại",
+        "ngDuocBH_email: Người được BH - Email",
+        "ngDuocBH_ngheNghiep: Người được BH - Nghề nghiệp",
+        "ngDuocBH_quanHe: Người được BH - Quan hệ với người yêu cầu (Bản thân/Vợ chồng/Cha mẹ/Con/Anh chị em/Khác)",
+        "ngDuocBH_diaChi: Người được BH - Địa chỉ thường trú",
+
+        "goiBaoHiem: Gói bảo hiểm chính (Vàng/Bạch Kim/Kim Cương) - mục 3",
+        "qlThaiSan: Quyền lợi bổ sung Thai sản (Có/Không, dựa trên dấu tick)",
+        "qlNgoaiTru: Quyền lợi bổ sung Ngoại trú (Có/Không, dựa trên dấu tick)",
+        "qlTuVongBenhTat: Quyền lợi bổ sung Tử vong do bệnh tật (Có/Không, dựa trên dấu tick)",
+        "thoiHanTuNgay: Thời hạn BH từ ngày (dd/mm/yyyy)",
+        "thoiHanDenNgay: Thời hạn BH đến ngày (dd/mm/yyyy)",
+        "soPhiBH: Số phí bảo hiểm (số, VND, không có dấu phẩy)",
+        "phuongThucThanhToan: Phương thức thanh toán (Chuyển khoản/Tiền mặt)",
+
+        "q1TraLoi: Câu hỏi a - Đang nhập viện/chờ nhập viện (Có/Không) - mục 4",
+        "q1ChiTiet: Câu hỏi a - Chi tiết nếu trả lời Có",
+        "q2TraLoi: Câu hỏi b - Điều trị trong 12 tháng qua (Có/Không)",
+        "q2ChiTiet: Câu hỏi b - Chi tiết nếu trả lời Có",
+        "q3TraLoi: Câu hỏi c - Bệnh mãn tính trong 3 năm (Có/Không)",
+        "q3ChiTiet: Câu hỏi c - Chi tiết nếu trả lời Có (bao gồm phẫu thuật, thời gian, bệnh viện)",
+        "q4TraLoi: Câu hỏi d - Yêu cầu bồi thường trước đây (Có/Không)",
+        "q4ChiTiet: Câu hỏi d - Chi tiết nếu trả lời Có",
+        "q5TraLoi: Câu hỏi e - Bị từ chối BH trước đây (Có/Không)",
+        "q5ChiTiet: Câu hỏi e - Chi tiết nếu trả lời Có",
+
+        "ngThuHuong_hoTen: Người thụ hưởng - Họ và tên (mục 5)",
+        "ngThuHuong_soCCCD: Người thụ hưởng - Số CCCD/CMND",
+        "ngThuHuong_quanHe: Người thụ hưởng - Quan hệ với người được BH (Bản thân/Vợ chồng/Cha mẹ/Con/Mẹ ruột/Khác)",
+        "ngThuHuong_soDienThoai: Người thụ hưởng - Số điện thoại",
+        "ngThuHuong_email: Người thụ hưởng - Email",
+        "ngThuHuong_diaChi: Người thụ hưởng - Địa chỉ",
+
+        "congTyBHCu: Công ty BH cũ (nếu có)",
+        "soHopDongBHCu: Số hợp đồng BH cũ",
+        "ngayHetHanBHCu: Ngày hết hạn BH cũ"
+      ]
+    },
+    "bao-hiem-du-lich": {
+      "name": "Bảo hiểm du lịch",
+      "description": "Trích xuất thông tin cho bảo hiểm du lịch. Chấp nhận: CCCD, hộ chiếu, vé máy bay, booking khách sạn...",
+      "prompt": "Phân tích ảnh giấy tờ du lịch (có thể là: CCCD, hộ chiếu, vé máy bay, xác nhận booking...) và trích xuất các thông tin bên dưới. Nếu không tìm thấy field nào thì để null. Chỉ trả về JSON, không giải thích.",
+      "fields": [
+        "hoTen: Họ và tên đầy đủ",
+        "hoTenKhongDau: Họ tên không dấu (như trên passport)",
+        "ngaySinh: Ngày sinh (dd/mm/yyyy)",
+        "gioiTinh: Giới tính",
+        "quocTich: Quốc tịch",
+        "soCCCD: Số CCCD/CMND",
+        "soHoChieu: Số hộ chiếu",
+        "ngayCapHC: Ngày cấp hộ chiếu",
+        "ngayHetHanHC: Ngày hết hạn hộ chiếu",
+        "noiCapHC: Nơi cấp hộ chiếu",
+        "soDienThoai: Số điện thoại",
+        "email: Email",
+        "diaChi: Địa chỉ liên hệ",
+        "diemDi: Điểm khởi hành",
+        "diemDen: Điểm đến",
+        "ngayDi: Ngày đi (dd/mm/yyyy)",
+        "ngayVe: Ngày về (dd/mm/yyyy)",
+        "soHieuChuyenBay: Số hiệu chuyến bay",
+        "hangBay: Hãng hàng không",
+        "tenKhachSan: Tên khách sạn",
+        "diaChiKhachSan: Địa chỉ khách sạn",
+        "nguoiLienHeKhanCap: Người liên hệ khẩn cấp",
+        "sdtKhanCap: SĐT khẩn cấp"
+      ]
+    }
+  },
+  "defaults": {
+    "output_format": "json",
+    "null_value": null,
+    "encoding": "utf-8"
+  }
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import {
@@ -10,6 +10,7 @@ import {
   HEALTH_RELATIONSHIP_LABELS,
 } from '@/providers/bhv-online/products/health/constants';
 import { HEALTH_QUESTION_DEFINITIONS } from '@/providers/bhv-online/products/health/health-questions';
+import { mapOCRToHealthForm, HealthOCROutput } from '@/utils/ocr-health-mapper';
 
 // Section Header Component
 function SectionHeader({ title, icon }: { title: string; icon: React.ReactNode }) {
@@ -109,6 +110,13 @@ export default function NewHealthContractPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // OCR Upload State
+  const [ocrFiles, setOcrFiles] = useState<File[]>([]);
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [ocrError, setOcrError] = useState('');
+  const [ocrSuccess, setOcrSuccess] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form state
   const [formData, setFormData] = useState<FormDataType>({
@@ -215,6 +223,94 @@ export default function NewHealthContractPage() {
     },
     [fieldErrors]
   );
+
+  // OCR File Handling
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(
+      (f) => f.type.startsWith('image/') && f.size <= 10 * 1024 * 1024
+    );
+    setOcrFiles((prev) => [...prev, ...validFiles].slice(0, 5));
+    setOcrError('');
+    setOcrSuccess(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    const validFiles = files.filter(
+      (f) => f.type.startsWith('image/') && f.size <= 10 * 1024 * 1024
+    );
+    setOcrFiles((prev) => [...prev, ...validFiles].slice(0, 5));
+    setOcrError('');
+    setOcrSuccess(false);
+  }, []);
+
+  const removeFile = useCallback((index: number) => {
+    setOcrFiles((prev) => prev.filter((_, i) => i !== index));
+    setOcrSuccess(false);
+  }, []);
+
+  // Convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove data:image/xxx;base64, prefix
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+    });
+  };
+
+  const processOCR = useCallback(async () => {
+    if (ocrFiles.length === 0) return;
+
+    setOcrLoading(true);
+    setOcrError('');
+    setOcrSuccess(false);
+
+    try {
+      // Process first image (Gemini API takes one image at a time)
+      const file = ocrFiles[0];
+      const imageData = await fileToBase64(file);
+
+      const response = await fetch('/api/health/extract-info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageData,
+          imageType: file.type || 'image/jpeg',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'OCR processing failed');
+      }
+
+      // Map OCR result to form data
+      const ocrResult = data.data as Partial<HealthOCROutput>;
+      const mappedData = mapOCRToHealthForm(ocrResult);
+
+      // Update form with mapped data
+      setFormData((prev) => ({
+        ...prev,
+        ...mappedData,
+      }));
+
+      setOcrSuccess(true);
+      setOcrError('');
+    } catch (err) {
+      setOcrError(err instanceof Error ? err.message : 'OCR processing failed');
+    } finally {
+      setOcrLoading(false);
+    }
+  }, [ocrFiles]);
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -348,8 +444,151 @@ export default function NewHealthContractPage() {
             </div>
           )}
 
+          {/* OCR Upload Section */}
+          <section className="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 mb-6">
+            <SectionHeader
+              title="Quét ảnh tự động điền (OCR)"
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              }
+            />
+
+            {/* Drag & Drop Zone */}
+            <div
+              className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all ${
+                ocrLoading
+                  ? 'border-slate-500/30 bg-slate-800/50 cursor-not-allowed opacity-60'
+                  : ocrFiles.length > 0
+                    ? 'border-emerald-500/50 bg-emerald-900/10 cursor-pointer'
+                    : 'border-white/20 hover:border-white/40 bg-white/5 cursor-pointer'
+              }`}
+              onDrop={ocrLoading ? undefined : handleDrop}
+              onDragOver={(e) => { e.preventDefault(); if (ocrLoading) e.dataTransfer.dropEffect = 'none'; }}
+              onClick={ocrLoading ? undefined : () => fileInputRef.current?.click()}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={ocrLoading}
+              />
+              <div className="flex flex-col items-center gap-2">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${ocrLoading ? 'bg-slate-600/20' : 'bg-emerald-500/20'}`}>
+                  {ocrLoading ? (
+                    <div className="w-6 h-6 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" />
+                  ) : (
+                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                  )}
+                </div>
+                <p className={`text-sm ${ocrLoading ? 'text-slate-500' : 'text-gray-300'}`}>
+                  {ocrLoading ? (
+                    'Đang xử lý OCR, vui lòng chờ...'
+                  ) : (
+                    <>Kéo thả hoặc <span className="text-emerald-400 underline">chọn ảnh</span> phiếu yêu cầu BH</>
+                  )}
+                </p>
+                {!ocrLoading && <p className="text-gray-500 text-xs">Tối đa 5 ảnh, mỗi ảnh ≤ 10MB (JPG, PNG)</p>}
+              </div>
+            </div>
+
+            {/* File List */}
+            {ocrFiles.length > 0 && (
+              <div className={`mt-4 space-y-2 ${ocrLoading ? 'opacity-60' : ''}`}>
+                {ocrFiles.map((file, index) => (
+                  <div
+                    key={`${file.name}-${index}`}
+                    className={`flex items-center gap-3 p-3 bg-white/5 rounded-lg border ${ocrLoading ? 'border-emerald-500/30' : 'border-white/10'}`}
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center overflow-hidden relative">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="w-full h-full object-cover"
+                      />
+                      {ocrLoading && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                          <div className="w-4 h-4 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white truncate">{file.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {ocrLoading ? 'Đang xử lý...' : `${(file.size / 1024 / 1024).toFixed(2)} MB`}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile(index);
+                      }}
+                      disabled={ocrLoading}
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        ocrLoading
+                          ? 'text-gray-600 cursor-not-allowed'
+                          : 'hover:bg-red-500/20 text-gray-400 hover:text-red-400'
+                      }`}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+
+                {/* Process Button */}
+                <button
+                  type="button"
+                  onClick={processOCR}
+                  disabled={ocrLoading || ocrFiles.length === 0}
+                  className="w-full mt-3 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-600 text-white font-semibold rounded-xl transition-all disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {ocrLoading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Đang xử lý OCR...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                      Quét và điền tự động
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* OCR Error */}
+            {ocrError && (
+              <div className="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+                {ocrError}
+              </div>
+            )}
+
+            {/* OCR Success */}
+            {ocrSuccess && (
+              <div className="mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 text-sm flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Đã điền tự động! Vui lòng kiểm tra và bổ sung thông tin còn thiếu.
+              </div>
+            )}
+          </section>
+
           {/* Main form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+          <fieldset disabled={ocrLoading} className={ocrLoading ? 'opacity-50 pointer-events-none' : ''}>
           {/* Package Selection */}
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
             <SectionHeader
@@ -886,6 +1125,7 @@ export default function NewHealthContractPage() {
 
           </section>
 
+          </fieldset>
           </form>
 
         </div>

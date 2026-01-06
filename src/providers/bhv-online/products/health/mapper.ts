@@ -301,7 +301,8 @@ export function transformSchemaFormToContractData(formData: Record<string, unkno
         email: (formData.beneficiaryEmail as string) || '',
         identityCard: (formData.beneficiaryIdentityCard as string) || '',
         phone: (formData.beneficiaryPhone as string) || '',
-        birthday: (formData.beneficiaryBirthday as string) || '',
+        // Fallback to insured person's birthday if empty (required by model)
+        birthday: (formData.beneficiaryBirthday as string) || insuredPerson.birthday || '',
         gender: (formData.beneficiaryGender as 'male' | 'female') || 'male',
         job: (formData.beneficiaryJob as string) || '',
         city: beneficiaryLocation?.province || '',
