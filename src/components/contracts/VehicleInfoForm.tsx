@@ -14,6 +14,18 @@ interface EngineType {
 import { getEngineTypeFromCarType } from '@/utils/car-engine-mapping';
 import { useEffect } from 'react';
 
+// Các loại xe cần nhập trọng tải
+const VEHICLE_TYPES_REQUIRE_PAYLOAD = [
+  'cho_hang',   // xe chở hàng (kinh doanh & không kinh doanh)
+  'dau_keo',    // xe đầu kéo
+  'pickup',     // xe bán tải/van
+  'kd_grab_be', // Grab/Be/taxi công nghệ
+];
+
+const requiresPayload = (loaiHinhKinhDoanh: string): boolean => {
+  return VEHICLE_TYPES_REQUIRE_PAYLOAD.some(type => loaiHinhKinhDoanh.includes(type));
+};
+
 interface VehicleInfoFormProps {
   formData: VehicleFormData;
   carData: CarSelection;
@@ -322,7 +334,7 @@ export default function VehicleInfoForm({
         </div>
 
 
-        {(formData.loaiHinhKinhDoanh.includes('cho_hang') || formData.loaiHinhKinhDoanh.includes('dau_keo') || formData.loaiHinhKinhDoanh.includes('pickup')) && (
+        {requiresPayload(formData.loaiHinhKinhDoanh) && (
           <div className="lg:col-span-3">
             <label className="block text-white font-medium mb-2">Trọng tải (kg) *</label>
             <input 
