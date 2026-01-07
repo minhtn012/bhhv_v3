@@ -299,6 +299,20 @@ export class BhvApiClient extends BaseApiClient {
       this.setSessionCookies(cookie);
     }
 
+    // Log curl command for debugging
+    const headers = this.getDefaultHeaders();
+    const bodyJson = JSON.stringify(requestData);
+    console.log('\n🔍 === BHV Health Contract Submit - CURL Debug ===');
+    console.log(`curl -X POST '${this.baseUrl}' \\`);
+    Object.entries(headers).forEach(([key, value]) => {
+      console.log(`  -H '${key}: ${value}' \\`);
+    });
+    if (this.sessionCookies) {
+      console.log(`  -H 'Cookie: ${this.sessionCookies}' \\`);
+    }
+    console.log(`  -d '${bodyJson}'`);
+    console.log('=== END CURL Debug ===\n');
+
     const result = await this.request<{ status_code: number; data: string; message?: string }>(
       '',
       {
@@ -306,6 +320,15 @@ export class BhvApiClient extends BaseApiClient {
         body: requestData,
       }
     );
+
+    // Log raw response for debugging
+    console.log('\n📦 === BHV Health Contract Response ===');
+    console.log('Success:', result.success);
+    console.log('Raw Response:', JSON.stringify(result.rawResponse, null, 2));
+    if (result.error) {
+      console.log('Error:', result.error);
+    }
+    console.log('=== END Response ===\n');
 
     if (!result.success) {
       return {
@@ -315,17 +338,25 @@ export class BhvApiClient extends BaseApiClient {
       };
     }
 
-    const data = result.data;
-    if (data?.status_code === 200 && data.data) {
-      // Extract saleCode from response (UUID pattern)
-      const htmlData = data.data;
-      const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
-      const matches = typeof htmlData === 'string' ? htmlData.match(uuidPattern) : null;
+    const data = result.data as { status_code: number; data: string; data_type?: string; message?: string };
 
+    // Step 1 success: status_code 100 with data_type "yesno" - data contains sale_code UUID directly
+    if (data?.status_code === 100 && data?.data_type === 'yesno' && data.data) {
+      return {
+        success: true,
+        saleCode: data.data, // UUID directly from response
+        rawResponse: data,
+      };
+    }
+
+    // Fallback: status_code 200 (legacy handling)
+    if (data?.status_code === 200 && data.data) {
+      const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+      const matches = typeof data.data === 'string' ? data.data.match(uuidPattern) : null;
       return {
         success: true,
         saleCode: matches ? matches[0] : undefined,
-        htmlPreview: typeof htmlData === 'string' ? htmlData : undefined,
+        htmlPreview: typeof data.data === 'string' ? data.data : undefined,
         rawResponse: data,
       };
     }

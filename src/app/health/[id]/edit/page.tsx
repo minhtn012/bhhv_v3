@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
+import LocationPicker, { LocationValue } from '@/core/shared/components/LocationPicker';
 import {
   HEALTH_PACKAGES,
   HEALTH_PACKAGE_LABELS,
@@ -78,6 +79,10 @@ interface HealthContractData {
     birthday: string;
     gender: string;
     job?: string;
+    city?: string;
+    cityText?: string;
+    district?: string;
+    districtText?: string;
     address?: string;
   };
   insuredPerson: {
@@ -87,11 +92,27 @@ interface HealthContractData {
     phone?: string;
     birthday: string;
     gender: string;
+    job?: string;
+    city?: string;
+    cityText?: string;
+    district?: string;
+    districtText?: string;
+    address?: string;
     relationship: string;
   };
   beneficiary: {
     fullname: string;
+    email?: string;
     identityCard: string;
+    phone?: string;
+    birthday?: string;
+    gender?: string;
+    job?: string;
+    city?: string;
+    cityText?: string;
+    district?: string;
+    districtText?: string;
+    address?: string;
     relationship: string;
   };
   customerKind: string;
@@ -128,7 +149,9 @@ type FormDataType = {
   buyerGender: string;
   buyerJob: string;
   buyerCity: string;
+  buyerCityText: string;
   buyerDistrict: string;
+  buyerDistrictText: string;
   buyerAddress: string;
   insuredSameAsBuyer: boolean;
   insuredRelationship: string;
@@ -140,7 +163,9 @@ type FormDataType = {
   insuredGender: string;
   insuredJob: string;
   insuredCity: string;
+  insuredCityText: string;
   insuredDistrict: string;
+  insuredDistrictText: string;
   insuredAddress: string;
   beneficiarySameAsInsured: boolean;
   beneficiaryRelationship: string;
@@ -152,7 +177,9 @@ type FormDataType = {
   beneficiaryGender: string;
   beneficiaryJob: string;
   beneficiaryCity: string;
+  beneficiaryCityText: string;
   beneficiaryDistrict: string;
+  beneficiaryDistrictText: string;
   beneficiaryAddress: string;
   activeDate: string;
   inactiveDate: string;
@@ -187,7 +214,9 @@ const initialFormData: FormDataType = {
   buyerGender: 'male',
   buyerJob: '',
   buyerCity: '',
+  buyerCityText: '',
   buyerDistrict: '',
+  buyerDistrictText: '',
   buyerAddress: '',
   insuredSameAsBuyer: true,
   insuredRelationship: HEALTH_RELATIONSHIPS.SELF as string,
@@ -199,7 +228,9 @@ const initialFormData: FormDataType = {
   insuredGender: 'male',
   insuredJob: '',
   insuredCity: '',
+  insuredCityText: '',
   insuredDistrict: '',
+  insuredDistrictText: '',
   insuredAddress: '',
   beneficiarySameAsInsured: true,
   beneficiaryRelationship: HEALTH_RELATIONSHIPS.SELF as string,
@@ -211,7 +242,9 @@ const initialFormData: FormDataType = {
   beneficiaryGender: 'male',
   beneficiaryJob: '',
   beneficiaryCity: '',
+  beneficiaryCityText: '',
   beneficiaryDistrict: '',
+  beneficiaryDistrictText: '',
   beneficiaryAddress: '',
   activeDate: '',
   inactiveDate: '',
@@ -227,6 +260,7 @@ export default function EditHealthContractPage() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [contractNumber, setContractNumber] = useState('');
+  const [currentUser, setCurrentUser] = useState<{ role: string } | null>(null);
 
   // Form state
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
@@ -257,11 +291,12 @@ export default function EditHealthContractPage() {
       router.push('/');
       return;
     }
+    setCurrentUser(user);
 
-    fetchContract();
+    fetchContract(user.role);
   }, [router, params.id]);
 
-  const fetchContract = async () => {
+  const fetchContract = async (userRole?: string) => {
     try {
       const response = await fetch(`/api/contracts/health/${params.id}`);
       const data = await response.json();
@@ -269,7 +304,8 @@ export default function EditHealthContractPage() {
       if (response.ok) {
         const contract: HealthContractData = data.contract;
 
-        if (contract.status !== 'nhap') {
+        // Admin can edit any status, users can only edit draft
+        if (contract.status !== 'nhap' && userRole !== 'admin') {
           setError('Chỉ có thể sửa hợp đồng ở trạng thái nháp');
           setLoading(false);
           return;
@@ -311,8 +347,10 @@ export default function EditHealthContractPage() {
           buyerBirthday: contract.buyer.birthday,
           buyerGender: contract.buyer.gender,
           buyerJob: contract.buyer.job || '',
-          buyerCity: '',
-          buyerDistrict: '',
+          buyerCity: contract.buyer.city || '',
+          buyerCityText: contract.buyer.cityText || '',
+          buyerDistrict: contract.buyer.district || '',
+          buyerDistrictText: contract.buyer.districtText || '',
           buyerAddress: contract.buyer.address || '',
           insuredSameAsBuyer,
           insuredRelationship: contract.insuredPerson.relationship,
@@ -322,22 +360,26 @@ export default function EditHealthContractPage() {
           insuredPhone: contract.insuredPerson.phone || '',
           insuredBirthday: contract.insuredPerson.birthday,
           insuredGender: contract.insuredPerson.gender,
-          insuredJob: '',
-          insuredCity: '',
-          insuredDistrict: '',
-          insuredAddress: '',
+          insuredJob: contract.insuredPerson.job || '',
+          insuredCity: contract.insuredPerson.city || '',
+          insuredCityText: contract.insuredPerson.cityText || '',
+          insuredDistrict: contract.insuredPerson.district || '',
+          insuredDistrictText: contract.insuredPerson.districtText || '',
+          insuredAddress: contract.insuredPerson.address || '',
           beneficiarySameAsInsured,
           beneficiaryRelationship: contract.beneficiary.relationship,
           beneficiaryFullname: contract.beneficiary.fullname,
-          beneficiaryEmail: '',
+          beneficiaryEmail: contract.beneficiary.email || '',
           beneficiaryIdentityCard: contract.beneficiary.identityCard,
-          beneficiaryPhone: '',
-          beneficiaryBirthday: '',
-          beneficiaryGender: 'male',
-          beneficiaryJob: '',
-          beneficiaryCity: '',
-          beneficiaryDistrict: '',
-          beneficiaryAddress: '',
+          beneficiaryPhone: contract.beneficiary.phone || '',
+          beneficiaryBirthday: contract.beneficiary.birthday || '',
+          beneficiaryGender: contract.beneficiary.gender || 'male',
+          beneficiaryJob: contract.beneficiary.job || '',
+          beneficiaryCity: contract.beneficiary.city || '',
+          beneficiaryCityText: contract.beneficiary.cityText || '',
+          beneficiaryDistrict: contract.beneficiary.district || '',
+          beneficiaryDistrictText: contract.beneficiary.districtText || '',
+          beneficiaryAddress: contract.beneficiary.address || '',
           activeDate: contract.activeDate,
           inactiveDate: contract.inactiveDate,
           totalPremium: String(contract.totalPremium),
@@ -377,14 +419,53 @@ export default function EditHealthContractPage() {
     [fieldErrors]
   );
 
+  // Location handlers for each person section
+  const handleBuyerLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      buyerCity: location.provinceCode,
+      buyerCityText: location.provinceName,
+      buyerDistrict: location.districtWardId,
+      buyerDistrictText: location.districtWardName,
+      buyerAddress: location.specificAddress,
+    }));
+  }, []);
+
+  const handleInsuredLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      insuredCity: location.provinceCode,
+      insuredCityText: location.provinceName,
+      insuredDistrict: location.districtWardId,
+      insuredDistrictText: location.districtWardName,
+      insuredAddress: location.specificAddress,
+    }));
+  }, []);
+
+  const handleBeneficiaryLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      beneficiaryCity: location.provinceCode,
+      beneficiaryCityText: location.provinceName,
+      beneficiaryDistrict: location.districtWardId,
+      beneficiaryDistrictText: location.districtWardName,
+      beneficiaryAddress: location.specificAddress,
+    }));
+  }, []);
+
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
+    // Package
     if (!formData.packageType) errors.packageType = 'Vui lòng chọn gói bảo hiểm';
+
+    // Buyer fields - ALL required
     if (!formData.buyerFullname) errors.buyerFullname = 'Vui lòng nhập họ tên';
+    if (!formData.buyerEmail) errors.buyerEmail = 'Vui lòng nhập email';
     if (!formData.buyerIdentityCard) errors.buyerIdentityCard = 'Vui lòng nhập CCCD/CMND';
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
+    if (!formData.buyerJob) errors.buyerJob = 'Vui lòng nhập nghề nghiệp';
 
     // Health questions validation - require details when answer is "Có"
     for (let i = 1; i <= 5; i++) {
@@ -395,14 +476,24 @@ export default function EditHealthContractPage() {
       }
     }
 
+    // Insured person - ALL required when not same as buyer
     if (!formData.insuredSameAsBuyer) {
       if (!formData.insuredFullname) errors.insuredFullname = 'Vui lòng nhập họ tên';
+      if (!formData.insuredEmail) errors.insuredEmail = 'Vui lòng nhập email';
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
+      if (!formData.insuredPhone) errors.insuredPhone = 'Vui lòng nhập số điện thoại';
+      if (!formData.insuredBirthday) errors.insuredBirthday = 'Vui lòng nhập ngày sinh';
+      if (!formData.insuredJob) errors.insuredJob = 'Vui lòng nhập nghề nghiệp';
     }
 
+    // Beneficiary - ALL required when not same as insured
     if (!formData.beneficiarySameAsInsured) {
       if (!formData.beneficiaryFullname) errors.beneficiaryFullname = 'Vui lòng nhập họ tên';
+      if (!formData.beneficiaryEmail) errors.beneficiaryEmail = 'Vui lòng nhập email';
       if (!formData.beneficiaryIdentityCard) errors.beneficiaryIdentityCard = 'Vui lòng nhập CCCD/CMND';
+      if (!formData.beneficiaryPhone) errors.beneficiaryPhone = 'Vui lòng nhập số điện thoại';
+      if (!formData.beneficiaryBirthday) errors.beneficiaryBirthday = 'Vui lòng nhập ngày sinh';
+      if (!formData.beneficiaryJob) errors.beneficiaryJob = 'Vui lòng nhập nghề nghiệp';
     }
 
     if (!formData.activeDate) errors.activeDate = 'Vui lòng chọn ngày bắt đầu';
@@ -424,19 +515,61 @@ export default function EditHealthContractPage() {
     setError('');
 
     try {
+      // Handle "same as" logic for city/district
+      let insuredCity = formData.insuredCity;
+      let insuredCityText = formData.insuredCityText;
+      let insuredDistrict = formData.insuredDistrict;
+      let insuredDistrictText = formData.insuredDistrictText;
+      let insuredAddress = formData.insuredAddress;
+
+      if (formData.insuredSameAsBuyer) {
+        insuredCity = formData.buyerCity;
+        insuredCityText = formData.buyerCityText;
+        insuredDistrict = formData.buyerDistrict;
+        insuredDistrictText = formData.buyerDistrictText;
+        insuredAddress = formData.buyerAddress;
+      }
+
+      let beneficiaryCity = formData.beneficiaryCity;
+      let beneficiaryCityText = formData.beneficiaryCityText;
+      let beneficiaryDistrict = formData.beneficiaryDistrict;
+      let beneficiaryDistrictText = formData.beneficiaryDistrictText;
+      let beneficiaryAddress = formData.beneficiaryAddress;
+
+      // When beneficiary is "Bản thân", use buyer data (not insured)
+      if (formData.beneficiarySameAsInsured) {
+        beneficiaryCity = formData.buyerCity;
+        beneficiaryCityText = formData.buyerCityText;
+        beneficiaryDistrict = formData.buyerDistrict;
+        beneficiaryDistrictText = formData.buyerDistrictText;
+        beneficiaryAddress = formData.buyerAddress;
+      }
+
       const submitData = {
         ...formData,
+        // Override city/district with resolved values
+        insuredCity,
+        insuredCityText,
+        insuredDistrict,
+        insuredDistrictText,
+        insuredAddress,
+        beneficiaryCity,
+        beneficiaryCityText,
+        beneficiaryDistrict,
+        beneficiaryDistrictText,
+        beneficiaryAddress,
+        // Location objects for mapper
         buyerLocation: {
           province: formData.buyerCity,
           district: formData.buyerDistrict,
         },
         insuredLocation: {
-          province: formData.insuredCity,
-          district: formData.insuredDistrict,
+          province: insuredCity,
+          district: insuredDistrict,
         },
         beneficiaryLocation: {
-          province: formData.beneficiaryCity,
-          district: formData.beneficiaryDistrict,
+          province: beneficiaryCity,
+          district: beneficiaryDistrict,
         },
       };
 
@@ -513,7 +646,7 @@ export default function EditHealthContractPage() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <button
@@ -830,15 +963,39 @@ export default function EditHealthContractPage() {
                 </select>
               </Field>
 
-              <Field label="Địa chỉ" isChanged={changedFields.has('buyerAddress')} className="sm:col-span-2 lg:col-span-3">
+              <Field label="Nghề nghiệp" required isChanged={changedFields.has('buyerJob')}>
                 <input
                   type="text"
-                  name="buyerAddress"
-                  value={formData.buyerAddress}
+                  name="buyerJob"
+                  value={formData.buyerJob}
                   onChange={handleChange}
-                  className={inputClass('buyerAddress')}
+                  className={inputClass('buyerJob', !!fieldErrors.buyerJob)}
                 />
+                {fieldErrors.buyerJob && (
+                  <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerJob}</p>
+                )}
               </Field>
+
+              {/* Location Picker */}
+              <div className="sm:col-span-2 lg:col-span-3">
+                <Field label="Địa chỉ" required isChanged={changedFields.has('buyerCity') || changedFields.has('buyerDistrict') || changedFields.has('buyerAddress')}>
+                  <LocationPicker
+                    value={{
+                      provinceCode: formData.buyerCity,
+                      provinceName: formData.buyerCityText,
+                      districtWardId: formData.buyerDistrict,
+                      districtWardName: formData.buyerDistrictText,
+                      specificAddress: formData.buyerAddress,
+                    }}
+                    onChange={handleBuyerLocationChange}
+                    errors={{
+                      province: fieldErrors.buyerCity,
+                      districtWard: fieldErrors.buyerDistrict,
+                      specificAddress: fieldErrors.buyerAddress,
+                    }}
+                  />
+                </Field>
+              </div>
             </div>
           </section>
 
@@ -926,8 +1083,34 @@ export default function EditHealthContractPage() {
                       )}
                     </Field>
 
+                    <Field label="Email" required isChanged={changedFields.has('insuredEmail')}>
+                      <input
+                        type="email"
+                        name="insuredEmail"
+                        value={formData.insuredEmail}
+                        onChange={handleChange}
+                        className={inputClass('insuredEmail', !!fieldErrors.insuredEmail)}
+                      />
+                      {fieldErrors.insuredEmail && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredEmail}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số điện thoại" required isChanged={changedFields.has('insuredPhone')}>
+                      <input
+                        type="tel"
+                        name="insuredPhone"
+                        value={formData.insuredPhone}
+                        onChange={handleChange}
+                        className={inputClass('insuredPhone', !!fieldErrors.insuredPhone)}
+                      />
+                      {fieldErrors.insuredPhone && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredPhone}</p>
+                      )}
+                    </Field>
+
                     <div className="grid grid-cols-2 gap-4">
-                      <Field label="Ngày sinh" isChanged={changedFields.has('insuredBirthday')}>
+                      <Field label="Ngày sinh" required isChanged={changedFields.has('insuredBirthday')}>
                         <input
                           type="date"
                           name="insuredBirthday"
@@ -937,7 +1120,7 @@ export default function EditHealthContractPage() {
                         />
                       </Field>
 
-                      <Field label="Giới tính" isChanged={changedFields.has('insuredGender')}>
+                      <Field label="Giới tính" required isChanged={changedFields.has('insuredGender')}>
                         <select
                           name="insuredGender"
                           value={formData.insuredGender}
@@ -949,6 +1132,37 @@ export default function EditHealthContractPage() {
                         </select>
                       </Field>
                     </div>
+
+                    <Field label="Nghề nghiệp" required isChanged={changedFields.has('insuredJob')}>
+                      <input
+                        type="text"
+                        name="insuredJob"
+                        value={formData.insuredJob}
+                        onChange={handleChange}
+                        className={inputClass('insuredJob', !!fieldErrors.insuredJob)}
+                      />
+                      {fieldErrors.insuredJob && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredJob}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Địa chỉ" required isChanged={changedFields.has('insuredCity') || changedFields.has('insuredDistrict') || changedFields.has('insuredAddress')}>
+                      <LocationPicker
+                        value={{
+                          provinceCode: formData.insuredCity,
+                          provinceName: formData.insuredCityText,
+                          districtWardId: formData.insuredDistrict,
+                          districtWardName: formData.insuredDistrictText,
+                          specificAddress: formData.insuredAddress,
+                        }}
+                        onChange={handleInsuredLocationChange}
+                        errors={{
+                          province: fieldErrors.insuredCity,
+                          districtWard: fieldErrors.insuredDistrict,
+                          specificAddress: fieldErrors.insuredAddress,
+                        }}
+                      />
+                    </Field>
                   </>
                 )}
               </div>
@@ -988,12 +1202,12 @@ export default function EditHealthContractPage() {
                       </svg>
                     )}
                   </div>
-                  <span className="text-gray-400 text-sm">Giống người được BH</span>
+                  <span className="text-gray-400 text-sm">Giống người mua BH</span>
                 </label>
               </div>
 
               <div className="space-y-4">
-                <Field label="Quan hệ với người được BH" isChanged={changedFields.has('beneficiaryRelationship')}>
+                <Field label="Quan hệ với người mua BH" isChanged={changedFields.has('beneficiaryRelationship')}>
                   <select
                     name="beneficiaryRelationship"
                     value={formData.beneficiaryRelationship}
@@ -1034,6 +1248,90 @@ export default function EditHealthContractPage() {
                       {fieldErrors.beneficiaryIdentityCard && (
                         <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
                       )}
+                    </Field>
+
+                    <Field label="Email" required isChanged={changedFields.has('beneficiaryEmail')}>
+                      <input
+                        type="email"
+                        name="beneficiaryEmail"
+                        value={formData.beneficiaryEmail}
+                        onChange={handleChange}
+                        className={inputClass('beneficiaryEmail', !!fieldErrors.beneficiaryEmail)}
+                      />
+                      {fieldErrors.beneficiaryEmail && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryEmail}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Số điện thoại" required isChanged={changedFields.has('beneficiaryPhone')}>
+                      <input
+                        type="tel"
+                        name="beneficiaryPhone"
+                        value={formData.beneficiaryPhone}
+                        onChange={handleChange}
+                        className={inputClass('beneficiaryPhone', !!fieldErrors.beneficiaryPhone)}
+                      />
+                      {fieldErrors.beneficiaryPhone && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryPhone}</p>
+                      )}
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <Field label="Ngày sinh" required isChanged={changedFields.has('beneficiaryBirthday')}>
+                        <input
+                          type="date"
+                          name="beneficiaryBirthday"
+                          value={formData.beneficiaryBirthday}
+                          onChange={handleChange}
+                          className={inputClass('beneficiaryBirthday', !!fieldErrors.beneficiaryBirthday)}
+                        />
+                        {fieldErrors.beneficiaryBirthday && (
+                          <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryBirthday}</p>
+                        )}
+                      </Field>
+
+                      <Field label="Giới tính" required isChanged={changedFields.has('beneficiaryGender')}>
+                        <select
+                          name="beneficiaryGender"
+                          value={formData.beneficiaryGender}
+                          onChange={handleChange}
+                          className={selectClass('beneficiaryGender')}
+                        >
+                          <option value="male">Nam</option>
+                          <option value="female">Nữ</option>
+                        </select>
+                      </Field>
+                    </div>
+
+                    <Field label="Nghề nghiệp" required isChanged={changedFields.has('beneficiaryJob')}>
+                      <input
+                        type="text"
+                        name="beneficiaryJob"
+                        value={formData.beneficiaryJob}
+                        onChange={handleChange}
+                        className={inputClass('beneficiaryJob', !!fieldErrors.beneficiaryJob)}
+                      />
+                      {fieldErrors.beneficiaryJob && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryJob}</p>
+                      )}
+                    </Field>
+
+                    <Field label="Địa chỉ" required isChanged={changedFields.has('beneficiaryCity') || changedFields.has('beneficiaryDistrict') || changedFields.has('beneficiaryAddress')}>
+                      <LocationPicker
+                        value={{
+                          provinceCode: formData.beneficiaryCity,
+                          provinceName: formData.beneficiaryCityText,
+                          districtWardId: formData.beneficiaryDistrict,
+                          districtWardName: formData.beneficiaryDistrictText,
+                          specificAddress: formData.beneficiaryAddress,
+                        }}
+                        onChange={handleBeneficiaryLocationChange}
+                        errors={{
+                          province: fieldErrors.beneficiaryCity,
+                          districtWard: fieldErrors.beneficiaryDistrict,
+                          specificAddress: fieldErrors.beneficiaryAddress,
+                        }}
+                      />
                     </Field>
                   </>
                 )}

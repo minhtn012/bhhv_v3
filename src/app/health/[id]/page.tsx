@@ -426,7 +426,7 @@ export default function HealthContractDetailPage() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="w-full">
           {/* Header */}
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 mb-6">
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
@@ -675,7 +675,7 @@ export default function HealthContractDetailPage() {
                     <p className="text-white">{contract.beneficiary.fullname}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-sm">Quan hệ với người được BH</p>
+                    <p className="text-gray-400 text-sm">Quan hệ với người mua BH</p>
                     <p className="text-white">{HEALTH_RELATIONSHIP_LABELS[contract.beneficiary.relationship] || contract.beneficiary.relationship}</p>
                   </div>
                 </div>
