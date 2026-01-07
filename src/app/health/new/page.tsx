@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
+import LocationPicker, { LocationValue } from '@/core/shared/components/LocationPicker';
 import {
   HEALTH_PACKAGES,
   HEALTH_PACKAGE_LABELS,
@@ -73,7 +74,9 @@ type FormDataType = {
   buyerGender: string;
   buyerJob: string;
   buyerCity: string;
+  buyerCityText: string;
   buyerDistrict: string;
+  buyerDistrictText: string;
   buyerAddress: string;
   insuredSameAsBuyer: boolean;
   insuredRelationship: string;
@@ -85,7 +88,9 @@ type FormDataType = {
   insuredGender: string;
   insuredJob: string;
   insuredCity: string;
+  insuredCityText: string;
   insuredDistrict: string;
+  insuredDistrictText: string;
   insuredAddress: string;
   beneficiarySameAsInsured: boolean;
   beneficiaryRelationship: string;
@@ -97,7 +102,9 @@ type FormDataType = {
   beneficiaryGender: string;
   beneficiaryJob: string;
   beneficiaryCity: string;
+  beneficiaryCityText: string;
   beneficiaryDistrict: string;
+  beneficiaryDistrictText: string;
   beneficiaryAddress: string;
   activeDate: string;
   inactiveDate: string;
@@ -146,7 +153,9 @@ export default function NewHealthContractPage() {
     buyerGender: 'male',
     buyerJob: '',
     buyerCity: '',
+    buyerCityText: '',
     buyerDistrict: '',
+    buyerDistrictText: '',
     buyerAddress: '',
     insuredSameAsBuyer: true,
     insuredRelationship: HEALTH_RELATIONSHIPS.SELF as string,
@@ -158,7 +167,9 @@ export default function NewHealthContractPage() {
     insuredGender: 'male',
     insuredJob: '',
     insuredCity: '',
+    insuredCityText: '',
     insuredDistrict: '',
+    insuredDistrictText: '',
     insuredAddress: '',
     beneficiarySameAsInsured: true,
     beneficiaryRelationship: HEALTH_RELATIONSHIPS.SELF as string,
@@ -170,7 +181,9 @@ export default function NewHealthContractPage() {
     beneficiaryGender: 'male',
     beneficiaryJob: '',
     beneficiaryCity: '',
+    beneficiaryCityText: '',
     beneficiaryDistrict: '',
+    beneficiaryDistrictText: '',
     beneficiaryAddress: '',
     activeDate: '',
     inactiveDate: '',
@@ -223,6 +236,40 @@ export default function NewHealthContractPage() {
     },
     [fieldErrors]
   );
+
+  // Location handlers for each person section
+  const handleBuyerLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      buyerCity: location.provinceCode,
+      buyerCityText: location.provinceName,
+      buyerDistrict: location.districtWardId,
+      buyerDistrictText: location.districtWardName,
+      buyerAddress: location.specificAddress,
+    }));
+  }, []);
+
+  const handleInsuredLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      insuredCity: location.provinceCode,
+      insuredCityText: location.provinceName,
+      insuredDistrict: location.districtWardId,
+      insuredDistrictText: location.districtWardName,
+      insuredAddress: location.specificAddress,
+    }));
+  }, []);
+
+  const handleBeneficiaryLocationChange = useCallback((location: LocationValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      beneficiaryCity: location.provinceCode,
+      beneficiaryCityText: location.provinceName,
+      beneficiaryDistrict: location.districtWardId,
+      beneficiaryDistrictText: location.districtWardName,
+      beneficiaryAddress: location.specificAddress,
+    }));
+  }, []);
 
   // OCR File Handling
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -312,14 +359,84 @@ export default function NewHealthContractPage() {
     }
   }, [ocrFiles]);
 
+  // Real-time form validity check for button state
+  const isFormValid = useMemo(() => {
+    // Package - required
+    if (!formData.packageType) return false;
+
+    // Buyer fields - ALL required
+    if (!formData.buyerFullname?.trim()) return false;
+    if (!formData.buyerEmail?.trim()) return false;
+    if (!formData.buyerIdentityCard?.trim()) return false;
+    if (!formData.buyerPhone?.trim()) return false;
+    if (!formData.buyerBirthday) return false;
+    if (!formData.buyerGender) return false;
+    if (!formData.buyerJob?.trim()) return false;
+    if (!formData.buyerCity) return false;
+    if (!formData.buyerDistrict) return false;
+    if (!formData.buyerAddress?.trim()) return false;
+
+    // Health questions - details required when answer is "Có"
+    for (let i = 1; i <= 5; i++) {
+      const answerKey = `q${i}Answer` as keyof FormDataType;
+      const detailsKey = `q${i}Details` as keyof FormDataType;
+      if (formData[answerKey] === 'true' && !formData[detailsKey]?.toString().trim()) {
+        return false;
+      }
+    }
+
+    // Insured person - ALL required when not same as buyer
+    if (!formData.insuredSameAsBuyer) {
+      if (!formData.insuredFullname?.trim()) return false;
+      if (!formData.insuredEmail?.trim()) return false;
+      if (!formData.insuredIdentityCard?.trim()) return false;
+      if (!formData.insuredPhone?.trim()) return false;
+      if (!formData.insuredBirthday) return false;
+      if (!formData.insuredGender) return false;
+      if (!formData.insuredJob?.trim()) return false;
+      if (!formData.insuredCity) return false;
+      if (!formData.insuredDistrict) return false;
+      if (!formData.insuredAddress?.trim()) return false;
+    }
+
+    // Beneficiary - ALL required when not same as insured
+    if (!formData.beneficiarySameAsInsured) {
+      if (!formData.beneficiaryFullname?.trim()) return false;
+      if (!formData.beneficiaryEmail?.trim()) return false;
+      if (!formData.beneficiaryIdentityCard?.trim()) return false;
+      if (!formData.beneficiaryPhone?.trim()) return false;
+      if (!formData.beneficiaryBirthday) return false;
+      if (!formData.beneficiaryGender) return false;
+      if (!formData.beneficiaryJob?.trim()) return false;
+      if (!formData.beneficiaryCity) return false;
+      if (!formData.beneficiaryDistrict) return false;
+      if (!formData.beneficiaryAddress?.trim()) return false;
+    }
+
+    // Dates & Premium - ALL required
+    if (!formData.activeDate) return false;
+    if (!formData.inactiveDate) return false;
+    if (!formData.totalPremium) return false;
+
+    return true;
+  }, [formData]);
+
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
+    // Package
     if (!formData.packageType) errors.packageType = 'Vui lòng chọn gói bảo hiểm';
+
+    // Buyer fields - ALL required
     if (!formData.buyerFullname) errors.buyerFullname = 'Vui lòng nhập họ tên';
+    if (!formData.buyerEmail) errors.buyerEmail = 'Vui lòng nhập email';
     if (!formData.buyerIdentityCard) errors.buyerIdentityCard = 'Vui lòng nhập CCCD/CMND';
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
+    if (!formData.buyerJob) errors.buyerJob = 'Vui lòng nhập nghề nghiệp';
+    if (!formData.buyerCity) errors.buyerCity = 'Vui lòng chọn tỉnh/thành phố';
+    if (!formData.buyerDistrict) errors.buyerDistrict = 'Vui lòng chọn quận/huyện';
+    if (!formData.buyerAddress) errors.buyerAddress = 'Vui lòng nhập địa chỉ';
 
     // Health questions validation - require details when answer is "Có"
     for (let i = 1; i <= 5; i++) {
@@ -330,17 +447,35 @@ export default function NewHealthContractPage() {
       }
     }
 
+    // Insured person - ALL required when not same as buyer
     if (!formData.insuredSameAsBuyer) {
       if (!formData.insuredFullname) errors.insuredFullname = 'Vui lòng nhập họ tên';
+      if (!formData.insuredEmail) errors.insuredEmail = 'Vui lòng nhập email';
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
+      if (!formData.insuredPhone) errors.insuredPhone = 'Vui lòng nhập số điện thoại';
+      if (!formData.insuredBirthday) errors.insuredBirthday = 'Vui lòng nhập ngày sinh';
+      if (!formData.insuredJob) errors.insuredJob = 'Vui lòng nhập nghề nghiệp';
+      if (!formData.insuredCity) errors.insuredCity = 'Vui lòng chọn tỉnh/thành phố';
+      if (!formData.insuredDistrict) errors.insuredDistrict = 'Vui lòng chọn quận/huyện';
+      if (!formData.insuredAddress) errors.insuredAddress = 'Vui lòng nhập địa chỉ';
     }
 
+    // Beneficiary - ALL required when not same as insured
     if (!formData.beneficiarySameAsInsured) {
       if (!formData.beneficiaryFullname) errors.beneficiaryFullname = 'Vui lòng nhập họ tên';
+      if (!formData.beneficiaryEmail) errors.beneficiaryEmail = 'Vui lòng nhập email';
       if (!formData.beneficiaryIdentityCard) errors.beneficiaryIdentityCard = 'Vui lòng nhập CCCD/CMND';
+      if (!formData.beneficiaryPhone) errors.beneficiaryPhone = 'Vui lòng nhập số điện thoại';
+      if (!formData.beneficiaryBirthday) errors.beneficiaryBirthday = 'Vui lòng nhập ngày sinh';
+      if (!formData.beneficiaryJob) errors.beneficiaryJob = 'Vui lòng nhập nghề nghiệp';
+      if (!formData.beneficiaryCity) errors.beneficiaryCity = 'Vui lòng chọn tỉnh/thành phố';
+      if (!formData.beneficiaryDistrict) errors.beneficiaryDistrict = 'Vui lòng chọn quận/huyện';
+      if (!formData.beneficiaryAddress) errors.beneficiaryAddress = 'Vui lòng nhập địa chỉ';
     }
 
+    // Dates & Premium - ALL required
     if (!formData.activeDate) errors.activeDate = 'Vui lòng chọn ngày bắt đầu';
+    if (!formData.inactiveDate) errors.inactiveDate = 'Vui lòng chọn ngày kết thúc';
     if (!formData.totalPremium) errors.totalPremium = 'Vui lòng nhập phí bảo hiểm';
 
     setFieldErrors(errors);
@@ -359,19 +494,47 @@ export default function NewHealthContractPage() {
     setError('');
 
     try {
+      // Handle "same as" logic for city/district
+      const insuredCity = formData.insuredSameAsBuyer ? formData.buyerCity : formData.insuredCity;
+      const insuredCityText = formData.insuredSameAsBuyer ? formData.buyerCityText : formData.insuredCityText;
+      const insuredDistrict = formData.insuredSameAsBuyer ? formData.buyerDistrict : formData.insuredDistrict;
+      const insuredDistrictText = formData.insuredSameAsBuyer ? formData.buyerDistrictText : formData.insuredDistrictText;
+      const insuredAddress = formData.insuredSameAsBuyer ? formData.buyerAddress : formData.insuredAddress;
+
+      // When beneficiary is "Bản thân", use buyer data (not insured)
+      const beneficiaryCity = formData.beneficiarySameAsInsured ? formData.buyerCity : formData.beneficiaryCity;
+      const beneficiaryCityText = formData.beneficiarySameAsInsured ? formData.buyerCityText : formData.beneficiaryCityText;
+      const beneficiaryDistrict = formData.beneficiarySameAsInsured ? formData.buyerDistrict : formData.beneficiaryDistrict;
+      const beneficiaryDistrictText = formData.beneficiarySameAsInsured ? formData.buyerDistrictText : formData.beneficiaryDistrictText;
+      const beneficiaryAddress = formData.beneficiarySameAsInsured ? formData.buyerAddress : formData.beneficiaryAddress;
+
       const submitData = {
         ...formData,
+        // Include text fields for display
+        buyerCityText: formData.buyerCityText,
+        buyerDistrictText: formData.buyerDistrictText,
+        insuredCity,
+        insuredCityText,
+        insuredDistrict,
+        insuredDistrictText,
+        insuredAddress,
+        beneficiaryCity,
+        beneficiaryCityText,
+        beneficiaryDistrict,
+        beneficiaryDistrictText,
+        beneficiaryAddress,
+        // Location objects for mapper
         buyerLocation: {
           province: formData.buyerCity,
           district: formData.buyerDistrict,
         },
         insuredLocation: {
-          province: formData.insuredCity,
-          district: formData.insuredDistrict,
+          province: insuredCity,
+          district: insuredDistrict,
         },
         beneficiaryLocation: {
-          province: formData.beneficiaryCity,
-          district: formData.beneficiaryDistrict,
+          province: beneficiaryCity,
+          district: beneficiaryDistrict,
         },
       };
 
@@ -426,7 +589,7 @@ export default function NewHealthContractPage() {
           <div className="fixed bottom-6 right-6 z-50">
             <button
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || !isFormValid}
               className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-slate-600 text-white font-semibold rounded-xl transition-all disabled:cursor-not-allowed flex items-center gap-2 shadow-xl shadow-green-900/30"
             >
               {loading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
@@ -799,14 +962,15 @@ export default function NewHealthContractPage() {
                 {fieldErrors.buyerFullname && <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerFullname}</p>}
               </Field>
 
-              <Field label="Email">
+              <Field label="Email" required>
                 <input
                   type="email"
                   name="buyerEmail"
                   value={formData.buyerEmail}
                   onChange={handleChange}
-                  className={inputClass()}
+                  className={inputClass(!!fieldErrors.buyerEmail)}
                 />
+                {fieldErrors.buyerEmail && <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerEmail}</p>}
               </Field>
 
               <Field label="Số CCCD" required>
@@ -851,15 +1015,40 @@ export default function NewHealthContractPage() {
                 </select>
               </Field>
 
-              <Field label="Địa chỉ" className="sm:col-span-2 lg:col-span-3">
+              <Field label="Nghề nghiệp" required>
                 <input
                   type="text"
-                  name="buyerAddress"
-                  value={formData.buyerAddress}
+                  name="buyerJob"
+                  value={formData.buyerJob}
                   onChange={handleChange}
-                  className={inputClass()}
+                  className={inputClass(!!fieldErrors.buyerJob)}
                 />
+                {fieldErrors.buyerJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerJob}</p>}
               </Field>
+            </div>
+
+            {/* Buyer Location */}
+            <div className="mt-4">
+              <LocationPicker
+                value={{
+                  provinceCode: formData.buyerCity,
+                  provinceName: formData.buyerCityText,
+                  districtWardId: formData.buyerDistrict,
+                  districtWardName: formData.buyerDistrictText,
+                  specificAddress: formData.buyerAddress,
+                }}
+                onChange={handleBuyerLocationChange}
+                errors={{
+                  province: fieldErrors.buyerCity,
+                  districtWard: fieldErrors.buyerDistrict,
+                  specificAddress: fieldErrors.buyerAddress,
+                }}
+                labels={{
+                  province: 'Tỉnh/Thành phố',
+                  districtWard: 'Quận/Huyện',
+                  specificAddress: 'Số nhà, tên đường',
+                }}
+              />
             </div>
           </section>
 
@@ -952,18 +1141,41 @@ export default function NewHealthContractPage() {
                       )}
                     </Field>
 
+                    <Field label="Email" required>
+                      <input
+                        type="email"
+                        name="insuredEmail"
+                        value={formData.insuredEmail}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.insuredEmail)}
+                      />
+                      {fieldErrors.insuredEmail && <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredEmail}</p>}
+                    </Field>
+
+                    <Field label="Số điện thoại" required>
+                      <input
+                        type="tel"
+                        name="insuredPhone"
+                        value={formData.insuredPhone}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.insuredPhone)}
+                      />
+                      {fieldErrors.insuredPhone && <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredPhone}</p>}
+                    </Field>
+
                     <div className="grid grid-cols-2 gap-4">
-                      <Field label="Ngày sinh">
+                      <Field label="Ngày sinh" required>
                         <input
                           type="date"
                           name="insuredBirthday"
                           value={formData.insuredBirthday}
                           onChange={handleChange}
-                          className={inputClass()}
+                          className={inputClass(!!fieldErrors.insuredBirthday)}
                         />
+                        {fieldErrors.insuredBirthday && <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredBirthday}</p>}
                       </Field>
 
-                      <Field label="Giới tính">
+                      <Field label="Giới tính" required>
                         <select
                           name="insuredGender"
                           value={formData.insuredGender}
@@ -974,6 +1186,42 @@ export default function NewHealthContractPage() {
                           <option value="female">Nữ</option>
                         </select>
                       </Field>
+                    </div>
+
+                    <Field label="Nghề nghiệp" required>
+                      <input
+                        type="text"
+                        name="insuredJob"
+                        value={formData.insuredJob}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.insuredJob)}
+                      />
+                      {fieldErrors.insuredJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredJob}</p>}
+                    </Field>
+
+                    {/* Insured Location */}
+                    <div className="mt-2">
+                      <LocationPicker
+                        value={{
+                          provinceCode: formData.insuredCity,
+                          provinceName: formData.insuredCityText,
+                          districtWardId: formData.insuredDistrict,
+                          districtWardName: formData.insuredDistrictText,
+                          specificAddress: formData.insuredAddress,
+                        }}
+                        onChange={handleInsuredLocationChange}
+                        errors={{
+                          province: fieldErrors.insuredCity,
+                          districtWard: fieldErrors.insuredDistrict,
+                          specificAddress: fieldErrors.insuredAddress,
+                        }}
+                        labels={{
+                          province: 'Tỉnh/Thành phố',
+                          districtWard: 'Quận/Huyện',
+                          specificAddress: 'Địa chỉ',
+                        }}
+                        className="!grid-cols-1"
+                      />
                     </div>
                   </>
                 )}
@@ -1019,12 +1267,12 @@ export default function NewHealthContractPage() {
                       </svg>
                     )}
                   </div>
-                  <span className="text-gray-400 text-sm">Giống người được BH</span>
+                  <span className="text-gray-400 text-sm">Giống người mua BH</span>
                 </label>
               </div>
 
               <div className="space-y-4">
-                <Field label="Quan hệ với người được BH">
+                <Field label="Quan hệ với người mua BH">
                   <select
                     name="beneficiaryRelationship"
                     value={formData.beneficiaryRelationship}
@@ -1066,6 +1314,89 @@ export default function NewHealthContractPage() {
                         <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryIdentityCard}</p>
                       )}
                     </Field>
+
+                    <Field label="Email" required>
+                      <input
+                        type="email"
+                        name="beneficiaryEmail"
+                        value={formData.beneficiaryEmail}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.beneficiaryEmail)}
+                      />
+                      {fieldErrors.beneficiaryEmail && <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryEmail}</p>}
+                    </Field>
+
+                    <Field label="Số điện thoại" required>
+                      <input
+                        type="tel"
+                        name="beneficiaryPhone"
+                        value={formData.beneficiaryPhone}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.beneficiaryPhone)}
+                      />
+                      {fieldErrors.beneficiaryPhone && <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryPhone}</p>}
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <Field label="Ngày sinh" required>
+                        <input
+                          type="date"
+                          name="beneficiaryBirthday"
+                          value={formData.beneficiaryBirthday}
+                          onChange={handleChange}
+                          className={inputClass(!!fieldErrors.beneficiaryBirthday)}
+                        />
+                        {fieldErrors.beneficiaryBirthday && <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryBirthday}</p>}
+                      </Field>
+
+                      <Field label="Giới tính" required>
+                        <select
+                          name="beneficiaryGender"
+                          value={formData.beneficiaryGender}
+                          onChange={handleChange}
+                          className={selectClass()}
+                        >
+                          <option value="male">Nam</option>
+                          <option value="female">Nữ</option>
+                        </select>
+                      </Field>
+                    </div>
+
+                    <Field label="Nghề nghiệp" required>
+                      <input
+                        type="text"
+                        name="beneficiaryJob"
+                        value={formData.beneficiaryJob}
+                        onChange={handleChange}
+                        className={inputClass(!!fieldErrors.beneficiaryJob)}
+                      />
+                      {fieldErrors.beneficiaryJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryJob}</p>}
+                    </Field>
+
+                    {/* Beneficiary Location */}
+                    <div className="mt-2">
+                      <LocationPicker
+                        value={{
+                          provinceCode: formData.beneficiaryCity,
+                          provinceName: formData.beneficiaryCityText,
+                          districtWardId: formData.beneficiaryDistrict,
+                          districtWardName: formData.beneficiaryDistrictText,
+                          specificAddress: formData.beneficiaryAddress,
+                        }}
+                        onChange={handleBeneficiaryLocationChange}
+                        errors={{
+                          province: fieldErrors.beneficiaryCity,
+                          districtWard: fieldErrors.beneficiaryDistrict,
+                          specificAddress: fieldErrors.beneficiaryAddress,
+                        }}
+                        labels={{
+                          province: 'Tỉnh/Thành phố',
+                          districtWard: 'Quận/Huyện',
+                          specificAddress: 'Địa chỉ',
+                        }}
+                        className="!grid-cols-1"
+                      />
+                    </div>
                   </>
                 )}
               </div>

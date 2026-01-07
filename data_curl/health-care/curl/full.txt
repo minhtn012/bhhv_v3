@@ -1,0 +1,69 @@
+curl 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e' \
+  -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'Accept-Language: en-US,en;q=0.9,vi;q=0.8,lb;q=0.7' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json; charset=UTF-8' \
+  -b '1cb0304c-44f2-4e2f-9e06-9281aaef9632=CfDJ8IxUUl3O3iJHgtGJPwsSog8wMqJIjBmzTCGCiJa%2FOGHIQTG%2B4bD4VymWRPPjBLFLNebet2mjko5xjfz6cdi9zzUPNBpVKWP9j%2B8a4anlVjdSCeuHuF9VGEAtzJV32oGQJWkZ4cXpu2mMkFTlXM9khy8FSiCB7Vz%2BpZi29nqpROb5' \
+  -H 'Origin: https://my.bhv.com.vn' \
+  -H 'Referer: https://my.bhv.com.vn/bao-hiem-medical-care' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'X-Requested-With: XMLHttpRequest' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  --data-raw '{"action_name":"human/medical/care/install","data":"{\"sale_code\":\"\",\"kind_action\":\"insert\",\"certificate_code\":\"\",\"health_protector_year_buy\":\"da31b391-98f4-493a-b272-af7c0d68c8e3\",\"health_protector_package\":\"d7b12560-5042-4abf-961c-d772377516c1\",\"5c5261c1-5794-4c37-8938-530650aa43b2\":\"5c5261c1-5794-4c37-8938-530650aa43b2\",\"c0adb36e-a915-45bb-a798-6046e8b7b46a\":\"c0adb36e-a915-45bb-a798-6046e8b7b46a2\",\"input_c0adb36e-a915-45bb-a798-6046e8b7b46a1\":\"\",\"47d622cc-782a-4f49-ae40-53588539ef76\":\"47d622cc-782a-4f49-ae40-53588539ef762\",\"input_47d622cc-782a-4f49-ae40-53588539ef761\":\"\",\"0cca29cb-34c8-4b36-8ae7-8ee706799e64\":\"0cca29cb-34c8-4b36-8ae7-8ee706799e641\",\"input_0cca29cb-34c8-4b36-8ae7-8ee706799e641\":\"Phẫu thuật đóng ống phúc tinh mạc năm tháng 6/2024. Sức khỏe hiện tại hoàn toàn bình thường\",\"eeb1111a-543a-427d-bc26-15d46ee9566e\":\"eeb1111a-543a-427d-bc26-15d46ee9566e2\",\"input_eeb1111a-543a-427d-bc26-15d46ee9566e1\":\"\",\"ac7d74f4-7ad8-4ac8-a806-4c16f92556a0\":\"ac7d74f4-7ad8-4ac8-a806-4c16f92556a02\",\"input_ac7d74f4-7ad8-4ac8-a806-4c16f92556a01\":\"\",\"kind_customer\":\"bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1\",\"buyer_fullname\":\"LÊ THỊ THU HÀ\",\"buyer_email\":\"lethithuhaftu0209@gmail.com\",\"buyer_identity_card\":\"030193000750\",\"buyer_phone\":\"0365247899\",\"buyer_birthday\":\"02/09/1993\",\"buyer_gender\":\"NU\",\"buyer_job\":\"tự do\",\"buyer_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"buyer_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"buyer_address\":\"123 nguyen van a\",\"insured_person_relationship\":\"05ce74e8-3f8b-4e23-baf5-9a088add5c14\",\"insured_person_fullname\":\"ĐỒNG MINH QUÂN\",\"insured_person_email\":\"lethithuhaftu0209@gmail.com\",\"insured_person_identity_card\":\"031221012278\",\"insured_person_phone\":\"0365247899\",\"insured_person_birthday\":\"08/07/2021\",\"insured_person_gender\":\"NAM\",\"insured_person_job\":\"trẻ em\",\"insured_person_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"insured_person_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"insured_person_address\":\"123 nguyen van a\",\"chk_beneficiary\":\"on\",\"beneficiary_relationship\":\"05ce74e8-3f8b-4e23-baf5-9a088add5c11\",\"beneficiary_fullname\":\"LÊ THỊ THU HÀ\",\"beneficiary_email\":\"lethithuhaftu0209@gmail.com\",\"beneficiary_identity_card\":\"030193000750\",\"beneficiary_phone\":\"0365247899\",\"beneficiary_birthday\":\"02/09/1993\",\"beneficiary_gender\":\"NU\",\"beneficiary_job\":\"tự do\",\"beneficiary_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"beneficiary_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"beneficiary_address\":\"123 nguyen van a\",\"active_date\":\"07/01/2026\",\"inactive_date\":\"07/01/2027\",\"chk_agree_term\":\"1\",\"total_premium\":\"2665000\"}","d_info":{}}' ;
+curl 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e' \
+  -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'Accept-Language: en-US,en;q=0.9,vi;q=0.8,lb;q=0.7' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json; charset=UTF-8' \
+  -b '1cb0304c-44f2-4e2f-9e06-9281aaef9632=CfDJ8IxUUl3O3iJHgtGJPwsSog8wMqJIjBmzTCGCiJa%2FOGHIQTG%2B4bD4VymWRPPjBLFLNebet2mjko5xjfz6cdi9zzUPNBpVKWP9j%2B8a4anlVjdSCeuHuF9VGEAtzJV32oGQJWkZ4cXpu2mMkFTlXM9khy8FSiCB7Vz%2BpZi29nqpROb5' \
+  -H 'Origin: https://my.bhv.com.vn' \
+  -H 'Referer: https://my.bhv.com.vn/bao-hiem-medical-care' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'X-Requested-With: XMLHttpRequest' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  --data-raw '{"action_name":"human/medical/care/install","data":"{\"sale_code\":\"dbfe7d01-2c62-45e1-91e6-b9ca6ab4d2a0\",\"kind_action\":\"insert\",\"certificate_code\":\"\",\"health_protector_year_buy\":\"da31b391-98f4-493a-b272-af7c0d68c8e3\",\"health_protector_package\":\"d7b12560-5042-4abf-961c-d772377516c1\",\"5c5261c1-5794-4c37-8938-530650aa43b2\":\"5c5261c1-5794-4c37-8938-530650aa43b2\",\"c0adb36e-a915-45bb-a798-6046e8b7b46a\":\"c0adb36e-a915-45bb-a798-6046e8b7b46a2\",\"input_c0adb36e-a915-45bb-a798-6046e8b7b46a1\":\"\",\"47d622cc-782a-4f49-ae40-53588539ef76\":\"47d622cc-782a-4f49-ae40-53588539ef762\",\"input_47d622cc-782a-4f49-ae40-53588539ef761\":\"\",\"0cca29cb-34c8-4b36-8ae7-8ee706799e64\":\"0cca29cb-34c8-4b36-8ae7-8ee706799e641\",\"input_0cca29cb-34c8-4b36-8ae7-8ee706799e641\":\"Phẫu thuật đóng ống phúc tinh mạc năm tháng 6/2024. Sức khỏe hiện tại hoàn toàn bình thường\",\"eeb1111a-543a-427d-bc26-15d46ee9566e\":\"eeb1111a-543a-427d-bc26-15d46ee9566e2\",\"input_eeb1111a-543a-427d-bc26-15d46ee9566e1\":\"\",\"ac7d74f4-7ad8-4ac8-a806-4c16f92556a0\":\"ac7d74f4-7ad8-4ac8-a806-4c16f92556a02\",\"input_ac7d74f4-7ad8-4ac8-a806-4c16f92556a01\":\"\",\"kind_customer\":\"bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1\",\"buyer_fullname\":\"LÊ THỊ THU HÀ\",\"buyer_email\":\"lethithuhaftu0209@gmail.com\",\"buyer_identity_card\":\"030193000750\",\"buyer_phone\":\"0365247899\",\"buyer_birthday\":\"02/09/1993\",\"buyer_gender\":\"NU\",\"buyer_job\":\"tự do\",\"buyer_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"buyer_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"buyer_address\":\"123 nguyen van a\",\"insured_person_relationship\":\"05ce74e8-3f8b-4e23-baf5-9a088add5c14\",\"insured_person_fullname\":\"ĐỒNG MINH QUÂN\",\"insured_person_email\":\"lethithuhaftu0209@gmail.com\",\"insured_person_identity_card\":\"031221012278\",\"insured_person_phone\":\"0365247899\",\"insured_person_birthday\":\"08/07/2021\",\"insured_person_gender\":\"NAM\",\"insured_person_job\":\"trẻ em\",\"insured_person_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"insured_person_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"insured_person_address\":\"123 nguyen van a\",\"chk_beneficiary\":\"on\",\"beneficiary_relationship\":\"05ce74e8-3f8b-4e23-baf5-9a088add5c11\",\"beneficiary_fullname\":\"LÊ THỊ THU HÀ\",\"beneficiary_email\":\"lethithuhaftu0209@gmail.com\",\"beneficiary_identity_card\":\"030193000750\",\"beneficiary_phone\":\"0365247899\",\"beneficiary_birthday\":\"02/09/1993\",\"beneficiary_gender\":\"NU\",\"beneficiary_job\":\"tự do\",\"beneficiary_city\":\"eee52932-0358-47d5-9984-be1132c7f01\",\"beneficiary_district\":\"82db031c-857d-465b-9ae5-6e91fffcf573\",\"beneficiary_address\":\"123 nguyen van a\",\"active_date\":\"07/01/2026\",\"inactive_date\":\"07/01/2027\",\"chk_agree_term\":\"1\",\"total_premium\":\"2665000\"}","d_info":{}}' ;
+curl 'https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e' \
+  -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'Accept-Language: en-US,en;q=0.9,vi;q=0.8,lb;q=0.7' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json; charset=UTF-8' \
+  -b '1cb0304c-44f2-4e2f-9e06-9281aaef9632=CfDJ8IxUUl3O3iJHgtGJPwsSog8wMqJIjBmzTCGCiJa%2FOGHIQTG%2B4bD4VymWRPPjBLFLNebet2mjko5xjfz6cdi9zzUPNBpVKWP9j%2B8a4anlVjdSCeuHuF9VGEAtzJV32oGQJWkZ4cXpu2mMkFTlXM9khy8FSiCB7Vz%2BpZi29nqpROb5' \
+  -H 'Origin: https://my.bhv.com.vn' \
+  -H 'Referer: https://my.bhv.com.vn/bao-hiem-medical-care' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'X-Requested-With: XMLHttpRequest' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  --data-raw '{"action_name":"sale/report/item","data":"{\"register_id\":\"f9332040-648e-446e-a188-9a82976e8b36\"}","d_info":{}}' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/32.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/64.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/128.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/32.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/64.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;' ;
+curl 'chrome-extension://ijejnggjjphlenbhmjhhgcdpehhacaal/assets/128.png' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'Referer;'

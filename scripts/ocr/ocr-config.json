@@ -78,7 +78,7 @@
 
         "ngThuHuong_hoTen: Người thụ hưởng - Họ và tên (mục 5)",
         "ngThuHuong_soCCCD: Người thụ hưởng - Số CCCD/CMND",
-        "ngThuHuong_quanHe: Người thụ hưởng - Quan hệ với người được BH (Bản thân/Vợ chồng/Cha mẹ/Con/Mẹ ruột/Khác)",
+        "ngThuHuong_quanHe: Người thụ hưởng - Quan hệ với người mua BH (Bản thân=Người mua BH/Vợ chồng/Cha mẹ/Con/Mẹ ruột/Khác)",
         "ngThuHuong_soDienThoai: Người thụ hưởng - Số điện thoại",
         "ngThuHuong_email: Người thụ hưởng - Email",
         "ngThuHuong_diaChi: Người thụ hưởng - Địa chỉ",

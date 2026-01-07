@@ -98,8 +98,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Check if contract can be edited
-    if (!contract.canEdit()) {
+    // Check if contract can be edited (admin can edit any status)
+    if (user.role !== 'admin' && !contract.canEdit()) {
       return NextResponse.json(
         { error: 'Không thể sửa hợp đồng ở trạng thái này' },
         { status: 400 }

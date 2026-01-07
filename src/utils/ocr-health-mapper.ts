@@ -285,14 +285,24 @@ export function cleanPremiumAmount(amount: string | number | null | undefined): 
  * @returns Partial form data structure for merging with form state
  */
 export function mapOCRToHealthForm(ocr: Partial<HealthOCROutput>): Partial<HealthFormData> {
-  // Determine if insured is same as buyer (no insured info or same name)
-  const insuredSameAsBuyer = !ocr.ngDuocBH_hoTen ||
-    (ocr.ngDuocBH_hoTen?.toLowerCase().trim() === ocr.hoTen?.toLowerCase().trim());
+  // Helper: check if relationship is "Bản thân" (self = buyer)
+  const isSelfRelationship = (rel: string | null | undefined): boolean => {
+    if (!rel) return false;
+    const normalized = rel.toLowerCase().trim();
+    return normalized === 'bản thân' || normalized === 'ban than';
+  };
 
-  // Determine if beneficiary is same as insured
-  const insuredName = ocr.ngDuocBH_hoTen || ocr.hoTen;
+  // Determine if insured is same as buyer:
+  // - No insured name, OR same name as buyer, OR relationship = "Bản thân"
+  const insuredSameAsBuyer = !ocr.ngDuocBH_hoTen ||
+    (ocr.ngDuocBH_hoTen?.toLowerCase().trim() === ocr.hoTen?.toLowerCase().trim()) ||
+    isSelfRelationship(ocr.ngDuocBH_quanHe);
+
+  // Determine if beneficiary is same as buyer:
+  // - No beneficiary name, OR same name as buyer, OR relationship = "Bản thân"
   const beneficiarySameAsInsured = !ocr.ngThuHuong_hoTen ||
-    (ocr.ngThuHuong_hoTen?.toLowerCase().trim() === insuredName?.toLowerCase().trim());
+    (ocr.ngThuHuong_hoTen?.toLowerCase().trim() === ocr.hoTen?.toLowerCase().trim()) ||
+    isSelfRelationship(ocr.ngThuHuong_quanHe);
 
   return {
     // Buyer

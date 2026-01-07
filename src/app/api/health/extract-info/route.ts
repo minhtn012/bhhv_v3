@@ -88,7 +88,7 @@ CHÚ Ý: Xem kỹ dấu tick ở cột "Có" hay "Không" cho TỪNG câu hỏi
 ## MỤC 5: NGƯỜI THỤ HƯỞNG (thường ở cuối form, gần phần ký tên)
 - ngThuHuong_hoTen: Họ và tên người thụ hưởng
 - ngThuHuong_soCCCD: Số CCCD/CMND
-- ngThuHuong_quanHe: Quan hệ với người được BH (Bản thân/Vợ chồng/Cha mẹ/Con/Mẹ ruột/Khác)
+- ngThuHuong_quanHe: Quan hệ với người mua BH (Bản thân=Người mua BH/Vợ chồng/Cha mẹ/Con/Mẹ ruột/Khác)
 - ngThuHuong_soDienThoai: Số điện thoại
 - ngThuHuong_email: Email
 - ngThuHuong_diaChi: Địa chỉ

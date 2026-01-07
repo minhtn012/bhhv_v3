@@ -177,13 +177,11 @@ export function mapHealthToBhvFormat(
     insured_person_relationship: formData.insuredPerson?.relationship || HEALTH_RELATIONSHIPS.SELF,
     ...mapPersonSection('insured_person', formData.insuredSameAsBuyer ? formData.buyer : formData.insuredPerson),
 
-    // Beneficiary info
+    // Beneficiary info - when "Bản thân" (same as), beneficiary IS the buyer
     chk_beneficiary: 'on',
     beneficiary_relationship: formData.beneficiary?.relationship || HEALTH_RELATIONSHIPS.SELF,
     ...mapPersonSection('beneficiary',
-      formData.beneficiarySameAsInsured
-        ? (formData.insuredSameAsBuyer ? formData.buyer : formData.insuredPerson)
-        : formData.beneficiary
+      formData.beneficiarySameAsInsured ? formData.buyer : formData.beneficiary
     ),
 
     // Health questions
@@ -202,8 +200,16 @@ export function mapHealthToBhvFormat(
 
 /**
  * Normalize IHealthContract to HealthContractFormData
+ * Derives boolean flags from data since they're not stored in DB
  */
 function normalizeContractToFormData(contract: IHealthContract): HealthContractFormData {
+  // Derive flags by comparing person data
+  const insuredSameAsBuyer =
+    contract.insuredPerson.identityCard === contract.buyer.identityCard;
+
+  const beneficiarySameAsInsured =
+    contract.beneficiary.relationship === HEALTH_RELATIONSHIPS.SELF;
+
   return {
     kindAction: contract.kindAction,
     certificateCode: contract.certificateCode,
@@ -218,6 +224,8 @@ function normalizeContractToFormData(contract: IHealthContract): HealthContractF
     inactiveDate: contract.inactiveDate,
     totalPremium: contract.totalPremium,
     customerKind: contract.customerKind,
+    insuredSameAsBuyer,
+    beneficiarySameAsInsured,
   };
 }
 
@@ -269,8 +277,10 @@ export function transformSchemaFormToContractData(formData: Record<string, unkno
     birthday: (formData.buyerBirthday as string) || '',
     gender: (formData.buyerGender as 'male' | 'female') || 'male',
     job: (formData.buyerJob as string) || '',
-    city: buyerLocation?.province || '',
-    district: buyerLocation?.district || '',
+    city: buyerLocation?.province || (formData.buyerCity as string) || '',
+    cityText: (formData.buyerCityText as string) || '',
+    district: buyerLocation?.district || (formData.buyerDistrict as string) || '',
+    districtText: (formData.buyerDistrictText as string) || '',
     address: (formData.buyerAddress as string) || '',
   };
 
@@ -286,16 +296,18 @@ export function transformSchemaFormToContractData(formData: Record<string, unkno
         birthday: (formData.insuredBirthday as string) || '',
         gender: (formData.insuredGender as 'male' | 'female') || 'male',
         job: (formData.insuredJob as string) || '',
-        city: insuredLocation?.province || '',
-        district: insuredLocation?.district || '',
+        city: insuredLocation?.province || (formData.insuredCity as string) || '',
+        cityText: (formData.insuredCityText as string) || '',
+        district: insuredLocation?.district || (formData.insuredDistrict as string) || '',
+        districtText: (formData.insuredDistrictText as string) || '',
         address: (formData.insuredAddress as string) || '',
         relationship: (formData.insuredRelationship as string) || HEALTH_RELATIONSHIPS.SELF,
       };
 
-  // Build beneficiary section
+  // Build beneficiary section - when "Bản thân", beneficiary IS the buyer
   const beneficiarySameAsInsured = formData.beneficiarySameAsInsured === true;
   const beneficiary: HealthPersonSection & { relationship: string } = beneficiarySameAsInsured
-    ? { ...insuredPerson, relationship: HEALTH_RELATIONSHIPS.SELF }
+    ? { ...buyer, relationship: HEALTH_RELATIONSHIPS.SELF }
     : {
         fullname: (formData.beneficiaryFullname as string) || '',
         email: (formData.beneficiaryEmail as string) || '',
@@ -305,8 +317,10 @@ export function transformSchemaFormToContractData(formData: Record<string, unkno
         birthday: (formData.beneficiaryBirthday as string) || insuredPerson.birthday || '',
         gender: (formData.beneficiaryGender as 'male' | 'female') || 'male',
         job: (formData.beneficiaryJob as string) || '',
-        city: beneficiaryLocation?.province || '',
-        district: beneficiaryLocation?.district || '',
+        city: beneficiaryLocation?.province || (formData.beneficiaryCity as string) || '',
+        cityText: (formData.beneficiaryCityText as string) || '',
+        district: beneficiaryLocation?.district || (formData.beneficiaryDistrict as string) || '',
+        districtText: (formData.beneficiaryDistrictText as string) || '',
         address: (formData.beneficiaryAddress as string) || '',
         relationship: (formData.beneficiaryRelationship as string) || HEALTH_RELATIONSHIPS.SELF,
       };
