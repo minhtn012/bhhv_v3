@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import HealthContract from '@/models/HealthContract';
-import User from '@/models/User';
 import { requireAuth } from '@/lib/auth';
 import { logError, createErrorResponse } from '@/lib/errorLogger';
 import mongoose from 'mongoose';
 import { bhvProvider } from '@/providers/bhv-online';
-import { decryptBhvCredentials } from '@/lib/encryption';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -52,44 +50,19 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Get user's BHV credentials
-    const dbUser = await User.findById(user.userId).lean();
-    if (!dbUser || !dbUser.bhvUsername || !dbUser.bhvPassword) {
+    // Get cookies from request body (same pattern as vehicle insurance)
+    const body = await request.json().catch(() => ({}));
+    const { cookies } = body;
+
+    if (!cookies) {
       return NextResponse.json(
-        { error: 'Chưa cấu hình tài khoản BHV. Vui lòng cập nhật trong phần cài đặt.' },
+        { error: 'Vui lòng đăng nhập BHV trước khi xác nhận hợp đồng' },
         { status: 400 }
       );
     }
 
-    // Authenticate with BHV
-    let bhvCookies: string | null = null;
-    try {
-      const { username, password } = decryptBhvCredentials(dbUser.bhvUsername, dbUser.bhvPassword);
-      const authResult = await bhvProvider.testCredentials({ username, password });
-
-      if (!authResult.success) {
-        return NextResponse.json(
-          { error: `Đăng nhập BHV thất bại: ${authResult.message}` },
-          { status: 400 }
-        );
-      }
-
-      bhvCookies = (authResult.sessionData as { cookies?: string })?.cookies || null;
-    } catch (authError) {
-      logError(authError as Error, {
-        operation: 'HEALTH_CONTRACT_CONFIRM_AUTH',
-        contractId: id,
-      });
-      return NextResponse.json(
-        { error: 'Lỗi xác thực BHV' },
-        { status: 500 }
-      );
-    }
-
-    // Set session cookies
-    if (bhvCookies) {
-      bhvProvider.setSessionCookies(bhvCookies);
-    }
+    // Set session cookies from request
+    bhvProvider.setSessionCookies(cookies);
 
     // Step 1: Create contract to get saleCode
     const createResult = await bhvProvider.createHealthContract(contract.toObject());

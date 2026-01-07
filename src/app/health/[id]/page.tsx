@@ -62,6 +62,7 @@ interface HealthContract {
     changedAt: string;
     note?: string;
   }>;
+  createdBy: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -302,10 +303,44 @@ export default function HealthContractDetailPage() {
   };
 
   const handleConfirmBHV = async () => {
+    if (!contract) return;
+
     setActionLoading(true);
+    setError('');
+
     try {
+      // Step 1: Get BHV authentication cookies from contract creator
+      console.log('🔐 Getting BHV authentication from contract creator...');
+      const authResponse = await fetch(`/api/users/bhv-test-auth?userId=${contract.createdBy}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      const authData = await authResponse.json();
+
+      if (!authResponse.ok || !authData.success) {
+        if (authResponse.status === 404 && !authData.hasCredentials) {
+          setError('Người tạo hợp đồng chưa cấu hình tài khoản BHV.');
+        } else if (authResponse.status === 401) {
+          setError('Thông tin đăng nhập BHV của người tạo hợp đồng không hợp lệ.');
+        } else {
+          setError(authData.error || 'Lỗi khi xác thực với BHV');
+        }
+        return;
+      }
+
+      if (!authData.cookies) {
+        setError('Không thể lấy session BHV. Vui lòng thử lại.');
+        return;
+      }
+
+      console.log('✅ BHV authentication successful, confirming contract...');
+
+      // Step 2: Confirm contract with BHV using obtained cookies
       const response = await fetch(`/api/contracts/health/${params.id}/confirm`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cookies: authData.cookies }),
       });
 
       const data = await response.json();
@@ -316,6 +351,7 @@ export default function HealthContractDetailPage() {
         setError(data.error || 'Không thể xác nhận với BHV');
       }
     } catch (err) {
+      console.error('BHV confirmation error:', err);
       setError('Lỗi kết nối server');
     } finally {
       setActionLoading(false);
