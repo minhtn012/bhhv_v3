@@ -459,7 +459,8 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     buyer_passport: "",
 
     // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
-    buyer_payment_date: formatDateForBhv(new Date()),
+    // buyer_payment_date: use contract value if available, else current date
+    buyer_payment_date: contract.buyerPaymentDate || formatDateForBhv(new Date()),
     active_date: formatDateTimeForBhv(
       contract.ngayBatDauBaoHiem ? parseDateFromDDMMYYYY(contract.ngayBatDauBaoHiem) : new Date()
     ),
@@ -598,14 +599,15 @@ export function transformContractToBhvFormat(contract: any): any {
     buyer_passport: "",
 
     // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
-    buyer_payment_date: formatDateForBhv(new Date()),
+    // buyer_payment_date: use contract value if available, else current date
+    buyer_payment_date: contract.buyerPaymentDate || formatDateForBhv(new Date()),
     active_date: formatDateTimeForBhv(
       contract.ngayBatDauBaoHiem ? parseDateFromDDMMYYYY(contract.ngayBatDauBaoHiem) : new Date()
     ),
     inactive_date: formatDateTimeForBhv(
       contract.ngayKetThucBaoHiem ? parseDateFromDDMMYYYY(contract.ngayKetThucBaoHiem) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
     ),
-  
+
     // Total premium
     total_premium: contract.tongPhi?.toString(),
     // order
