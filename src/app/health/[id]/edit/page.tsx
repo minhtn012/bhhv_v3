@@ -465,7 +465,6 @@ export default function EditHealthContractPage() {
     if (!formData.buyerIdentityCard) errors.buyerIdentityCard = 'Vui lòng nhập CCCD/CMND';
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
-    if (!formData.buyerJob) errors.buyerJob = 'Vui lòng nhập nghề nghiệp';
 
     // Health questions validation - require details when answer is "Có"
     for (let i = 1; i <= 5; i++) {
@@ -483,7 +482,6 @@ export default function EditHealthContractPage() {
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
       if (!formData.insuredPhone) errors.insuredPhone = 'Vui lòng nhập số điện thoại';
       if (!formData.insuredBirthday) errors.insuredBirthday = 'Vui lòng nhập ngày sinh';
-      if (!formData.insuredJob) errors.insuredJob = 'Vui lòng nhập nghề nghiệp';
     }
 
     // Beneficiary - ALL required when not same as insured
@@ -493,7 +491,6 @@ export default function EditHealthContractPage() {
       if (!formData.beneficiaryIdentityCard) errors.beneficiaryIdentityCard = 'Vui lòng nhập CCCD/CMND';
       if (!formData.beneficiaryPhone) errors.beneficiaryPhone = 'Vui lòng nhập số điện thoại';
       if (!formData.beneficiaryBirthday) errors.beneficiaryBirthday = 'Vui lòng nhập ngày sinh';
-      if (!formData.beneficiaryJob) errors.beneficiaryJob = 'Vui lòng nhập nghề nghiệp';
     }
 
     if (!formData.activeDate) errors.activeDate = 'Vui lòng chọn ngày bắt đầu';
@@ -963,17 +960,14 @@ export default function EditHealthContractPage() {
                 </select>
               </Field>
 
-              <Field label="Nghề nghiệp" required isChanged={changedFields.has('buyerJob')}>
+              <Field label="Nghề nghiệp" isChanged={changedFields.has('buyerJob')}>
                 <input
                   type="text"
                   name="buyerJob"
                   value={formData.buyerJob}
                   onChange={handleChange}
-                  className={inputClass('buyerJob', !!fieldErrors.buyerJob)}
+                  className={inputClass('buyerJob')}
                 />
-                {fieldErrors.buyerJob && (
-                  <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerJob}</p>
-                )}
               </Field>
 
               {/* Location Picker */}
@@ -1133,17 +1127,14 @@ export default function EditHealthContractPage() {
                       </Field>
                     </div>
 
-                    <Field label="Nghề nghiệp" required isChanged={changedFields.has('insuredJob')}>
+                    <Field label="Nghề nghiệp" isChanged={changedFields.has('insuredJob')}>
                       <input
                         type="text"
                         name="insuredJob"
                         value={formData.insuredJob}
                         onChange={handleChange}
-                        className={inputClass('insuredJob', !!fieldErrors.insuredJob)}
+                        className={inputClass('insuredJob')}
                       />
-                      {fieldErrors.insuredJob && (
-                        <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredJob}</p>
-                      )}
                     </Field>
 
                     <Field label="Địa chỉ" required isChanged={changedFields.has('insuredCity') || changedFields.has('insuredDistrict') || changedFields.has('insuredAddress')}>
@@ -1303,17 +1294,14 @@ export default function EditHealthContractPage() {
                       </Field>
                     </div>
 
-                    <Field label="Nghề nghiệp" required isChanged={changedFields.has('beneficiaryJob')}>
+                    <Field label="Nghề nghiệp" isChanged={changedFields.has('beneficiaryJob')}>
                       <input
                         type="text"
                         name="beneficiaryJob"
                         value={formData.beneficiaryJob}
                         onChange={handleChange}
-                        className={inputClass('beneficiaryJob', !!fieldErrors.beneficiaryJob)}
+                        className={inputClass('beneficiaryJob')}
                       />
-                      {fieldErrors.beneficiaryJob && (
-                        <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryJob}</p>
-                      )}
                     </Field>
 
                     <Field label="Địa chỉ" required isChanged={changedFields.has('beneficiaryCity') || changedFields.has('beneficiaryDistrict') || changedFields.has('beneficiaryAddress')}>

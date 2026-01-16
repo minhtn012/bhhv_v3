@@ -371,7 +371,6 @@ export default function NewHealthContractPage() {
     if (!formData.buyerPhone?.trim()) return false;
     if (!formData.buyerBirthday) return false;
     if (!formData.buyerGender) return false;
-    if (!formData.buyerJob?.trim()) return false;
     if (!formData.buyerCity) return false;
     if (!formData.buyerDistrict) return false;
     if (!formData.buyerAddress?.trim()) return false;
@@ -393,7 +392,6 @@ export default function NewHealthContractPage() {
       if (!formData.insuredPhone?.trim()) return false;
       if (!formData.insuredBirthday) return false;
       if (!formData.insuredGender) return false;
-      if (!formData.insuredJob?.trim()) return false;
       if (!formData.insuredCity) return false;
       if (!formData.insuredDistrict) return false;
       if (!formData.insuredAddress?.trim()) return false;
@@ -407,7 +405,6 @@ export default function NewHealthContractPage() {
       if (!formData.beneficiaryPhone?.trim()) return false;
       if (!formData.beneficiaryBirthday) return false;
       if (!formData.beneficiaryGender) return false;
-      if (!formData.beneficiaryJob?.trim()) return false;
       if (!formData.beneficiaryCity) return false;
       if (!formData.beneficiaryDistrict) return false;
       if (!formData.beneficiaryAddress?.trim()) return false;
@@ -433,7 +430,6 @@ export default function NewHealthContractPage() {
     if (!formData.buyerIdentityCard) errors.buyerIdentityCard = 'Vui lòng nhập CCCD/CMND';
     if (!formData.buyerPhone) errors.buyerPhone = 'Vui lòng nhập số điện thoại';
     if (!formData.buyerBirthday) errors.buyerBirthday = 'Vui lòng nhập ngày sinh';
-    if (!formData.buyerJob) errors.buyerJob = 'Vui lòng nhập nghề nghiệp';
     if (!formData.buyerCity) errors.buyerCity = 'Vui lòng chọn tỉnh/thành phố';
     if (!formData.buyerDistrict) errors.buyerDistrict = 'Vui lòng chọn quận/huyện';
     if (!formData.buyerAddress) errors.buyerAddress = 'Vui lòng nhập địa chỉ';
@@ -454,7 +450,6 @@ export default function NewHealthContractPage() {
       if (!formData.insuredIdentityCard) errors.insuredIdentityCard = 'Vui lòng nhập CCCD/CMND';
       if (!formData.insuredPhone) errors.insuredPhone = 'Vui lòng nhập số điện thoại';
       if (!formData.insuredBirthday) errors.insuredBirthday = 'Vui lòng nhập ngày sinh';
-      if (!formData.insuredJob) errors.insuredJob = 'Vui lòng nhập nghề nghiệp';
       if (!formData.insuredCity) errors.insuredCity = 'Vui lòng chọn tỉnh/thành phố';
       if (!formData.insuredDistrict) errors.insuredDistrict = 'Vui lòng chọn quận/huyện';
       if (!formData.insuredAddress) errors.insuredAddress = 'Vui lòng nhập địa chỉ';
@@ -467,7 +462,6 @@ export default function NewHealthContractPage() {
       if (!formData.beneficiaryIdentityCard) errors.beneficiaryIdentityCard = 'Vui lòng nhập CCCD/CMND';
       if (!formData.beneficiaryPhone) errors.beneficiaryPhone = 'Vui lòng nhập số điện thoại';
       if (!formData.beneficiaryBirthday) errors.beneficiaryBirthday = 'Vui lòng nhập ngày sinh';
-      if (!formData.beneficiaryJob) errors.beneficiaryJob = 'Vui lòng nhập nghề nghiệp';
       if (!formData.beneficiaryCity) errors.beneficiaryCity = 'Vui lòng chọn tỉnh/thành phố';
       if (!formData.beneficiaryDistrict) errors.beneficiaryDistrict = 'Vui lòng chọn quận/huyện';
       if (!formData.beneficiaryAddress) errors.beneficiaryAddress = 'Vui lòng nhập địa chỉ';
@@ -1015,15 +1009,14 @@ export default function NewHealthContractPage() {
                 </select>
               </Field>
 
-              <Field label="Nghề nghiệp" required>
+              <Field label="Nghề nghiệp">
                 <input
                   type="text"
                   name="buyerJob"
                   value={formData.buyerJob}
                   onChange={handleChange}
-                  className={inputClass(!!fieldErrors.buyerJob)}
+                  className={inputClass()}
                 />
-                {fieldErrors.buyerJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.buyerJob}</p>}
               </Field>
             </div>
 
@@ -1188,15 +1181,14 @@ export default function NewHealthContractPage() {
                       </Field>
                     </div>
 
-                    <Field label="Nghề nghiệp" required>
+                    <Field label="Nghề nghiệp">
                       <input
                         type="text"
                         name="insuredJob"
                         value={formData.insuredJob}
                         onChange={handleChange}
-                        className={inputClass(!!fieldErrors.insuredJob)}
+                        className={inputClass()}
                       />
-                      {fieldErrors.insuredJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.insuredJob}</p>}
                     </Field>
 
                     {/* Insured Location */}
@@ -1362,15 +1354,14 @@ export default function NewHealthContractPage() {
                       </Field>
                     </div>
 
-                    <Field label="Nghề nghiệp" required>
+                    <Field label="Nghề nghiệp">
                       <input
                         type="text"
                         name="beneficiaryJob"
                         value={formData.beneficiaryJob}
                         onChange={handleChange}
-                        className={inputClass(!!fieldErrors.beneficiaryJob)}
+                        className={inputClass()}
                       />
-                      {fieldErrors.beneficiaryJob && <p className="text-red-400 text-xs mt-1">{fieldErrors.beneficiaryJob}</p>}
                     </Field>
 
                     {/* Beneficiary Location */}
