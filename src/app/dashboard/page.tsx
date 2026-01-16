@@ -7,6 +7,7 @@ import StatsCard from '@/components/dashboard/StatsCard';
 import StatusChart from '@/components/dashboard/StatusChart';
 import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
 import RevenueChart from '@/components/dashboard/RevenueChart';
+import { SalesLeaderboard, ConversionFunnel, ExpiringContracts, SalesUser } from '@/components/dashboard/analytics';
 
 interface User {
   id: string;
@@ -91,6 +92,7 @@ export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [userStats, setUserStats] = useState<UserDashboardStats | null>(null);
+  const [salesUsers, setSalesUsers] = useState<SalesUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -112,6 +114,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (user && user.role === 'admin') {
       fetchDashboardStats();
+      fetchSalesUsers();
     } else if (user && user.role === 'user') {
       fetchUserDashboardStats();
     }
@@ -168,6 +171,26 @@ export default function Dashboard() {
       setError('Không thể tải dữ liệu dashboard. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchSalesUsers = async () => {
+    try {
+      const response = await fetch('/api/users?role=user&limit=100', {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSalesUsers(data.users?.map((u: { _id: string; username: string }) => ({
+          _id: u._id,
+          username: u.username
+        })) || []);
+      }
+    } catch (error) {
+      console.error('Error fetching sales users:', error);
     }
   };
 
@@ -534,6 +557,26 @@ export default function Dashboard() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Sales Analytics Section */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+            <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            Phân tích Sales
+          </h2>
+
+          {/* Sales Leaderboard */}
+          <SalesLeaderboard salesUsers={salesUsers} />
+
+          {/* Conversion Funnel & Expiring Contracts */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <ConversionFunnel salesUsers={salesUsers} />
+            <ExpiringContracts />
+          </div>
         </div>
       </div>
     </DashboardLayout>

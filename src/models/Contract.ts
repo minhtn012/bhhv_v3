@@ -142,6 +142,9 @@ export interface IContract extends Document {
     name: string;        // Package name
     value: string;       // BHV UUID for API mapping
   }>;
+
+  // Ghi chú nội bộ (không liên quan BHV Online)
+  ghiChu?: string;
 }
 
 const contractSchema = new Schema<IContract>({
@@ -586,7 +589,14 @@ const contractSchema = new Schema<IContract>({
       required: true,
       trim: true
     }
-  }]
+  }],
+
+  // Ghi chú nội bộ
+  ghiChu: {
+    type: String,
+    trim: true,
+    default: ''
+  }
 }, {
   timestamps: true
 });

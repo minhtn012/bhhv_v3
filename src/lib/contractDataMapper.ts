@@ -75,6 +75,9 @@ export interface ContractFormData {
     name: string;
     value: string;
   }>;
+
+  // Ghi chú nội bộ
+  ghiChu?: string;
 }
 
 /**
@@ -183,6 +186,9 @@ export interface ContractPayload {
     name: string;
     value: string;
   }>;
+
+  // Ghi chú nội bộ
+  ghiChu?: string;
 }
 
 /**
@@ -341,6 +347,9 @@ export function transformFormToContract(
 
     // Extra packages
     extraPackages: formData.extraPackages || [],
+
+    // Ghi chú
+    ghiChu: formData.ghiChu || '',
   };
 
   return payload;

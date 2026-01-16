@@ -464,6 +464,7 @@ export default function NewContractPage() {
                     onRecalculate={handleRecalculate}
                     onNNTXFeeChange={handleNNTXFeeChange}
                     onCustomRateChange={handleCustomRateChange}
+                    customRate={formData.customRate}
                   />
                 </StepWrapper>
               </div>

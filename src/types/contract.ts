@@ -72,6 +72,9 @@ export interface BaseContractFormData {
     name: string;
     value: string;
   }>;
+
+  // Ghi chú nội bộ
+  ghiChu?: string;
 }
 
 // Specialized type definitions using Pick utility
@@ -170,6 +173,9 @@ export const defaultContractFormData: BaseContractFormData = {
 
   // Extra packages
   extraPackages: [],
+
+  // Ghi chú
+  ghiChu: '',
 };
 
 // Type guards for validation

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { getStatusText, getStatusColor } from '@/utils/contract-status';
+import DateRangeFilter from '@/components/ui/DateRangeFilter';
+import PaymentPendingBadge from '@/components/contracts/PaymentPendingBadge';
 
 interface Contract {
   _id: string;
@@ -17,6 +19,7 @@ interface Contract {
   createdBy: {
     username: string;
   } | string;
+  buyerPaymentDate?: string;
 }
 
 interface Pagination {
@@ -35,6 +38,8 @@ export default function ContractsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [createdByFilter, setCreatedByFilter] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [users, setUsers] = useState<{ _id: string; username: string; role: string }[]>([]);
   const [selectedContracts, setSelectedContracts] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -58,7 +63,7 @@ export default function ContractsPage() {
     }
 
     fetchContracts();
-  }, [router, pagination.page, search, statusFilter, createdByFilter]);
+  }, [router, pagination.page, search, statusFilter, createdByFilter, startDate, endDate]);
 
   // Fetch users list when currentUser is set (for admin filter)
   useEffect(() => {
@@ -89,7 +94,9 @@ export default function ContractsPage() {
         limit: pagination.limit.toString(),
         ...(search && { search }),
         ...(statusFilter.length > 0 && { status: statusFilter.join(',') }),
-        ...(createdByFilter.length > 0 && { createdBy: createdByFilter.join(',') })
+        ...(createdByFilter.length > 0 && { createdBy: createdByFilter.join(',') }),
+        ...(startDate && { startDate }),
+        ...(endDate && { endDate })
       });
 
       console.log('🔍 Frontend Filter Debug:', {
@@ -174,6 +181,8 @@ export default function ContractsPage() {
   const clearAllFilters = () => {
     setStatusFilter([]);
     setCreatedByFilter([]);
+    setStartDate('');
+    setEndDate('');
     setPagination(p => ({ ...p, page: 1 }));
   };
 
@@ -394,10 +403,21 @@ export default function ContractsPage() {
                   </div>
                 </div>
               )}
+
+              {/* Date Range Filter */}
+              <DateRangeFilter
+                startDate={startDate}
+                endDate={endDate}
+                onFilterChange={({ startDate: start, endDate: end }) => {
+                  setStartDate(start);
+                  setEndDate(end);
+                  setPagination(p => ({ ...p, page: 1 }));
+                }}
+              />
             </div>
 
             {/* Active Filter Pills */}
-            {(statusFilter.length > 0 || createdByFilter.length > 0) && (
+            {(statusFilter.length > 0 || createdByFilter.length > 0 || startDate || endDate) && (
               <div className="mb-6 flex flex-wrap items-center gap-2">
                 <span className="text-sm text-gray-400">Đang lọc:</span>
 
@@ -434,6 +454,32 @@ export default function ContractsPage() {
                     </button>
                   ) : null;
                 })}
+
+                {/* Date Range Pill */}
+                {(startDate || endDate) && (
+                  <button
+                    onClick={() => {
+                      setStartDate('');
+                      setEndDate('');
+                      setPagination(p => ({ ...p, page: 1 }));
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-500/20 text-blue-300 transition-all hover:opacity-80"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>
+                      {startDate && endDate
+                        ? `${startDate.split('-').reverse().join('/')} - ${endDate.split('-').reverse().join('/')}`
+                        : startDate
+                        ? `Từ ${startDate.split('-').reverse().join('/')}`
+                        : `Đến ${endDate.split('-').reverse().join('/')}`}
+                    </span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
 
                 {/* Clear All Button */}
                 <button
@@ -510,9 +556,12 @@ export default function ContractsPage() {
                           <td className="py-3 px-4 text-white">{contract.chuXe}</td>
                           <td className="py-3 px-4 text-gray-300 font-mono">{contract.bienSo}</td>
                           <td className="py-3 px-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)}`}>
-                              {getStatusText(contract.status)}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)}`}>
+                                {getStatusText(contract.status)}
+                              </span>
+                              <PaymentPendingBadge contract={contract} />
+                            </div>
                           </td>
                           <td className="py-3 px-4 text-green-300 font-medium">
                             {formatCurrency(contract.tongPhi)}
@@ -568,9 +617,12 @@ export default function ContractsPage() {
                             <p className="text-gray-300 text-sm mt-1">{contract.chuXe}</p>
                           </div>
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)} whitespace-nowrap ml-2`}>
-                          {getStatusText(contract.status)}
-                        </span>
+                        <div className="flex flex-col items-end gap-1 ml-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contract.status)} whitespace-nowrap`}>
+                            {getStatusText(contract.status)}
+                          </span>
+                          <PaymentPendingBadge contract={contract} />
+                        </div>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">

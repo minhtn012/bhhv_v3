@@ -28,6 +28,7 @@ interface ExtendedPackageFormData extends PackageSelectionFormData {
     name: string;
     value: string;
   }>;
+  ghiChu?: string;
 }
 
 interface PackageSelectionStepProps {
@@ -48,6 +49,9 @@ interface PackageSelectionStepProps {
   onNNTXFeeChange: (fee: number) => void;
   onCustomRateChange?: (customRate: number | null, isModified: boolean) => void;
   submitButtonText?: string;
+  /** Controlled custom rate value from parent (for create page) */
+  customRate?: number | null;
+  /** @deprecated Use customRate instead. Kept for edit page backward compatibility */
   initialCustomRate?: number | null;
 }
 
@@ -66,6 +70,7 @@ export default function PackageSelectionStep({
   onNNTXFeeChange,
   onCustomRateChange,
   submitButtonText = "Tạo báo giá",
+  customRate,
   initialCustomRate = null
 }: PackageSelectionStepProps) {
   return (
@@ -146,6 +151,18 @@ export default function PackageSelectionStep({
             onPhiTaiTucInfoChange={(info) => onFormInputChange('phiTaiTucInfo', info)}
             onRecalculate={onRecalculate}
           />
+
+          {/* Ghi chú nội bộ */}
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h3 className="text-lg font-semibold text-white mb-3">Ghi chú</h3>
+            <textarea
+              value={formData.ghiChu || ''}
+              onChange={(e) => onFormInputChange('ghiChu', e.target.value)}
+              placeholder="Ghi chú nội bộ (không hiển thị trên báo giá BHV)"
+              rows={3}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-none"
+            />
+          </div>
         </div>
 
         {/* Right: Summary */}
@@ -160,6 +177,7 @@ export default function PackageSelectionStep({
             submitButtonText={submitButtonText}
             availablePackages={availablePackages}
             onCustomRateChange={onCustomRateChange}
+            customRate={customRate}
             initialCustomRate={initialCustomRate}
           />
         </div>

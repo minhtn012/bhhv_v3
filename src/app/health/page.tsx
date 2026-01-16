@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import { getHealthStatusText, getHealthStatusColor } from '@/utils/health-contract-status';
+import DateRangeFilter from '@/components/ui/DateRangeFilter';
+import PaymentPendingBadge from '@/components/contracts/PaymentPendingBadge';
 
 interface HealthContract {
   _id: string;
@@ -23,6 +25,7 @@ interface HealthContract {
   createdBy: {
     username: string;
   } | string;
+  buyerPaymentDate?: string;
 }
 
 interface Pagination {
@@ -40,6 +43,8 @@ export default function HealthContractsPage() {
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10, total: 0, pages: 0 });
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -59,7 +64,7 @@ export default function HealthContractsPage() {
     }
 
     fetchContracts();
-  }, [router, pagination.page, search, statusFilter]);
+  }, [router, pagination.page, search, statusFilter, startDate, endDate]);
 
   const fetchContracts = async () => {
     try {
@@ -67,7 +72,9 @@ export default function HealthContractsPage() {
         page: pagination.page.toString(),
         limit: pagination.limit.toString(),
         ...(search && { search }),
-        ...(statusFilter.length > 0 && { status: statusFilter.join(',') })
+        ...(statusFilter.length > 0 && { status: statusFilter.join(',') }),
+        ...(startDate && { startDate }),
+        ...(endDate && { endDate })
       });
 
       const response = await fetch(`/api/contracts/health?${params}`);
@@ -121,6 +128,8 @@ export default function HealthContractsPage() {
 
   const clearAllFilters = () => {
     setStatusFilter([]);
+    setStartDate('');
+    setEndDate('');
     setPagination(p => ({ ...p, page: 1 }));
   };
 
@@ -205,10 +214,21 @@ export default function HealthContractsPage() {
                 </div>
               </div>
             </div>
+
+            {/* Date Range Filter */}
+            <DateRangeFilter
+              startDate={startDate}
+              endDate={endDate}
+              onFilterChange={({ startDate: start, endDate: end }) => {
+                setStartDate(start);
+                setEndDate(end);
+                setPagination(p => ({ ...p, page: 1 }));
+              }}
+            />
           </div>
 
           {/* Active Filter Pills */}
-          {statusFilter.length > 0 && (
+          {(statusFilter.length > 0 || startDate || endDate) && (
             <div className="mb-6 flex flex-wrap items-center gap-2">
               <span className="text-sm text-gray-400">Đang lọc:</span>
 
@@ -225,6 +245,32 @@ export default function HealthContractsPage() {
                   </svg>
                 </button>
               ))}
+
+              {/* Date Range Pill */}
+              {(startDate || endDate) && (
+                <button
+                  onClick={() => {
+                    setStartDate('');
+                    setEndDate('');
+                    setPagination(p => ({ ...p, page: 1 }));
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-500/20 text-green-300 transition-all hover:opacity-80"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>
+                    {startDate && endDate
+                      ? `${startDate.split('-').reverse().join('/')} - ${endDate.split('-').reverse().join('/')}`
+                      : startDate
+                      ? `Từ ${startDate.split('-').reverse().join('/')}`
+                      : `Đến ${endDate.split('-').reverse().join('/')}`}
+                  </span>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
 
               {/* Clear All Button */}
               <button
@@ -283,9 +329,12 @@ export default function HealthContractsPage() {
                         <td className="py-3 px-4 text-white">{contract.buyer?.fullname || '-'}</td>
                         <td className="py-3 px-4 text-gray-300">{contract.insuredPerson?.fullname || '-'}</td>
                         <td className="py-3 px-4">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getHealthStatusColor(contract.status)}`}>
-                            {getHealthStatusText(contract.status)}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getHealthStatusColor(contract.status)}`}>
+                              {getHealthStatusText(contract.status)}
+                            </span>
+                            <PaymentPendingBadge contract={contract} />
+                          </div>
                         </td>
                         <td className="py-3 px-4 text-green-300 font-medium">
                           {formatCurrency(contract.totalPremium)}
@@ -333,9 +382,12 @@ export default function HealthContractsPage() {
                         <h3 className="text-white font-medium text-sm font-mono truncate">{contract.contractNumber}</h3>
                         <p className="text-gray-300 text-sm mt-1">{contract.buyer?.fullname || '-'}</p>
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getHealthStatusColor(contract.status)} whitespace-nowrap ml-2`}>
-                        {getHealthStatusText(contract.status)}
-                      </span>
+                      <div className="flex flex-col items-end gap-1 ml-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getHealthStatusColor(contract.status)} whitespace-nowrap`}>
+                          {getHealthStatusText(contract.status)}
+                        </span>
+                        <PaymentPendingBadge contract={contract} />
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-4 text-sm">

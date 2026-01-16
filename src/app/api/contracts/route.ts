@@ -23,6 +23,8 @@ export async function GET(request: NextRequest) {
     const statusParam = searchParams.get('status') || '';
     const search = searchParams.get('search') || '';
     const createdByParam = searchParams.get('createdBy') || '';
+    const startDate = searchParams.get('startDate') || '';
+    const endDate = searchParams.get('endDate') || '';
 
     const skip = (page - 1) * limit;
 
@@ -56,6 +58,18 @@ export async function GET(request: NextRequest) {
       const statuses = statusParam.split(',').filter(s => validStatuses.includes(s));
       if (statuses.length > 0) {
         filter.status = { $in: statuses };
+      }
+    }
+
+    // Handle date range filter on createdAt
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) {
+        filter.createdAt.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        // Include the entire end date by setting time to 23:59:59
+        filter.createdAt.$lte = new Date(endDate + 'T23:59:59.999Z');
       }
     }
 

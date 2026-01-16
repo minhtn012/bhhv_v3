@@ -34,6 +34,9 @@ export interface ContractFormState extends BaseContractFormData {
 
   // Package selection (from calculation hook)
   availablePackages: any[];
+
+  // Ghi chú nội bộ
+  ghiChu: string;
 }
 
 /**
@@ -127,6 +130,9 @@ const initialState: ContractFormState = {
 
   // Available packages
   availablePackages: [],
+
+  // Ghi chú
+  ghiChu: '',
 };
 
 /**

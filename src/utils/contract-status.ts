@@ -79,3 +79,35 @@ export function isValidStatus(status: string): status is ContractStatus {
 export function getAllStatuses(): ContractStatus[] {
   return Object.keys(CONTRACT_STATUSES) as ContractStatus[];
 }
+
+/**
+ * Check if a contract is in payment pending state
+ * Payment pending: status is 'ra_hop_dong' AND today <= buyerPaymentDate
+ * @param contract - Contract object with status and buyerPaymentDate
+ * @returns True if payment is pending (should show badge)
+ */
+export function isPaymentPending(contract: {
+  status: string;
+  buyerPaymentDate?: string | null;
+}): boolean {
+  // Only show badge for 'ra_hop_dong' status
+  if (contract.status !== 'ra_hop_dong') return false;
+
+  // No payment date means no badge
+  if (!contract.buyerPaymentDate) return false;
+
+  // Parse DD/MM/YYYY format
+  const dateParts = contract.buyerPaymentDate.split('/');
+  if (dateParts.length !== 3) return false;
+
+  const [day, month, year] = dateParts.map(Number);
+  if (isNaN(day) || isNaN(month) || isNaN(year)) return false;
+
+  const paymentDate = new Date(year, month - 1, day);
+  paymentDate.setHours(23, 59, 59, 999); // End of payment date
+
+  const today = new Date();
+
+  // Show badge if today is on or before payment date
+  return today <= paymentDate;
+}

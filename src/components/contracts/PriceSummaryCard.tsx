@@ -34,6 +34,9 @@ interface PriceSummaryCardProps {
   showSubmitButton?: boolean;
   availablePackages?: PackageOption[];
   onCustomRateChange?: (customRate: number | null, isModified: boolean) => void;
+  /** Controlled value for custom rate - pass from parent state */
+  customRate?: number | null;
+  /** @deprecated Use customRate instead. Kept for backward compatibility with edit page */
   initialCustomRate?: number | null;
 }
 
@@ -48,44 +51,59 @@ export default function PriceSummaryCard({
   showSubmitButton = true,
   availablePackages,
   onCustomRateChange,
+  customRate: controlledCustomRate,
   initialCustomRate = null
 }: PriceSummaryCardProps) {
-  // Track user-modified percentage (initialize with contract's custom rate if available)
-  const [userModifiedPercentage, setUserModifiedPercentage] = useState<number | null>(initialCustomRate);
+  // Determine if using controlled mode (customRate prop passed) or uncontrolled mode (initialCustomRate)
+  const isControlled = controlledCustomRate !== undefined;
+
+  // Local state for uncontrolled mode (edit page backward compatibility)
+  const [localCustomRate, setLocalCustomRate] = useState<number | null>(initialCustomRate);
+
+  // Use controlled value if available, otherwise use local state
+  const userModifiedPercentage = isControlled ? controlledCustomRate : localCustomRate;
 
   // Calculate original and effective rates with fallback to availablePackages
-  const originalRate = enhancedResult?.customRates?.[formData.selectedPackageIndex] ?? 
+  const originalRate = enhancedResult?.customRates?.[formData.selectedPackageIndex] ??
     availablePackages?.find(pkg => pkg.index === formData.selectedPackageIndex)?.rate;
   const originalEffectiveRate = originalRate ? (
-    isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0 
+    isElectricOrHybridEngine(formData.loaiDongCo) && formData.giaTriPin && parseCurrency(formData.giaTriPin) > 0
       ? originalRate + 0.10
       : originalRate
   ) : 0;
 
-  // Sync initialCustomRate when it changes (for edit mode)
+  // Sync initialCustomRate when it changes (for uncontrolled/edit mode only)
   useEffect(() => {
-    if (initialCustomRate !== null && initialCustomRate !== undefined) {
-      setUserModifiedPercentage(initialCustomRate);
+    if (!isControlled && initialCustomRate !== null && initialCustomRate !== undefined) {
+      setLocalCustomRate(initialCustomRate);
     }
-  }, [initialCustomRate]);
+  }, [initialCustomRate, isControlled]);
 
-  // Reset user modifications when package changes (but preserve initialCustomRate)
+  // Reset when package changes (uncontrolled mode only)
   useEffect(() => {
-    // Only reset if NOT in edit mode with custom rate
-    if (initialCustomRate === null || initialCustomRate === undefined) {
-      setUserModifiedPercentage(null);
+    if (!isControlled && (initialCustomRate === null || initialCustomRate === undefined)) {
+      setLocalCustomRate(null);
       onCustomRateChange?.(null, false);
     }
-  }, [formData.selectedPackageIndex, initialCustomRate]);
+  }, [formData.selectedPackageIndex, initialCustomRate, isControlled]);
+
+  // Update rate value - handles both controlled and uncontrolled modes
+  const updateRate = (newValue: number | null) => {
+    const isModified = newValue !== null && Math.abs(newValue - originalEffectiveRate) > 0.001;
+    // In uncontrolled mode, update local state
+    if (!isControlled) {
+      setLocalCustomRate(newValue);
+    }
+    // Always notify parent (in controlled mode, this is the only update mechanism)
+    onCustomRateChange?.(newValue, isModified);
+  };
 
   // Handle manual rate adjustments with stepper buttons
   const handleRateChange = (adjustment: number) => {
     const currentValue = userModifiedPercentage ?? originalEffectiveRate;
     const newValue = Math.max(0.1, Math.min(10, parseFloat((currentValue + adjustment).toFixed(2))));
     if (!isNaN(newValue)) {
-      setUserModifiedPercentage(newValue);
-      const isModified = Math.abs(newValue - originalEffectiveRate) > 0.001;
-      onCustomRateChange?.(newValue, isModified);
+      updateRate(newValue);
     }
   };
 
@@ -124,14 +142,11 @@ export default function PriceSummaryCard({
                   onChange={(e) => {
                     const value = parseFloat(e.target.value);
                     if (e.target.value === '') {
-                      setUserModifiedPercentage(null);
-                      onCustomRateChange?.(null, false);
+                      updateRate(null);
                       return;
                     }
                     if (!isNaN(value) && value >= 0.1 && value <= 10) {
-                      setUserModifiedPercentage(value);
-                      const isModified = Math.abs(value - originalEffectiveRate) > 0.001;
-                      onCustomRateChange?.(value, isModified);
+                      updateRate(value);
                     }
                   }}
                   onStep={handleRateChange}
