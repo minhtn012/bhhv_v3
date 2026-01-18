@@ -34,6 +34,9 @@ RUN adduser --system --uid 1001 nextjs
 # Copy only production files
 COPY --from=builder /app/public ./public
 
+# Copy db_json for static data (travel, car metadata, etc.)
+COPY --from=builder --chown=nextjs:nodejs /app/db_json ./db_json
+
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
