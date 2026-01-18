@@ -1,0 +1,352 @@
+{
+  "brand_name": "CHENGLONG",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c022",
+  "models": [
+    {
+      "model_name": "ALP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0107",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        },
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BEN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0160",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0255",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2500BA 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0256",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2500BK 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0310",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3490BA 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0383",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6000BA 4X4"
+        }
+      ]
+    },
+    {
+      "model_name": "CK327",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0246",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DAU KEO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0307",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0351",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4X2 33T"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0395",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6X4 340HP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0396",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6X4 380HP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0397",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6X4 420HP"
+        }
+      ]
+    },
+    {
+      "model_name": "LZ1250M5",
+      "model_id": "f32504b3-0dca-4cde-bb36-2b86c97fdafc",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "9641f293-d7f4-472d-89ab-ab3d6cb00fb8",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4 7.5L"
+        },
+        {
+          "id": "77b242bf-bd66-4507-8c38-361cb53f9764",
+          "code": "CAR_MODEL_YEAR",
+          "name": "7520 6X4 "
+        }
+      ]
+    },
+    {
+      "model_name": "LZ1340",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0737",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0392",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6X4"
+        }
+      ]
+    },
+    {
+      "model_name": "LZ4251M7DB",
+      "model_id": "56db16e2-c214-47ef-b3fb-b126abd127ef",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "66593e5f-a3f7-402b-b701-acb254cbe53c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "10.3L 6x4"
+        }
+      ]
+    },
+    {
+      "model_name": "LZ4255H7DB",
+      "model_id": "96c60aee-b4e3-48bf-bd09-544a559afb1f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8b14bcc4-46a5-4d8b-b076-a954a0c8eb89",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAU KEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "61cca1d4-198b-45dd-ae1d-9ae40222f3d9",
+          "code": "CAR_MODEL_YEAR",
+          "name": "10338 6x4"
+        },
+        {
+          "id": "fcfe1875-324c-4e38-a8ee-3495d8700791",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4"
+        }
+      ]
+    },
+    {
+      "model_name": "LZ4256H7DB",
+      "model_id": "cfc53010-5ce3-4426-8497-2815c69c975f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fc611c66-e88c-49ff-b4bf-7cb7270b6279",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "5357dae4-84f6-48a9-9b69-76e47b549990",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4 10.3L"
+        }
+      ]
+    },
+    {
+      "model_name": "LZ5185",
+      "model_id": "c3c05208-78bd-49f3-a08c-75ac410d18b0",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "e874b76b-e6e5-44e3-98d6-8b5fc483e10f",
+          "code": "CAR_BODY_STYLES",
+          "name": "O TO CHO PALLET CHUA CAU KIEN DIEN TU"
+        }
+      ],
+      "years": [
+        {
+          "id": "94a6775b-332f-4e34-8df6-cfdd6210e23a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6.9 4x2"
+        }
+      ]
+    },
+    {
+      "model_name": "M5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0740",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0741",
+          "code": "CAR_MODEL_YEAR",
+          "name": "M5-375"
+        }
+      ]
+    },
+    {
+      "model_name": "M7",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0742",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0742",
+          "code": "CAR_MODEL_YEAR",
+          "name": "M7-400"
+        }
+      ]
+    },
+    {
+      "model_name": "TAI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1044",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0165",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0T"
+        },
+        {
+          "id": "6e16feb7-61dc-4fc4-9765-f07172990e5b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H7"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0665",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0666",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G TD"
+        }
+      ]
+    },
+    {
+      "model_name": "TRON BE TONG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1097",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TTCM",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1101",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TTCM/YC6L310",
+      "model_id": "b98785ae-34bf-456f-8086-9b1d5dfe5dcc",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "4ed75b93-2c51-488c-93c3-d0dbbfb61461",
+          "code": "CAR_MODEL_YEAR",
+          "name": "8.4L 8x4"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:12.355Z"
+}

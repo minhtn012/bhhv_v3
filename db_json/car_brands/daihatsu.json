@@ -1,0 +1,250 @@
+{
+  "brand_name": "DAIHATSU",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c035",
+  "models": [
+    {
+      "model_name": "APPLAUSE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0117",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0059",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6"
+        }
+      ]
+    },
+    {
+      "model_name": "CHARADE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0236",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0443",
+          "code": "CAR_MODEL_YEAR",
+          "name": "AT"
+        }
+      ]
+    },
+    {
+      "model_name": "CITIVAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0241",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "COPEN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0269",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DELTA WIDE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0315",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DEVAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0316",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FEROZA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0398",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0770",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ROCKY 1.6 GAM CAO"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0771",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ROCKY HARDTOP 1.6"
+        }
+      ]
+    },
+    {
+      "model_name": "HIJET JUMBO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0607",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MIRA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0767",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0385",
+          "code": "CAR_MODEL_YEAR",
+          "name": "659 CC"
+        }
+      ]
+    },
+    {
+      "model_name": "MOVE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0782",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "RUGGER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0918",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0242",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8 GAM CAO"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0656",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HARDTOP 2.8"
+        }
+      ]
+    },
+    {
+      "model_name": "SIRION",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0982",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TERIOS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1064",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0030",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.3"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0045",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 2WD AT"
+        }
+      ]
+    },
+    {
+      "model_name": "VICTOR",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1148",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:40.051Z"
+}

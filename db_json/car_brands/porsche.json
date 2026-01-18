@@ -1,0 +1,325 @@
+{
+  "brand_name": "PORSCHE",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c123",
+  "models": [
+    {
+      "model_name": "911",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0079",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0489",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0490",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA 3.6 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0491",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA 4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0493",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA CAB 3.6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0494",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA GTS 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0495",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA GTS CAB 3.8"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0496",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA S 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0637",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT2"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0638",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT3"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0639",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT3 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0640",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT3 RS 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0836",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TAGA"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0838",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TARGA 4 3.6 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0839",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TARGA 4S 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0854",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0855",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0857",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO CAB 3.8 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0858",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO S 3.8 I6"
+        }
+      ]
+    },
+    {
+      "model_name": "912",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0080",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0492",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA C 3.5 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0497",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CARRERA SC 3.5I6"
+        }
+      ]
+    },
+    {
+      "model_name": "BOXSTER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0170",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0245",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.9 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0780",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S 3.4 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0809",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SPIDER 3.4 I6"
+        }
+      ]
+    },
+    {
+      "model_name": "CAYENNE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0220",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0293",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.6 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0782",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S 4.8 V8"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0785",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S HYBRID 3.0 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0856",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO 4.8 V8"
+        }
+      ]
+    },
+    {
+      "model_name": "CAYMAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0221",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0233",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.6 I6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0780",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S 3.4 I6"
+        }
+      ]
+    },
+    {
+      "model_name": "MACAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0744",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "8a61df40-06f8-4c48-a126-550ed1729a21",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L BASE"
+        },
+        {
+          "id": "b525d56c-4005-4bf3-9850-322b8db85b15",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L T"
+        },
+        {
+          "id": "bb7d7ee1-0c38-48ec-b050-96c440210d70",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.9L GTS"
+        },
+        {
+          "id": "431c95af-b29f-4f5c-90f1-71071de5908a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.9L S"
+        }
+      ]
+    },
+    {
+      "model_name": "PANAMERA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0836",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0293",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.6 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0317",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4 3.6 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0346",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4S 3.6 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0568",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EXECUTIVE"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0569",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EXECUTIVE TURBO"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0781",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S 3.6 V6"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0854",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TURBO"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.888Z"
+}

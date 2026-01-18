@@ -1,0 +1,39 @@
+{
+  "brand_name": "BA HAI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c007",
+  "models": [
+    {
+      "model_name": "CAK462F",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0198",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CAK47",
+      "model_id": "1511e09b-44ab-4051-aa50-14873239d320",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "f6fc8ef8-368d-4c54-9959-383c1783346e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "UNIVERSE26"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:58:44.127Z"
+}

@@ -8,11 +8,13 @@ services:
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin
+      - CAR_BRANDS_PATH=/data/car_brands
     networks:
       - db_network
       - traefik-network
     volumes:
       - ./scripts:/app/scripts
+      - car_data:/data/car_brands
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bhhv.rule=Host(`bhhv.minhtn.space`)"
@@ -20,6 +22,9 @@ services:
       - "traefik.http.routers.bhhv.tls.certresolver=letsencrypt"
       - "traefik.http.services.bhhv.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik-network"
+
+volumes:
+  car_data:
 
 networks:
   db_network:

@@ -1,0 +1,233 @@
+{
+  "brand_name": "SAMCO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c129",
+  "models": [
+    {
+      "model_name": "ALLERGO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0105",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0802",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SI29"
+        }
+      ]
+    },
+    {
+      "model_name": "ALLGERGO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0106",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0801",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SI.29"
+        }
+      ]
+    },
+    {
+      "model_name": "BGP7",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0161",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CITY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0242",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0048",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0050",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 CVT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0051",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 LE"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0052",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 MT"
+        },
+        {
+          "id": "0f19fbd1-f8dc-4e6b-9d0f-d04ca1c0d96d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "G 1.5L CVT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0651",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H.75 CNG"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0673",
+          "code": "CAR_MODEL_YEAR",
+          "name": "I51 CNG"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0677",
+          "code": "CAR_MODEL_YEAR",
+          "name": "J.47"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0678",
+          "code": "CAR_MODEL_YEAR",
+          "name": "J.61"
+        },
+        {
+          "id": "3bd88d05-2d83-4291-9a4f-fb794cfa57f1",
+          "code": "CAR_MODEL_YEAR",
+          "name": "L 1.5L CVT"
+        },
+        {
+          "id": "fbfd3e9a-b39d-4644-859d-ecab3cc92389",
+          "code": "CAR_MODEL_YEAR",
+          "name": "RS 1.5L CVT"
+        }
+      ]
+    },
+    {
+      "model_name": "FELIX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0397",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0710",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LI.29"
+        }
+      ]
+    },
+    {
+      "model_name": "KES2",
+      "model_id": "228f0e93-67da-4e8b-a2c2-682ced5df246",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "4e87331b-b331-4ab4-a6b9-86da1c938396",
+          "code": "CAR_MODEL_YEAR",
+          "name": "7961 4x2"
+        }
+      ]
+    },
+    {
+      "model_name": "KFE1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0686",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "KGQ1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0687",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "KGQ2",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0688",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PRIMAS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0858",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0650",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H.45B"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.888Z"
+}

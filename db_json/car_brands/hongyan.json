@@ -1,0 +1,52 @@
+{
+  "brand_name": "HONGYAN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c067",
+  "models": [
+    {
+      "model_name": "CQ4255HTG334",
+      "model_id": "950ff88f-1985-4c04-af5b-747e54a84c03",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "CQ4256HTVG334A",
+      "model_id": "f61ce5a3-105c-4305-81ca-96833bebe5d9",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8b14bcc4-46a5-4d8b-b076-a954a0c8eb89",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "4085dabe-6f1e-49e1-8fc5-866e9eb3950f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "8.7L"
+        }
+      ]
+    },
+    {
+      "model_name": "CQ5255GJBHTG334",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0278",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0853",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TRON BE TONG"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:49.216Z"
+}

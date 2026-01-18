@@ -1,0 +1,89 @@
+{
+  "brand_name": "MASERATI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c107",
+  "models": [
+    {
+      "model_name": "GHIBLI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0474",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0787",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S Q4"
+        }
+      ]
+    },
+    {
+      "model_name": "LEVANTE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0717",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "365eb2d6-360d-45f3-82df-5bc8d0c92c8f",
+          "code": "CAR_BODY_STYLES",
+          "name": "M161"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "21732c9a-5fa9-4c6f-89e3-8a7f50ae0d21",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.0 4x4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "QUATTROPORTE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0876",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0544",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DUOSELECT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0645",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GTS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0787",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S Q4"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.884Z"
+}

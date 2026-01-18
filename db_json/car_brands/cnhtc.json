@@ -1,0 +1,337 @@
+{
+  "brand_name": "CNHTC",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c029",
+  "models": [
+    {
+      "model_name": "6X2",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0067",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0251",
+          "code": "CAR_MODEL_YEAR",
+          "name": "220HP"
+        }
+      ]
+    },
+    {
+      "model_name": "6X4",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0068",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CKG",
+      "model_id": "b48cbe3e-789d-495c-89f6-ac8091237a4e",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fa7ffb8c-0145-4234-9a4c-61cce0ae2767",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DAU KEO ZZ4257",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0308",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HOHAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0613",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0891",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XITEC"
+        }
+      ]
+    },
+    {
+      "model_name": "HOWO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0614",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0313",
+          "code": "CAR_MODEL_YEAR",
+          "name": "371HP 15T"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0314",
+          "code": "CAR_MODEL_YEAR",
+          "name": "371HP 25T"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0353",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4X2 8T"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0390",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6X2 220HP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0431",
+          "code": "CAR_MODEL_YEAR",
+          "name": "A7 8X4 371HP"
+        }
+      ]
+    },
+    {
+      "model_name": "SITRAK",
+      "model_id": "35541c36-7fc9-45d2-ab61-aaac63ad0678",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "7f6b0f8a-85ba-4cab-8389-da1db84bf90e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4 10.5L"
+        }
+      ]
+    },
+    {
+      "model_name": "TMT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1075",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TTCM",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1101",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TTCM/YC6J220",
+      "model_id": "6afdcde8-31fa-4313-bf7c-222193b9fa10",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "81fc7d30-b3dc-47b2-be11-dd3d9125430d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x2 6.5L"
+        }
+      ]
+    },
+    {
+      "model_name": "ZOOMLION",
+      "model_id": "74e38ff0-0dbb-453c-8923-57ec41973962",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ1387N37B7Q1-A7G",
+      "model_id": "ffa116e9-7372-49a4-9775-48c8568f3534",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ3164K3916C1",
+      "model_id": "e8f9f987-cb7a-4e70-9dbc-f4c1d72679b8",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ3257N",
+      "model_id": "a1ecf4f6-1a51-4178-bcd6-a9a2eba5340d",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ3317N3267E1-V",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1229",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ZZ3317N35",
+      "model_id": "6ca3cb38-b8de-4970-8449-19000a155269",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ4257N",
+      "model_id": "ad68e25e-6bbe-4d22-8728-d5d0d1ac4b96",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "ZZ4257N3247Q1",
+      "model_id": "d294fcff-a100-4a4a-979a-14dbfbb7550d",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fc611c66-e88c-49ff-b4bf-7cb7270b6279",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "e3c82b97-84ff-473f-84e2-537c565cb36f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4 WD615.96E"
+        }
+      ]
+    },
+    {
+      "model_name": "ZZ4257V324HE1B",
+      "model_id": "dd5c7a49-1e88-4625-9afc-2b2f9c34faa7",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fc611c66-e88c-49ff-b4bf-7cb7270b6279",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "60d1f702-fb94-4e2d-85c4-58225c5e17ad",
+          "code": "CAR_MODEL_YEAR",
+          "name": "10.5L MC11.44– 50"
+        }
+      ]
+    },
+    {
+      "model_name": "ZZ4257V344KE1",
+      "model_id": "768f3ee4-76d0-491b-b500-d613bbfde703",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "c7713ccb-5494-439c-a10e-3ba0e93a385e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "10.518 6X4"
+        }
+      ]
+    },
+    {
+      "model_name": "ZZ4257W344HE1B",
+      "model_id": "7d00f5fc-70ed-43d0-be2b-dcc005bc66ec",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fc611c66-e88c-49ff-b4bf-7cb7270b6279",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "fcfe1875-324c-4e38-a8ee-3495d8700791",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4"
+        }
+      ]
+    },
+    {
+      "model_name": "ZZ5187",
+      "model_id": "b64ced69-7a61-43c2-a8b2-459ff5149922",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "42816125-5753-46f7-b395-9e7f8d2b51c4",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6870 2x4"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:28.752Z"
+}

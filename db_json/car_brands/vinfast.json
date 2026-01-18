@@ -1,0 +1,416 @@
+{
+  "brand_name": "VINFAST",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c164",
+  "models": [
+    {
+      "model_name": "FADIL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0383",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "ae135990-8d43-477d-9d25-6959f65e5682",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4 4x2"
+        }
+      ]
+    },
+    {
+      "model_name": "HERIO GREEN",
+      "model_id": "feb06b38-c08a-427b-b0c1-b6f7bec7002d",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8059d203-3049-4267-954e-c45a83d98eff",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "f684f22b-d2b6-4ed8-a20e-4b285768e9ae",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S5EJ04"
+        }
+      ]
+    },
+    {
+      "model_name": "LIMO GREEN",
+      "model_id": "cc1aa91d-3690-419f-94b9-c305eb979286",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b711a5f9-098e-422f-9758-708d7854ceb3",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": [
+        {
+          "id": "bf0a52be-99f5-4582-af39-d12188f9c297",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EV N7TP01"
+        }
+      ]
+    },
+    {
+      "model_name": "LUX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0733",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0430",
+          "code": "CAR_MODEL_YEAR",
+          "name": "A2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0789",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SA2.0"
+        }
+      ]
+    },
+    {
+      "model_name": "LUX A 2.0",
+      "model_id": "20f23728-94e6-4df9-a012-88cd0300e080",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "5582bd6f-3321-45fc-91c4-ea77ca0220ab",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM"
+        },
+        {
+          "id": "df89e861-6db7-4c3d-b9d0-e4c33b1ca442",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "LUX A2.0",
+      "model_id": "227e4c36-b7a6-4b56-a3aa-f683bc76620b",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "LUX SA",
+      "model_id": "a09faa4b-e0a1-40cb-b970-791b5852aba1",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "LUX SA 2.0",
+      "model_id": "4130b42c-8423-4676-9323-2d087c67589d",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5582bd6f-3321-45fc-91c4-ea77ca0220ab",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "df89e861-6db7-4c3d-b9d0-e4c33b1ca442",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "PRESIDENT",
+      "model_id": "f829bf4e-094a-40a5-b34e-b679e0e934d4",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "b402977c-9644-461a-a83d-7e565bf8f733",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6.2 V8"
+        }
+      ]
+    },
+    {
+      "model_name": "VF3",
+      "model_id": "df037dcf-3ed9-4ac5-bda5-0e6979cce0b3",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "3f3a2f7f-dae4-4849-9d3c-8d3a842ca919",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ECO"
+        }
+      ]
+    },
+    {
+      "model_name": "VF5",
+      "model_id": "c8101418-4038-47ef-9f4f-3b35f627db9a",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "VF5 PLUS",
+      "model_id": "d1d0eef0-7ada-45e2-bfe3-0cffadca8b35",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "VF6",
+      "model_id": "9bef51a0-e601-4f59-94d9-af2368512f5b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "7a321618-7714-4561-a3a5-894c831f4228",
+          "code": "CAR_MODEL_YEAR",
+          "name": "BASE"
+        },
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        },
+        {
+          "id": "c2f2e1fa-bc1d-4c1a-9896-7ffd46001b49",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "VF6 PLUS",
+      "model_id": "5731b9f6-8319-4b07-a493-0f9dff14dc4f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8059d203-3049-4267-954e-c45a83d98eff",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "c631e04c-904d-47b8-9306-dfc9a070edb7",
+          "code": "CAR_MODEL_YEAR",
+          "name": "BEV"
+        }
+      ]
+    },
+    {
+      "model_name": "VF7",
+      "model_id": "a9a12eea-76ef-46e1-96fe-8bff02a93ccb",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "ccae4bde-5944-44a9-a86c-b1fed4aadfd1",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "7a321618-7714-4561-a3a5-894c831f4228",
+          "code": "CAR_MODEL_YEAR",
+          "name": "BASE"
+        },
+        {
+          "id": "cb9713da-b34d-42c6-a97b-188560468077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PLUS"
+        }
+      ]
+    },
+    {
+      "model_name": "VF7 PLUS",
+      "model_id": "9a4347ad-7644-4e13-afed-f9fb476880c0",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8059d203-3049-4267-954e-c45a83d98eff",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "693017c0-f07c-48a9-81a9-984973eebc1c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H5BE01"
+        }
+      ]
+    },
+    {
+      "model_name": "VF8",
+      "model_id": "51bfa9f2-7c07-4f7f-bd95-8109be85968b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "d694f11d-2e19-4784-b7ef-79c15b09ea13",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LUX"
+        },
+        {
+          "id": "3ebcd5ce-7ccb-4cec-8cc9-8bb446fe59be",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LUX PLUS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "VF8 PLUS",
+      "model_id": "441927ca-f372-4cad-b554-bbe32e6dd0fa",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "VF9",
+      "model_id": "f479bc53-8e9f-4744-8544-c05c308b697d",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "VF9 PLUS",
+      "model_id": "c27de0a8-54db-4828-811b-bb5a95cfa9f1",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "VF E34",
+      "model_id": "db364674-5fcb-4ea0-bccc-dcd41409b926",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "df89e861-6db7-4c3d-b9d0-e4c33b1ca442",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:05:30.778Z"
+}

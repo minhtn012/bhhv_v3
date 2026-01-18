@@ -1,0 +1,118 @@
+{
+  "brand_name": "FAW",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c044",
+  "models": [
+    {
+      "model_name": "380",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0029",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CA3250",
+      "model_id": "226e9b90-14fa-4749-b5bb-ae2d06c6dd15",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "e6b63a2d-2050-47bc-99c7-56d86fccbb20",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x4 P1K2T1 EAB0"
+        }
+      ]
+    },
+    {
+      "model_name": "CA4250P25K15T1E5A80",
+      "model_id": "f146cc28-edfc-492f-ad7b-34c5d130cbec",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "8b14bcc4-46a5-4d8b-b076-a954a0c8eb89",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "e957f1db-b9c2-4316-b68e-b897aa6ce322",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2024"
+        }
+      ]
+    },
+    {
+      "model_name": "FHT860T",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0405",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JIEFANG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0658",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TAI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1044",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0165",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0T"
+        },
+        {
+          "id": "6e16feb7-61dc-4fc4-9765-f07172990e5b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H7"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0665",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0666",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G TD"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:01.931Z"
+}

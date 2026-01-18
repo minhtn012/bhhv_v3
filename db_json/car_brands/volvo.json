@@ -1,0 +1,195 @@
+{
+  "brand_name": "VOLVO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c168",
+  "models": [
+    {
+      "model_name": "960",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0083",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "C30",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0192",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "C70",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0195",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FM12",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0424",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "S40",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0933",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "S60",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0941",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "S80",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0945",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "V50",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1122",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "V70",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1123",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XC60",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1190",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        },
+        {
+          "id": "a2297d9e-0274-466a-b612-7ce51765f341",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "c7e355e7-227b-4665-af51-cdf3ce21b4dd",
+          "code": "CAR_MODEL_YEAR",
+          "name": "B6 AWD R-DESIGN"
+        },
+        {
+          "id": "66887ae1-5b55-4c8a-ab37-6fefcf92c56b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "T6 AWD INSCRIPTION"
+        },
+        {
+          "id": "34fb135d-f153-44d7-b0f9-196907d00adc",
+          "code": "CAR_MODEL_YEAR",
+          "name": "T6 AWD R-DESIGN"
+        }
+      ]
+    },
+    {
+      "model_name": "XC70",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1191",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XC90",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1192",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "893f420f-3080-43c3-9726-e6bdba946e19",
+          "code": "CAR_MODEL_YEAR",
+          "name": "B6 ULTIMATE AWD"
+        },
+        {
+          "id": "35090e44-1dc3-4ee7-a25c-bdf7718f9603",
+          "code": "CAR_MODEL_YEAR",
+          "name": "T8 ULTIMATE RECHARGE AWD"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.893Z"
+}

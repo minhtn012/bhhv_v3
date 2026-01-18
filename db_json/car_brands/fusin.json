@@ -1,0 +1,104 @@
+{
+  "brand_name": "FUSIN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c051",
+  "models": [
+    {
+      "model_name": "CT1000",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0288",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FT1500",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0444",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FT2500E",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0445",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JB30SL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0653",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "LD3450",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0712",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0279",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.45T"
+        }
+      ]
+    },
+    {
+      "model_name": "LT1250",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0732",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ZD2000",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1223",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:15.926Z"
+}

@@ -1,0 +1,168 @@
+{
+  "brand_name": "LAND-ROVER",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c098",
+  "models": [
+    {
+      "model_name": "EVOQUE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0375",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FREE LANDER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0435",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0125",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2 LR2 HSE 2.2 DIESEL"
+        }
+      ]
+    },
+    {
+      "model_name": "FREELANDER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0436",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "LR2",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0722",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "LR3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0723",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "LR4 HSE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0724",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "RANGE ROVER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0887",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0450",
+          "code": "CAR_MODEL_YEAR",
+          "name": "AUTOBIOGRAPHI 5.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0538",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DISCOVERY 4 GS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0539",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DISCOVERY 4 HSE"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0668",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HSE"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0819",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SPORT HSE 5.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0820",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SPORT SUPERCHARGE5.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0831",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SUPERCHARGE 5.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0877",
+          "code": "CAR_MODEL_YEAR",
+          "name": "VOUGUE DYNAMIC SE4.4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0878",
+          "code": "CAR_MODEL_YEAR",
+          "name": "VOUGUE PRESTIGE 4.4"
+        }
+      ]
+    },
+    {
+      "model_name": "RANGE ROVER SPORT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0888",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.884Z"
+}

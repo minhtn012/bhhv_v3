@@ -1,0 +1,336 @@
+{
+  "brand_name": "HOAMAI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c063",
+  "models": [
+    {
+      "model_name": "HD1250A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0540",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD1600A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0541",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0553",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TL"
+        }
+      ]
+    },
+    {
+      "model_name": "HD2000A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0543",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0846",
+          "code": "CAR_MODEL_YEAR",
+          "name": "TK"
+        }
+      ]
+    },
+    {
+      "model_name": "HD2350A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0545",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD3000B",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0550",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD3450A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0553",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0551",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2MP"
+        }
+      ]
+    },
+    {
+      "model_name": "HD3450B",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0554",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0360",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x4 E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD3480A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0555",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD5000A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0560",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0551",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2MP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD5250A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0561",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0359",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4X4 E2MP"
+        }
+      ]
+    },
+    {
+      "model_name": "HD5500A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0562",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0551",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2MP"
+        }
+      ]
+    },
+    {
+      "model_name": "HD5850A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0563",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD6000A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0564",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0552",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2TD"
+        }
+      ]
+    },
+    {
+      "model_name": "HD6450B",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0566",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD7600A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0571",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0359",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4X4 E2MP"
+        }
+      ]
+    },
+    {
+      "model_name": "HD7800A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0573",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0551",
+          "code": "CAR_MODEL_YEAR",
+          "name": "E2MP"
+        }
+      ]
+    },
+    {
+      "model_name": "TAI THUNG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1045",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TAI TU DO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1046",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:41.830Z"
+}

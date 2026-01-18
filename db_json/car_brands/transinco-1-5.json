@@ -1,0 +1,232 @@
+{
+  "brand_name": "TRANSINCO 1-5",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c157",
+  "models": [
+    {
+      "model_name": "ACB 80C",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0094",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ATB55A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0124",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B40",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0144",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0757",
+          "code": "CAR_MODEL_YEAR",
+          "name": "NO 1"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0803",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SL"
+        }
+      ]
+    },
+    {
+      "model_name": "B45",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0146",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B50",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0147",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B60 KL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0148",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B60 TQ",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0149",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B80 KL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0150",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "B80 NEW SUPER AERO CITY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0151",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BAHAI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0153",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CA 6110",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0196",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CA B80",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0197",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HAECO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0529",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0687",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K29S"
+        }
+      ]
+    },
+    {
+      "model_name": "HCM B80",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0534",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HYUNDAI B60",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0620",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K51A",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0675",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.892Z"
+}

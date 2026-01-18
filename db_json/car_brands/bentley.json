@@ -1,0 +1,131 @@
+{
+  "brand_name": "BENTLEY",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c010",
+  "models": [
+    {
+      "model_name": "AZURE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0139",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CONTINENTAL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0266",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0597",
+          "code": "CAR_MODEL_YEAR",
+          "name": "FLYING SPUR"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0631",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0643",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GTC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0634",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT SPEED"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0635",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT V8"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0636",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT V8 S"
+        }
+      ]
+    },
+    {
+      "model_name": "FLYING SPUR",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0421",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0868",
+          "code": "CAR_MODEL_YEAR",
+          "name": "V8"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0882",
+          "code": "CAR_MODEL_YEAR",
+          "name": "W12"
+        }
+      ]
+    },
+    {
+      "model_name": "GHOST",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0475",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0799",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SERIES II"
+        }
+      ]
+    },
+    {
+      "model_name": "MULSANNE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0787",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0808",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SPEED"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:58:47.297Z"
+}

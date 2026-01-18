@@ -1,0 +1,173 @@
+{
+  "brand_name": "FIAT",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c046",
+  "models": [
+    {
+      "model_name": "500",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0045",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0020",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.2 MPI"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0577",
+          "code": "CAR_MODEL_YEAR",
+          "name": "FC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0580",
+          "code": "CAR_MODEL_YEAR",
+          "name": "FG"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0598",
+          "code": "CAR_MODEL_YEAR",
+          "name": "FM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0719",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LOUNGE 1.2 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "500 POP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0047",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "940",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0082",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0176",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.3"
+        }
+      ]
+    },
+    {
+      "model_name": "ALBEA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0104",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BRAVO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0171",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0035",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4"
+        }
+      ]
+    },
+    {
+      "model_name": "BRAVO DYNAMIC",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0172",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DOBLO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0323",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GRANDE PUNTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0509",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PUNTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0866",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0036",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4 AT"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:05.742Z"
+}

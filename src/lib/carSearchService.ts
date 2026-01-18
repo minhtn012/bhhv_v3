@@ -1,168 +1,202 @@
-import { connectToDatabase } from './mongodb';
-import { CarRecord, CarSearchResult, CarBodyStyle, CarYear } from '@/types/car';
-import { getCar } from '@/models/Car';
+import * as fs from 'fs'
+import * as path from 'path'
+import { CarRecord, CarSearchResult, CarBodyStyle, CarYear } from '@/types/car'
+
+// Use env var for prod (Docker volume), fallback to db_json for dev
+const CAR_BRANDS_DIR = process.env.CAR_BRANDS_PATH ||
+  path.join(process.cwd(), 'db_json/car_brands')
+
+// Cache for loaded brand data
+let brandsCache: Map<string, BrandData> | null = null
+let cacheTimestamp = 0
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
+interface ModelData {
+  model_name: string
+  model_id: string
+  car_type?: string
+  body_styles: CarBodyStyle[]
+  years: CarYear[]
+}
+
+interface BrandData {
+  brand_name: string
+  brand_id: string
+  models: ModelData[]
+  updated_at?: string
+}
+
+/**
+ * Load all brands from JSON files with caching
+ */
+function loadBrands(): Map<string, BrandData> {
+  const now = Date.now()
+  if (brandsCache && now - cacheTimestamp < CACHE_TTL) {
+    return brandsCache
+  }
+
+  const brands = new Map<string, BrandData>()
+
+  if (!fs.existsSync(CAR_BRANDS_DIR)) {
+    console.warn(`Car brands directory not found: ${CAR_BRANDS_DIR}`)
+    return brands
+  }
+
+  const files = fs.readdirSync(CAR_BRANDS_DIR)
+
+  for (const file of files) {
+    if (!file.endsWith('.json')) continue
+    try {
+      const filepath = path.join(CAR_BRANDS_DIR, file)
+      const data: BrandData = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
+      brands.set(data.brand_name.toLowerCase(), data)
+    } catch (error) {
+      console.error(`Error loading ${file}:`, error)
+    }
+  }
+
+  brandsCache = brands
+  cacheTimestamp = now
+  return brands
+}
+
+/**
+ * Convert ModelData to CarRecord format for API compatibility
+ */
+function toCarRecord(brand: BrandData, model: ModelData): CarRecord {
+  return {
+    _id: `${brand.brand_id}-${model.model_id}`,
+    brand_name: brand.brand_name,
+    brand_id: brand.brand_id,
+    model_name: model.model_name,
+    model_id: model.model_id,
+    body_styles: model.body_styles || [],
+    years: model.years || [],
+    car_type: model.car_type,
+    search_keywords: [],
+    created_at: new Date(),
+    updated_at: new Date()
+  }
+}
 
 class CarSearchService {
-  private async ensureConnection() {
-    await connectToDatabase();
-  }
-  
-  private getCar() {
-    return getCar();
-  }
-
+  /**
+   * Search cars by brand and optional model name
+   */
   async searchCarByBrandModel(brandName: string, modelName?: string): Promise<CarSearchResult> {
-    await this.ensureConnection();
-    
+    const brands = loadBrands()
     const results: CarSearchResult = {
       textSearch: [],
       regexSearch: [],
       exactMatch: null,
       prefixMatch: null
-    };
-
-    const query = modelName ? `${brandName} ${modelName}` : brandName;
-
-    // Try text search first
-    try {
-      const Car = this.getCar();
-      const textSearchResults = await Car.find(
-        { $text: { $search: query } },
-        { score: { $meta: 'textScore' } }
-      )
-      .sort({ score: { $meta: 'textScore' } })
-      .limit(10)
-      .lean()
-      .exec();
-      
-      results.textSearch = textSearchResults.map(doc => ({
-        ...doc,
-        _id: doc._id.toString()
-      })) as CarRecord[];
-    } catch (error) {
-      console.log('Text search not available:', error);
     }
 
-    // Try regex search
-    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
-    const regexQueries = searchTerms.map(term => ({
-      $or: [
-        { brand_name: { $regex: term, $options: 'i' } },
-        { model_name: { $regex: term, $options: 'i' } },
-        { search_keywords: { $regex: term, $options: 'i' } }
-      ]
-    }));
+    const brandLower = brandName.toLowerCase()
+    const modelLower = modelName?.toLowerCase()
 
-    const Car = this.getCar();
-    const regexSearchResults = await Car.find({
-      $and: regexQueries
-    }).limit(10).lean().exec();
-
-    results.regexSearch = regexSearchResults.map(doc => ({
-      ...doc,
-      _id: doc._id.toString()
-    })) as CarRecord[];
-
-    // Try exact match if both brand and model are provided
-    if (modelName) {
-      const Car = this.getCar();
-      const exactMatch = await Car.findOne({
-        brand_name: { $regex: `^${brandName}$`, $options: 'i' },
-        model_name: { $regex: `^${modelName}$`, $options: 'i' }
-      }).lean().exec();
-
-      if (exactMatch) {
-        results.exactMatch = {
-          ...exactMatch,
-          _id: exactMatch._id.toString()
-        } as CarRecord;
+    // Find matching brands
+    const matchingBrands: BrandData[] = []
+    for (const [key, brand] of brands) {
+      if (key.includes(brandLower) || brand.brand_name.toLowerCase().includes(brandLower)) {
+        matchingBrands.push(brand)
       }
+    }
 
-      // If no exact match, try prefix match
-      if (!results.exactMatch && modelName.length >= 2) {
-        for (let i = 0; i < modelName.length; i++) {
-          const prefix = modelName.substring(0, modelName.length - i);
-          if (prefix.length >= 2) {
-            const Car = this.getCar();
-            const prefixMatch = await Car.findOne({
-              brand_name: { $regex: `^${brandName}$`, $options: 'i' },
-              model_name: { $regex: `^${prefix}`, $options: 'i' }
-            }).sort({ model_name: 1 }).lean().exec();
+    // Collect matching models
+    for (const brand of matchingBrands) {
+      for (const model of brand.models) {
+        const record = toCarRecord(brand, model)
 
-            if (prefixMatch) {
-              results.prefixMatch = {
-                ...prefixMatch,
-                _id: prefixMatch._id.toString()
-              } as CarRecord;
-              break;
-            }
+        // Check for exact match
+        if (modelLower && model.model_name.toLowerCase() === modelLower) {
+          results.exactMatch = record
+        }
+
+        // Check for regex/partial match
+        if (!modelLower || model.model_name.toLowerCase().includes(modelLower)) {
+          results.regexSearch.push(record)
+        }
+
+        // Check for prefix match
+        if (modelLower && model.model_name.toLowerCase().startsWith(modelLower)) {
+          if (!results.prefixMatch) {
+            results.prefixMatch = record
           }
         }
       }
     }
 
-    return results;
+    // Text search = regex search for JSON-based implementation
+    results.textSearch = results.regexSearch.slice(0, 10)
+    results.regexSearch = results.regexSearch.slice(0, 10)
+
+    return results
   }
 
+  /**
+   * Get all available brand names
+   */
   async getAllBrands(): Promise<string[]> {
-    await this.ensureConnection();
-    const Car = this.getCar();
-    return await Car.distinct('brand_name').exec();
+    const brands = loadBrands()
+    return Array.from(brands.values())
+      .map(b => b.brand_name)
+      .sort()
   }
 
+  /**
+   * Get all models for a specific brand
+   */
   async getModelsByBrand(brandName: string): Promise<CarRecord[]> {
-    await this.ensureConnection();
-    const Car = this.getCar();
-    
-    // Get distinct model names using aggregation
-    const models = await Car.aggregate([
-      {
-        $match: {
-          brand_name: { $regex: `^${brandName}$`, $options: 'i' }
-        }
-      },
-      {
-        $group: {
-          _id: '$model_name',
-          doc: { $first: '$$ROOT' }
-        }
-      },
-      {
-        $replaceRoot: { newRoot: '$doc' }
-      },
-      {
-        $sort: { model_name: 1 }
-      }
-    ]).exec();
+    const brands = loadBrands()
+    const brand = brands.get(brandName.toLowerCase())
 
-    return models.map(doc => ({
-      ...doc,
-      _id: doc._id.toString()
-    })) as unknown as CarRecord[];
-  }
-
-  async getCarDetails(brandName: string, modelName: string): Promise<{
-    bodyStyles: CarBodyStyle[];
-    years: CarYear[];
-  } | null> {
-    await this.ensureConnection();
-    const Car = this.getCar();
-    const car = await Car.findOne({
-      brand_name: { $regex: `^${brandName}$`, $options: 'i' },
-      model_name: { $regex: `^${modelName}$`, $options: 'i' }
-    }).lean().exec();
-
-    if (!car) {
-      return null;
+    if (!brand) {
+      return []
     }
 
-    const carData = car as any;
-    
+    return brand.models
+      .map(model => toCarRecord(brand, model))
+      .sort((a, b) => a.model_name.localeCompare(b.model_name))
+  }
+
+  /**
+   * Get car details (body styles and years) for a specific brand and model
+   */
+  async getCarDetails(brandName: string, modelName: string): Promise<{
+    bodyStyles: CarBodyStyle[]
+    years: CarYear[]
+    carType?: string
+  } | null> {
+    const brands = loadBrands()
+    const brand = brands.get(brandName.toLowerCase())
+
+    if (!brand) {
+      return null
+    }
+
+    const model = brand.models.find(
+      m => m.model_name.toLowerCase() === modelName.toLowerCase()
+    )
+
+    if (!model) {
+      return null
+    }
+
     return {
-      bodyStyles: carData.body_styles || [],
-      years: carData.years || []
-    };
+      bodyStyles: model.body_styles || [],
+      years: model.years || [],
+      carType: model.car_type
+    }
   }
 }
 
-export const carSearchService = new CarSearchService();
+/**
+ * Clear the brands cache (call after crawl updates)
+ */
+export function clearCarCache(): void {
+  brandsCache = null
+  cacheTimestamp = 0
+}
+
+export const carSearchService = new CarSearchService()

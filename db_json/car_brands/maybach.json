@@ -1,0 +1,33 @@
+{
+  "brand_name": "MAYBACH",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c109",
+  "models": [
+    {
+      "model_name": "106",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0001",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ZEPPELIN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1225",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.885Z"
+}

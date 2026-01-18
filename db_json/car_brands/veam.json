@@ -1,0 +1,407 @@
+{
+  "brand_name": "VEAM",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c160",
+  "models": [
+    {
+      "model_name": "533603-225",
+      "model_id": "58872762-054d-43b5-b430-6464b6ee953e",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "b0212226-9fb9-4781-b090-41a4ab429f3d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 11L"
+        }
+      ]
+    },
+    {
+      "model_name": "CHANGAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0235",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DRAGON",
+      "model_id": "e7d3b7e1-d037-4de3-921f-8ebbbb1e7a8f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "4effb5ae-dd28-48e8-acd7-465abe012693",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3907"
+        }
+      ]
+    },
+    {
+      "model_name": "GALAXY 48S",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0464",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD800",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0575",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0746",
+          "code": "CAR_MODEL_YEAR",
+          "name": "MB TAI GAN CAU"
+        }
+      ]
+    },
+    {
+      "model_name": "RABBIT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0885",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB100",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1128",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB125",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1130",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB150",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1131",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB160",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1132",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB200",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1133",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB350",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1134",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB650",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1135",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VB652",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1136",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT100",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1154",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT125",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1156",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT150",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1157",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT200-1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1158",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "b5fa3fc1-67c9-4df4-bdb0-346edbb2c3d0",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.5L 4x2 MB"
+        }
+      ]
+    },
+    {
+      "model_name": "VT201",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1159",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT250-1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1160",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT250TK",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1161",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT252",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1162",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT255",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1163",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT260",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1164",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT340S",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1165",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT350",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1166",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT490A",
+      "model_id": "f174de23-a468-466a-9856-09086a604776",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "VT498",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1167",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VT651",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1168",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.892Z"
+}

@@ -1,0 +1,115 @@
+{
+  "brand_name": "FERRARI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c045",
+  "models": [
+    {
+      "model_name": "430",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0037",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "458",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0039",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "599",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0057",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0642",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GTB"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0644",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GTO"
+        }
+      ]
+    },
+    {
+      "model_name": "612",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0061",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BUS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0180",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CALIFORNIA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0200",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0322",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4.3"
+        }
+      ]
+    },
+    {
+      "model_name": "F430",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0382",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:03.650Z"
+}

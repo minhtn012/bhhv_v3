@@ -1,0 +1,211 @@
+{
+  "brand_name": "DODGE",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c037",
+  "models": [
+    {
+      "model_name": "CALIBER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0199",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CARAVAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0210",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CHALLENGER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0234",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0827",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STR8 6.1"
+        }
+      ]
+    },
+    {
+      "model_name": "CHARGER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0237",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DURANGO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0327",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "INTREPID",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0636",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0281",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.5"
+        }
+      ]
+    },
+    {
+      "model_name": "JORNEY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0661",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0239",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.7 V6 AT 5 SEATS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0240",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.7 V6 AT 7 SEATS"
+        }
+      ]
+    },
+    {
+      "model_name": "JOURNEY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0662",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MAGNUM",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0746",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "NEON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0798",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "NITRO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0805",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0300",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.7L"
+        }
+      ]
+    },
+    {
+      "model_name": "SPIRIT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1011",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "STRATUS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1027",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0212",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.5"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:43.647Z"
+}

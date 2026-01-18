@@ -1,0 +1,152 @@
+{
+  "brand_name": "FOTON",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c048",
+  "models": [
+    {
+      "model_name": "AUMAN C160",
+      "model_id": "1da64f98-d725-4118-a96e-e012a5fe9dcf",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "f258c4f0-5c7e-4171-b7d8-a6d139fb2b50",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.8L 6x2"
+        }
+      ]
+    },
+    {
+      "model_name": "AUMAN C160A",
+      "model_id": "268229ed-6b4c-4890-b58b-0b743d7c212f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "f258c4f0-5c7e-4171-b7d8-a6d139fb2b50",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.8L 6x2"
+        }
+      ]
+    },
+    {
+      "model_name": "AUMAN C240",
+      "model_id": "4e2cdf78-730e-4233-a717-4f190aedcaa5",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "AUMAN ETX",
+      "model_id": "ed86d138-9fc2-4b57-9758-2a7822b7e965",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0518",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D240"
+        }
+      ]
+    },
+    {
+      "model_name": "OLLIN500",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0826",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        },
+        {
+          "id": "072a64ad-e2b1-47d7-9ec8-7f7c45f6fd24",
+          "code": "CAR_BODY_STYLES",
+          "name": "XE TAI"
+        }
+      ],
+      "years": [
+        {
+          "id": "23ed30ec-4cf4-4007-8be9-5e2f51874538",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6x2  6.7"
+        }
+      ]
+    },
+    {
+      "model_name": "OLLIN S490",
+      "model_id": "52e4e1d0-3eae-465d-b81c-a379b9c9c50b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "3f3a2f7f-dae4-4849-9d3c-8d3a842ca919",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L 4x2"
+        }
+      ]
+    },
+    {
+      "model_name": "OLLIN S700",
+      "model_id": "cbf56cc8-cc16-49bb-85bc-d70be5975d34",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "75fb9045-1472-4215-ad42-14e6f50fa30f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L 4x2"
+        }
+      ]
+    },
+    {
+      "model_name": "OLLIN S720",
+      "model_id": "c2e2b3e8-cc95-470c-8b48-1a5b63720f11",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "4f330064-7938-4b31-886c-cbba4d67f2ad",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "3f3a2f7f-dae4-4849-9d3c-8d3a842ca919",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4.2L 4x2"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:12.706Z"
+}

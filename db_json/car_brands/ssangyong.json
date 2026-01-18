@@ -1,0 +1,153 @@
+{
+  "brand_name": "SSANGYONG",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c137",
+  "models": [
+    {
+      "model_name": "CHAIRMAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0233",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0868",
+          "code": "CAR_MODEL_YEAR",
+          "name": "V8"
+        }
+      ]
+    },
+    {
+      "model_name": "KORANDO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0695",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0483",
+          "code": "CAR_MODEL_YEAR",
+          "name": "C320 4WD DIESEL 2.0"
+        }
+      ]
+    },
+    {
+      "model_name": "KYRON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0696",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0567",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EX 2.0 DIESEL MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0779",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S 2.0 DIESEL MT 2WD"
+        }
+      ]
+    },
+    {
+      "model_name": "MUSSO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0790",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0617",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GL"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0711",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LIBERO"
+        }
+      ]
+    },
+    {
+      "model_name": "REXTON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0899",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "REXTON II",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0900",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "STAVIC",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1026",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0835",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SV270 2.7L"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.890Z"
+}

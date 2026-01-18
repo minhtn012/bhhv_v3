@@ -1,0 +1,58 @@
+{
+  "brand_name": "DONGBEN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c038",
+  "models": [
+    {
+      "model_name": "DB1021",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0310",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "DBQ20",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0312",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0699",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KM"
+        }
+      ]
+    },
+    {
+      "model_name": "X300",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1184",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0867",
+          "code": "CAR_MODEL_YEAR",
+          "name": "V5 5 SEATS"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:44.328Z"
+}

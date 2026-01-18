@@ -1,0 +1,105 @@
+{
+  "brand_name": "TERACO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c148",
+  "models": [
+    {
+      "model_name": "TERA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1061",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0122",
+          "code": "CAR_MODEL_YEAR",
+          "name": "190"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0252",
+          "code": "CAR_MODEL_YEAR",
+          "name": "230"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0253",
+          "code": "CAR_MODEL_YEAR",
+          "name": "240"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0254",
+          "code": "CAR_MODEL_YEAR",
+          "name": "250"
+        },
+        {
+          "id": "72669168-70c9-4d29-a41c-e4febc236b3c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "345SL-MB"
+        }
+      ]
+    },
+    {
+      "model_name": "TERA 100",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1062",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TERA 250",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1063",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TERA 350-MB",
+      "model_id": "c362ad9d-6ee1-4276-8d22-86bf0045579c",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "TERA 350-TK",
+      "model_id": "912a8c60-859e-4f9e-bfe0-e11381a3f044",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "TERA-V",
+      "model_id": "4c745794-56e3-4d44-8ed4-514d1ca035da",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "bd6147d6-d81d-455e-a78f-376c99719e00",
+          "code": "CAR_BODY_STYLES",
+          "name": "VAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "490c3047-27eb-4d15-a507-4ad697f95f2e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.891Z"
+}

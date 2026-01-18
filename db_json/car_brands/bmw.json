@@ -1,0 +1,776 @@
+{
+  "brand_name": "BMW",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c011",
+  "models": [
+    {
+      "model_name": "116I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0003",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "135I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0004",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "318I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0021",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "320I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0022",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0487",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CAB"
+        }
+      ]
+    },
+    {
+      "model_name": "325I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0024",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0487",
+          "code": "CAR_MODEL_YEAR",
+          "name": "CAB"
+        }
+      ]
+    },
+    {
+      "model_name": "328I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0025",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "3 SERIES",
+      "model_id": "11362689-d93e-47b0-bf13-b4d0cc575ad4",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5bac92aa-f741-428e-af51-37b9827ca84e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "320i M SPORT"
+        },
+        {
+          "id": "32b1fd06-cc74-4399-80e1-b5dbc976536b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "320i SPORT LINE"
+        },
+        {
+          "id": "99eeb16e-ecdd-4d66-a359-fb9961eab8ad",
+          "code": "CAR_MODEL_YEAR",
+          "name": "330i M SPORT"
+        }
+      ]
+    },
+    {
+      "model_name": "420I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0035",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0342",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4H31"
+        }
+      ]
+    },
+    {
+      "model_name": "428I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0036",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0511",
+          "code": "CAR_MODEL_YEAR",
+          "name": "COUPE"
+        }
+      ]
+    },
+    {
+      "model_name": "430i",
+      "model_id": "7df81c56-ba27-4be2-97dc-7620c6646f6c",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b2801e7b-8391-4042-80e6-eccb87238236",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "8b1d62f4-b9e5-47e7-a6b8-3c97aab607b6",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L CONVERTIBLE"
+        },
+        {
+          "id": "99f09bdf-f1ff-4c8f-b751-9f862773206a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L GRAN COUPE"
+        }
+      ]
+    },
+    {
+      "model_name": "520I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0051",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "523I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0052",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "528I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0053",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "530i",
+      "model_id": "8a408671-1d99-414a-b8a0-4301897d3703",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "6b185127-5849-449d-bdf7-d416899eb63b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L M SPORT"
+        }
+      ]
+    },
+    {
+      "model_name": "535I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0055",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "5 SERIES",
+      "model_id": "7bb99c2f-d0e4-43bd-a5e6-cf0c11266506",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "4cf2e98f-6c69-4b31-9a55-40bdc73fd44f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L 520i"
+        },
+        {
+          "id": "4f268e56-43b6-4741-9178-955f78512699",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L 520i M SPORT"
+        },
+        {
+          "id": "4e101c52-a6d7-4cb3-8000-2ae62e3af416",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L 530i M SPORT"
+        }
+      ]
+    },
+    {
+      "model_name": "650I",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0065",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "730LI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0074",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "735i",
+      "model_id": "93cc8359-d474-459b-838d-53476af5de00",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "61136929-9bab-41a3-bbbe-2df832173b8c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PE-AllNew"
+        }
+      ]
+    },
+    {
+      "model_name": "740LI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0075",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "750LI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0076",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "760LI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0077",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "7 SERIES",
+      "model_id": "561c278e-c869-49ae-a6b4-376d80e410ed",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "cbb596f6-1d63-4dc1-bb46-c15826aaf659",
+          "code": "CAR_MODEL_YEAR",
+          "name": "730Li M SPORT"
+        },
+        {
+          "id": "1203f31e-e8ba-4f41-8ba2-28091132f999",
+          "code": "CAR_MODEL_YEAR",
+          "name": "730Li PURE EXELLENCE"
+        }
+      ]
+    },
+    {
+      "model_name": "ALPINA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0109",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0455",
+          "code": "CAR_MODEL_YEAR",
+          "name": "B7"
+        }
+      ]
+    },
+    {
+      "model_name": "I3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0625",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "M",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0738",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "M5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0740",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0741",
+          "code": "CAR_MODEL_YEAR",
+          "name": "M5-375"
+        }
+      ]
+    },
+    {
+      "model_name": "M6",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0741",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0965",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 2",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0966",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0967",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 4",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0968",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0969",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 6",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0970",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 7",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0971",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SERIES 8",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0972",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "X",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1181",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "X1",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1182",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0793",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SDRIVE18I 2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0795",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SDRIVE28I 3.0"
+        }
+      ]
+    },
+    {
+      "model_name": "X3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1183",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0888",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE20I"
+        }
+      ]
+    },
+    {
+      "model_name": "X4",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1185",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0888",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE20I"
+        }
+      ]
+    },
+    {
+      "model_name": "X5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1187",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0267",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.0 SI"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0889",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE35I"
+        },
+        {
+          "id": "104b014c-41f2-4c00-a93b-2e9a4b2f423a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE40I"
+        }
+      ]
+    },
+    {
+      "model_name": "X6",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1188",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0312",
+          "code": "CAR_MODEL_YEAR",
+          "name": "35I"
+        }
+      ]
+    },
+    {
+      "model_name": "X7",
+      "model_id": "12e75952-e321-45d1-b4ec-10d7c52c2e27",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "0ed02446-e541-49bc-951e-3f2cbef84863",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE40I MSPORT"
+        },
+        {
+          "id": "8d62845c-14be-42cc-b824-1de4fe1644d5",
+          "code": "CAR_MODEL_YEAR",
+          "name": "XDRIVE40I PURE EXCELLENCE"
+        }
+      ]
+    },
+    {
+      "model_name": "Z4",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1220",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0794",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SDRIVE23I"
+        }
+      ]
+    },
+    {
+      "model_name": "Z4 M",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1221",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:58:55.899Z"
+}

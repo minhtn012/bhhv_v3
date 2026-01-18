@@ -1,0 +1,39 @@
+{
+  "brand_name": "KENBO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c090",
+  "models": [
+    {
+      "model_name": "KB065",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0679",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "KBO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0680",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0428",
+          "code": "CAR_MODEL_YEAR",
+          "name": "99TL1-KM"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.883Z"
+}

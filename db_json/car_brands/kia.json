@@ -1,0 +1,1116 @@
+{
+  "brand_name": "KIA",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c093",
+  "models": [
+    {
+      "model_name": "BONGO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0167",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BONGO III",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0168",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CARENS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0211",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0065",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 EX MTL"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0067",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 GMT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0136",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 EX HIGH MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0137",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 EX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0154",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 SX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0155",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 SX MT"
+        }
+      ]
+    },
+    {
+      "model_name": "CARNIVAL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0212",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "d894eee7-5cac-4f16-87f4-939267f9eeca",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2D LUXURY"
+        },
+        {
+          "id": "774f9ab5-92d7-4695-ae63-2c9bb3f54000",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2D PREMIUM"
+        },
+        {
+          "id": "8be3016b-50fc-4719-81e2-df0e6297622d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2D SIGNATURE"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0237",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.7 GAT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0238",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.7 GMT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0244",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.9 DMT"
+        },
+        {
+          "id": "f494b847-e915-48be-bb9f-d013cc87af4d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.5G SIGNATURE"
+        },
+        {
+          "id": "2ffb3df0-c4ba-44c1-8f0d-b7ab2b89ca4a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ROYAL"
+        }
+      ]
+    },
+    {
+      "model_name": "CERATO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0232",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0066",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 GAT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 SX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0701",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KOUP 2.0 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0702",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KOUP 2.0 AT OPTION"
+        }
+      ]
+    },
+    {
+      "model_name": "FORTE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0431",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0063",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 EX MLT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0064",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 EX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0073",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 S AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0076",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 SLI AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0074",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 S MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0077",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 SX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0078",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 SX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0700",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KOUP"
+        }
+      ]
+    },
+    {
+      "model_name": "FRONTIER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0438",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0102",
+          "code": "CAR_MODEL_YEAR",
+          "name": "125"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0107",
+          "code": "CAR_MODEL_YEAR",
+          "name": "140"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0117",
+          "code": "CAR_MODEL_YEAR",
+          "name": "165"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0122",
+          "code": "CAR_MODEL_YEAR",
+          "name": "190"
+        },
+        {
+          "id": "8acbd61b-ea58-4d45-8e63-0bf8762250bf",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K165"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0681",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K165S"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0682",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K190"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0683",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K200"
+        },
+        {
+          "id": "082d7664-22bc-4ca4-80cd-3f065b6a9015",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K200S–2WD"
+        },
+        {
+          "id": "100c8914-3abc-40f4-91c8-dbb4c6149711",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K200S–4WD"
+        },
+        {
+          "id": "beba76e6-3974-4b2a-a30b-9683417595a0",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K200SD–4WD"
+        },
+        {
+          "id": "7c3c3f6d-500a-46c9-98f0-fca94b15e79f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K250"
+        },
+        {
+          "id": "50b41d1d-d190-468b-8991-cdeaba0b13df",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K250B"
+        }
+      ]
+    },
+    {
+      "model_name": "GRANBIRD",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0501",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GRAND SEDONA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0505",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0169",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2 DAT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0170",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2 DATH"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0276",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.3 GAT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0277",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.3 GATH"
+        }
+      ]
+    },
+    {
+      "model_name": "K165",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0665",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K165S",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0666",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K190",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0667",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K2700",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0668",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K2700 II",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0669",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0670",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0060",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0071",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0127",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "K3000",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0671",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "K3000S",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0672",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "4f435f05-d838-447e-afdf-fddcc2d68b3a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4X2 3.0"
+        }
+      ]
+    },
+    {
+      "model_name": "K5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0674",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "457f8b9e-dd0c-4ba2-b088-cca73fc582c4",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L LUXURY"
+        },
+        {
+          "id": "9489a838-9411-4ad3-bcbc-b947ea4f65c2",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L PREMIUM"
+        },
+        {
+          "id": "21d627a2-3316-4f5d-8f02-9c28875d2725",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.5L GT-LINE"
+        }
+      ]
+    },
+    {
+      "model_name": "K7",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0676",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MAGENTIS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0745",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0138",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 GAT"
+        }
+      ]
+    },
+    {
+      "model_name": "MOHAVE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0776",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0704",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KV300 3.0"
+        }
+      ]
+    },
+    {
+      "model_name": "MORNING",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0780",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0009",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.0 SLX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0011",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.1 EX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0012",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.1 LX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0014",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.1 SP MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0015",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.1 SX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0016",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.1 SX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0018",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.2 EX HIGH MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0019",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.2 EX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0869",
+          "code": "CAR_MODEL_YEAR",
+          "name": "VAN"
+        }
+      ]
+    },
+    {
+      "model_name": "OPTIMA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0828",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0138",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 GAT"
+        }
+      ]
+    },
+    {
+      "model_name": "PICANTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0845",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0025",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.25 EX MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0026",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.25 S AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0027",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.25 S MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0028",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.25 SX AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0029",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.25 SX MT"
+        }
+      ]
+    },
+    {
+      "model_name": "PRIDE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0856",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "RIO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0902",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0035",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0036",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0038",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4 G AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0566",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EX 1.4"
+        }
+      ]
+    },
+    {
+      "model_name": "RIO 5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0903",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "RONDO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0915",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b711a5f9-098e-422f-9758-708d7854ceb3",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "e659887-11fa-401d-a5cb-7f0b90b7cef1",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L GAT DELUXE"
+        },
+        {
+          "id": "1205e10a-9e31-4d83-a2c3-127eb4a8b338",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L GMT"
+        }
+      ]
+    },
+    {
+      "model_name": "SEDONA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0959",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "f7749f2d-5fb5-4f79-bacf-db8ee09d2582",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "2d38b4ca-36f0-465e-bcd1-56799372bcf7",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2D AT DELUXE"
+        },
+        {
+          "id": "ae13f99b-629a-4e1a-bf07-e1873159a0bd",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2D AT LUXURY"
+        },
+        {
+          "id": "6f7f3024-9abc-42d8-ab47-e21b5c3c2255",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.3G AT PREMIUM"
+        }
+      ]
+    },
+    {
+      "model_name": "SELTOS",
+      "model_id": "d8cb97e7-2cca-4f6c-852a-1360a649fd80",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "0ac9ba58-c937-4512-8dae-db9d455aa0b0",
+          "code": "CAR_BODY_STYLES",
+          "name": "CROSSOVER"
+        }
+      ],
+      "years": [
+        {
+          "id": "d745fa17-c3a8-4b19-a3a3-74a4f727bd19",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L TURBO DELUXE"
+        },
+        {
+          "id": "73c055b1-b044-4f93-8d85-41218784333c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L TURBO GT-LINE"
+        },
+        {
+          "id": "b5356c59-7766-47cc-bc39-f8ddd16f1ba2",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L TURBO LUXURY"
+        },
+        {
+          "id": "703d4f9e-d41e-46b3-b44e-380fc9bd8a81",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L TURBO PREMIUM"
+        },
+        {
+          "id": "607791d3-bbda-4204-876a-f9b0e8cdd4fb",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L AT"
+        },
+        {
+          "id": "30b94139-b8a9-435d-ad02-7cfb9d67c9e8",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L AT LUXURY"
+        },
+        {
+          "id": "390bc59e-03ca-4e23-8568-e3ac410ec23e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L AT PREMIUM"
+        },
+        {
+          "id": "59a7f90e-fbf2-4f69-b721-cec3921b5e24",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L DELUXE"
+        },
+        {
+          "id": "642d6923-7fea-44ca-97f4-56cee813d6d8",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6L AT DELUXE"
+        },
+        {
+          "id": "9b17f161-8a2f-48c9-a69e-c1a43496b7cf",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6L AT LUXURY"
+        },
+        {
+          "id": "5dc78172-0821-413b-9ba7-699a98bc7c2f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6L AT PREMIUM"
+        }
+      ]
+    },
+    {
+      "model_name": "SM3",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0993",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SOLUTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1002",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "34bdcefc-2dd6-42a6-bdab-f4575a08033b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L AT DELUXE"
+        },
+        {
+          "id": "0ddd7b0e-ea44-4098-ac8c-9304b98395dc",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L AT LUXURY"
+        },
+        {
+          "id": "80c4218c-5695-42c1-bed5-bf085267c59f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L MT"
+        },
+        {
+          "id": "f2b0246b-3bc2-4205-a01b-52f586b6306e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4L MT DELUXE"
+        }
+      ]
+    },
+    {
+      "model_name": "SONET ",
+      "model_id": "e5a5ff5c-a179-4da8-812d-95d36afb423e",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b2801e7b-8391-4042-80e6-eccb87238236",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "bfe39ccd-0ab5-47e4-a67a-e4ad9889d27f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 AT DELUXE"
+        },
+        {
+          "id": "6ae311db-414a-4c3e-8327-24d1d7331a1d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 AT LUXURY"
+        },
+        {
+          "id": "f6ee7b02-9d7c-4aeb-8c5a-fa195887aad8",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5 AT PREMIUM  "
+        },
+        {
+          "id": "a0c455bc-7943-4d71-b19d-3472f173d7a9",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DELUXE 1.5L CVT"
+        },
+        {
+          "id": "c894564f-6705-4ce4-96d3-124a0c94cc99",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DELUXE 1.5L MT"
+        },
+        {
+          "id": "c511a25a-a5fe-4720-8d65-96770ce4da7d",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LUXURY 1.5L CVT"
+        },
+        {
+          "id": "21505619-04ec-41ee-9016-ff261e4207d2",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM 1.5L CVT"
+        }
+      ]
+    },
+    {
+      "model_name": "SORENTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1004",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0145",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 LTX LTD DIESEL"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0171",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.2 DMT 2WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0182",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 AT 2WD VN"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0184",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 AT 4WD VN"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0187",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GAT 2WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0188",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GAT 2WD CAMERA"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0189",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GAT 2WD ESP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0190",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GAT 4WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0191",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GAT 4WD ESP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0192",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GMT 2WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0193",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 GMT 4WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0196",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 MT 2WD VN"
+        }
+      ]
+    },
+    {
+      "model_name": "SOUL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1005",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0060",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0071",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6 MT"
+        }
+      ]
+    },
+    {
+      "model_name": "SPECTRA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1009",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SPORTAGE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1013",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0139",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 GAT 4WD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0141",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 GMT 4WD"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.883Z"
+}

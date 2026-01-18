@@ -1,0 +1,795 @@
+{
+  "brand_name": "DOTHANH",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c041",
+  "models": [
+    {
+      "model_name": "HD98",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0577",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "IZ150",
+      "model_id": "83592d70-0c3b-4c9b-aba4-c80e86fd5a74",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "1ce75acf-ec35-41dc-9642-dd10cc80f633",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "f9002985-6027-4dbe-9a2c-dc8031822623",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ150-TK",
+      "model_id": "9ac2f034-35bf-48e2-9a65-4c6b1dd87923",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "c97dc461-a232-4332-928c-652744be40a7",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "184a2d82-b1b5-4a2b-8104-88a23cf56004",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ150-TL",
+      "model_id": "d6512a3e-82b7-4c07-a5fa-4807b4aca234",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b70fe14f-4e99-4599-84d0-0208f59d99d3",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "dd5653c6-003a-45c9-9926-f76e9c92e455",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ150-TMB",
+      "model_id": "026f5865-ec86-4310-83d8-8c20ba9e2ce3",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "a6609f14-c673-4c20-95e1-9d2cdbdebcb8",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5e42afb7-cd6a-4f9b-a158-56320ae703dc",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ190SL/TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17910",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f510",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9310",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ200",
+      "model_id": "202afb05-d080-4619-8e45-77aab7c25045",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb2d9afd-f3d9-46f6-b669-1ccc12dd63fa",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "bf03f1bd-153d-4d41-97f4-e9587f13c162",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ200-TK",
+      "model_id": "2c2ec9e2-1af0-4367-bc63-bab87f9aafde",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "e0fff54c-97d5-425f-a271-bc9af4a7fc15",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "858816b6-911c-4bbd-9bff-e4ed1f836d54",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ200-TL",
+      "model_id": "b7603ac7-ca40-4d92-80b6-4ca7f513ca62",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "2efd56d2-4524-4a5c-b292-2dfb66d70fdb",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "03515a9a-3205-432b-9ff8-c53a44de2d35",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ200-TMB",
+      "model_id": "c86e09e1-4e3e-4235-9f9a-6fe7b9f0b829",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "ea4d6740-434a-4d5f-982e-645c4c17eb36",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "e3862416-072b-4861-96e2-a03637290300",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ250",
+      "model_id": "19893856-b94e-4131-89de-d5dd3888015b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "1a4feda2-9658-48bc-9fd4-9db40721d7fe",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5ad614e1-71ef-4dbf-b14b-4a4965026e7f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ250-TK",
+      "model_id": "2bf32aed-baf7-4f7a-85d7-9bc816f586e0",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "7624c310-0c8d-48e3-a7a0-58394968bdde",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "fd4e9a31-52c5-45f0-b88f-ed727b8a8f40",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ250-TL",
+      "model_id": "f7f49f8e-a168-451a-981d-4fdb3ac9c601",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "d874ee63-b964-45b4-b9a5-7f0e336a5234",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "c817717a-ee88-4319-81b3-9bea8f90033a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ250-TMB",
+      "model_id": "46a93d55-6ca7-485d-8330-548ee267a1d4",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "c05e4f1a-f4d3-4a40-b5eb-b549c31070d5",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5601728a-ff8e-4d07-8b07-0146edea4710",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350SL/TK",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17908",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f508",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9308",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350SL/TL",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17907",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f507",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9307",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350SL/TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17909",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f509",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9309",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350/TMB - 1.9T",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17906",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f506",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9306",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350/TMB - 2.5T",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17905",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f505",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9305",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ350/TMB - 3.5T",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17904",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f504",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9304",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ49E4TK",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0646",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "IZ49-E4-TL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0647",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "IZ49-TMB",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0648",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "IZ500L - TK",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17915",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f515",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9315",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500L - TL",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17914",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f514",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9314",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500L - TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17916",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f516",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9316",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500SL - TK",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17918",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f518",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9318",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500SL - TL",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17917",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f517",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9317",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500SL - TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17919",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f519",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9319",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500 - TK",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17911",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f511",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9311",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500 - TL",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17913",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f513",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9313",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ500 - TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17912",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f512",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9312",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.9L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ650",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17920",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f520",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9320",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 3.0L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ650 - TK",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17923",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f523",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9323",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 3.0L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ650 - TL",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17921",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f521",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9321",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 3.0L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ650 - TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17922",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f522",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9322",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2R 3.0L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ65-1.9 TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17902",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f502",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9302",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ65-2.5 TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17901",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f501",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9301",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ65-3.5 TMB",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e179",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f5",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda93",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ65 - CHO GIA CAM",
+      "model_id": "b807ec93-e098-48fb-868e-78346a92e17903",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "9d41fd8f-f1f7-4055-9a92-1c1f309da8f503",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "546cf052-363d-42cb-b901-8108784fda9303",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 2.8L"
+        }
+      ]
+    },
+    {
+      "model_name": "IZ65-TL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0649",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "IZ65-TMB",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0650",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MIGHTY HD120S",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0763",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MIGHTY HD99",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0764",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:59.442Z"
+}

@@ -1,0 +1,124 @@
+{
+  "brand_name": "KOBELCO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c095",
+  "models": [
+    {
+      "model_name": "CAN CAU BANH LOP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0203",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CAN CAU BANH XICH",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0204",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CAN TRUC BANH LOP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0206",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CAN TRUC BANH XICH",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0207",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MAY XUC LAT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0754",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XE LU",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1196",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XE NANG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1197",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XE RAI NHUA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1198",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "XE UI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1199",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.883Z"
+}
