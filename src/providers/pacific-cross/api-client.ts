@@ -5,6 +5,7 @@
 
 import { BaseApiClient, ApiResponse } from '@/core/providers/base-api-client';
 import { PACIFIC_CROSS_API } from './products/travel/constants';
+import { logInfo, logDebug, logError as logErr } from '@/lib/errorLogger';
 
 export interface PacificCrossAuthResponse {
   success: boolean;
@@ -125,26 +126,42 @@ export class PacificCrossApiClient extends BaseApiClient {
    * 2. POST login credentials
    */
   async authenticate(username: string, password: string): Promise<ApiResponse<{ cookies?: string }>> {
-    // Debug:('🔐 Authenticating with Pacific Cross...');
+    logInfo('Pacific Cross authentication started', {
+      operation: 'PC_AUTH_START',
+      additionalInfo: { baseUrl: this.baseUrl, username }
+    });
 
     try {
       // Step 1: Get login page for CSRF token
-      const loginPageResponse = await fetch(`${this.baseUrl}${PACIFIC_CROSS_API.LOGIN_PATH}`, {
+      const loginUrl = `${this.baseUrl}${PACIFIC_CROSS_API.LOGIN_PATH}`;
+      logDebug('PC_AUTH: Fetching login page', { url: loginUrl });
+
+      const loginPageResponse = await fetch(loginUrl, {
         method: 'GET',
         headers: this.getDefaultHeaders(),
         redirect: 'manual',
+      });
+
+      logDebug('PC_AUTH: Login page response', {
+        status: loginPageResponse.status,
+        headers: Object.fromEntries(loginPageResponse.headers.entries())
       });
 
       // Extract cookies from login page
       const initialCookies = this.parseCookiesFromHeaders(loginPageResponse.headers);
       if (initialCookies) {
         this.sessionCookies = initialCookies;
+        logDebug('PC_AUTH: Initial cookies set', { cookieLength: initialCookies.length });
       }
 
       const loginPageHtml = await loginPageResponse.text();
       const csrfToken = this.extractCsrfToken(loginPageHtml);
 
       if (!csrfToken) {
+        logErr(new Error('CSRF token extraction failed'), {
+          operation: 'PC_AUTH_CSRF',
+          additionalInfo: { htmlLength: loginPageHtml.length }
+        });
         return {
           success: false,
           error: 'Could not extract CSRF token from login page',
@@ -152,7 +169,7 @@ export class PacificCrossApiClient extends BaseApiClient {
       }
 
       this.csrfToken = csrfToken;
-      // Debug:('📝 CSRF token obtained');
+      logDebug('PC_AUTH: CSRF token obtained', { tokenLength: csrfToken.length });
 
       // Step 2: POST login credentials
       const formData = new URLSearchParams();
@@ -160,7 +177,9 @@ export class PacificCrossApiClient extends BaseApiClient {
       formData.append('username', username);
       formData.append('password', password);
 
-      const loginResponse = await fetch(`${this.baseUrl}${PACIFIC_CROSS_API.LOGIN_PATH}`, {
+      logDebug('PC_AUTH: Posting login credentials', { username });
+
+      const loginResponse = await fetch(loginUrl, {
         method: 'POST',
         headers: {
           ...this.getDefaultHeaders(),
@@ -170,16 +189,25 @@ export class PacificCrossApiClient extends BaseApiClient {
         redirect: 'manual',
       });
 
+      logDebug('PC_AUTH: Login response', {
+        status: loginResponse.status,
+        location: loginResponse.headers.get('location')
+      });
+
       // Update cookies from response
       const authCookies = this.parseCookiesFromHeaders(loginResponse.headers);
       if (authCookies) {
         this.sessionCookies = authCookies;
+        logDebug('PC_AUTH: Auth cookies updated', { cookieLength: authCookies.length });
       }
 
       // Check for redirect (success) or error
       const locationHeader = loginResponse.headers.get('location');
       if (loginResponse.status === 302 && locationHeader && !locationHeader.includes('login')) {
-        // Debug:('✅ Pacific Cross authentication successful');
+        logInfo('Pacific Cross authentication successful', {
+          operation: 'PC_AUTH_SUCCESS',
+          additionalInfo: { redirectTo: locationHeader }
+        });
         return {
           success: true,
           data: { cookies: this.sessionCookies || undefined },
@@ -188,6 +216,14 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       // Failed - check for error message
       const responseText = await loginResponse.text();
+      logErr(new Error('Login failed'), {
+        operation: 'PC_AUTH_FAILED',
+        additionalInfo: {
+          status: loginResponse.status,
+          location: locationHeader,
+          responseLength: responseText.length
+        }
+      });
       return {
         success: false,
         error: 'Login failed - invalid credentials or session expired',
@@ -195,7 +231,10 @@ export class PacificCrossApiClient extends BaseApiClient {
       };
 
     } catch (error) {
-      // Error:('💥 Pacific Cross auth error:', error);
+      logErr(error, {
+        operation: 'PC_AUTH_ERROR',
+        additionalInfo: { baseUrl: this.baseUrl }
+      });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -232,11 +271,16 @@ export class PacificCrossApiClient extends BaseApiClient {
     payload: Record<string, string | undefined>,
     isQuote: boolean = true
   ): Promise<PacificCrossQuoteResponse> {
-    // Debug:(`📤 Creating ${isQuote ? 'quote' : 'contract'} on Pacific Cross...`);
+    const operation = isQuote ? 'PC_CREATE_QUOTE' : 'PC_CREATE_CONTRACT';
+    logInfo(`Pacific Cross ${isQuote ? 'quote' : 'contract'} creation started`, {
+      operation,
+      additionalInfo: { isQuote, payloadKeys: Object.keys(payload) }
+    });
 
     try {
       // Ensure we have CSRF token
       if (!this.csrfToken) {
+        logErr(new Error('No CSRF token'), { operation });
         return {
           success: false,
           error: 'No CSRF token - please authenticate first',
@@ -250,10 +294,20 @@ export class PacificCrossApiClient extends BaseApiClient {
         is_quote: isQuote ? '1' : '0',
       };
 
+      logDebug(`${operation}: Building payload`, {
+        tokenLength: this.csrfToken.length,
+        is_quote: formPayload.is_quote,
+        product: formPayload.product,
+        plan: formPayload.plan
+      });
+
       const boundary = 'WebKitFormBoundary' + Math.random().toString(36).substring(2);
       const body = this.buildMultipartBody(formPayload, boundary);
 
-      const response = await fetch(`${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}`, {
+      const certUrl = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}`;
+      logDebug(`${operation}: Posting to Pacific Cross`, { url: certUrl, bodyLength: body.length });
+
+      const response = await fetch(certUrl, {
         method: 'POST',
         headers: {
           ...this.getDefaultHeaders(),
@@ -263,6 +317,12 @@ export class PacificCrossApiClient extends BaseApiClient {
         },
         body,
         redirect: 'manual',
+      });
+
+      logDebug(`${operation}: Response received`, {
+        status: response.status,
+        location: response.headers.get('location'),
+        contentType: response.headers.get('content-type')
       });
 
       // Update cookies
@@ -276,7 +336,10 @@ export class PacificCrossApiClient extends BaseApiClient {
       if (response.status === 302 && locationHeader) {
         const certInfo = this.extractCertIdFromUrl(locationHeader);
         if (certInfo) {
-          // Debug:(`✅ Certificate created: ${certInfo.certId}`);
+          logInfo(`Pacific Cross ${isQuote ? 'quote' : 'contract'} created successfully`, {
+            operation: `${operation}_SUCCESS`,
+            additionalInfo: { certId: certInfo.certId, certNo: certInfo.certNo }
+          });
           return {
             success: true,
             certId: certInfo.certId,
@@ -288,7 +351,14 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       // Failed - parse error from response
       const responseText = await response.text();
-      // Error:('❌ Certificate creation failed:', response.status);
+      logErr(new Error('Certificate creation failed'), {
+        operation: `${operation}_FAILED`,
+        additionalInfo: {
+          status: response.status,
+          location: locationHeader,
+          responsePreview: responseText.substring(0, 500)
+        }
+      });
       return {
         success: false,
         error: `Creation failed - status ${response.status}`,
@@ -296,7 +366,10 @@ export class PacificCrossApiClient extends BaseApiClient {
       };
 
     } catch (error) {
-      // Error:('💥 Certificate creation error:', error);
+      logErr(error, {
+        operation: `${operation}_ERROR`,
+        additionalInfo: { isQuote }
+      });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -347,34 +420,52 @@ export class PacificCrossApiClient extends BaseApiClient {
    * Refresh CSRF token from create page with retry logic
    */
   async refreshCsrfToken(product: number = 2): Promise<boolean> {
+    logDebug('PC_CSRF_REFRESH: Starting', { product, maxRetries: PacificCrossApiClient.MAX_CSRF_RETRIES });
+
     for (let attempt = 1; attempt <= PacificCrossApiClient.MAX_CSRF_RETRIES; attempt++) {
       try {
-        const response = await fetch(
-          `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/create?product=${product}`,
-          {
-            method: 'GET',
-            headers: this.getDefaultHeaders(),
-          }
-        );
+        const url = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/create?product=${product}`;
+        logDebug(`PC_CSRF_REFRESH: Attempt ${attempt}`, { url });
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: this.getDefaultHeaders(),
+        });
+
+        logDebug(`PC_CSRF_REFRESH: Response`, { status: response.status, attempt });
 
         const html = await response.text();
         const token = this.extractCsrfToken(html);
 
         if (token) {
           this.csrfToken = token;
+          logInfo('Pacific Cross CSRF token refreshed', {
+            operation: 'PC_CSRF_REFRESH_SUCCESS',
+            additionalInfo: { attempt, tokenLength: token.length }
+          });
           return true;
         }
+
+        logDebug(`PC_CSRF_REFRESH: Token not found in response`, { attempt, htmlLength: html.length });
 
         // Wait before retry
         if (attempt < PacificCrossApiClient.MAX_CSRF_RETRIES) {
           await this.sleep(PacificCrossApiClient.CSRF_RETRY_DELAY * attempt);
         }
-      } catch {
+      } catch (error) {
+        logDebug(`PC_CSRF_REFRESH: Error on attempt ${attempt}`, {
+          error: error instanceof Error ? error.message : 'Unknown'
+        });
         if (attempt < PacificCrossApiClient.MAX_CSRF_RETRIES) {
           await this.sleep(PacificCrossApiClient.CSRF_RETRY_DELAY * attempt);
         }
       }
     }
+
+    logErr(new Error('CSRF token refresh failed after all retries'), {
+      operation: 'PC_CSRF_REFRESH_FAILED',
+      additionalInfo: { product, attempts: PacificCrossApiClient.MAX_CSRF_RETRIES }
+    });
     return false;
   }
 }
