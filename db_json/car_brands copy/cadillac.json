@@ -1,0 +1,190 @@
+{
+  "brand_name": "CADILLAC",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c018",
+  "models": [
+    {
+      "model_name": "CT6",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0293",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0246",
+          "code": "CAR_MODEL_YEAR",
+          "name": "20D1"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0247",
+          "code": "CAR_MODEL_YEAR",
+          "name": "20D1 4x4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0248",
+          "code": "CAR_MODEL_YEAR",
+          "name": "20D2 4x4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0249",
+          "code": "CAR_MODEL_YEAR",
+          "name": "20D3 4x4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0258",
+          "code": "CAR_MODEL_YEAR",
+          "name": "25TL1 KM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0375",
+          "code": "CAR_MODEL_YEAR",
+          "name": "50TL1 4x4 KM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0376",
+          "code": "CAR_MODEL_YEAR",
+          "name": "50TL1 KM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0378",
+          "code": "CAR_MODEL_YEAR",
+          "name": "50TL2 KM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0379",
+          "code": "CAR_MODEL_YEAR",
+          "name": "50TL3 KM"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0404",
+          "code": "CAR_MODEL_YEAR",
+          "name": "70TL1 KM"
+        }
+      ]
+    },
+    {
+      "model_name": "DTS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0326",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ESCALADE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0367",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0380",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6.2"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0562",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ESV"
+        }
+      ]
+    },
+    {
+      "model_name": "ESCALADER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0368",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "H2",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0525",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SRX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1019",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "STS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1029",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0862",
+          "code": "CAR_MODEL_YEAR",
+          "name": "V BASE 4.4"
+        }
+      ]
+    },
+    {
+      "model_name": "XLR",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1206",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0861",
+          "code": "CAR_MODEL_YEAR",
+          "name": "V 4.4"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:04.872Z"
+}

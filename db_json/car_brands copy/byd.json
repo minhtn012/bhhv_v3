@@ -1,0 +1,224 @@
+{
+  "brand_name": "BYD",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c015",
+  "models": [
+    {
+      "model_name": "ATTO 2",
+      "model_id": "41efcd35-4442-44a4-8a7c-d26f59863b1e",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "6c7cfe78-b21c-4f1d-9902-126da65f238e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "FWD"
+        }
+      ]
+    },
+    {
+      "model_name": "ATTO 3",
+      "model_id": "72037d3e-9b38-4b9a-bab9-0e3746afe07b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "b660f39c-7a93-49b3-b8ef-5d45a7d0eb22",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DYNAMIC"
+        },
+        {
+          "id": "65d9c165-689d-4f2d-a441-7eb4b522b9e5",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM"
+        }
+      ]
+    },
+    {
+      "model_name": "DOLPHIN",
+      "model_id": "8f74b8e3-dcb7-4a4e-a72a-49575eb7662a",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "8d9d7fed-6164-4b11-86ee-0eed8376561f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GLX"
+        }
+      ]
+    },
+    {
+      "model_name": "E5",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0341",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "FO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0426",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HAN",
+      "model_id": "0e028990-35bc-40b5-9d1b-f531dc1f7524",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "2e6bf4df-96d1-4d01-9f0c-6582e3c69eb2",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EV"
+        }
+      ]
+    },
+    {
+      "model_name": "M6",
+      "model_id": "5e95c9dc-14e2-4e4c-8c3a-553c343fcd31",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "df89e861-6db7-4c3d-b9d0-e4c33b1ca442",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "SEAL",
+      "model_id": "f47c2706-9e9a-4a55-8f93-f4e4b043c90c",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "967818f0-5584-48cb-835c-64d68d92a422",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ADVANCED"
+        },
+        {
+          "id": "21ff0885-1e4a-4dbd-8194-75ed47bc31f0",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PERFORMANCE"
+        }
+      ]
+    },
+    {
+      "model_name": "SEAL 5",
+      "model_id": "e3d742dc-b8aa-419c-b3e6-649323d2eac0",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "65d9c165-689d-4f2d-a441-7eb4b522b9e5",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM"
+        },
+        {
+          "id": "df89e861-6db7-4c3d-b9d0-e4c33b1ca442",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "SEALION 6",
+      "model_id": "23ebaab4-b25a-43db-a60c-f31f44c34307",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "b660f39c-7a93-49b3-b8ef-5d45a7d0eb22",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DYNAMIC"
+        },
+        {
+          "id": "65d9c165-689d-4f2d-a441-7eb4b522b9e5",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM"
+        }
+      ]
+    },
+    {
+      "model_name": "SEALION 8",
+      "model_id": "1c2fa38b-2797-41b2-bec4-8c7e91506dd6",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "21ff0885-1e4a-4dbd-8194-75ed47bc31f0",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PERFORMANCE"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:02.917Z"
+}

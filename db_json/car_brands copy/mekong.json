@@ -1,0 +1,161 @@
+{
+  "brand_name": "MEKONG",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c112",
+  "models": [
+    {
+      "model_name": "ADMIRAL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0100",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0463",
+          "code": "CAR_MODEL_YEAR",
+          "name": "BQ1020A"
+        }
+      ]
+    },
+    {
+      "model_name": "IVECO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0643",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee101",
+          "code": "CAR_BODY_STYLES",
+          "name": "MINIBUS"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JEEP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0656",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MUSSO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0790",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0617",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GL"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0711",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LIBERO"
+        }
+      ]
+    },
+    {
+      "model_name": "PREMIO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0854",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0545",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DX"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0743",
+          "code": "CAR_MODEL_YEAR",
+          "name": "MAX"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0744",
+          "code": "CAR_MODEL_YEAR",
+          "name": "MAX GS"
+        }
+      ]
+    },
+    {
+      "model_name": "PRONTO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0861",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0629",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GS"
+        }
+      ]
+    },
+    {
+      "model_name": "SOYAT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1006",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0755",
+          "code": "CAR_MODEL_YEAR",
+          "name": "NHQ6520E3 2.8"
+        }
+      ]
+    },
+    {
+      "model_name": "STAR",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1023",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.885Z"
+}

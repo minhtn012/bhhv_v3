@@ -1,0 +1,215 @@
+{
+  "brand_name": "THACO HYUNDAI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c150",
+  "models": [
+    {
+      "model_name": "HD1000",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0537",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0530",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D6AC-410PS"
+        }
+      ]
+    },
+    {
+      "model_name": "HD210",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0544",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD270",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0548",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0303",
+          "code": "CAR_MODEL_YEAR",
+          "name": "320PS D6AC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0304",
+          "code": "CAR_MODEL_YEAR",
+          "name": "320PS D6AC LAP RAP"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0305",
+          "code": "CAR_MODEL_YEAR",
+          "name": "340PS 2015"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0306",
+          "code": "CAR_MODEL_YEAR",
+          "name": "340PS D6AC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0315",
+          "code": "CAR_MODEL_YEAR",
+          "name": "380PS D6AC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0750",
+          "code": "CAR_MODEL_YEAR",
+          "name": "MIXER 380PS"
+        }
+      ]
+    },
+    {
+      "model_name": "HD270B",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0549",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD320",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0552",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "f87678d3-d8c7-4db3-b2c6-29d1c13e2878",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D6AC-340Ps"
+        },
+        {
+          "id": "631df9c2-33e2-4993-ae73-d0b401d03d54",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D6CA-380Ps"
+        },
+        {
+          "id": "f6afffd4-655c-4a9e-a293-6efa74c8cfc9",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D6CC-380Ps"
+        }
+      ]
+    },
+    {
+      "model_name": "HD350",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0556",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD360",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0557",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "4c918420-5685-45b5-b5c0-49f5b11cf625",
+          "code": "CAR_MODEL_YEAR",
+          "name": "13.0L 10x4"
+        }
+      ]
+    },
+    {
+      "model_name": "HD450",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0558",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD500",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0559",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD650",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0568",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "HD700",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0569",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0528",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D6AC-340PS"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.891Z"
+}

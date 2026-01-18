@@ -1,0 +1,174 @@
+{
+  "brand_name": "JEEP",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c084",
+  "models": [
+    {
+      "model_name": "300",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0016",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CHEROKEE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0238",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "COMMANDER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0262",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "COMPASS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0263",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "COMPASS LATITUDE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0264",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0177",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.3 4WD"
+        }
+      ]
+    },
+    {
+      "model_name": "GRAND CHEROKEE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0502",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0294",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.6 V6 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "LIBERTY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0719",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PATRIOT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0841",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "WRANGLER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1175",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "WRANGLER RUBICON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1176",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0302",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.8 V6 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "WRANGLER SAHARA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1177",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0302",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.8 V6 AT"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.882Z"
+}

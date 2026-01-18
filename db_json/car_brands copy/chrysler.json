@@ -1,0 +1,205 @@
+{
+  "brand_name": "CHRYSLER",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c026",
+  "models": [
+    {
+      "model_name": "200",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0007",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "300C",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0018",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0664",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HEMI 5.7"
+        }
+      ]
+    },
+    {
+      "model_name": "ASPEN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0123",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CIRRUS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0240",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0212",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.5"
+        }
+      ]
+    },
+    {
+      "model_name": "CONCORDE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0265",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0281",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.5"
+        }
+      ]
+    },
+    {
+      "model_name": "CROSSFIRE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0282",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CTS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0297",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GRAND VOYAGER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0508",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "NEW YORKER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0803",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0281",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.5"
+        }
+      ]
+    },
+    {
+      "model_name": "PACIFICA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0834",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PT CRUISER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0864",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SEBRING",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0958",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TOWN AND COUNTRY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1082",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:22.267Z"
+}

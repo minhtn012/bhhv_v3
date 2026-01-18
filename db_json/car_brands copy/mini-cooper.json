@@ -1,0 +1,136 @@
+{
+  "brand_name": "MINI COOPER",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c116",
+  "models": [
+    {
+      "model_name": "BAKER STREET",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0154",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BAYSWAT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0155",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CLUBMAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0257",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CONVERTIBLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0267",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "COUNTRYMAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0274",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0778",
+          "code": "CAR_MODEL_YEAR",
+          "name": "S"
+        }
+      ]
+    },
+    {
+      "model_name": "HARDTOP",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0530",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JCW",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0655",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ONE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0827",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0059",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.6"
+        }
+      ]
+    },
+    {
+      "model_name": "ROADSTER",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0905",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.885Z"
+}

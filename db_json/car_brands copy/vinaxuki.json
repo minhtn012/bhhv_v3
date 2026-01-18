@@ -1,0 +1,156 @@
+{
+  "brand_name": "VINAXUKI",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c163",
+  "models": [
+    {
+      "model_name": "650 XII",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0064",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BEN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0160",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0255",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2500BA 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0256",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2500BK 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0310",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3490BA 4X4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0383",
+          "code": "CAR_MODEL_YEAR",
+          "name": "6000BA 4X4"
+        }
+      ]
+    },
+    {
+      "model_name": "HFJ110E",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0602",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JINBEI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0659",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1037",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TAI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1044",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0165",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0T"
+        },
+        {
+          "id": "6e16feb7-61dc-4fc4-9765-f07172990e5b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "H7"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0665",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0666",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HFJ 1011G TD"
+        }
+      ]
+    },
+    {
+      "model_name": "VG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1146",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0100",
+          "code": "CAR_MODEL_YEAR",
+          "name": "100 1.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0103",
+          "code": "CAR_MODEL_YEAR",
+          "name": "130 1.3"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0110",
+          "code": "CAR_MODEL_YEAR",
+          "name": "150 1.5"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.892Z"
+}

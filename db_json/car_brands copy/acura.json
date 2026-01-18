@@ -1,0 +1,134 @@
+{
+  "brand_name": "ACURA",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c001",
+  "models": [
+    {
+      "model_name": "INTEGRA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0635",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MDX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0758",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0447",
+          "code": "CAR_MODEL_YEAR",
+          "name": "AT 3.7"
+        }
+      ]
+    },
+    {
+      "model_name": "RDX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0895",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0445",
+          "code": "CAR_MODEL_YEAR",
+          "name": "AT 2.3"
+        }
+      ]
+    },
+    {
+      "model_name": "RL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0904",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0298",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.7 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "TL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1073",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0273",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.2 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "TSX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1099",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0181",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.4 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "ZDX",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1224",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0800",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SH 3.7L"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:35:24.276Z"
+}

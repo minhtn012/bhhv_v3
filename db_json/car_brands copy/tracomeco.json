@@ -1,0 +1,236 @@
+{
+  "brand_name": "TRACOMECO",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c156",
+  "models": [
+    {
+      "model_name": "B40-NO1",
+      "model_id": "3a3ed183-c676-4a62-850b-e0e9af89594b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "e7fff0a4-37b7-4b53-9866-02c64334194f",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "57aa7ff7-fcf0-413d-bd25-e67837f39918",
+          "code": "CAR_MODEL_YEAR",
+          "name": "4x2 4.0L"
+        }
+      ]
+    },
+    {
+      "model_name": "B40SL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0145",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0658",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HB40"
+        }
+      ]
+    },
+    {
+      "model_name": "COUNTY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0275",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0259",
+          "code": "CAR_MODEL_YEAR",
+          "name": "29"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0260",
+          "code": "CAR_MODEL_YEAR",
+          "name": "29SL"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0526",
+          "code": "CAR_MODEL_YEAR",
+          "name": "D4DD"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0659",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HB73S-H140"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0661",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HD 29E3"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0686",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K29K"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0688",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K29SL"
+        }
+      ]
+    },
+    {
+      "model_name": "GLOBAL NOBLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0495",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0685",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K29"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0689",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K34"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0690",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K39"
+        }
+      ]
+    },
+    {
+      "model_name": "MIGHTY",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0762",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0663",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HD72"
+        }
+      ]
+    },
+    {
+      "model_name": "UNIVERSE DCAR CDDD G26K ",
+      "model_id": "0b2dc9be-23e9-4632-b792-0373d611a996",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "UNIVERSE GLOBAL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1109",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0685",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K29"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0689",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K34"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0690",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K39"
+        }
+      ]
+    },
+    {
+      "model_name": "UNIVERSE NOBLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1110",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "ba555ff2-9a9d-485f-9bff-943443f96eb3",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EX47H-SEATS"
+        },
+        {
+          "id": "13cb505e-4880-4c9c-bd8f-8a16234ad58e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K42G-BEDS"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0691",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K42 K46"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0693",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K47"
+        },
+        {
+          "id": "0a829b50-a2a4-4735-aaec-6f8478dd148b",
+          "code": "CAR_MODEL_YEAR",
+          "name": "K47-SEATS"
+        }
+      ]
+    },
+    {
+      "model_name": "UNIVERSE NOBLE - NEWHOME",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1111",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee100",
+          "code": "CAR_BODY_STYLES",
+          "name": "BUS"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0703",
+          "code": "CAR_MODEL_YEAR",
+          "name": "KUB42"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.892Z"
+}

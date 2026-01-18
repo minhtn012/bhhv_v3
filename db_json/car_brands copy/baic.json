@@ -1,0 +1,182 @@
+{
+  "brand_name": "BAIC",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c008",
+  "models": [
+    {
+      "model_name": "BEIJING U5 PLUS",
+      "model_id": "4010dc30-2c7e-48f2-adb8-510fe2ff9332",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "37c91e2b-65c9-4e81-b2f3-280a93fc8400",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5CVT DELUXE"
+        },
+        {
+          "id": "86c5a328-2d24-40e7-9689-51516b499382",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5CVT LUXURY"
+        },
+        {
+          "id": "5b1c6107-3145-4f3d-912d-d2f3e4cbaf27",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5MT STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "BEIJING X7",
+      "model_id": "7e20c6f3-6fec-4558-9306-9a51a1e90fcc",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "17d96a03-e2d6-4ef1-9c50-4c5e98b9bfee",
+          "code": "CAR_BODY_STYLES",
+          "name": "CUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "6e049c96-5181-4cc9-bfc1-392ecb8fc887",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T 6MT"
+        },
+        {
+          "id": "787069d1-6054-4953-8720-50956fd59210",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T ELITE"
+        },
+        {
+          "id": "9add3255-546a-48c1-8d92-5865cdb2aa31",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T PREMIUM"
+        }
+      ]
+    },
+    {
+      "model_name": "BJ40",
+      "model_id": "47caff3c-04d9-4a51-97f5-a9e1a3ec5cee",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "e8828fe6-8eed-4b3c-8dd3-971dfb69ede4",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T CVT"
+        }
+      ]
+    },
+    {
+      "model_name": "BJ 6473",
+      "model_id": "d864fa18-7c28-41d8-85fa-9d0cb425a9f5",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "BJ7151C4DCH",
+      "model_id": "cbfc0dde-51a4-4000-bd2e-37176ce8c3e8",
+      "car_type": "ICE",
+      "body_styles": [],
+      "years": []
+    },
+    {
+      "model_name": "CC",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0222",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0533",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DAS 2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0758",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PACKAGE 2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0825",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD 2.0 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "X424",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1186",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "X55",
+      "model_id": "5f0fe0fa-3e8b-4a25-923c-d547d580ac9a",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "faeb7085-6b12-4417-ae9e-b455a57e6446",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T CVT PREMIUM"
+        },
+        {
+          "id": "5990a338-1d3e-45f5-8b8b-307242ec89ba",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5T CVT STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "X65",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1189",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:58:45.951Z"
+}

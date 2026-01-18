@@ -1,0 +1,161 @@
+{
+  "brand_name": "GEELY",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c053",
+  "models": [
+    {
+      "model_name": "COOLRAY",
+      "model_id": "9ff3b5dd-cf92-4230-b3dc-887c8c584270",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "f1bbc713-97ab-4314-8849-fa0a1f4544d7",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L FLAGSHIP"
+        },
+        {
+          "id": "05a54db8-fb48-481e-98b8-90605d7e63bb",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L PREMIUM"
+        },
+        {
+          "id": "63f4c9c5-8232-48e4-b428-410982bf328a",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.5L STANDARD"
+        }
+      ]
+    },
+    {
+      "model_name": "EMGRAND",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0351",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0554",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EC 718 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0555",
+          "code": "CAR_MODEL_YEAR",
+          "name": "EC 718 RV AT"
+        }
+      ]
+    },
+    {
+      "model_name": "EX5",
+      "model_id": "f5251d8d-1ecb-417b-a88e-1413bed4ae20",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "c18bfc71-fe1a-4ee4-9905-0837b5663b55",
+          "code": "CAR_MODEL_YEAR",
+          "name": "AT MAX"
+        },
+        {
+          "id": "9b050cff-7083-4905-aa3a-e068654e3af0",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PRO"
+        }
+      ]
+    },
+    {
+      "model_name": "GLEAGLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0488",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0646",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GX718 1.8 MT"
+        }
+      ]
+    },
+    {
+      "model_name": "MONJARO",
+      "model_id": "3ab917a8-a3d9-4875-990c-f1305fd8664e",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "eae2b7cc-0963-4eae-b214-5eb490da6217",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L FLAGSHIP"
+        },
+        {
+          "id": "54f1e5fe-2896-40a9-bf0d-d2d993bc1f4e",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L PREMIUM"
+        },
+        {
+          "id": "41098e35-b9c6-4214-97dd-e364427ea7f4",
+          "code": "CAR_MODEL_YEAR",
+          "name": "HEV"
+        }
+      ]
+    },
+    {
+      "model_name": "SHANGHAI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0976",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0559",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ENGLON SC515 RV MT"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T07:00:19.848Z"
+}

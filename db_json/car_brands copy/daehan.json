@@ -1,0 +1,46 @@
+{
+  "brand_name": "DAEHAN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c033",
+  "models": [
+    {
+      "model_name": "TERA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1061",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0122",
+          "code": "CAR_MODEL_YEAR",
+          "name": "190"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0252",
+          "code": "CAR_MODEL_YEAR",
+          "name": "230"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0253",
+          "code": "CAR_MODEL_YEAR",
+          "name": "240"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0254",
+          "code": "CAR_MODEL_YEAR",
+          "name": "250"
+        },
+        {
+          "id": "72669168-70c9-4d29-a41c-e4febc236b3c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "345SL-MB"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:30.220Z"
+}

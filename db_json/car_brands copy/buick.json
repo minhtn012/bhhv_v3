@@ -1,0 +1,98 @@
+{
+  "brand_name": "BUICK",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c014",
+  "models": [
+    {
+      "model_name": "AVENIR",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0134",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CASCADA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0217",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ENCLAVE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0352",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "ENCORE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0353",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "LACROSSE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0704",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "REGAL",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0897",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "VERANO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1142",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    }
+  ],
+  "updated_at": "2026-01-18T06:59:00.297Z"
+}

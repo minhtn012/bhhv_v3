@@ -9,7 +9,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 import carAutomakers from '@db/car_automakers.json'
 
-const CAR_BRANDS_DIR = path.join(process.cwd(), 'db_json/car_brands')
+// Use env var for prod (Docker volume), fallback to db_json for dev
+const CAR_BRANDS_DIR = process.env.CAR_BRANDS_PATH ||
+  path.join(process.cwd(), 'db_json/car_brands')
 
 interface BrandInfo {
   name: string

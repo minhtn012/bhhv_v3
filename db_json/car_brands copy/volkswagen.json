@@ -1,0 +1,575 @@
+{
+  "brand_name": "VOLKSWAGEN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c167",
+  "models": [
+    {
+      "model_name": "4 GTI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0030",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "AMAROK",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0114",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee97",
+          "code": "CAR_BODY_STYLES",
+          "name": "PICK-UP"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "BEETLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0158",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "552f4077-7e78-4fbf-bedd-e538931a9ac9",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "748c274a-725a-435e-88a6-07adb5870802",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DUNE"
+        }
+      ]
+    },
+    {
+      "model_name": "BEETLE DUNE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0159",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "CC",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0222",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0533",
+          "code": "CAR_MODEL_YEAR",
+          "name": "DAS 2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0758",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PACKAGE 2.0"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0825",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD 2.0 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "EOS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0357",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GLI",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0489",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GOLF",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0497",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "GOLF PLUS CROSS",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0498",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0036",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "GOLF R",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0499",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "JETTA",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0657",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "MULTIVAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0788",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee99",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0127",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "NEW BEETLE",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0799",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee96",
+          "code": "CAR_BODY_STYLES",
+          "name": "CONVERTIBLE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0127",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0824",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD 1.6 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "PASSAT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0837",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PASSAT WAGON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0838",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "PHAETON",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0843",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee92",
+          "code": "CAR_BODY_STYLES",
+          "name": "SEDAN"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0272",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.2"
+        }
+      ]
+    },
+    {
+      "model_name": "POLO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0848",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0017",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.2 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0021",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.2 MT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0035",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.4"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0790",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SALOON 1.2 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0791",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SALOON 1.2 MT"
+        }
+      ]
+    },
+    {
+      "model_name": "R32",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0881",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "RABBIT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0885",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SCIROCCO",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0955",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee93",
+          "code": "CAR_BODY_STYLES",
+          "name": "COUPE"
+        },
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee94",
+          "code": "CAR_BODY_STYLES",
+          "name": "HATCHBACK"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0082",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.8"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0632",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT 2.0 BASIC OPTION"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0633",
+          "code": "CAR_MODEL_YEAR",
+          "name": "GT 2.0 FULL OPTION"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0818",
+          "code": "CAR_MODEL_YEAR",
+          "name": "SPORT HIGHTLINE 1.4"
+        }
+      ]
+    },
+    {
+      "model_name": "SHARAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0977",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "SPORT",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1012",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee98",
+          "code": "CAR_BODY_STYLES",
+          "name": "SPORT"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "T-CROSS",
+      "model_id": "87e3a8ee-cdb5-4868-9d53-3d069a61642b",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "061d121b-47fd-4602-bb80-8907358e737b",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "c82a26f2-98b1-4300-8bb0-e1621adb5c8c",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.0L ELEGANCE"
+        },
+        {
+          "id": "79366084-6ff3-48bf-8175-ecebd00c16fb",
+          "code": "CAR_MODEL_YEAR",
+          "name": "1.0L LUXURY"
+        }
+      ]
+    },
+    {
+      "model_name": "TERAMONT",
+      "model_id": "335cf6e4-71a4-44b3-ae19-28226bbefd10",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "724ac91b-3947-42d0-b067-36ba61fd3200",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L AT"
+        }
+      ]
+    },
+    {
+      "model_name": "TERAMONT X",
+      "model_id": "a48cf644-fe69-4fc8-abf2-dfe82995a47a",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "37aa0001-6bd6-4c2e-bbd9-31aad2939feb",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "66067841-55bc-466e-8e75-65535a27f743",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L LUXURY"
+        },
+        {
+          "id": "708a66b0-d6fc-4e9c-8e32-a387fdc5c12f",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L PLATINUM"
+        }
+      ]
+    },
+    {
+      "model_name": "TIGUAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1071",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0158",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0 TSI"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0773",
+          "code": "CAR_MODEL_YEAR",
+          "name": "ROUTAN 2.0 AT"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0825",
+          "code": "CAR_MODEL_YEAR",
+          "name": "STANDARD 2.0 AT"
+        }
+      ]
+    },
+    {
+      "model_name": "TOUAREG",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d1078",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee95",
+          "code": "CAR_BODY_STYLES",
+          "name": "SUV"
+        }
+      ],
+      "years": [
+        {
+          "id": "76a49ef6-6eaa-480e-ba30-127576337b28",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L ELEGANCE"
+        },
+        {
+          "id": "761eb539-3141-4774-b973-db0f60cc2fe6",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.0L LUXURY"
+        },
+        {
+          "id": "5b0cc7f3-579a-4a5b-9602-ec836bd9c870",
+          "code": "CAR_MODEL_YEAR",
+          "name": "2.5L R5 TDI "
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0291",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.6 BASIC"
+        },
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0292",
+          "code": "CAR_MODEL_YEAR",
+          "name": "3.6 FULL OPTION"
+        }
+      ]
+    },
+    {
+      "model_name": "VILORAN",
+      "model_id": "fa5bd9b4-477c-4d80-bbaa-8c9eaeffdd6f",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "b711a5f9-098e-422f-9758-708d7854ceb3",
+          "code": "CAR_BODY_STYLES",
+          "name": "MPV"
+        }
+      ],
+      "years": [
+        {
+          "id": "07c608dd-31fb-4839-a596-e256760a30c3",
+          "code": "CAR_MODEL_YEAR",
+          "name": "LUXURY"
+        },
+        {
+          "id": "5582bd6f-3321-45fc-91c4-ea77ca0220ab",
+          "code": "CAR_MODEL_YEAR",
+          "name": "PREMIUM"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.893Z"
+}

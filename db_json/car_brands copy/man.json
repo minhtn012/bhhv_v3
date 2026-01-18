@@ -1,0 +1,39 @@
+{
+  "brand_name": "MAN",
+  "brand_id": "b07cadc0-b84d-4863-b374-fe018b3194c106",
+  "models": [
+    {
+      "model_name": "CAN CAU CUU NAN",
+      "model_id": "f07080e9-c23f-449f-83e9-f8c2a8778d0205",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "cb3464e5-bb4d-4268-a08d-b432252dee91",
+          "code": "CAR_BODY_STYLES",
+          "name": "TRUCK"
+        }
+      ],
+      "years": []
+    },
+    {
+      "model_name": "TGX",
+      "model_id": "7cc37a6f-7b8f-4786-9e16-3d8e09656260",
+      "car_type": "ICE",
+      "body_styles": [
+        {
+          "id": "fc611c66-e88c-49ff-b4bf-7cb7270b6279",
+          "code": "CAR_BODY_STYLES",
+          "name": "DAUKEO"
+        }
+      ],
+      "years": [
+        {
+          "id": "5d716993-a5b6-4435-916a-daf5f2e4190f0412",
+          "code": "CAR_MODEL_YEAR",
+          "name": "8X4"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-01-18T06:37:49.884Z"
+}
