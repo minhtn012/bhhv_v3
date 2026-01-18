@@ -94,6 +94,23 @@ export async function PUT(
 
     const data = await request.json();
 
+    // Validate dates if period is being updated: dateFrom must be >= tomorrow
+    if (data.period?.dateFrom) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+
+      const dateFrom = new Date(data.period.dateFrom);
+      dateFrom.setHours(0, 0, 0, 0);
+
+      if (dateFrom < tomorrow) {
+        return NextResponse.json(
+          { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Update allowed fields
     const allowedFields = [
       'owner',

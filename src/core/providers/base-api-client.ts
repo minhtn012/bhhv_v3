@@ -59,19 +59,53 @@ export abstract class BaseApiClient {
   }
 
   /**
-   * Parse cookies from response headers
+   * Parse cookies from response headers and merge with existing cookies
+   * Note: Headers.getSetCookie() returns array of all set-cookie headers
    */
   protected parseCookiesFromHeaders(headers: Headers): string {
-    const cookies: string[] = [];
-    headers.forEach((value, name) => {
-      if (name.toLowerCase() === 'set-cookie') {
-        const cookiePart = value.split(';')[0];
-        if (cookiePart) {
-          cookies.push(cookiePart);
+    // Use getSetCookie() which returns array of all set-cookie headers
+    // This is the proper way to handle multiple cookies in Node.js 18+
+    const setCookies = headers.getSetCookie ? headers.getSetCookie() : [];
+
+    // Fallback for environments without getSetCookie
+    if (setCookies.length === 0) {
+      const setCookieHeader = headers.get('set-cookie');
+      if (setCookieHeader) {
+        // Some servers concatenate cookies with comma
+        setCookieHeader.split(/,(?=[^;]+?=)/).forEach(cookie => {
+          setCookies.push(cookie.trim());
+        });
+      }
+    }
+
+    // Parse existing cookies into a map for merging
+    const cookieMap = new Map<string, string>();
+
+    // Add existing session cookies first
+    if (this.sessionCookies) {
+      this.sessionCookies.split(';').forEach(cookie => {
+        const trimmed = cookie.trim();
+        const eqIndex = trimmed.indexOf('=');
+        if (eqIndex > 0) {
+          const name = trimmed.substring(0, eqIndex);
+          cookieMap.set(name, trimmed);
+        }
+      });
+    }
+
+    // Merge new cookies (overwrite existing)
+    setCookies.forEach(cookie => {
+      const cookiePart = cookie.split(';')[0]?.trim();
+      if (cookiePart) {
+        const eqIndex = cookiePart.indexOf('=');
+        if (eqIndex > 0) {
+          const name = cookiePart.substring(0, eqIndex);
+          cookieMap.set(name, cookiePart);
         }
       }
     });
-    return cookies.join('; ');
+
+    return Array.from(cookieMap.values()).join('; ');
   }
 
   /**

@@ -95,6 +95,21 @@ export async function POST(
       });
     }
 
+    // Validate dates before submit (must be >= tomorrow)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const periodStart = new Date(contract.period.dateFrom);
+    periodStart.setHours(0, 0, 0, 0);
+
+    if (periodStart < tomorrow) {
+      return NextResponse.json(
+        { error: 'Ngay hieu luc phai tu ngay mai tro di. Vui long cap nhat ngay truoc khi tao bao gia.' },
+        { status: 400 }
+      );
+    }
+
     // Build payload for Pacific Cross
     const formData: TravelContractFormData = {
       owner: contract.owner,
@@ -142,6 +157,26 @@ export async function POST(
     // Update contract with Pacific Cross cert ID
     contract.pacificCrossCertId = quoteResponse.certId;
     contract.pacificCrossCertNo = quoteResponse.certNo;
+
+    // Fetch premium from edit page
+    let totalPremium = 0;
+    if (quoteResponse.certId) {
+      logDebug('TRAVEL_SUBMIT: Fetching premium from edit page', { certId: quoteResponse.certId });
+      const premiumResult = await client.getCertificatePremium(quoteResponse.certId);
+
+      if (premiumResult.success && premiumResult.premium) {
+        totalPremium = premiumResult.premium;
+        logInfo('TRAVEL_SUBMIT: Premium fetched', {
+          operation: 'TRAVEL_SUBMIT_PREMIUM',
+          contractId: id,
+          additionalInfo: { totalPremium }
+        });
+      } else {
+        logDebug('TRAVEL_SUBMIT: Premium fetch failed', { error: premiumResult.error });
+      }
+    }
+
+    contract.totalPremium = totalPremium;
     contract.status = 'cho_duyet';
     contract.set('_statusChangedBy', user.userId);
     contract.set('_statusChangeNote', 'Tao bao gia tren Pacific Cross');
@@ -152,10 +187,12 @@ export async function POST(
       message: 'Tao bao gia thanh cong',
       certId: quoteResponse.certId,
       certNo: quoteResponse.certNo,
+      totalPremium,
       contract: {
         id: contract._id,
         contractNumber: contract.contractNumber,
-        status: contract.status
+        status: contract.status,
+        totalPremium
       }
     });
 

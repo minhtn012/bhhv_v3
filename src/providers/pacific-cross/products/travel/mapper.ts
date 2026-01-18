@@ -33,6 +33,17 @@ export function formatDateRange(dateFrom: string, dateTo: string): string {
 }
 
 /**
+ * Calculate number of days between two dates (inclusive)
+ */
+export function calculateDays(dateFrom: string, dateTo: string): number {
+  const start = new Date(dateFrom);
+  const end = new Date(dateTo);
+  const diffMs = end.getTime() - start.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  return diffDays + 1; // Include both start and end days
+}
+
+/**
  * Calculate age from date of birth
  */
 export function calculateAge(dob: string): number {
@@ -74,86 +85,102 @@ export function mapInsuredPerson(
 
 /**
  * Transform travel contract form data to Pacific Cross payload
+ * Field order matters - must match the exact order expected by Pacific Cross API
  */
 export function mapTravelToPacificCrossFormat(
   data: TravelContractFormData,
   csrfToken: string,
   isQuote: boolean = true
 ): Record<string, string | undefined> {
-  const payload: Record<string, string | undefined> = {
-    // CSRF
-    _token: csrfToken,
-    is_quote: isQuote ? '1' : '0',
-
-    // Additional
-    last_update: '',
-    pnr_no: data.pnrNo || '',
-    poho_title: '',
-    ref_no: data.refNo || '',
+  // Use array of key-value pairs to maintain field order
+  const orderedFields: Array<[string, string]> = [
+    // CSRF & Quote flag
+    ['_token', csrfToken],
+    ['is_quote', isQuote ? '1' : '0'],
+    ['last_update', ''],
+    ['pnr_no', data.pnrNo || ''],
+    ['poho_title', ''],
+    ['ref_no', data.refNo || ''],
 
     // Owner info
-    policyholder: data.owner.policyholder,
-    pocy_type: data.owner.pocyType,
-    poho_type: data.owner.pohoType,
-    email: data.owner.email || '',
-    tel_no: data.owner.telNo,
-    inv_tax: data.owner.invTax || '',
-    address: data.owner.address,
-    inv_company: data.owner.invCompany || '',
-    inv_address: data.owner.invAddress || '',
-    country_address: data.owner.countryAddress,
-    start_country: data.owner.startCountry,
+    ['policyholder', data.owner.policyholder],
+    ['pocy_type', data.owner.pocyType],
+    ['poho_type', data.owner.pohoType],
+    ['email', data.owner.email || ''],
+    ['tel_no', data.owner.telNo],
+    ['inv_tax', data.owner.invTax || ''],
+    ['address', data.owner.address],
+    ['inv_company', data.owner.invCompany || ''],
+    ['inv_address', data.owner.invAddress || ''],
+    ['country_address', data.owner.countryAddress],
+    ['start_country', data.owner.startCountry],
 
-    // Period
-    date_from_date_range: data.period.dateFrom, // YYYY-MM-DD
-    date_to_date_range: data.period.dateTo,     // YYYY-MM-DD
-    days_date_range: data.period.days.toString(),
-    date_range: formatDateRange(data.period.dateFrom, data.period.dateTo),
+    // Period - calculate days if not provided
+    ['date_from_date_range', data.period.dateFrom],
+    ['date_to_date_range', data.period.dateTo],
+    ['days_date_range', (data.period.days || calculateDays(data.period.dateFrom, data.period.dateTo)).toString()],
+    ['date_range', formatDateRange(data.period.dateFrom, data.period.dateTo)],
 
     // Product
-    product: data.product.toString(),
-    plan: data.plan.toString(),
+    ['product', data.product.toString()],
+    ['plan', data.plan.toString()],
+
+    // Message file fields (file upload comes after these in multipart)
+    ['agent', ''],
+    ['old_message_file', '[]'],
+    ['input_message_file', ''],
+    // Note: 'message_file' (actual file) is added by buildMultipartBody
 
     // Additional fields
-    agent: '',
-    old_message_file: '[]',
-    input_message_file: '',
-    itinerary: data.itinerary || '',
-    note: data.note || '',
-    inv_amount: data.invAmount?.toString() || '',
-    old_import_members: '[]',
-    input_import_members: '',
+    ['itinerary', data.itinerary || ''],
+    ['note', data.note || ''],
+    ['inv_amount', data.invAmount?.toString() || ''],
+
+    // Import members fields
+    ['old_import_members', '[]'],
+    ['input_import_members', ''],
+    // Note: 'import_members' (actual file) is added by buildMultipartBody
 
     // Member count
-    member_count: data.insuredPersons.length.toString(),
-    member_row_deleted: '',
-  };
+    ['member_count', data.insuredPersons.length.toString()],
+    ['member_row_deleted', ''],
+  ];
 
   // Add insured persons (indexed by _1, _2, etc.)
   data.insuredPersons.forEach((person, index) => {
     const personFields = mapInsuredPerson(person, index);
-    Object.assign(payload, personFields);
+    for (const [key, value] of Object.entries(personFields)) {
+      orderedFields.push([key, value]);
+    }
   });
 
   // Add template fields (for new row in UI)
   const templateSuffix = '_xxx';
-  payload[`name${templateSuffix}`] = '';
-  payload[`dob${templateSuffix}`] = '';
-  payload[`age${templateSuffix}`] = '';
-  payload[`gender${templateSuffix}`] = '';
-  payload[`country${templateSuffix}`] = '';
-  payload[`personal_id${templateSuffix}`] = '';
-  payload[`tel_no${templateSuffix}`] = '';
-  payload[`email${templateSuffix}`] = '';
-  payload[`beneficiary${templateSuffix}`] = '';
-  payload[`relationship${templateSuffix}`] = '';
-  payload[`pct${templateSuffix}`] = '100';
-  payload[`car_rental${templateSuffix}`] = '';
-  payload[`car_rental_date${templateSuffix}`] = '';
-  payload[`car_rental_days${templateSuffix}`] = '';
+  orderedFields.push(
+    [`name${templateSuffix}`, ''],
+    [`dob${templateSuffix}`, ''],
+    [`age${templateSuffix}`, ''],
+    [`gender${templateSuffix}`, ''],
+    [`country${templateSuffix}`, ''],
+    [`personal_id${templateSuffix}`, ''],
+    [`tel_no${templateSuffix}`, ''],
+    [`email${templateSuffix}`, ''],
+    [`beneficiary${templateSuffix}`, ''],
+    [`relationship${templateSuffix}`, ''],
+    [`pct${templateSuffix}`, '100'],
+    [`car_rental${templateSuffix}`, ''],
+    [`car_rental_date${templateSuffix}`, ''],
+    [`car_rental_days${templateSuffix}`, ''],
+  );
 
-  // Button field
-  payload['button'] = '';
+  // Button field (must be last)
+  orderedFields.push(['button', '']);
+
+  // Convert to object - JavaScript objects preserve insertion order for string keys
+  const payload: Record<string, string | undefined> = {};
+  for (const [key, value] of orderedFields) {
+    payload[key] = value;
+  }
 
   return payload;
 }

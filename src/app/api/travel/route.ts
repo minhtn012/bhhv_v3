@@ -117,6 +117,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate dates: dateFrom must be >= tomorrow
+    if (data.period?.dateFrom) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+
+      const dateFrom = new Date(data.period.dateFrom);
+      dateFrom.setHours(0, 0, 0, 0);
+
+      if (dateFrom < tomorrow) {
+        return NextResponse.json(
+          { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { status: 400 }
+        );
+      }
+    }
+
     // Premium can be 0 for draft contracts - will be calculated when confirming
     if (data.totalPremium === undefined) {
       data.totalPremium = 0;

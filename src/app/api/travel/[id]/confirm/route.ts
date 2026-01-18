@@ -35,10 +35,10 @@ export async function POST(
       );
     }
 
-    // Must be in khach_duyet status
-    if (contract.status !== 'khach_duyet') {
+    // Must be in cho_duyet status (after quote submitted)
+    if (contract.status !== 'cho_duyet') {
       return NextResponse.json(
-        { error: 'Contract must be customer-approved to confirm' },
+        { error: 'Contract must have a quote to confirm' },
         { status: 400 }
       );
     }

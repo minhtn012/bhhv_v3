@@ -121,15 +121,31 @@ export default function TravelContractDetailPage() {
     }
   };
 
+  // Step 1: Gửi báo giá - create quote on Pacific Cross + fetch premium
   const handleSubmit = async () => {
-    await handleStatusChange('cho_duyet', 'Gửi báo giá');
+    setActionLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/travel/${params.id}/submit`, {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        fetchContract();
+      } else {
+        setError(data.error || 'Không thể gửi báo giá lên Pacific Cross');
+      }
+    } catch {
+      setError('Lỗi kết nối server');
+    } finally {
+      setActionLoading(false);
+    }
   };
 
+  // Step 2: Khách xác nhận - confirm contract on Pacific Cross
   const handleConfirm = async () => {
-    await handleStatusChange('khach_duyet', 'Khách xác nhận');
-  };
-
-  const handleIssue = async () => {
     setActionLoading(true);
     setError('');
     try {
@@ -258,31 +274,24 @@ export default function TravelContractDetailPage() {
                     Sửa
                   </button>
                 )}
+                {/* Step 1: Gửi báo giá - create quote on Pacific Cross */}
                 {contract.status === 'nhap' && (
                   <button
                     onClick={handleSubmit}
                     disabled={actionLoading}
                     className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 disabled:opacity-50"
                   >
-                    Gửi báo giá
+                    {actionLoading ? 'Đang xử lý...' : 'Gửi báo giá'}
                   </button>
                 )}
+                {/* Step 2: Khách xác nhận - confirm and issue contract on Pacific Cross */}
                 {contract.status === 'cho_duyet' && (
                   <button
                     onClick={handleConfirm}
                     disabled={actionLoading}
-                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 disabled:opacity-50"
-                  >
-                    Khách duyệt
-                  </button>
-                )}
-                {contract.status === 'khach_duyet' && currentUser?.role === 'admin' && (
-                  <button
-                    onClick={handleIssue}
-                    disabled={actionLoading}
                     className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 disabled:opacity-50"
                   >
-                    Ra hợp đồng
+                    {actionLoading ? 'Đang xử lý...' : 'Khách xác nhận'}
                   </button>
                 )}
               </div>

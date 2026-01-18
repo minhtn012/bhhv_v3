@@ -198,7 +198,10 @@ export class PacificCrossApiClient extends BaseApiClient {
       const authCookies = this.parseCookiesFromHeaders(loginResponse.headers);
       if (authCookies) {
         this.sessionCookies = authCookies;
-        logDebug('PC_AUTH: Auth cookies updated', { cookieLength: authCookies.length });
+        logDebug('PC_AUTH: Auth cookies updated', {
+        cookieLength: authCookies.length,
+        cookieNames: authCookies.split(';').map(c => c.trim().split('=')[0]).filter(Boolean)
+      });
       }
 
       // Check for redirect (success) or error
@@ -243,7 +246,9 @@ export class PacificCrossApiClient extends BaseApiClient {
   }
 
   /**
-   * Build multipart/form-data body
+   * Build multipart/form-data body with proper file field handling
+   * File fields need to be inserted right after their corresponding input fields
+   * Order: input_message_file → message_file (file) | input_import_members → import_members (file)
    */
   private buildMultipartBody(
     data: Record<string, string | undefined>,
@@ -251,11 +256,28 @@ export class PacificCrossApiClient extends BaseApiClient {
   ): string {
     const parts: string[] = [];
 
+    // File field mappings: after which key to insert the file field
+    const fileFieldInsertions: Record<string, string> = {
+      'input_message_file': 'message_file',
+      'input_import_members': 'import_members',
+    };
+
     for (const [key, value] of Object.entries(data)) {
       if (value === undefined) continue;
+
+      // Add the regular field
       parts.push(`------${boundary}\r\n`);
       parts.push(`Content-Disposition: form-data; name="${key}"\r\n\r\n`);
       parts.push(`${value}\r\n`);
+
+      // Check if we need to insert a file field after this key
+      const fileField = fileFieldInsertions[key];
+      if (fileField) {
+        parts.push(`------${boundary}\r\n`);
+        parts.push(`Content-Disposition: form-data; name="${fileField}"; filename=""\r\n`);
+        parts.push(`Content-Type: application/octet-stream\r\n\r\n`);
+        parts.push(`\r\n`);
+      }
     }
 
     parts.push(`------${boundary}--\r\n`);
@@ -264,7 +286,7 @@ export class PacificCrossApiClient extends BaseApiClient {
 
   /**
    * Create quote or confirm contract
-   * @param payload Form data payload
+   * @param payload Form data payload (must include 'product' field)
    * @param isQuote true for quote (is_quote=1), false for confirm (is_quote=0)
    */
   async createCertificate(
@@ -272,6 +294,8 @@ export class PacificCrossApiClient extends BaseApiClient {
     isQuote: boolean = true
   ): Promise<PacificCrossQuoteResponse> {
     const operation = isQuote ? 'PC_CREATE_QUOTE' : 'PC_CREATE_CONTRACT';
+    const product = payload.product || '2';
+
     logInfo(`Pacific Cross ${isQuote ? 'quote' : 'contract'} creation started`, {
       operation,
       additionalInfo: { isQuote, payloadKeys: Object.keys(payload) }
@@ -305,7 +329,21 @@ export class PacificCrossApiClient extends BaseApiClient {
       const body = this.buildMultipartBody(formPayload, boundary);
 
       const certUrl = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}`;
-      logDebug(`${operation}: Posting to Pacific Cross`, { url: certUrl, bodyLength: body.length });
+
+      // Log detailed request info for debugging
+      logDebug(`${operation}: Request details`, {
+        url: certUrl,
+        bodyLength: body.length,
+        cookieLength: this.sessionCookies?.length || 0,
+        cookieNames: this.sessionCookies?.split(';').map(c => c.trim().split('=')[0]).filter(Boolean),
+        csrfTokenLength: this.csrfToken?.length || 0,
+        boundaryUsed: `----${boundary}`,
+      });
+
+      // Log first 500 chars of body for comparison with curl
+      logDebug(`${operation}: Body preview`, {
+        bodyPreview: body.substring(0, 500)
+      });
 
       const response = await fetch(certUrl, {
         method: 'POST',
@@ -313,7 +351,10 @@ export class PacificCrossApiClient extends BaseApiClient {
           ...this.getDefaultHeaders(),
           'Content-Type': `multipart/form-data; boundary=----${boundary}`,
           'Origin': this.baseUrl,
-          'Referer': `${this.baseUrl}/cert/create`,
+          'Referer': `${this.baseUrl}/cert/create?product=${product}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Sec-Fetch-User': '?1',
         },
         body,
         redirect: 'manual',
@@ -349,19 +390,61 @@ export class PacificCrossApiClient extends BaseApiClient {
         }
       }
 
-      // Failed - parse error from response
+      // Failed - follow redirect to get error messages
       const responseText = await response.text();
+
+      // If redirected back to create page, follow it to get error messages
+      let errorMessages: string[] = [];
+      if (locationHeader && locationHeader.includes('/cert/create')) {
+        try {
+          logDebug(`${operation}: Following redirect to get errors`, { location: locationHeader });
+          const errorPageResponse = await fetch(locationHeader, {
+            method: 'GET',
+            headers: this.getDefaultHeaders(),
+          });
+          const errorPageHtml = await errorPageResponse.text();
+
+          // Extract error messages from Laravel validation errors
+          // Pattern 1: <div class="alert alert-danger">...</div>
+          const alertMatch = errorPageHtml.match(/<div[^>]*class="[^"]*alert-danger[^"]*"[^>]*>([\s\S]*?)<\/div>/gi);
+          if (alertMatch) {
+            errorMessages.push(...alertMatch.map(m => m.replace(/<[^>]+>/g, '').trim()));
+          }
+
+          // Pattern 2: <span class="invalid-feedback">...</span>
+          const feedbackMatch = errorPageHtml.match(/<span[^>]*class="[^"]*invalid-feedback[^"]*"[^>]*>([\s\S]*?)<\/span>/gi);
+          if (feedbackMatch) {
+            errorMessages.push(...feedbackMatch.map(m => m.replace(/<[^>]+>/g, '').trim()));
+          }
+
+          // Pattern 3: <li> inside error list
+          const liMatch = errorPageHtml.match(/<li[^>]*>([\s\S]*?)<\/li>/gi);
+          if (liMatch && liMatch.length < 20) { // Limit to avoid capturing unrelated lists
+            const relevantLis = liMatch.filter(li => li.toLowerCase().includes('error') || li.toLowerCase().includes('invalid'));
+            errorMessages.push(...relevantLis.map(m => m.replace(/<[^>]+>/g, '').trim()));
+          }
+
+          logDebug(`${operation}: Error messages extracted`, {
+            errorCount: errorMessages.length,
+            errors: errorMessages.slice(0, 5) // Log first 5 errors
+          });
+        } catch (e) {
+          logDebug(`${operation}: Failed to fetch error page`, { error: e instanceof Error ? e.message : 'Unknown' });
+        }
+      }
+
       logErr(new Error('Certificate creation failed'), {
         operation: `${operation}_FAILED`,
         additionalInfo: {
           status: response.status,
           location: locationHeader,
-          responsePreview: responseText.substring(0, 500)
+          responsePreview: responseText.substring(0, 500),
+          validationErrors: errorMessages
         }
       });
       return {
         success: false,
-        error: `Creation failed - status ${response.status}`,
+        error: errorMessages.length > 0 ? errorMessages.join('; ') : `Creation failed - status ${response.status}`,
         rawResponse: responseText,
       };
 
@@ -420,7 +503,12 @@ export class PacificCrossApiClient extends BaseApiClient {
    * Refresh CSRF token from create page with retry logic
    */
   async refreshCsrfToken(product: number = 2): Promise<boolean> {
-    logDebug('PC_CSRF_REFRESH: Starting', { product, maxRetries: PacificCrossApiClient.MAX_CSRF_RETRIES });
+    logDebug('PC_CSRF_REFRESH: Starting', {
+      product,
+      maxRetries: PacificCrossApiClient.MAX_CSRF_RETRIES,
+      hasCookies: !!this.sessionCookies,
+      cookieNames: this.sessionCookies?.split(';').map(c => c.trim().split('=')[0]).filter(Boolean)
+    });
 
     for (let attempt = 1; attempt <= PacificCrossApiClient.MAX_CSRF_RETRIES; attempt++) {
       try {
@@ -433,6 +521,15 @@ export class PacificCrossApiClient extends BaseApiClient {
         });
 
         logDebug(`PC_CSRF_REFRESH: Response`, { status: response.status, attempt });
+
+        // IMPORTANT: Update cookies from response (server may send new XSRF-TOKEN)
+        const newCookies = this.parseCookiesFromHeaders(response.headers);
+        if (newCookies) {
+          this.sessionCookies = newCookies;
+          logDebug('PC_CSRF_REFRESH: Cookies updated', {
+            cookieNames: newCookies.split(';').map(c => c.trim().split('=')[0]).filter(Boolean)
+          });
+        }
 
         const html = await response.text();
         const token = this.extractCsrfToken(html);
@@ -467,6 +564,58 @@ export class PacificCrossApiClient extends BaseApiClient {
       additionalInfo: { product, attempts: PacificCrossApiClient.MAX_CSRF_RETRIES }
     });
     return false;
+  }
+
+  /**
+   * Get certificate premium from edit page
+   * Parses premium values from HTML input fields (premium_1, premium_2, etc.)
+   */
+  async getCertificatePremium(certId: string): Promise<{ success: boolean; premium?: number; error?: string }> {
+    try {
+      const url = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}/edit`;
+      logDebug('PC_GET_PREMIUM: Fetching edit page', { url });
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getDefaultHeaders(),
+      });
+
+      if (!response.ok) {
+        return { success: false, error: `HTTP ${response.status}` };
+      }
+
+      const html = await response.text();
+
+      // Extract all premium_N values and sum them
+      // Pattern: <input id="premium_1" ... value="324000"/>
+      const premiumPattern = /id="premium_\d+"[^>]*value="(\d+)"/g;
+      let totalPremium = 0;
+      let match;
+      let count = 0;
+
+      while ((match = premiumPattern.exec(html)) !== null) {
+        const value = parseInt(match[1], 10);
+        if (!isNaN(value)) {
+          totalPremium += value;
+          count++;
+        }
+      }
+
+      if (count > 0) {
+        logInfo('PC_GET_PREMIUM: Premium extracted', {
+          operation: 'PC_GET_PREMIUM_SUCCESS',
+          additionalInfo: { totalPremium, memberCount: count }
+        });
+        return { success: true, premium: totalPremium };
+      }
+
+      logDebug('PC_GET_PREMIUM: Premium not found in HTML', { htmlLength: html.length });
+      return { success: false, error: 'Premium not found in HTML' };
+
+    } catch (error) {
+      logErr(error, { operation: 'PC_GET_PREMIUM_ERROR' });
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
   }
 }
 
