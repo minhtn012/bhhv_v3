@@ -49,6 +49,32 @@ export default function NewTravelContractPage() {
     days: 0,
   });
 
+  const [phoneError, setPhoneError] = useState('');
+
+  // Get tomorrow's date in YYYY-MM-DD format for min date constraint
+  const getTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  };
+
+  const minDate = getTomorrowDate();
+
+  // Validate Vietnamese phone number: 10 digits starting with 0, or +84 followed by 9 digits
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^(0[0-9]{9}|\+84[0-9]{9})$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setOwner({...owner, telNo: value});
+    if (value && !validatePhone(value)) {
+      setPhoneError('SĐT không hợp lệ (VD: 0912345678 hoặc +84912345678)');
+    } else {
+      setPhoneError('');
+    }
+  };
+
   const [product, setProduct] = useState(2); // Travel Flex
   const [plan, setPlan] = useState(534);
   const [hasCarRental, setHasCarRental] = useState(false);
@@ -133,6 +159,14 @@ export default function NewTravelContractPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    // Validate phone number
+    if (!owner.telNo || !validatePhone(owner.telNo)) {
+      setError('Số điện thoại không hợp lệ');
+      setPhoneError('SĐT không hợp lệ (VD: 0912345678 hoặc +84912345678)');
+      setLoading(false);
+      return;
+    }
 
     // Validate: if plan has car rental, at least one insured person must select car rental
     if (hasCarRental) {
@@ -225,10 +259,12 @@ export default function NewTravelContractPage() {
                 <input
                   type="tel"
                   value={owner.telNo}
-                  onChange={(e) => setOwner({...owner, telNo: e.target.value})}
-                  className={inputClass}
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  placeholder="0912345678"
+                  className={`${inputClass} ${phoneError ? 'border-red-500/50' : ''}`}
                   required
                 />
+                {phoneError && <p className="text-red-400 text-xs mt-1">{phoneError}</p>}
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm text-slate-400 mb-1.5">Địa chỉ <span className="text-orange-400">*</span></label>
@@ -252,10 +288,20 @@ export default function NewTravelContractPage() {
                 <input
                   type="date"
                   value={period.dateFrom}
-                  onChange={(e) => setPeriod({...period, dateFrom: e.target.value})}
+                  onChange={(e) => {
+                    const newDateFrom = e.target.value;
+                    setPeriod(prev => ({
+                      ...prev,
+                      dateFrom: newDateFrom,
+                      // Reset dateTo if it's before new dateFrom
+                      dateTo: prev.dateTo && prev.dateTo < newDateFrom ? newDateFrom : prev.dateTo
+                    }));
+                  }}
+                  min={minDate}
                   className={inputClass}
                   required
                 />
+                <p className="text-slate-500 text-xs mt-1">Từ ngày mai trở đi</p>
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Đến ngày <span className="text-orange-400">*</span></label>
@@ -263,6 +309,7 @@ export default function NewTravelContractPage() {
                   type="date"
                   value={period.dateTo}
                   onChange={(e) => setPeriod({...period, dateTo: e.target.value})}
+                  min={period.dateFrom || minDate}
                   className={inputClass}
                   required
                 />
