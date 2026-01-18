@@ -1,0 +1,46 @@
+[
+    {
+        "value": "",
+        "text": "&nbsp;"
+    },
+    {
+        "value": "TITLE_Dr.",
+        "text": "Tiến sĩ"
+    },
+    {
+        "value": "TITLE_Drs.",
+        "text": "Nữ tiến sĩ"
+    },
+    {
+        "value": "TITLE_Lady",
+        "text": "Quý bà"
+    },
+    {
+        "value": "TITLE_Miss",
+        "text": "Cô"
+    },
+    {
+        "value": "TITLE_Mr.",
+        "text": "Ông"
+    },
+    {
+        "value": "TITLE_Mrs.",
+        "text": "Bà"
+    },
+    {
+        "value": "TITLE_Ms.",
+        "text": "Cô"
+    },
+    {
+        "value": "TITLE_Other",
+        "text": "Khác"
+    },
+    {
+        "value": "TITLE_Prof",
+        "text": "Chuyên gia"
+    },
+    {
+        "value": "TITLE_Sir",
+        "text": "Ngài"
+    }
+]

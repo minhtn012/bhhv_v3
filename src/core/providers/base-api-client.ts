@@ -104,6 +104,13 @@ export abstract class BaseApiClient {
   }
 
   /**
+   * Get CSRF token
+   */
+  getCsrfToken(): string | null {
+    return this.csrfToken;
+  }
+
+  /**
    * Sleep utility for retry delay
    */
   protected sleep(ms: number): Promise<void> {
