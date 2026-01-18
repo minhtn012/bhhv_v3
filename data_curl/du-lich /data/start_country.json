@@ -1,0 +1,974 @@
+[
+    {
+        "value": "",
+        "text": "&nbsp;"
+    },
+    {
+        "value": "AFGHANISTAN",
+        "text": "AFGHANISTAN"
+    },
+    {
+        "value": "ALBANIA",
+        "text": "ALBANIA"
+    },
+    {
+        "value": "ALGERIA",
+        "text": "ALGERIA"
+    },
+    {
+        "value": "AMERICAN SAMOA",
+        "text": "AMERICAN SAMOA"
+    },
+    {
+        "value": "ANDORRA",
+        "text": "ANDORRA"
+    },
+    {
+        "value": "ANGOLA",
+        "text": "ANGOLA"
+    },
+    {
+        "value": "ANGUILLA",
+        "text": "ANGUILLA"
+    },
+    {
+        "value": "ANTARCTICA",
+        "text": "ANTARCTICA"
+    },
+    {
+        "value": "ANTIGUA AND BARBUDA",
+        "text": "ANTIGUA AND BARBUDA"
+    },
+    {
+        "value": "ARGENTINE REPUBLIC",
+        "text": "ARGENTINE REPUBLIC"
+    },
+    {
+        "value": "ARMENIA",
+        "text": "ARMENIA"
+    },
+    {
+        "value": "ARUBA",
+        "text": "ARUBA"
+    },
+    {
+        "value": "ASCENSION",
+        "text": "ASCENSION"
+    },
+    {
+        "value": "AUSTRALIA",
+        "text": "AUSTRALIA"
+    },
+    {
+        "value": "AUSTRALIAN EXTERNAL TERRITORIES",
+        "text": "AUSTRALIAN EXTERNAL TERRITORIES"
+    },
+    {
+        "value": "AUSTRIA",
+        "text": "AUSTRIA"
+    },
+    {
+        "value": "AZERBAIJANI REPUBLIC",
+        "text": "AZERBAIJANI REPUBLIC"
+    },
+    {
+        "value": "BAHAMAS",
+        "text": "BAHAMAS"
+    },
+    {
+        "value": "BAHRAIN",
+        "text": "BAHRAIN"
+    },
+    {
+        "value": "BANGLADESH",
+        "text": "BANGLADESH"
+    },
+    {
+        "value": "BARBADOS",
+        "text": "BARBADOS"
+    },
+    {
+        "value": "BELARUS",
+        "text": "BELARUS"
+    },
+    {
+        "value": "BELGIUM",
+        "text": "BELGIUM"
+    },
+    {
+        "value": "BELIZE",
+        "text": "BELIZE"
+    },
+    {
+        "value": "BENIN",
+        "text": "BENIN"
+    },
+    {
+        "value": "BERMUDA",
+        "text": "BERMUDA"
+    },
+    {
+        "value": "BHUTAN",
+        "text": "BHUTAN"
+    },
+    {
+        "value": "BOLIVIA",
+        "text": "BOLIVIA"
+    },
+    {
+        "value": "BONAIRE",
+        "text": "BONAIRE"
+    },
+    {
+        "value": "BOSNIA AND HERZEGOVINA",
+        "text": "BOSNIA AND HERZEGOVINA"
+    },
+    {
+        "value": "BOTSWANA",
+        "text": "BOTSWANA"
+    },
+    {
+        "value": "BRAZIL",
+        "text": "BRAZIL"
+    },
+    {
+        "value": "BRITISH VIRGIN ISLANDS",
+        "text": "BRITISH VIRGIN ISLANDS"
+    },
+    {
+        "value": "BRUNEI DARUSSALAM",
+        "text": "BRUNEI DARUSSALAM"
+    },
+    {
+        "value": "BULGARIA",
+        "text": "BULGARIA"
+    },
+    {
+        "value": "BURKINA FASO",
+        "text": "BURKINA FASO"
+    },
+    {
+        "value": "BURUNDI",
+        "text": "BURUNDI"
+    },
+    {
+        "value": "CAMBODIA",
+        "text": "CAMBODIA"
+    },
+    {
+        "value": "CAMEROON",
+        "text": "CAMEROON"
+    },
+    {
+        "value": "CANADA",
+        "text": "CANADA"
+    },
+    {
+        "value": "CAPE VERDE",
+        "text": "CAPE VERDE"
+    },
+    {
+        "value": "CAYMAN ISLANDS",
+        "text": "CAYMAN ISLANDS"
+    },
+    {
+        "value": "CENTRAL AFRICAN REPUBLIC",
+        "text": "CENTRAL AFRICAN REPUBLIC"
+    },
+    {
+        "value": "CHAD",
+        "text": "CHAD"
+    },
+    {
+        "value": "CHILE",
+        "text": "CHILE"
+    },
+    {
+        "value": "CHINA",
+        "text": "CHINA"
+    },
+    {
+        "value": "CHRISTMAS ISLAND",
+        "text": "CHRISTMAS ISLAND"
+    },
+    {
+        "value": "COCOS (KEELING) ISLANDS",
+        "text": "COCOS (KEELING) ISLANDS"
+    },
+    {
+        "value": "COLOMBIA",
+        "text": "COLOMBIA"
+    },
+    {
+        "value": "COMOROS",
+        "text": "COMOROS"
+    },
+    {
+        "value": "CONGO",
+        "text": "CONGO"
+    },
+    {
+        "value": "COOK ISLANDS",
+        "text": "COOK ISLANDS"
+    },
+    {
+        "value": "COSTA RICA",
+        "text": "COSTA RICA"
+    },
+    {
+        "value": "COTE D",
+        "text": "COTE D'IVOIRE"
+    },
+    {
+        "value": "CROATIA",
+        "text": "CROATIA"
+    },
+    {
+        "value": "CUBA",
+        "text": "CUBA"
+    },
+    {
+        "value": "CURACAO",
+        "text": "CURACAO"
+    },
+    {
+        "value": "CYPRUS",
+        "text": "CYPRUS"
+    },
+    {
+        "value": "CZECH REPUBLIC",
+        "text": "CZECH REPUBLIC"
+    },
+    {
+        "value": "DEMO. REP. OF THE CONGO",
+        "text": "DEMO. REP. OF THE CONGO"
+    },
+    {
+        "value": "DEMOCRATIC PEOPLE",
+        "text": "DEMOCRATIC PEOPLE'S REP. OF KOREA"
+    },
+    {
+        "value": "DENMARK",
+        "text": "DENMARK"
+    },
+    {
+        "value": "DIEGO GARCIA",
+        "text": "DIEGO GARCIA"
+    },
+    {
+        "value": "DJIBOUTI",
+        "text": "DJIBOUTI"
+    },
+    {
+        "value": "DOMINICA",
+        "text": "DOMINICA"
+    },
+    {
+        "value": "DOMINICAN REPUBLIC",
+        "text": "DOMINICAN REPUBLIC"
+    },
+    {
+        "value": "EAST TIMOR",
+        "text": "EAST TIMOR"
+    },
+    {
+        "value": "ECUADOR",
+        "text": "ECUADOR"
+    },
+    {
+        "value": "EGYPT",
+        "text": "EGYPT"
+    },
+    {
+        "value": "EL SALVADOR",
+        "text": "EL SALVADOR"
+    },
+    {
+        "value": "EQUATORIAL GUINEA",
+        "text": "EQUATORIAL GUINEA"
+    },
+    {
+        "value": "ERITREA",
+        "text": "ERITREA"
+    },
+    {
+        "value": "ESTONIA",
+        "text": "ESTONIA"
+    },
+    {
+        "value": "ETHIOPIA",
+        "text": "ETHIOPIA"
+    },
+    {
+        "value": "FALKLAND ISLANDS",
+        "text": "FALKLAND ISLANDS"
+    },
+    {
+        "value": "FAROE ISLANDS",
+        "text": "FAROE ISLANDS"
+    },
+    {
+        "value": "FIJI",
+        "text": "FIJI"
+    },
+    {
+        "value": "FINLAND",
+        "text": "FINLAND"
+    },
+    {
+        "value": "FRANCE",
+        "text": "FRANCE"
+    },
+    {
+        "value": "FRENCH GUIANA",
+        "text": "FRENCH GUIANA"
+    },
+    {
+        "value": "FRENCH POLYNESIA",
+        "text": "FRENCH POLYNESIA"
+    },
+    {
+        "value": "GABONESE REPUBLIC",
+        "text": "GABONESE REPUBLIC"
+    },
+    {
+        "value": "GAMBIA",
+        "text": "GAMBIA"
+    },
+    {
+        "value": "GEORGIA",
+        "text": "GEORGIA"
+    },
+    {
+        "value": "GERMANY",
+        "text": "GERMANY"
+    },
+    {
+        "value": "GHANA",
+        "text": "GHANA"
+    },
+    {
+        "value": "GIBRALTAR",
+        "text": "GIBRALTAR"
+    },
+    {
+        "value": "GREECE",
+        "text": "GREECE"
+    },
+    {
+        "value": "GREENLAND",
+        "text": "GREENLAND"
+    },
+    {
+        "value": "GRENADA",
+        "text": "GRENADA"
+    },
+    {
+        "value": "GUADELOUPE",
+        "text": "GUADELOUPE"
+    },
+    {
+        "value": "GUAM",
+        "text": "GUAM"
+    },
+    {
+        "value": "GUATEMALA",
+        "text": "GUATEMALA"
+    },
+    {
+        "value": "GUINEA",
+        "text": "GUINEA"
+    },
+    {
+        "value": "GUINEA-BISSAU",
+        "text": "GUINEA-BISSAU"
+    },
+    {
+        "value": "GUYANA",
+        "text": "GUYANA"
+    },
+    {
+        "value": "HAITI",
+        "text": "HAITI"
+    },
+    {
+        "value": "HONDURAS",
+        "text": "HONDURAS"
+    },
+    {
+        "value": "HONG KONG",
+        "text": "HONG KONG"
+    },
+    {
+        "value": "HUNGARY",
+        "text": "HUNGARY"
+    },
+    {
+        "value": "ICELAND",
+        "text": "ICELAND"
+    },
+    {
+        "value": "INDIA",
+        "text": "INDIA"
+    },
+    {
+        "value": "INDONESIA",
+        "text": "INDONESIA"
+    },
+    {
+        "value": "IRAN",
+        "text": "IRAN"
+    },
+    {
+        "value": "IRAQ",
+        "text": "IRAQ"
+    },
+    {
+        "value": "IRELAND",
+        "text": "IRELAND"
+    },
+    {
+        "value": "ISLE OF MAN",
+        "text": "ISLE OF MAN"
+    },
+    {
+        "value": "ISRAEL",
+        "text": "ISRAEL"
+    },
+    {
+        "value": "ITALY",
+        "text": "ITALY"
+    },
+    {
+        "value": "JAMAICA",
+        "text": "JAMAICA"
+    },
+    {
+        "value": "JAPAN",
+        "text": "JAPAN"
+    },
+    {
+        "value": "JORDAN",
+        "text": "JORDAN"
+    },
+    {
+        "value": "KAZAKHSTAN",
+        "text": "KAZAKHSTAN"
+    },
+    {
+        "value": "KENYA",
+        "text": "KENYA"
+    },
+    {
+        "value": "KIRIBATI",
+        "text": "KIRIBATI"
+    },
+    {
+        "value": "KOREA",
+        "text": "KOREA"
+    },
+    {
+        "value": "KUWAIT",
+        "text": "KUWAIT"
+    },
+    {
+        "value": "KYRGYZ REPUBLIC",
+        "text": "KYRGYZ REPUBLIC"
+    },
+    {
+        "value": "LAOS",
+        "text": "LAOS"
+    },
+    {
+        "value": "LATVIA",
+        "text": "LATVIA"
+    },
+    {
+        "value": "LEBANON",
+        "text": "LEBANON"
+    },
+    {
+        "value": "LESOTHO",
+        "text": "LESOTHO"
+    },
+    {
+        "value": "LIBERIA",
+        "text": "LIBERIA"
+    },
+    {
+        "value": "LIBYA",
+        "text": "LIBYA"
+    },
+    {
+        "value": "LIECHTENSTEIN",
+        "text": "LIECHTENSTEIN"
+    },
+    {
+        "value": "LITHUANIA",
+        "text": "LITHUANIA"
+    },
+    {
+        "value": "LUXEMBOURG",
+        "text": "LUXEMBOURG"
+    },
+    {
+        "value": "MACAU",
+        "text": "MACAU"
+    },
+    {
+        "value": "MADAGASCAR",
+        "text": "MADAGASCAR"
+    },
+    {
+        "value": "MALAWI",
+        "text": "MALAWI"
+    },
+    {
+        "value": "MALAYSIA",
+        "text": "MALAYSIA"
+    },
+    {
+        "value": "MALDIVES",
+        "text": "MALDIVES"
+    },
+    {
+        "value": "MALI",
+        "text": "MALI"
+    },
+    {
+        "value": "MALTA",
+        "text": "MALTA"
+    },
+    {
+        "value": "MARSHALL ISLANDS",
+        "text": "MARSHALL ISLANDS"
+    },
+    {
+        "value": "MARTINIQUE",
+        "text": "MARTINIQUE"
+    },
+    {
+        "value": "MAURITANIA",
+        "text": "MAURITANIA"
+    },
+    {
+        "value": "MAURITIUS",
+        "text": "MAURITIUS"
+    },
+    {
+        "value": "MAYOTTE",
+        "text": "MAYOTTE"
+    },
+    {
+        "value": "MEXICO",
+        "text": "MEXICO"
+    },
+    {
+        "value": "MICRONESIA",
+        "text": "MICRONESIA"
+    },
+    {
+        "value": "MOLDOVA",
+        "text": "MOLDOVA"
+    },
+    {
+        "value": "MONACO",
+        "text": "MONACO"
+    },
+    {
+        "value": "MONGOLIA",
+        "text": "MONGOLIA"
+    },
+    {
+        "value": "MONTENEGRO",
+        "text": "MONTENEGRO"
+    },
+    {
+        "value": "MONTSERRAT",
+        "text": "MONTSERRAT"
+    },
+    {
+        "value": "MOROCCO",
+        "text": "MOROCCO"
+    },
+    {
+        "value": "MOZAMBIQUE",
+        "text": "MOZAMBIQUE"
+    },
+    {
+        "value": "MYANMAR",
+        "text": "MYANMAR"
+    },
+    {
+        "value": "NAMIBIA",
+        "text": "NAMIBIA"
+    },
+    {
+        "value": "NAURU",
+        "text": "NAURU"
+    },
+    {
+        "value": "NEPAL",
+        "text": "NEPAL"
+    },
+    {
+        "value": "NETHERLANDS",
+        "text": "NETHERLANDS"
+    },
+    {
+        "value": "NETHERLANDS ANTILLES",
+        "text": "NETHERLANDS ANTILLES"
+    },
+    {
+        "value": "NEW CALEDONIA",
+        "text": "NEW CALEDONIA"
+    },
+    {
+        "value": "NEW ZEALAND",
+        "text": "NEW ZEALAND"
+    },
+    {
+        "value": "NICARAGUA",
+        "text": "NICARAGUA"
+    },
+    {
+        "value": "NIGER",
+        "text": "NIGER"
+    },
+    {
+        "value": "NIGERIA",
+        "text": "NIGERIA"
+    },
+    {
+        "value": "NIUE",
+        "text": "NIUE"
+    },
+    {
+        "value": "NORFOLK ISLAND",
+        "text": "NORFOLK ISLAND"
+    },
+    {
+        "value": "NORTHERN MARIANA ISLANDS",
+        "text": "NORTHERN MARIANA ISLANDS"
+    },
+    {
+        "value": "NORWAY",
+        "text": "NORWAY"
+    },
+    {
+        "value": "OMAN",
+        "text": "OMAN"
+    },
+    {
+        "value": "PAKISTAN",
+        "text": "PAKISTAN"
+    },
+    {
+        "value": "PALAU",
+        "text": "PALAU"
+    },
+    {
+        "value": "PALESTINE",
+        "text": "PALESTINE"
+    },
+    {
+        "value": "PANAMA",
+        "text": "PANAMA"
+    },
+    {
+        "value": "PAPUA NEW GUINEA",
+        "text": "PAPUA NEW GUINEA"
+    },
+    {
+        "value": "PARAGUAY",
+        "text": "PARAGUAY"
+    },
+    {
+        "value": "PERU",
+        "text": "PERU"
+    },
+    {
+        "value": "PHILIPPINES",
+        "text": "PHILIPPINES"
+    },
+    {
+        "value": "POLAND",
+        "text": "POLAND"
+    },
+    {
+        "value": "PORTUGAL",
+        "text": "PORTUGAL"
+    },
+    {
+        "value": "PUERTO RICO",
+        "text": "PUERTO RICO"
+    },
+    {
+        "value": "QATAR",
+        "text": "QATAR"
+    },
+    {
+        "value": "REUNION",
+        "text": "REUNION"
+    },
+    {
+        "value": "ROMANIA",
+        "text": "ROMANIA"
+    },
+    {
+        "value": "RUSSIAN FEDERATION",
+        "text": "RUSSIAN FEDERATION"
+    },
+    {
+        "value": "RWANDESE REPUBLIC",
+        "text": "RWANDESE REPUBLIC"
+    },
+    {
+        "value": "SAINT HELENA",
+        "text": "SAINT HELENA"
+    },
+    {
+        "value": "SAINT KITTS AND NEVIS",
+        "text": "SAINT KITTS AND NEVIS"
+    },
+    {
+        "value": "SAINT LUCIA",
+        "text": "SAINT LUCIA"
+    },
+    {
+        "value": "SAINT PIERRE AND MIQUELON",
+        "text": "SAINT PIERRE AND MIQUELON"
+    },
+    {
+        "value": "SAIPAN",
+        "text": "SAIPAN"
+    },
+    {
+        "value": "SAMOA",
+        "text": "SAMOA"
+    },
+    {
+        "value": "SAN MARINO",
+        "text": "SAN MARINO"
+    },
+    {
+        "value": "SAO TOME AND PRINCIPE",
+        "text": "SAO TOME AND PRINCIPE"
+    },
+    {
+        "value": "SAUDI ARABIA",
+        "text": "SAUDI ARABIA"
+    },
+    {
+        "value": "SENEGAL",
+        "text": "SENEGAL"
+    },
+    {
+        "value": "SERBIA",
+        "text": "SERBIA"
+    },
+    {
+        "value": "SEYCHELLES",
+        "text": "SEYCHELLES"
+    },
+    {
+        "value": "SIERRA LEONE",
+        "text": "SIERRA LEONE"
+    },
+    {
+        "value": "SINGAPORE",
+        "text": "SINGAPORE"
+    },
+    {
+        "value": "SLOVAK REPUBLIC",
+        "text": "SLOVAK REPUBLIC"
+    },
+    {
+        "value": "SLOVENIA",
+        "text": "SLOVENIA"
+    },
+    {
+        "value": "SOLOMON ISLANDS",
+        "text": "SOLOMON ISLANDS"
+    },
+    {
+        "value": "SOMALI DEMO. REPUBLIC",
+        "text": "SOMALI DEMO. REPUBLIC"
+    },
+    {
+        "value": "SOUTH AFRICA",
+        "text": "SOUTH AFRICA"
+    },
+    {
+        "value": "SOUTH SUDAN",
+        "text": "SOUTH SUDAN"
+    },
+    {
+        "value": "SPAIN",
+        "text": "SPAIN"
+    },
+    {
+        "value": "SRI LANKA",
+        "text": "SRI LANKA"
+    },
+    {
+        "value": "ST. VINCENT &amp; THE GRENADINES",
+        "text": "ST. VINCENT &amp; THE GRENADINES"
+    },
+    {
+        "value": "SUDAN",
+        "text": "SUDAN"
+    },
+    {
+        "value": "SURINAME",
+        "text": "SURINAME"
+    },
+    {
+        "value": "SVALBARD AND JAN MAYEN",
+        "text": "SVALBARD AND JAN MAYEN"
+    },
+    {
+        "value": "SWAZILAND",
+        "text": "SWAZILAND"
+    },
+    {
+        "value": "SWEDEN",
+        "text": "SWEDEN"
+    },
+    {
+        "value": "SWITZERLAND",
+        "text": "SWITZERLAND"
+    },
+    {
+        "value": "SYRIAN ARAB REPUBLIC",
+        "text": "SYRIAN ARAB REPUBLIC"
+    },
+    {
+        "value": "TAIWAN",
+        "text": "TAIWAN"
+    },
+    {
+        "value": "TAJIKISTAN",
+        "text": "TAJIKISTAN"
+    },
+    {
+        "value": "TANZANIA",
+        "text": "TANZANIA"
+    },
+    {
+        "value": "THAILAND",
+        "text": "THAILAND"
+    },
+    {
+        "value": "THE FORMER YUGO. REP. OF MACEDONIA",
+        "text": "THE FORMER YUGO. REP. OF MACEDONIA"
+    },
+    {
+        "value": "TINIAN",
+        "text": "TINIAN"
+    },
+    {
+        "value": "TOGOLESE REPUBLIC",
+        "text": "TOGOLESE REPUBLIC"
+    },
+    {
+        "value": "TOKELAU",
+        "text": "TOKELAU"
+    },
+    {
+        "value": "TONGA",
+        "text": "TONGA"
+    },
+    {
+        "value": "TRINIDAD AND TOBAGO",
+        "text": "TRINIDAD AND TOBAGO"
+    },
+    {
+        "value": "TUNISIA",
+        "text": "TUNISIA"
+    },
+    {
+        "value": "TURKEY",
+        "text": "TURKEY"
+    },
+    {
+        "value": "TURKMENISTAN",
+        "text": "TURKMENISTAN"
+    },
+    {
+        "value": "TURKS AND CAICOS ISLANDS",
+        "text": "TURKS AND CAICOS ISLANDS"
+    },
+    {
+        "value": "TUVALU",
+        "text": "TUVALU"
+    },
+    {
+        "value": "U.A.E.",
+        "text": "U.A.E."
+    },
+    {
+        "value": "U.K.",
+        "text": "U.K."
+    },
+    {
+        "value": "U.S.A.",
+        "text": "U.S.A."
+    },
+    {
+        "value": "UGANDA",
+        "text": "UGANDA"
+    },
+    {
+        "value": "UKRAINE",
+        "text": "UKRAINE"
+    },
+    {
+        "value": "UNITED STATES MINOR OUTLYING ISLANDS",
+        "text": "UNITED STATES MINOR OUTLYING ISLANDS"
+    },
+    {
+        "value": "UNITED STATES VIRGIN ISLANDS",
+        "text": "UNITED STATES VIRGIN ISLANDS"
+    },
+    {
+        "value": "URUGUAY",
+        "text": "URUGUAY"
+    },
+    {
+        "value": "UZBEKISTAN",
+        "text": "UZBEKISTAN"
+    },
+    {
+        "value": "VANUATU",
+        "text": "VANUATU"
+    },
+    {
+        "value": "VATICAN CITY STATE",
+        "text": "VATICAN CITY STATE"
+    },
+    {
+        "value": "VENEZUELA",
+        "text": "VENEZUELA"
+    },
+    {
+        "value": "VIETNAM",
+        "text": "VIETNAM"
+    },
+    {
+        "value": "WALLIS AND FUTUNA",
+        "text": "WALLIS AND FUTUNA"
+    },
+    {
+        "value": "YEMEN",
+        "text": "YEMEN"
+    },
+    {
+        "value": "ZAMBIA",
+        "text": "ZAMBIA"
+    },
+    {
+        "value": "ZIMBABWE",
+        "text": "ZIMBABWE"
+    }
+]

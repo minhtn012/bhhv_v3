@@ -1,0 +1,578 @@
+[
+    {
+        "value": "338",
+        "text": "AA1AC - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (338)"
+    },
+    {
+        "value": "534",
+        "text": "AA1AN - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (534)"
+    },
+    {
+        "value": "341",
+        "text": "AA1NC - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (341)"
+    },
+    {
+        "value": "571",
+        "text": "AA1NN - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (571)"
+    },
+    {
+        "value": "344",
+        "text": "AA2AC - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (344)"
+    },
+    {
+        "value": "544",
+        "text": "AA2AN - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (544)"
+    },
+    {
+        "value": "351",
+        "text": "AA2NC - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (351)"
+    },
+    {
+        "value": "579",
+        "text": "AA2NN - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (579)"
+    },
+    {
+        "value": "369",
+        "text": "AA3AC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (369)"
+    },
+    {
+        "value": "553",
+        "text": "AA3AN - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (553)"
+    },
+    {
+        "value": "372",
+        "text": "AA3NC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (372)"
+    },
+    {
+        "value": "588",
+        "text": "AA3NN - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (588)"
+    },
+    {
+        "value": "375",
+        "text": "AA4AC - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (375)"
+    },
+    {
+        "value": "562",
+        "text": "AA4AN - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (562)"
+    },
+    {
+        "value": "378",
+        "text": "AA4NC - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (378)"
+    },
+    {
+        "value": "597",
+        "text": "AA4NN - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (597)"
+    },
+    {
+        "value": "333",
+        "text": "AE1AC - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (333)"
+    },
+    {
+        "value": "535",
+        "text": "AE1AN - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (535)"
+    },
+    {
+        "value": "356",
+        "text": "AE1NC - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (356)"
+    },
+    {
+        "value": "570",
+        "text": "AE1NN - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (570)"
+    },
+    {
+        "value": "336",
+        "text": "AE2AC - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (336)"
+    },
+    {
+        "value": "543",
+        "text": "AE2AN - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (543)"
+    },
+    {
+        "value": "359",
+        "text": "AE2NC - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (359)"
+    },
+    {
+        "value": "580",
+        "text": "AE2NN - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (580)"
+    },
+    {
+        "value": "347",
+        "text": "AE3AC - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (347)"
+    },
+    {
+        "value": "552",
+        "text": "AE3AN - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (552)"
+    },
+    {
+        "value": "362",
+        "text": "AE3NC - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (362)"
+    },
+    {
+        "value": "589",
+        "text": "AE3NN - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (589)"
+    },
+    {
+        "value": "353",
+        "text": "AE4AC - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (353)"
+    },
+    {
+        "value": "561",
+        "text": "AE4AN - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (561)"
+    },
+    {
+        "value": "365",
+        "text": "AE4NC - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (365)"
+    },
+    {
+        "value": "598",
+        "text": "AE4NN - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (598)"
+    },
+    {
+        "value": "804",
+        "text": "AW1AC - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (804)"
+    },
+    {
+        "value": "533",
+        "text": "AW1AN - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (533)"
+    },
+    {
+        "value": "261",
+        "text": "AW1NC - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (261)"
+    },
+    {
+        "value": "569",
+        "text": "AW1NN - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (569)"
+    },
+    {
+        "value": "239",
+        "text": "AW2AC - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (239)"
+    },
+    {
+        "value": "542",
+        "text": "AW2AN - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (542)"
+    },
+    {
+        "value": "263",
+        "text": "AW2NC - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (263)"
+    },
+    {
+        "value": "578",
+        "text": "AW2NN - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (578)"
+    },
+    {
+        "value": "746",
+        "text": "AW3AC - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (746)"
+    },
+    {
+        "value": "551",
+        "text": "AW3AN - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (551)"
+    },
+    {
+        "value": "265",
+        "text": "AW3NC - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (265)"
+    },
+    {
+        "value": "587",
+        "text": "AW3NN - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (587)"
+    },
+    {
+        "value": "693",
+        "text": "AW4AC - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (693)"
+    },
+    {
+        "value": "560",
+        "text": "AW4AN - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (560)"
+    },
+    {
+        "value": "267",
+        "text": "AW4NC - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (267)"
+    },
+    {
+        "value": "596",
+        "text": "AW4NN - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (596)"
+    },
+    {
+        "value": "339",
+        "text": "BA1BC - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (339)"
+    },
+    {
+        "value": "538",
+        "text": "BA1BN - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (538)"
+    },
+    {
+        "value": "342",
+        "text": "BA1NC - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (342)"
+    },
+    {
+        "value": "574",
+        "text": "BA1NN - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (574)"
+    },
+    {
+        "value": "346",
+        "text": "BA2BC - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (346)"
+    },
+    {
+        "value": "547",
+        "text": "BA2BN - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (547)"
+    },
+    {
+        "value": "352",
+        "text": "BA2NC - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (352)"
+    },
+    {
+        "value": "582",
+        "text": "BA2NN - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (582)"
+    },
+    {
+        "value": "370",
+        "text": "BA3BC - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (370)"
+    },
+    {
+        "value": "556",
+        "text": "BA3BN - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (556)"
+    },
+    {
+        "value": "373",
+        "text": "BA3NC - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (373)"
+    },
+    {
+        "value": "591",
+        "text": "BA3NN - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (591)"
+    },
+    {
+        "value": "376",
+        "text": "BA4BC - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (376)"
+    },
+    {
+        "value": "565",
+        "text": "BA4BN - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (565)"
+    },
+    {
+        "value": "379",
+        "text": "BA4NC - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (379)"
+    },
+    {
+        "value": "600",
+        "text": "BA4NN - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (600)"
+    },
+    {
+        "value": "334",
+        "text": "BE1BC - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (334)"
+    },
+    {
+        "value": "537",
+        "text": "BE1BN - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (537)"
+    },
+    {
+        "value": "357",
+        "text": "BE1NC - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (357)"
+    },
+    {
+        "value": "573",
+        "text": "BE1NN - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (573)"
+    },
+    {
+        "value": "337",
+        "text": "BE2BC - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (337)"
+    },
+    {
+        "value": "546",
+        "text": "BE2BN - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (546)"
+    },
+    {
+        "value": "360",
+        "text": "BE2NC - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (360)"
+    },
+    {
+        "value": "583",
+        "text": "BE2NN - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (583)"
+    },
+    {
+        "value": "349",
+        "text": "BE3BC - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (349)"
+    },
+    {
+        "value": "555",
+        "text": "BE3BN - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (555)"
+    },
+    {
+        "value": "363",
+        "text": "BE3NC - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (363)"
+    },
+    {
+        "value": "592",
+        "text": "BE3NN - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (592)"
+    },
+    {
+        "value": "354",
+        "text": "BE4BC - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (354)"
+    },
+    {
+        "value": "564",
+        "text": "BE4BN - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (564)"
+    },
+    {
+        "value": "366",
+        "text": "BE4NC - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (366)"
+    },
+    {
+        "value": "601",
+        "text": "BE4NN - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (601)"
+    },
+    {
+        "value": "747",
+        "text": "BW1BC - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (747)"
+    },
+    {
+        "value": "536",
+        "text": "BW1BN - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (536)"
+    },
+    {
+        "value": "269",
+        "text": "BW1NC - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (269)"
+    },
+    {
+        "value": "572",
+        "text": "BW1NN - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (572)"
+    },
+    {
+        "value": "545",
+        "text": "BW2BC - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (545)"
+    },
+    {
+        "value": "738",
+        "text": "BW2BN - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (738)"
+    },
+    {
+        "value": "271",
+        "text": "BW2NC - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (271)"
+    },
+    {
+        "value": "581",
+        "text": "BW2NN - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (581)"
+    },
+    {
+        "value": "247",
+        "text": "BW3BC - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (247)"
+    },
+    {
+        "value": "554",
+        "text": "BW3BN - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (554)"
+    },
+    {
+        "value": "273",
+        "text": "BW3NC - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (273)"
+    },
+    {
+        "value": "590",
+        "text": "BW3NN - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (590)"
+    },
+    {
+        "value": "248",
+        "text": "BW4BC - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (248)"
+    },
+    {
+        "value": "563",
+        "text": "BW4BN - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (563)"
+    },
+    {
+        "value": "275",
+        "text": "BW4NC - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (275)"
+    },
+    {
+        "value": "599",
+        "text": "BW4NN - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (599)"
+    },
+    {
+        "value": "340",
+        "text": "CA1CC - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (340)"
+    },
+    {
+        "value": "541",
+        "text": "CA1CN - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (541)"
+    },
+    {
+        "value": "343",
+        "text": "CA1NC - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (343)"
+    },
+    {
+        "value": "577",
+        "text": "CA1NN - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (577)"
+    },
+    {
+        "value": "348",
+        "text": "CA2CC - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (348)"
+    },
+    {
+        "value": "550",
+        "text": "CA2CN - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (550)"
+    },
+    {
+        "value": "368",
+        "text": "CA2NC - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (368)"
+    },
+    {
+        "value": "585",
+        "text": "CA2NN - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (585)"
+    },
+    {
+        "value": "371",
+        "text": "CA3CC - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (371)"
+    },
+    {
+        "value": "559",
+        "text": "CA3CN - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (559)"
+    },
+    {
+        "value": "374",
+        "text": "CA3NC - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (374)"
+    },
+    {
+        "value": "594",
+        "text": "CA3NN - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (594)"
+    },
+    {
+        "value": "377",
+        "text": "CA4CC - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (377)"
+    },
+    {
+        "value": "568",
+        "text": "CA4CN - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (568)"
+    },
+    {
+        "value": "380",
+        "text": "CA4NC - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (380)"
+    },
+    {
+        "value": "603",
+        "text": "CA4NN - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (603)"
+    },
+    {
+        "value": "335",
+        "text": "CE1CC - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (335)"
+    },
+    {
+        "value": "540",
+        "text": "CE1CN - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (540)"
+    },
+    {
+        "value": "358",
+        "text": "CE1NC - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (358)"
+    },
+    {
+        "value": "576",
+        "text": "CE1NN - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (576)"
+    },
+    {
+        "value": "345",
+        "text": "CE2CC - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (345)"
+    },
+    {
+        "value": "549",
+        "text": "CE2CN - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (549)"
+    },
+    {
+        "value": "361",
+        "text": "CE2NC - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (361)"
+    },
+    {
+        "value": "586",
+        "text": "CE2NN - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (586)"
+    },
+    {
+        "value": "350",
+        "text": "CE3CC - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (350)"
+    },
+    {
+        "value": "558",
+        "text": "CE3CN - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (558)"
+    },
+    {
+        "value": "364",
+        "text": "CE3NC - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (364)"
+    },
+    {
+        "value": "595",
+        "text": "CE3NN - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (595)"
+    },
+    {
+        "value": "355",
+        "text": "CE4CC - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (355)"
+    },
+    {
+        "value": "567",
+        "text": "CE4CN - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (567)"
+    },
+    {
+        "value": "367",
+        "text": "CE4NC - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (367)"
+    },
+    {
+        "value": "604",
+        "text": "CE4NN - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (604)"
+    },
+    {
+        "value": "424",
+        "text": "CW1CC - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (424)"
+    },
+    {
+        "value": "539",
+        "text": "CW1CN - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (539)"
+    },
+    {
+        "value": "744",
+        "text": "CW1NC - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (744)"
+    },
+    {
+        "value": "575",
+        "text": "CW1NN - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (575)"
+    },
+    {
+        "value": "805",
+        "text": "CW2CC - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (805)"
+    },
+    {
+        "value": "548",
+        "text": "CW2CN - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (548)"
+    },
+    {
+        "value": "279",
+        "text": "CW2NC - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (279)"
+    },
+    {
+        "value": "584",
+        "text": "CW2NN - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (584)"
+    },
+    {
+        "value": "255",
+        "text": "CW3CC - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (255)"
+    },
+    {
+        "value": "557",
+        "text": "CW3CN - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (557)"
+    },
+    {
+        "value": "281",
+        "text": "CW3NC - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (281)"
+    },
+    {
+        "value": "593",
+        "text": "CW3NN - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (593)"
+    },
+    {
+        "value": "256",
+        "text": "CW4CC - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (256)"
+    },
+    {
+        "value": "566",
+        "text": "CW4CN - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (566)"
+    },
+    {
+        "value": "283",
+        "text": "CW4NC - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (283)"
+    },
+    {
+        "value": "602",
+        "text": "CW4NN - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (602)"
+    }
+]

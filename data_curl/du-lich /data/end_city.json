@@ -1,0 +1,258 @@
+[
+    {
+        "value": "",
+        "text": "&nbsp;"
+    },
+    {
+        "value": "CITY_004",
+        "text": "HÀ NỘI"
+    },
+    {
+        "value": "CITY_008",
+        "text": "TP. HỒ CHÍ MINH"
+    },
+    {
+        "value": "CITY_020",
+        "text": "LÀO CAI"
+    },
+    {
+        "value": "CITY_022",
+        "text": "SƠN LA"
+    },
+    {
+        "value": "CITY_025",
+        "text": "LẠNG SƠN"
+    },
+    {
+        "value": "CITY_026",
+        "text": "CAO BẰNG"
+    },
+    {
+        "value": "CITY_027",
+        "text": "TUYÊN QUANG"
+    },
+    {
+        "value": "CITY_029",
+        "text": "YÊN BÁI"
+    },
+    {
+        "value": "CITY_030",
+        "text": "NINH BÌNH"
+    },
+    {
+        "value": "CITY_031",
+        "text": "HẢI PHÒNG"
+    },
+    {
+        "value": "CITY_033",
+        "text": "QUẢNG NINH"
+    },
+    {
+        "value": "CITY_036",
+        "text": "THÁI BÌNH"
+    },
+    {
+        "value": "CITY_037",
+        "text": "THANH HÓA"
+    },
+    {
+        "value": "CITY_038",
+        "text": "NGHỆ AN"
+    },
+    {
+        "value": "CITY_039",
+        "text": "HÀ TĨNH"
+    },
+    {
+        "value": "CITY_052",
+        "text": "QUẢNG BÌNH"
+    },
+    {
+        "value": "CITY_053",
+        "text": "QUẢNG TRỊ"
+    },
+    {
+        "value": "CITY_054",
+        "text": "HUẾ"
+    },
+    {
+        "value": "CITY_055",
+        "text": "QUẢNG NGÃI"
+    },
+    {
+        "value": "CITY_056",
+        "text": "BÌNH ĐỊNH"
+    },
+    {
+        "value": "CITY_057",
+        "text": "PHÚ YÊN"
+    },
+    {
+        "value": "CITY_058",
+        "text": "KHÁNH HÒA"
+    },
+    {
+        "value": "CITY_059",
+        "text": "GIA LAI"
+    },
+    {
+        "value": "CITY_060",
+        "text": "KON TUM"
+    },
+    {
+        "value": "CITY_061",
+        "text": "ĐỒNG NAI"
+    },
+    {
+        "value": "CITY_062",
+        "text": "BÌNH THUẬN"
+    },
+    {
+        "value": "CITY_063",
+        "text": "LÂM ĐỒNG"
+    },
+    {
+        "value": "CITY_064",
+        "text": "VŨNG TÀU"
+    },
+    {
+        "value": "CITY_066",
+        "text": "TÂY NINH"
+    },
+    {
+        "value": "CITY_067",
+        "text": "ĐỒNG THÁP"
+    },
+    {
+        "value": "CITY_068",
+        "text": "NINH THUẬN"
+    },
+    {
+        "value": "CITY_070",
+        "text": "VĨNH LONG"
+    },
+    {
+        "value": "CITY_072",
+        "text": "LONG AN"
+    },
+    {
+        "value": "CITY_073",
+        "text": "TIỀN GIANG"
+    },
+    {
+        "value": "CITY_074",
+        "text": "TRÀ VINH"
+    },
+    {
+        "value": "CITY_075",
+        "text": "BẾN TRE"
+    },
+    {
+        "value": "CITY_076",
+        "text": "AN GIANG"
+    },
+    {
+        "value": "CITY_077",
+        "text": "KIÊN GIANG"
+    },
+    {
+        "value": "CITY_079",
+        "text": "SÓC TRĂNG"
+    },
+    {
+        "value": "CITY_210",
+        "text": "PHÚ THỌ"
+    },
+    {
+        "value": "CITY_211",
+        "text": "VĨNH PHÚC"
+    },
+    {
+        "value": "CITY_218",
+        "text": "HÒA BÌNH"
+    },
+    {
+        "value": "CITY_219",
+        "text": "HÀ GIANG"
+    },
+    {
+        "value": "CITY_230",
+        "text": "ĐIỆN BIÊN"
+    },
+    {
+        "value": "CITY_231",
+        "text": "LAI CHÂU"
+    },
+    {
+        "value": "CITY_240",
+        "text": "BẮC GIANG"
+    },
+    {
+        "value": "CITY_241",
+        "text": "BẮC NINH"
+    },
+    {
+        "value": "CITY_280",
+        "text": "THÁI NGUYÊN"
+    },
+    {
+        "value": "CITY_281",
+        "text": "BẮC KẠN"
+    },
+    {
+        "value": "CITY_320",
+        "text": "HẢI DƯƠNG"
+    },
+    {
+        "value": "CITY_321",
+        "text": "HƯNG YÊN"
+    },
+    {
+        "value": "CITY_350",
+        "text": "NAM ĐỊNH"
+    },
+    {
+        "value": "CITY_351",
+        "text": "HÀ NAM"
+    },
+    {
+        "value": "CITY_500",
+        "text": "DẮK LẮK"
+    },
+    {
+        "value": "CITY_501",
+        "text": "ĐẮK NÔNG"
+    },
+    {
+        "value": "CITY_510",
+        "text": "QUẢNG NAM"
+    },
+    {
+        "value": "CITY_511",
+        "text": "TP. ĐÀ NẴNG"
+    },
+    {
+        "value": "CITY_650",
+        "text": "BÌNH DƯƠNG"
+    },
+    {
+        "value": "CITY_651",
+        "text": "BÌNH PHƯỚC"
+    },
+    {
+        "value": "CITY_710",
+        "text": "CẦN THƠ"
+    },
+    {
+        "value": "CITY_711",
+        "text": "HẬU GIANG"
+    },
+    {
+        "value": "CITY_780",
+        "text": "CÀ MAU"
+    },
+    {
+        "value": "CITY_781",
+        "text": "BẠC LIÊU"
+    }
+]

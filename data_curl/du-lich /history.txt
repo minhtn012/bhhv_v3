@@ -1,0 +1,45 @@
+curl 'https://paris.pacificcross.com.vn/cert/306726::d3C2kw3WJS/history' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: en-US,en;q=0.9,vi;q=0.8,lb;q=0.7' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -b 'submitted=eyJpdiI6ImcxTXlXTVFhdStkTnZWdzZqOGFoUUE9PSIsInZhbHVlIjoiblhVYnpad3lHUGhIRHh6MmxzbzN6L0s2R3c3Zk5mMjVoL0lzWi9nc014d2o1aytEVnZnUTFEWE8vSEVqOHEvcSIsIm1hYyI6ImFjMTJhMzk0NjQ2OGI0MDM0MDVkYmUwZmZhOGZiNjNhZDZiZWVmZDE1ODAwYjFjNGViNDAyMDliYmUwZTliMGEiLCJ0YWciOiIifQ%3D%3D; XSRF-TOKEN=eyJpdiI6IlVsYVpTUEZFa0tWZ0tTQTlaYzQ0eFE9PSIsInZhbHVlIjoiVndxMzJncjhzRisrNHNFVzZDcmJrcVR4OThSR201YXNYL0F4TTJOSkFPYjlSbzdDZEZTaTdWb1NIcityNUp6eWhaV0Z5aVgvQys3eVpQcUFkTWRZZVY2c3ZMZ3hKamhPR3J5YnhLRTYrTGMwNExJOXlHakNtMGF1d3dtRVMzaWoiLCJtYWMiOiI0NzRiMjRjNTgyZmFkOTM0MTg5N2JkNzZlOGIwNjczOTI2YWNlZGNkNDQzNWUxZDViNDM3YjM4ZGFkNDQzYTc5IiwidGFnIjoiIn0%3D; pcv_travel_portal_session=eyJpdiI6Im1nS3ZzTW04c3RTY2lZbWVmcVFJY1E9PSIsInZhbHVlIjoiY3BTZW1jTTYrMmdGVkdFUzdxeitIY1NCdEpmOEV5dWs2Y0swbWFVVmZzT0VIRzN3YmxjWEl5dzEvTmtoYnRsTTRiWXRQUGVBdjRoOUV4aUgwUHhqcFVjUXY5R0VFaG9iUkRicG5IUVFoaGF3NTNZeTFVWnI2VHhzOUlQOUVhU3EiLCJtYWMiOiJjNmYxZmYwNjdjOWIwMDRiMDFlMTgwMjVkMjJjMTFlNGI4ZDAxZDc4NjU3YjMzNWExZDM1MjRiZTY4M2U2NGUxIiwidGFnIjoiIn0%3D' \
+  -H 'Pragma: no-cache' \
+  -H 'Referer: https://paris.pacificcross.com.vn/cert/306726::d3C2kw3WJS/edit' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'X-Requested-With: XMLHttpRequest' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"'
+
+
+  =======
+
+  {
+    "historyIds": {
+        "20260117221605": "17\/01\/2026 22:16:05"
+    },
+    "revisions": [
+        {
+            "user": "BHV H\u1ed3 Ch\u00ed Minh (bhv-hcm)",
+            "key": "created_at",
+            "field": "",
+            "old": null,
+            "new": "V\u1eeba t\u1ea1o",
+            "time": "17\/01\/2026 22:16:05",
+            "sort": 1768662965
+        },
+        {
+            "user": "BHV H\u1ed3 Ch\u00ed Minh (bhv-hcm)",
+            "key": "created_at",
+            "field": "nguyen van a",
+            "old": null,
+            "new": "V\u1eeba t\u1ea1o",
+            "time": "17\/01\/2026 22:16:05",
+            "sort": 1768662965
+        }
+    ]
+}
