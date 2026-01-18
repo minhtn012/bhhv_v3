@@ -14,7 +14,7 @@ services:
       - traefik-network
     volumes:
       - ./scripts:/app/scripts
-      - car_data:/data/car_brands
+      - ./db_json/car_brands:/data/car_brands
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bhhv.rule=Host(`bhhv.minhtn.space`)"
@@ -22,9 +22,6 @@ services:
       - "traefik.http.routers.bhhv.tls.certresolver=letsencrypt"
       - "traefik.http.services.bhhv.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik-network"
-
-volumes:
-  car_data:
 
 networks:
   db_network:
