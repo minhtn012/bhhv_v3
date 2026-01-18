@@ -1,0 +1,26 @@
+[
+    {
+        "value": "",
+        "text": "&nbsp;"
+    },
+    {
+        "value": "RELATION_F",
+        "text": "Cha"
+    },
+    {
+        "value": "RELATION_M",
+        "text": "Mẹ"
+    },
+    {
+        "value": "RELATION_S",
+        "text": "Vợ chồng"
+    },
+    {
+        "value": "RELATION_C",
+        "text": "Con"
+    },
+    {
+        "value": "RELATION_O",
+        "text": "Người khác"
+    }
+]

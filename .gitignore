@@ -49,3 +49,6 @@ next-env.d.ts
 .claude/
 .opencode/
 plans/*
+
+# Car brands data (synced in production)
+db_json/car_brands/

@@ -1,0 +1,18 @@
+[
+    {
+        "value": "",
+        "text": "&nbsp;"
+    },
+    {
+        "value": "MBR_TYPE_A",
+        "text": "Người chính"
+    },
+    {
+        "value": "MBR_TYPE_S",
+        "text": "Vợ chồng"
+    },
+    {
+        "value": "MBR_TYPE_C",
+        "text": "Con"
+    }
+]

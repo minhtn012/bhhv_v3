@@ -1,0 +1,5611 @@
+<div class="container-fluid">
+                    
+<form id="form-create" class="form-horizontal should-validate" method="post" action="https://paris.pacificcross.com.vn/cert" enctype="multipart/form-data" novalidate="novalidate">
+
+    <input type="hidden" name="_token" value="jjDsbIY0unyHaoXHLLvC9zx9d4GnsdJuI1HRBROp" autocomplete="off">
+    <div class="card">
+
+        <h1 id="page-header-create" class="card-header bg-info text-white">Tạo Đơn Bảo hiểm</h1>
+
+        <div class="card-body bg-light">    <input type="hidden" id="is-quote" name="is_quote" value="0">
+
+
+    <input type="hidden" id="cert-no" value="new">
+<input type="hidden" name="last_update" value="">
+<input type="hidden" id="use-ph-info-for-invoice" value="1">
+
+<div class="row mb-3  d-none ">
+
+    <div id="pnr_no-wrapper" class="input-wrapper col-md-6 d-none">
+
+    
+        <label for="pnr_no" id="pnr_no-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Mã chuyến bay (nếu có)">Mã Chuyến bay</label>
+
+    
+    
+        <span id="pnr_no-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-pnr_no" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-pnr_no">
+
+
+ 
+<input id="pnr_no" name="pnr_no" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="100">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="poho_title-wrapper" class="input-wrapper col-md-6 d-none">
+
+    
+        <label for="poho_title" id="poho_title-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Chức danh chủ hợp đồng (nếu có)">Chức danh Chủ Hợp đồng</label>
+
+    
+    
+        <span id="poho_title-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-poho_title" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-poho_title">
+
+
+
+
+
+<select id="poho_title" name="poho_title" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="poho_title" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="164">&nbsp;</option>
+    
+    
+        
+            
+                <option value="TITLE_Dr.">Tiến sĩ</option>
+
+            
+                <option value="TITLE_Drs.">Nữ tiến sĩ</option>
+
+            
+                <option value="TITLE_Lady">Quý bà</option>
+
+            
+                <option value="TITLE_Miss">Cô</option>
+
+            
+                <option value="TITLE_Mr.">Ông</option>
+
+            
+                <option value="TITLE_Mrs.">Bà</option>
+
+            
+                <option value="TITLE_Ms.">Cô</option>
+
+            
+                <option value="TITLE_Other">Khác</option>
+
+            
+                <option value="TITLE_Prof">Chuyên gia</option>
+
+            
+                <option value="TITLE_Sir">Ngài</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="163" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-poho_title-container"><span class="select2-selection__rendered" id="select2-poho_title-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+</div>
+
+<div class="row mb-3">
+
+    <div id="ref_no-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="ref_no" id="ref_no-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Mã của bên bán bảo hiểm, dùng để tìm kiếm nếu cần">Mã Liên hệ</label>
+
+    
+    
+        <span id="ref_no-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-ref_no" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-ref_no">
+
+
+ 
+<input id="ref_no" name="ref_no" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="50">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="policyholder-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="policyholder" id="policyholder-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tên của Người được bảo hiểm hoặc Công ty du lịch">Chủ Hợp đồng</label>
+
+    
+    
+        <span id="policyholder-required" class="text-danger required-mark ">*</span>
+        <span id="result-policyholder" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-policyholder">
+
+
+ 
+<input id="policyholder" name="policyholder" placeholder="" required="" type="text" class="form-control border-warning valid-if-hidden valid" value="" maxlength="100" aria-invalid="false">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3 non-domestic-group-annual">
+
+    <div id="pocy_type-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="pocy_type" id="pocy_type-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Lưu ý chọn Gia đình khi có tối đa 2 người lớn và không giới hạn số trẻ em đi cùng cha mẹ">Loại Hợp đồng</label>
+
+    
+    
+        <span id="pocy_type-required" class="text-danger required-mark ">*</span>
+        <span id="result-pocy_type" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-pocy_type">
+
+
+
+
+
+<select id="pocy_type" name="pocy_type" required="" class="form-control readonly select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="pocy_type" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="218">&nbsp;</option>
+    
+    
+        
+            
+                <option value="Individual" selected="" data-select2-id="166">Cá nhân</option>
+
+            
+                <option value="Family" data-select2-id="219">Gia đình</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--below" dir="ltr" data-select2-id="165" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-pocy_type-container"><span class="select2-selection__rendered" id="select2-pocy_type-container" role="textbox" aria-readonly="true" title="Cá nhân">Cá nhân</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="poho_type-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="poho_type" id="poho_type-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Cá nhân hay nhóm/công ty">Loại Chủ hợp đồng</label>
+
+    
+    
+        <span id="poho_type-required" class="text-danger required-mark ">*</span>
+        <span id="result-poho_type" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-poho_type">
+
+
+
+
+
+<select id="poho_type" name="poho_type" required="" class="form-control readonly select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="poho_type" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="224">&nbsp;</option>
+    
+    
+        
+            
+                <option value="POHO_TYPE_G" data-select2-id="225">Nhóm/Công ty</option>
+
+            
+                <option value="POHO_TYPE_E" selected="" data-select2-id="168">Cá nhân</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--below" dir="ltr" data-select2-id="167" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-poho_type-container"><span class="select2-selection__rendered" id="select2-poho_type-container" role="textbox" aria-readonly="true" title="Cá nhân">Cá nhân</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+</div>
+
+<div class="row mb-3">
+
+    <div id="email-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="email" id="email-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Có thể nhập thư điện tử của chủ hợp đồng hoặc của người tạo đơn">Địa chỉ Thư điện tử</label>
+
+    
+    
+        <span id="email-required" class="text-info required-mark ">*</span>
+        <span id="result-email" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-email">
+
+
+ 
+<input id="email" name="email" placeholder="" required="" type="email" class="form-control border-warning valid-if-hidden valid" value="" maxlength="100" aria-invalid="false">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="tel_no-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="tel_no" id="tel_no-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Có thể nhập số điện thoại của chủ hợp đồng hoặc của người tạo đơn">Số Điện thoại</label>
+
+    
+    
+        <span id="tel_no-required" class="text-info required-mark ">*</span>
+        <span id="result-tel_no" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-tel_no">
+
+
+ 
+<input id="tel_no" name="tel_no" placeholder="" required="" type="text" class="form-control border-warning tel-no valid-if-hidden valid" value="" aria-invalid="false">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3">
+
+    <div id="inv_tax-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="inv_tax" id="inv_tax-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Mã số thuế/CCCD/Hộ chiếu">Mã số thuế/CCCD/Hộ chiếu</label>
+
+    
+    
+        <span id="inv_tax-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-inv_tax" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-inv_tax">
+
+
+ 
+<input id="inv_tax" name="inv_tax" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="50">
+
+  <div class="input-group-append">
+
+        
+            <button type="button" id="btn-modal-inv_tax" class="form-control border-warning  btn btn-default" data-toggle="modal" data-target="#modal-tax">
+                <i class="fa fa-search"></i>
+            </button>
+
+        
+        
+
+    </div>
+
+
+</div>
+
+
+
+ </div> 
+
+ 
+    <div id="address-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="address" id="address-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Địa chỉ của chủ hợp đồng">Địa chỉ Cư trú</label>
+
+    
+    
+        <span id="address-required" class="text-danger required-mark ">*</span>
+        <span id="result-address" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-address">
+
+
+ 
+<input id="address" name="address" placeholder="" required="" type="text" class="form-control border-warning valid-if-hidden valid" value="" maxlength="160" aria-invalid="false">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3  d-none ">
+
+    <div id="inv_company-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="inv_company" id="inv_company-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Công ty trên hóa đơn (nếu có)">Công ty trên Hóa đơn</label>
+
+    
+    
+        <span id="inv_company-required" class="text-info required-mark ">*</span>
+        <span id="result-inv_company" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-inv_company">
+
+
+ 
+<input id="inv_company" name="inv_company" placeholder="" required="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="200" readonly="">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="inv_address-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="inv_address" id="inv_address-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Địa chỉ trên hóa đơn (nếu có)">Địa chỉ trên Hóa đơn</label>
+
+    
+    
+        <span id="inv_address-required" class="text-info required-mark ">*</span>
+        <span id="result-inv_address" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-inv_address">
+
+
+ 
+<input id="inv_address" name="inv_address" placeholder="" required="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="2000">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3 non-domestic-annual">
+
+    <div id="country_address-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="country_address" id="country_address-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Nước cư trú của chủ hợp đồng">Nước Cư trú</label>
+
+    
+    
+        <span id="country_address-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-country_address" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-country_address">
+
+
+
+
+
+<select id="country_address" name="country_address" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="country_address" tabindex="-1" aria-hidden="true">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="AFGHANISTAN">AFGHANISTAN</option>
+
+            
+                <option value="ALBANIA">ALBANIA</option>
+
+            
+                <option value="ALGERIA">ALGERIA</option>
+
+            
+                <option value="AMERICAN SAMOA">AMERICAN SAMOA</option>
+
+            
+                <option value="ANDORRA">ANDORRA</option>
+
+            
+                <option value="ANGOLA">ANGOLA</option>
+
+            
+                <option value="ANGUILLA">ANGUILLA</option>
+
+            
+                <option value="ANTARCTICA">ANTARCTICA</option>
+
+            
+                <option value="ANTIGUA AND BARBUDA">ANTIGUA AND BARBUDA</option>
+
+            
+                <option value="ARGENTINE REPUBLIC">ARGENTINE REPUBLIC</option>
+
+            
+                <option value="ARMENIA">ARMENIA</option>
+
+            
+                <option value="ARUBA">ARUBA</option>
+
+            
+                <option value="ASCENSION">ASCENSION</option>
+
+            
+                <option value="AUSTRALIA">AUSTRALIA</option>
+
+            
+                <option value="AUSTRALIAN EXTERNAL TERRITORIES">AUSTRALIAN EXTERNAL TERRITORIES</option>
+
+            
+                <option value="AUSTRIA">AUSTRIA</option>
+
+            
+                <option value="AZERBAIJANI REPUBLIC">AZERBAIJANI REPUBLIC</option>
+
+            
+                <option value="BAHAMAS">BAHAMAS</option>
+
+            
+                <option value="BAHRAIN">BAHRAIN</option>
+
+            
+                <option value="BANGLADESH">BANGLADESH</option>
+
+            
+                <option value="BARBADOS">BARBADOS</option>
+
+            
+                <option value="BELARUS">BELARUS</option>
+
+            
+                <option value="BELGIUM">BELGIUM</option>
+
+            
+                <option value="BELIZE">BELIZE</option>
+
+            
+                <option value="BENIN">BENIN</option>
+
+            
+                <option value="BERMUDA">BERMUDA</option>
+
+            
+                <option value="BHUTAN">BHUTAN</option>
+
+            
+                <option value="BOLIVIA">BOLIVIA</option>
+
+            
+                <option value="BONAIRE">BONAIRE</option>
+
+            
+                <option value="BOSNIA AND HERZEGOVINA">BOSNIA AND HERZEGOVINA</option>
+
+            
+                <option value="BOTSWANA">BOTSWANA</option>
+
+            
+                <option value="BRAZIL">BRAZIL</option>
+
+            
+                <option value="BRITISH VIRGIN ISLANDS">BRITISH VIRGIN ISLANDS</option>
+
+            
+                <option value="BRUNEI DARUSSALAM">BRUNEI DARUSSALAM</option>
+
+            
+                <option value="BULGARIA">BULGARIA</option>
+
+            
+                <option value="BURKINA FASO">BURKINA FASO</option>
+
+            
+                <option value="BURUNDI">BURUNDI</option>
+
+            
+                <option value="CAMBODIA">CAMBODIA</option>
+
+            
+                <option value="CAMEROON">CAMEROON</option>
+
+            
+                <option value="CANADA">CANADA</option>
+
+            
+                <option value="CAPE VERDE">CAPE VERDE</option>
+
+            
+                <option value="CAYMAN ISLANDS">CAYMAN ISLANDS</option>
+
+            
+                <option value="CENTRAL AFRICAN REPUBLIC">CENTRAL AFRICAN REPUBLIC</option>
+
+            
+                <option value="CHAD">CHAD</option>
+
+            
+                <option value="CHILE">CHILE</option>
+
+            
+                <option value="CHINA">CHINA</option>
+
+            
+                <option value="CHRISTMAS ISLAND">CHRISTMAS ISLAND</option>
+
+            
+                <option value="COCOS (KEELING) ISLANDS">COCOS (KEELING) ISLANDS</option>
+
+            
+                <option value="COLOMBIA">COLOMBIA</option>
+
+            
+                <option value="COMOROS">COMOROS</option>
+
+            
+                <option value="CONGO">CONGO</option>
+
+            
+                <option value="COOK ISLANDS">COOK ISLANDS</option>
+
+            
+                <option value="COSTA RICA">COSTA RICA</option>
+
+            
+                <option value="COTE D'IVOIRE">COTE D'IVOIRE</option>
+
+            
+                <option value="CROATIA">CROATIA</option>
+
+            
+                <option value="CUBA">CUBA</option>
+
+            
+                <option value="CURACAO">CURACAO</option>
+
+            
+                <option value="CYPRUS">CYPRUS</option>
+
+            
+                <option value="CZECH REPUBLIC">CZECH REPUBLIC</option>
+
+            
+                <option value="DEMO. REP. OF THE CONGO">DEMO. REP. OF THE CONGO</option>
+
+            
+                <option value="DEMOCRATIC PEOPLE'S REP. OF KOREA">DEMOCRATIC PEOPLE'S REP. OF KOREA</option>
+
+            
+                <option value="DENMARK">DENMARK</option>
+
+            
+                <option value="DIEGO GARCIA">DIEGO GARCIA</option>
+
+            
+                <option value="DJIBOUTI">DJIBOUTI</option>
+
+            
+                <option value="DOMINICA">DOMINICA</option>
+
+            
+                <option value="DOMINICAN REPUBLIC">DOMINICAN REPUBLIC</option>
+
+            
+                <option value="EAST TIMOR">EAST TIMOR</option>
+
+            
+                <option value="ECUADOR">ECUADOR</option>
+
+            
+                <option value="EGYPT">EGYPT</option>
+
+            
+                <option value="EL SALVADOR">EL SALVADOR</option>
+
+            
+                <option value="EQUATORIAL GUINEA">EQUATORIAL GUINEA</option>
+
+            
+                <option value="ERITREA">ERITREA</option>
+
+            
+                <option value="ESTONIA">ESTONIA</option>
+
+            
+                <option value="ETHIOPIA">ETHIOPIA</option>
+
+            
+                <option value="FALKLAND ISLANDS">FALKLAND ISLANDS</option>
+
+            
+                <option value="FAROE ISLANDS">FAROE ISLANDS</option>
+
+            
+                <option value="FIJI">FIJI</option>
+
+            
+                <option value="FINLAND">FINLAND</option>
+
+            
+                <option value="FRANCE">FRANCE</option>
+
+            
+                <option value="FRENCH GUIANA">FRENCH GUIANA</option>
+
+            
+                <option value="FRENCH POLYNESIA">FRENCH POLYNESIA</option>
+
+            
+                <option value="GABONESE REPUBLIC">GABONESE REPUBLIC</option>
+
+            
+                <option value="GAMBIA">GAMBIA</option>
+
+            
+                <option value="GEORGIA">GEORGIA</option>
+
+            
+                <option value="GERMANY">GERMANY</option>
+
+            
+                <option value="GHANA">GHANA</option>
+
+            
+                <option value="GIBRALTAR">GIBRALTAR</option>
+
+            
+                <option value="GREECE">GREECE</option>
+
+            
+                <option value="GREENLAND">GREENLAND</option>
+
+            
+                <option value="GRENADA">GRENADA</option>
+
+            
+                <option value="GUADELOUPE">GUADELOUPE</option>
+
+            
+                <option value="GUAM">GUAM</option>
+
+            
+                <option value="GUATEMALA">GUATEMALA</option>
+
+            
+                <option value="GUINEA">GUINEA</option>
+
+            
+                <option value="GUINEA-BISSAU">GUINEA-BISSAU</option>
+
+            
+                <option value="GUYANA">GUYANA</option>
+
+            
+                <option value="HAITI">HAITI</option>
+
+            
+                <option value="HONDURAS">HONDURAS</option>
+
+            
+                <option value="HONG KONG">HONG KONG</option>
+
+            
+                <option value="HUNGARY">HUNGARY</option>
+
+            
+                <option value="ICELAND">ICELAND</option>
+
+            
+                <option value="INDIA">INDIA</option>
+
+            
+                <option value="INDONESIA">INDONESIA</option>
+
+            
+                <option value="IRAN">IRAN</option>
+
+            
+                <option value="IRAQ">IRAQ</option>
+
+            
+                <option value="IRELAND">IRELAND</option>
+
+            
+                <option value="ISLE OF MAN">ISLE OF MAN</option>
+
+            
+                <option value="ISRAEL">ISRAEL</option>
+
+            
+                <option value="ITALY">ITALY</option>
+
+            
+                <option value="JAMAICA">JAMAICA</option>
+
+            
+                <option value="JAPAN">JAPAN</option>
+
+            
+                <option value="JORDAN">JORDAN</option>
+
+            
+                <option value="KAZAKHSTAN">KAZAKHSTAN</option>
+
+            
+                <option value="KENYA">KENYA</option>
+
+            
+                <option value="KIRIBATI">KIRIBATI</option>
+
+            
+                <option value="KOREA">KOREA</option>
+
+            
+                <option value="KUWAIT">KUWAIT</option>
+
+            
+                <option value="KYRGYZ REPUBLIC">KYRGYZ REPUBLIC</option>
+
+            
+                <option value="LAOS">LAOS</option>
+
+            
+                <option value="LATVIA">LATVIA</option>
+
+            
+                <option value="LEBANON">LEBANON</option>
+
+            
+                <option value="LESOTHO">LESOTHO</option>
+
+            
+                <option value="LIBERIA">LIBERIA</option>
+
+            
+                <option value="LIBYA">LIBYA</option>
+
+            
+                <option value="LIECHTENSTEIN">LIECHTENSTEIN</option>
+
+            
+                <option value="LITHUANIA">LITHUANIA</option>
+
+            
+                <option value="LUXEMBOURG">LUXEMBOURG</option>
+
+            
+                <option value="MACAU">MACAU</option>
+
+            
+                <option value="MADAGASCAR">MADAGASCAR</option>
+
+            
+                <option value="MALAWI">MALAWI</option>
+
+            
+                <option value="MALAYSIA">MALAYSIA</option>
+
+            
+                <option value="MALDIVES">MALDIVES</option>
+
+            
+                <option value="MALI">MALI</option>
+
+            
+                <option value="MALTA">MALTA</option>
+
+            
+                <option value="MARSHALL ISLANDS">MARSHALL ISLANDS</option>
+
+            
+                <option value="MARTINIQUE">MARTINIQUE</option>
+
+            
+                <option value="MAURITANIA">MAURITANIA</option>
+
+            
+                <option value="MAURITIUS">MAURITIUS</option>
+
+            
+                <option value="MAYOTTE">MAYOTTE</option>
+
+            
+                <option value="MEXICO">MEXICO</option>
+
+            
+                <option value="MICRONESIA">MICRONESIA</option>
+
+            
+                <option value="MOLDOVA">MOLDOVA</option>
+
+            
+                <option value="MONACO">MONACO</option>
+
+            
+                <option value="MONGOLIA">MONGOLIA</option>
+
+            
+                <option value="MONTENEGRO">MONTENEGRO</option>
+
+            
+                <option value="MONTSERRAT">MONTSERRAT</option>
+
+            
+                <option value="MOROCCO">MOROCCO</option>
+
+            
+                <option value="MOZAMBIQUE">MOZAMBIQUE</option>
+
+            
+                <option value="MYANMAR">MYANMAR</option>
+
+            
+                <option value="NAMIBIA">NAMIBIA</option>
+
+            
+                <option value="NAURU">NAURU</option>
+
+            
+                <option value="NEPAL">NEPAL</option>
+
+            
+                <option value="NETHERLANDS">NETHERLANDS</option>
+
+            
+                <option value="NETHERLANDS ANTILLES">NETHERLANDS ANTILLES</option>
+
+            
+                <option value="NEW CALEDONIA">NEW CALEDONIA</option>
+
+            
+                <option value="NEW ZEALAND">NEW ZEALAND</option>
+
+            
+                <option value="NICARAGUA">NICARAGUA</option>
+
+            
+                <option value="NIGER">NIGER</option>
+
+            
+                <option value="NIGERIA">NIGERIA</option>
+
+            
+                <option value="NIUE">NIUE</option>
+
+            
+                <option value="NORFOLK ISLAND">NORFOLK ISLAND</option>
+
+            
+                <option value="NORTHERN MARIANA ISLANDS">NORTHERN MARIANA ISLANDS</option>
+
+            
+                <option value="NORWAY">NORWAY</option>
+
+            
+                <option value="OMAN">OMAN</option>
+
+            
+                <option value="PAKISTAN">PAKISTAN</option>
+
+            
+                <option value="PALAU">PALAU</option>
+
+            
+                <option value="PALESTINE">PALESTINE</option>
+
+            
+                <option value="PANAMA">PANAMA</option>
+
+            
+                <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+
+            
+                <option value="PARAGUAY">PARAGUAY</option>
+
+            
+                <option value="PERU">PERU</option>
+
+            
+                <option value="PHILIPPINES">PHILIPPINES</option>
+
+            
+                <option value="POLAND">POLAND</option>
+
+            
+                <option value="PORTUGAL">PORTUGAL</option>
+
+            
+                <option value="PUERTO RICO">PUERTO RICO</option>
+
+            
+                <option value="QATAR">QATAR</option>
+
+            
+                <option value="REUNION">REUNION</option>
+
+            
+                <option value="ROMANIA">ROMANIA</option>
+
+            
+                <option value="RUSSIAN FEDERATION">RUSSIAN FEDERATION</option>
+
+            
+                <option value="RWANDESE REPUBLIC">RWANDESE REPUBLIC</option>
+
+            
+                <option value="SAINT HELENA">SAINT HELENA</option>
+
+            
+                <option value="SAINT KITTS AND NEVIS">SAINT KITTS AND NEVIS</option>
+
+            
+                <option value="SAINT LUCIA">SAINT LUCIA</option>
+
+            
+                <option value="SAINT PIERRE AND MIQUELON">SAINT PIERRE AND MIQUELON</option>
+
+            
+                <option value="SAIPAN">SAIPAN</option>
+
+            
+                <option value="SAMOA">SAMOA</option>
+
+            
+                <option value="SAN MARINO">SAN MARINO</option>
+
+            
+                <option value="SAO TOME AND PRINCIPE">SAO TOME AND PRINCIPE</option>
+
+            
+                <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+
+            
+                <option value="SENEGAL">SENEGAL</option>
+
+            
+                <option value="SERBIA">SERBIA</option>
+
+            
+                <option value="SEYCHELLES">SEYCHELLES</option>
+
+            
+                <option value="SIERRA LEONE">SIERRA LEONE</option>
+
+            
+                <option value="SINGAPORE">SINGAPORE</option>
+
+            
+                <option value="SLOVAK REPUBLIC">SLOVAK REPUBLIC</option>
+
+            
+                <option value="SLOVENIA">SLOVENIA</option>
+
+            
+                <option value="SOLOMON ISLANDS">SOLOMON ISLANDS</option>
+
+            
+                <option value="SOMALI DEMO. REPUBLIC">SOMALI DEMO. REPUBLIC</option>
+
+            
+                <option value="SOUTH AFRICA">SOUTH AFRICA</option>
+
+            
+                <option value="SOUTH SUDAN">SOUTH SUDAN</option>
+
+            
+                <option value="SPAIN">SPAIN</option>
+
+            
+                <option value="SRI LANKA">SRI LANKA</option>
+
+            
+                <option value="ST. VINCENT &amp; THE GRENADINES">ST. VINCENT &amp; THE GRENADINES</option>
+
+            
+                <option value="SUDAN">SUDAN</option>
+
+            
+                <option value="SURINAME">SURINAME</option>
+
+            
+                <option value="SVALBARD AND JAN MAYEN">SVALBARD AND JAN MAYEN</option>
+
+            
+                <option value="SWAZILAND">SWAZILAND</option>
+
+            
+                <option value="SWEDEN">SWEDEN</option>
+
+            
+                <option value="SWITZERLAND">SWITZERLAND</option>
+
+            
+                <option value="SYRIAN ARAB REPUBLIC">SYRIAN ARAB REPUBLIC</option>
+
+            
+                <option value="TAIWAN">TAIWAN</option>
+
+            
+                <option value="TAJIKISTAN">TAJIKISTAN</option>
+
+            
+                <option value="TANZANIA">TANZANIA</option>
+
+            
+                <option value="THAILAND">THAILAND</option>
+
+            
+                <option value="THE FORMER YUGO. REP. OF MACEDONIA">THE FORMER YUGO. REP. OF MACEDONIA</option>
+
+            
+                <option value="TINIAN">TINIAN</option>
+
+            
+                <option value="TOGOLESE REPUBLIC">TOGOLESE REPUBLIC</option>
+
+            
+                <option value="TOKELAU">TOKELAU</option>
+
+            
+                <option value="TONGA">TONGA</option>
+
+            
+                <option value="TRINIDAD AND TOBAGO">TRINIDAD AND TOBAGO</option>
+
+            
+                <option value="TUNISIA">TUNISIA</option>
+
+            
+                <option value="TURKEY">TURKEY</option>
+
+            
+                <option value="TURKMENISTAN">TURKMENISTAN</option>
+
+            
+                <option value="TURKS AND CAICOS ISLANDS">TURKS AND CAICOS ISLANDS</option>
+
+            
+                <option value="TUVALU">TUVALU</option>
+
+            
+                <option value="U.A.E.">U.A.E.</option>
+
+            
+                <option value="U.K.">U.K.</option>
+
+            
+                <option value="U.S.A.">U.S.A.</option>
+
+            
+                <option value="UGANDA">UGANDA</option>
+
+            
+                <option value="UKRAINE">UKRAINE</option>
+
+            
+                <option value="UNITED STATES MINOR OUTLYING ISLANDS">UNITED STATES MINOR OUTLYING ISLANDS</option>
+
+            
+                <option value="UNITED STATES VIRGIN ISLANDS">UNITED STATES VIRGIN ISLANDS</option>
+
+            
+                <option value="URUGUAY">URUGUAY</option>
+
+            
+                <option value="UZBEKISTAN">UZBEKISTAN</option>
+
+            
+                <option value="VANUATU">VANUATU</option>
+
+            
+                <option value="VATICAN CITY STATE">VATICAN CITY STATE</option>
+
+            
+                <option value="VENEZUELA">VENEZUELA</option>
+
+            
+                <option value="VIETNAM" selected="" data-select2-id="170">VIETNAM</option>
+
+            
+                <option value="WALLIS AND FUTUNA">WALLIS AND FUTUNA</option>
+
+            
+                <option value="YEMEN">YEMEN</option>
+
+            
+                <option value="ZAMBIA">ZAMBIA</option>
+
+            
+                <option value="ZIMBABWE">ZIMBABWE</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="169" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-country_address-container"><span class="select2-selection__rendered" id="select2-country_address-container" role="textbox" aria-readonly="true" title="VIETNAM">VIETNAM</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="start_country-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="start_country" id="start_country-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Nước khởi hành đầu tiên của người được bảo hiểm">Nước Xuất phát</label>
+
+    
+    
+        <span id="start_country-required" class="text-danger required-mark ">*</span>
+        <span id="result-start_country" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-start_country">
+
+
+
+
+
+<select id="start_country" name="start_country" required="" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="start_country" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="172">&nbsp;</option>
+    
+    
+        
+            
+                <option value="AFGHANISTAN" data-select2-id="228">AFGHANISTAN</option>
+
+            
+                <option value="ALBANIA" data-select2-id="229">ALBANIA</option>
+
+            
+                <option value="ALGERIA" data-select2-id="230">ALGERIA</option>
+
+            
+                <option value="AMERICAN SAMOA" data-select2-id="231">AMERICAN SAMOA</option>
+
+            
+                <option value="ANDORRA" data-select2-id="232">ANDORRA</option>
+
+            
+                <option value="ANGOLA" data-select2-id="233">ANGOLA</option>
+
+            
+                <option value="ANGUILLA" data-select2-id="234">ANGUILLA</option>
+
+            
+                <option value="ANTARCTICA" data-select2-id="235">ANTARCTICA</option>
+
+            
+                <option value="ANTIGUA AND BARBUDA" data-select2-id="236">ANTIGUA AND BARBUDA</option>
+
+            
+                <option value="ARGENTINE REPUBLIC" data-select2-id="237">ARGENTINE REPUBLIC</option>
+
+            
+                <option value="ARMENIA" data-select2-id="238">ARMENIA</option>
+
+            
+                <option value="ARUBA" data-select2-id="239">ARUBA</option>
+
+            
+                <option value="ASCENSION" data-select2-id="240">ASCENSION</option>
+
+            
+                <option value="AUSTRALIA" data-select2-id="241">AUSTRALIA</option>
+
+            
+                <option value="AUSTRALIAN EXTERNAL TERRITORIES" data-select2-id="242">AUSTRALIAN EXTERNAL TERRITORIES</option>
+
+            
+                <option value="AUSTRIA" data-select2-id="243">AUSTRIA</option>
+
+            
+                <option value="AZERBAIJANI REPUBLIC" data-select2-id="244">AZERBAIJANI REPUBLIC</option>
+
+            
+                <option value="BAHAMAS" data-select2-id="245">BAHAMAS</option>
+
+            
+                <option value="BAHRAIN" data-select2-id="246">BAHRAIN</option>
+
+            
+                <option value="BANGLADESH" data-select2-id="247">BANGLADESH</option>
+
+            
+                <option value="BARBADOS" data-select2-id="248">BARBADOS</option>
+
+            
+                <option value="BELARUS" data-select2-id="249">BELARUS</option>
+
+            
+                <option value="BELGIUM" data-select2-id="250">BELGIUM</option>
+
+            
+                <option value="BELIZE" data-select2-id="251">BELIZE</option>
+
+            
+                <option value="BENIN" data-select2-id="252">BENIN</option>
+
+            
+                <option value="BERMUDA" data-select2-id="253">BERMUDA</option>
+
+            
+                <option value="BHUTAN" data-select2-id="254">BHUTAN</option>
+
+            
+                <option value="BOLIVIA" data-select2-id="255">BOLIVIA</option>
+
+            
+                <option value="BONAIRE" data-select2-id="256">BONAIRE</option>
+
+            
+                <option value="BOSNIA AND HERZEGOVINA" data-select2-id="257">BOSNIA AND HERZEGOVINA</option>
+
+            
+                <option value="BOTSWANA" data-select2-id="258">BOTSWANA</option>
+
+            
+                <option value="BRAZIL" data-select2-id="259">BRAZIL</option>
+
+            
+                <option value="BRITISH VIRGIN ISLANDS" data-select2-id="260">BRITISH VIRGIN ISLANDS</option>
+
+            
+                <option value="BRUNEI DARUSSALAM" data-select2-id="261">BRUNEI DARUSSALAM</option>
+
+            
+                <option value="BULGARIA" data-select2-id="262">BULGARIA</option>
+
+            
+                <option value="BURKINA FASO" data-select2-id="263">BURKINA FASO</option>
+
+            
+                <option value="BURUNDI" data-select2-id="264">BURUNDI</option>
+
+            
+                <option value="CAMBODIA" data-select2-id="265">CAMBODIA</option>
+
+            
+                <option value="CAMEROON" data-select2-id="266">CAMEROON</option>
+
+            
+                <option value="CANADA" data-select2-id="267">CANADA</option>
+
+            
+                <option value="CAPE VERDE" data-select2-id="268">CAPE VERDE</option>
+
+            
+                <option value="CAYMAN ISLANDS" data-select2-id="269">CAYMAN ISLANDS</option>
+
+            
+                <option value="CENTRAL AFRICAN REPUBLIC" data-select2-id="270">CENTRAL AFRICAN REPUBLIC</option>
+
+            
+                <option value="CHAD" data-select2-id="271">CHAD</option>
+
+            
+                <option value="CHILE" data-select2-id="272">CHILE</option>
+
+            
+                <option value="CHINA" data-select2-id="273">CHINA</option>
+
+            
+                <option value="CHRISTMAS ISLAND" data-select2-id="274">CHRISTMAS ISLAND</option>
+
+            
+                <option value="COCOS (KEELING) ISLANDS" data-select2-id="275">COCOS (KEELING) ISLANDS</option>
+
+            
+                <option value="COLOMBIA" data-select2-id="276">COLOMBIA</option>
+
+            
+                <option value="COMOROS" data-select2-id="277">COMOROS</option>
+
+            
+                <option value="CONGO" data-select2-id="278">CONGO</option>
+
+            
+                <option value="COOK ISLANDS" data-select2-id="279">COOK ISLANDS</option>
+
+            
+                <option value="COSTA RICA" data-select2-id="280">COSTA RICA</option>
+
+            
+                <option value="COTE D'IVOIRE" data-select2-id="281">COTE D'IVOIRE</option>
+
+            
+                <option value="CROATIA" data-select2-id="282">CROATIA</option>
+
+            
+                <option value="CUBA" data-select2-id="283">CUBA</option>
+
+            
+                <option value="CURACAO" data-select2-id="284">CURACAO</option>
+
+            
+                <option value="CYPRUS" data-select2-id="285">CYPRUS</option>
+
+            
+                <option value="CZECH REPUBLIC" data-select2-id="286">CZECH REPUBLIC</option>
+
+            
+                <option value="DEMO. REP. OF THE CONGO" data-select2-id="287">DEMO. REP. OF THE CONGO</option>
+
+            
+                <option value="DEMOCRATIC PEOPLE'S REP. OF KOREA" data-select2-id="288">DEMOCRATIC PEOPLE'S REP. OF KOREA</option>
+
+            
+                <option value="DENMARK" data-select2-id="289">DENMARK</option>
+
+            
+                <option value="DIEGO GARCIA" data-select2-id="290">DIEGO GARCIA</option>
+
+            
+                <option value="DJIBOUTI" data-select2-id="291">DJIBOUTI</option>
+
+            
+                <option value="DOMINICA" data-select2-id="292">DOMINICA</option>
+
+            
+                <option value="DOMINICAN REPUBLIC" data-select2-id="293">DOMINICAN REPUBLIC</option>
+
+            
+                <option value="EAST TIMOR" data-select2-id="294">EAST TIMOR</option>
+
+            
+                <option value="ECUADOR" data-select2-id="295">ECUADOR</option>
+
+            
+                <option value="EGYPT" data-select2-id="296">EGYPT</option>
+
+            
+                <option value="EL SALVADOR" data-select2-id="297">EL SALVADOR</option>
+
+            
+                <option value="EQUATORIAL GUINEA" data-select2-id="298">EQUATORIAL GUINEA</option>
+
+            
+                <option value="ERITREA" data-select2-id="299">ERITREA</option>
+
+            
+                <option value="ESTONIA" data-select2-id="300">ESTONIA</option>
+
+            
+                <option value="ETHIOPIA" data-select2-id="301">ETHIOPIA</option>
+
+            
+                <option value="FALKLAND ISLANDS" data-select2-id="302">FALKLAND ISLANDS</option>
+
+            
+                <option value="FAROE ISLANDS" data-select2-id="303">FAROE ISLANDS</option>
+
+            
+                <option value="FIJI" data-select2-id="304">FIJI</option>
+
+            
+                <option value="FINLAND" data-select2-id="305">FINLAND</option>
+
+            
+                <option value="FRANCE" data-select2-id="306">FRANCE</option>
+
+            
+                <option value="FRENCH GUIANA" data-select2-id="307">FRENCH GUIANA</option>
+
+            
+                <option value="FRENCH POLYNESIA" data-select2-id="308">FRENCH POLYNESIA</option>
+
+            
+                <option value="GABONESE REPUBLIC" data-select2-id="309">GABONESE REPUBLIC</option>
+
+            
+                <option value="GAMBIA" data-select2-id="310">GAMBIA</option>
+
+            
+                <option value="GEORGIA" data-select2-id="311">GEORGIA</option>
+
+            
+                <option value="GERMANY" data-select2-id="312">GERMANY</option>
+
+            
+                <option value="GHANA" data-select2-id="313">GHANA</option>
+
+            
+                <option value="GIBRALTAR" data-select2-id="314">GIBRALTAR</option>
+
+            
+                <option value="GREECE" data-select2-id="315">GREECE</option>
+
+            
+                <option value="GREENLAND" data-select2-id="316">GREENLAND</option>
+
+            
+                <option value="GRENADA" data-select2-id="317">GRENADA</option>
+
+            
+                <option value="GUADELOUPE" data-select2-id="318">GUADELOUPE</option>
+
+            
+                <option value="GUAM" data-select2-id="319">GUAM</option>
+
+            
+                <option value="GUATEMALA" data-select2-id="320">GUATEMALA</option>
+
+            
+                <option value="GUINEA" data-select2-id="321">GUINEA</option>
+
+            
+                <option value="GUINEA-BISSAU" data-select2-id="322">GUINEA-BISSAU</option>
+
+            
+                <option value="GUYANA" data-select2-id="323">GUYANA</option>
+
+            
+                <option value="HAITI" data-select2-id="324">HAITI</option>
+
+            
+                <option value="HONDURAS" data-select2-id="325">HONDURAS</option>
+
+            
+                <option value="HONG KONG" data-select2-id="326">HONG KONG</option>
+
+            
+                <option value="HUNGARY" data-select2-id="327">HUNGARY</option>
+
+            
+                <option value="ICELAND" data-select2-id="328">ICELAND</option>
+
+            
+                <option value="INDIA" data-select2-id="329">INDIA</option>
+
+            
+                <option value="INDONESIA" data-select2-id="330">INDONESIA</option>
+
+            
+                <option value="IRAN" data-select2-id="331">IRAN</option>
+
+            
+                <option value="IRAQ" data-select2-id="332">IRAQ</option>
+
+            
+                <option value="IRELAND" data-select2-id="333">IRELAND</option>
+
+            
+                <option value="ISLE OF MAN" data-select2-id="334">ISLE OF MAN</option>
+
+            
+                <option value="ISRAEL" data-select2-id="335">ISRAEL</option>
+
+            
+                <option value="ITALY" data-select2-id="336">ITALY</option>
+
+            
+                <option value="JAMAICA" data-select2-id="337">JAMAICA</option>
+
+            
+                <option value="JAPAN" data-select2-id="338">JAPAN</option>
+
+            
+                <option value="JORDAN" data-select2-id="339">JORDAN</option>
+
+            
+                <option value="KAZAKHSTAN" data-select2-id="340">KAZAKHSTAN</option>
+
+            
+                <option value="KENYA" data-select2-id="341">KENYA</option>
+
+            
+                <option value="KIRIBATI" data-select2-id="342">KIRIBATI</option>
+
+            
+                <option value="KOREA" data-select2-id="343">KOREA</option>
+
+            
+                <option value="KUWAIT" data-select2-id="344">KUWAIT</option>
+
+            
+                <option value="KYRGYZ REPUBLIC" data-select2-id="345">KYRGYZ REPUBLIC</option>
+
+            
+                <option value="LAOS" data-select2-id="346">LAOS</option>
+
+            
+                <option value="LATVIA" data-select2-id="347">LATVIA</option>
+
+            
+                <option value="LEBANON" data-select2-id="348">LEBANON</option>
+
+            
+                <option value="LESOTHO" data-select2-id="349">LESOTHO</option>
+
+            
+                <option value="LIBERIA" data-select2-id="350">LIBERIA</option>
+
+            
+                <option value="LIBYA" data-select2-id="351">LIBYA</option>
+
+            
+                <option value="LIECHTENSTEIN" data-select2-id="352">LIECHTENSTEIN</option>
+
+            
+                <option value="LITHUANIA" data-select2-id="353">LITHUANIA</option>
+
+            
+                <option value="LUXEMBOURG" data-select2-id="354">LUXEMBOURG</option>
+
+            
+                <option value="MACAU" data-select2-id="355">MACAU</option>
+
+            
+                <option value="MADAGASCAR" data-select2-id="356">MADAGASCAR</option>
+
+            
+                <option value="MALAWI" data-select2-id="357">MALAWI</option>
+
+            
+                <option value="MALAYSIA" data-select2-id="358">MALAYSIA</option>
+
+            
+                <option value="MALDIVES" data-select2-id="359">MALDIVES</option>
+
+            
+                <option value="MALI" data-select2-id="360">MALI</option>
+
+            
+                <option value="MALTA" data-select2-id="361">MALTA</option>
+
+            
+                <option value="MARSHALL ISLANDS" data-select2-id="362">MARSHALL ISLANDS</option>
+
+            
+                <option value="MARTINIQUE" data-select2-id="363">MARTINIQUE</option>
+
+            
+                <option value="MAURITANIA" data-select2-id="364">MAURITANIA</option>
+
+            
+                <option value="MAURITIUS" data-select2-id="365">MAURITIUS</option>
+
+            
+                <option value="MAYOTTE" data-select2-id="366">MAYOTTE</option>
+
+            
+                <option value="MEXICO" data-select2-id="367">MEXICO</option>
+
+            
+                <option value="MICRONESIA" data-select2-id="368">MICRONESIA</option>
+
+            
+                <option value="MOLDOVA" data-select2-id="369">MOLDOVA</option>
+
+            
+                <option value="MONACO" data-select2-id="370">MONACO</option>
+
+            
+                <option value="MONGOLIA" data-select2-id="371">MONGOLIA</option>
+
+            
+                <option value="MONTENEGRO" data-select2-id="372">MONTENEGRO</option>
+
+            
+                <option value="MONTSERRAT" data-select2-id="373">MONTSERRAT</option>
+
+            
+                <option value="MOROCCO" data-select2-id="374">MOROCCO</option>
+
+            
+                <option value="MOZAMBIQUE" data-select2-id="375">MOZAMBIQUE</option>
+
+            
+                <option value="MYANMAR" data-select2-id="376">MYANMAR</option>
+
+            
+                <option value="NAMIBIA" data-select2-id="377">NAMIBIA</option>
+
+            
+                <option value="NAURU" data-select2-id="378">NAURU</option>
+
+            
+                <option value="NEPAL" data-select2-id="379">NEPAL</option>
+
+            
+                <option value="NETHERLANDS" data-select2-id="380">NETHERLANDS</option>
+
+            
+                <option value="NETHERLANDS ANTILLES" data-select2-id="381">NETHERLANDS ANTILLES</option>
+
+            
+                <option value="NEW CALEDONIA" data-select2-id="382">NEW CALEDONIA</option>
+
+            
+                <option value="NEW ZEALAND" data-select2-id="383">NEW ZEALAND</option>
+
+            
+                <option value="NICARAGUA" data-select2-id="384">NICARAGUA</option>
+
+            
+                <option value="NIGER" data-select2-id="385">NIGER</option>
+
+            
+                <option value="NIGERIA" data-select2-id="386">NIGERIA</option>
+
+            
+                <option value="NIUE" data-select2-id="387">NIUE</option>
+
+            
+                <option value="NORFOLK ISLAND" data-select2-id="388">NORFOLK ISLAND</option>
+
+            
+                <option value="NORTHERN MARIANA ISLANDS" data-select2-id="389">NORTHERN MARIANA ISLANDS</option>
+
+            
+                <option value="NORWAY" data-select2-id="390">NORWAY</option>
+
+            
+                <option value="OMAN" data-select2-id="391">OMAN</option>
+
+            
+                <option value="PAKISTAN" data-select2-id="392">PAKISTAN</option>
+
+            
+                <option value="PALAU" data-select2-id="393">PALAU</option>
+
+            
+                <option value="PALESTINE" data-select2-id="394">PALESTINE</option>
+
+            
+                <option value="PANAMA" data-select2-id="395">PANAMA</option>
+
+            
+                <option value="PAPUA NEW GUINEA" data-select2-id="396">PAPUA NEW GUINEA</option>
+
+            
+                <option value="PARAGUAY" data-select2-id="397">PARAGUAY</option>
+
+            
+                <option value="PERU" data-select2-id="398">PERU</option>
+
+            
+                <option value="PHILIPPINES" data-select2-id="399">PHILIPPINES</option>
+
+            
+                <option value="POLAND" data-select2-id="400">POLAND</option>
+
+            
+                <option value="PORTUGAL" data-select2-id="401">PORTUGAL</option>
+
+            
+                <option value="PUERTO RICO" data-select2-id="402">PUERTO RICO</option>
+
+            
+                <option value="QATAR" data-select2-id="403">QATAR</option>
+
+            
+                <option value="REUNION" data-select2-id="404">REUNION</option>
+
+            
+                <option value="ROMANIA" data-select2-id="405">ROMANIA</option>
+
+            
+                <option value="RUSSIAN FEDERATION" data-select2-id="406">RUSSIAN FEDERATION</option>
+
+            
+                <option value="RWANDESE REPUBLIC" data-select2-id="407">RWANDESE REPUBLIC</option>
+
+            
+                <option value="SAINT HELENA" data-select2-id="408">SAINT HELENA</option>
+
+            
+                <option value="SAINT KITTS AND NEVIS" data-select2-id="409">SAINT KITTS AND NEVIS</option>
+
+            
+                <option value="SAINT LUCIA" data-select2-id="410">SAINT LUCIA</option>
+
+            
+                <option value="SAINT PIERRE AND MIQUELON" data-select2-id="411">SAINT PIERRE AND MIQUELON</option>
+
+            
+                <option value="SAIPAN" data-select2-id="412">SAIPAN</option>
+
+            
+                <option value="SAMOA" data-select2-id="413">SAMOA</option>
+
+            
+                <option value="SAN MARINO" data-select2-id="414">SAN MARINO</option>
+
+            
+                <option value="SAO TOME AND PRINCIPE" data-select2-id="415">SAO TOME AND PRINCIPE</option>
+
+            
+                <option value="SAUDI ARABIA" data-select2-id="416">SAUDI ARABIA</option>
+
+            
+                <option value="SENEGAL" data-select2-id="417">SENEGAL</option>
+
+            
+                <option value="SERBIA" data-select2-id="418">SERBIA</option>
+
+            
+                <option value="SEYCHELLES" data-select2-id="419">SEYCHELLES</option>
+
+            
+                <option value="SIERRA LEONE" data-select2-id="420">SIERRA LEONE</option>
+
+            
+                <option value="SINGAPORE" data-select2-id="421">SINGAPORE</option>
+
+            
+                <option value="SLOVAK REPUBLIC" data-select2-id="422">SLOVAK REPUBLIC</option>
+
+            
+                <option value="SLOVENIA" data-select2-id="423">SLOVENIA</option>
+
+            
+                <option value="SOLOMON ISLANDS" data-select2-id="424">SOLOMON ISLANDS</option>
+
+            
+                <option value="SOMALI DEMO. REPUBLIC" data-select2-id="425">SOMALI DEMO. REPUBLIC</option>
+
+            
+                <option value="SOUTH AFRICA" data-select2-id="426">SOUTH AFRICA</option>
+
+            
+                <option value="SOUTH SUDAN" data-select2-id="427">SOUTH SUDAN</option>
+
+            
+                <option value="SPAIN" data-select2-id="428">SPAIN</option>
+
+            
+                <option value="SRI LANKA" data-select2-id="429">SRI LANKA</option>
+
+            
+                <option value="ST. VINCENT &amp; THE GRENADINES" data-select2-id="430">ST. VINCENT &amp; THE GRENADINES</option>
+
+            
+                <option value="SUDAN" data-select2-id="431">SUDAN</option>
+
+            
+                <option value="SURINAME" data-select2-id="432">SURINAME</option>
+
+            
+                <option value="SVALBARD AND JAN MAYEN" data-select2-id="433">SVALBARD AND JAN MAYEN</option>
+
+            
+                <option value="SWAZILAND" data-select2-id="434">SWAZILAND</option>
+
+            
+                <option value="SWEDEN" data-select2-id="435">SWEDEN</option>
+
+            
+                <option value="SWITZERLAND" data-select2-id="436">SWITZERLAND</option>
+
+            
+                <option value="SYRIAN ARAB REPUBLIC" data-select2-id="437">SYRIAN ARAB REPUBLIC</option>
+
+            
+                <option value="TAIWAN" data-select2-id="438">TAIWAN</option>
+
+            
+                <option value="TAJIKISTAN" data-select2-id="439">TAJIKISTAN</option>
+
+            
+                <option value="TANZANIA" data-select2-id="440">TANZANIA</option>
+
+            
+                <option value="THAILAND" data-select2-id="441">THAILAND</option>
+
+            
+                <option value="THE FORMER YUGO. REP. OF MACEDONIA" data-select2-id="442">THE FORMER YUGO. REP. OF MACEDONIA</option>
+
+            
+                <option value="TINIAN" data-select2-id="443">TINIAN</option>
+
+            
+                <option value="TOGOLESE REPUBLIC" data-select2-id="444">TOGOLESE REPUBLIC</option>
+
+            
+                <option value="TOKELAU" data-select2-id="445">TOKELAU</option>
+
+            
+                <option value="TONGA" data-select2-id="446">TONGA</option>
+
+            
+                <option value="TRINIDAD AND TOBAGO" data-select2-id="447">TRINIDAD AND TOBAGO</option>
+
+            
+                <option value="TUNISIA" data-select2-id="448">TUNISIA</option>
+
+            
+                <option value="TURKEY" data-select2-id="449">TURKEY</option>
+
+            
+                <option value="TURKMENISTAN" data-select2-id="450">TURKMENISTAN</option>
+
+            
+                <option value="TURKS AND CAICOS ISLANDS" data-select2-id="451">TURKS AND CAICOS ISLANDS</option>
+
+            
+                <option value="TUVALU" data-select2-id="452">TUVALU</option>
+
+            
+                <option value="U.A.E." data-select2-id="453">U.A.E.</option>
+
+            
+                <option value="U.K." data-select2-id="454">U.K.</option>
+
+            
+                <option value="U.S.A." data-select2-id="455">U.S.A.</option>
+
+            
+                <option value="UGANDA" data-select2-id="456">UGANDA</option>
+
+            
+                <option value="UKRAINE" data-select2-id="457">UKRAINE</option>
+
+            
+                <option value="UNITED STATES MINOR OUTLYING ISLANDS" data-select2-id="458">UNITED STATES MINOR OUTLYING ISLANDS</option>
+
+            
+                <option value="UNITED STATES VIRGIN ISLANDS" data-select2-id="459">UNITED STATES VIRGIN ISLANDS</option>
+
+            
+                <option value="URUGUAY" data-select2-id="460">URUGUAY</option>
+
+            
+                <option value="UZBEKISTAN" data-select2-id="461">UZBEKISTAN</option>
+
+            
+                <option value="VANUATU" data-select2-id="462">VANUATU</option>
+
+            
+                <option value="VATICAN CITY STATE" data-select2-id="463">VATICAN CITY STATE</option>
+
+            
+                <option value="VENEZUELA" data-select2-id="464">VENEZUELA</option>
+
+            
+                <option value="VIETNAM" data-select2-id="465">VIETNAM</option>
+
+            
+                <option value="WALLIS AND FUTUNA" data-select2-id="466">WALLIS AND FUTUNA</option>
+
+            
+                <option value="YEMEN" data-select2-id="467">YEMEN</option>
+
+            
+                <option value="ZAMBIA" data-select2-id="468">ZAMBIA</option>
+
+            
+                <option value="ZIMBABWE" data-select2-id="469">ZIMBABWE</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--below" dir="ltr" data-select2-id="171" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-start_country-container"><span class="select2-selection__rendered" id="select2-start_country-container" role="textbox" aria-readonly="true" title="VIETNAM">VIETNAM</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+</div>
+
+<div class="row mb-3 domestic d-none">
+
+    <div id="start_city-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="start_city" id="start_city-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Thành phố bắt đầu của hành trình">Thành phố Khởi hành</label>
+
+    
+    
+        <span id="start_city-required" class="text-danger required-mark ">*</span>
+        <span id="result-start_city" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-start_city">
+
+
+
+
+
+<select id="start_city" name="start_city" required="" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" disabled="" data-select2-id="start_city" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="174">&nbsp;</option>
+    
+    
+        
+            
+                <option value="CITY_004">HÀ NỘI</option>
+
+            
+                <option value="CITY_008">TP. HỒ CHÍ MINH</option>
+
+            
+                <option value="CITY_020">LÀO CAI</option>
+
+            
+                <option value="CITY_022">SƠN LA</option>
+
+            
+                <option value="CITY_025">LẠNG SƠN</option>
+
+            
+                <option value="CITY_026">CAO BẰNG</option>
+
+            
+                <option value="CITY_027">TUYÊN QUANG</option>
+
+            
+                <option value="CITY_029">YÊN BÁI</option>
+
+            
+                <option value="CITY_030">NINH BÌNH</option>
+
+            
+                <option value="CITY_031">HẢI PHÒNG</option>
+
+            
+                <option value="CITY_033">QUẢNG NINH</option>
+
+            
+                <option value="CITY_036">THÁI BÌNH</option>
+
+            
+                <option value="CITY_037">THANH HÓA</option>
+
+            
+                <option value="CITY_038">NGHỆ AN</option>
+
+            
+                <option value="CITY_039">HÀ TĨNH</option>
+
+            
+                <option value="CITY_052">QUẢNG BÌNH</option>
+
+            
+                <option value="CITY_053">QUẢNG TRỊ</option>
+
+            
+                <option value="CITY_054">HUẾ</option>
+
+            
+                <option value="CITY_055">QUẢNG NGÃI</option>
+
+            
+                <option value="CITY_056">BÌNH ĐỊNH</option>
+
+            
+                <option value="CITY_057">PHÚ YÊN</option>
+
+            
+                <option value="CITY_058">KHÁNH HÒA</option>
+
+            
+                <option value="CITY_059">GIA LAI</option>
+
+            
+                <option value="CITY_060">KON TUM</option>
+
+            
+                <option value="CITY_061">ĐỒNG NAI</option>
+
+            
+                <option value="CITY_062">BÌNH THUẬN</option>
+
+            
+                <option value="CITY_063">LÂM ĐỒNG</option>
+
+            
+                <option value="CITY_064">VŨNG TÀU</option>
+
+            
+                <option value="CITY_066">TÂY NINH</option>
+
+            
+                <option value="CITY_067">ĐỒNG THÁP</option>
+
+            
+                <option value="CITY_068">NINH THUẬN</option>
+
+            
+                <option value="CITY_070">VĨNH LONG</option>
+
+            
+                <option value="CITY_072">LONG AN</option>
+
+            
+                <option value="CITY_073">TIỀN GIANG</option>
+
+            
+                <option value="CITY_074">TRÀ VINH</option>
+
+            
+                <option value="CITY_075">BẾN TRE</option>
+
+            
+                <option value="CITY_076">AN GIANG</option>
+
+            
+                <option value="CITY_077">KIÊN GIANG</option>
+
+            
+                <option value="CITY_079">SÓC TRĂNG</option>
+
+            
+                <option value="CITY_210">PHÚ THỌ</option>
+
+            
+                <option value="CITY_211">VĨNH PHÚC</option>
+
+            
+                <option value="CITY_218">HÒA BÌNH</option>
+
+            
+                <option value="CITY_219">HÀ GIANG</option>
+
+            
+                <option value="CITY_230">ĐIỆN BIÊN</option>
+
+            
+                <option value="CITY_231">LAI CHÂU</option>
+
+            
+                <option value="CITY_240">BẮC GIANG</option>
+
+            
+                <option value="CITY_241">BẮC NINH</option>
+
+            
+                <option value="CITY_280">THÁI NGUYÊN</option>
+
+            
+                <option value="CITY_281">BẮC KẠN</option>
+
+            
+                <option value="CITY_320">HẢI DƯƠNG</option>
+
+            
+                <option value="CITY_321">HƯNG YÊN</option>
+
+            
+                <option value="CITY_350">NAM ĐỊNH</option>
+
+            
+                <option value="CITY_351">HÀ NAM</option>
+
+            
+                <option value="CITY_500">DẮK LẮK</option>
+
+            
+                <option value="CITY_501">ĐẮK NÔNG</option>
+
+            
+                <option value="CITY_510">QUẢNG NAM</option>
+
+            
+                <option value="CITY_511">TP. ĐÀ NẴNG</option>
+
+            
+                <option value="CITY_650">BÌNH DƯƠNG</option>
+
+            
+                <option value="CITY_651">BÌNH PHƯỚC</option>
+
+            
+                <option value="CITY_710">CẦN THƠ</option>
+
+            
+                <option value="CITY_711">HẬU GIANG</option>
+
+            
+                <option value="CITY_780">CÀ MAU</option>
+
+            
+                <option value="CITY_781">BẠC LIÊU</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--disabled" dir="ltr" data-select2-id="173" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="true" aria-labelledby="select2-start_city-container"><span class="select2-selection__rendered" id="select2-start_city-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="start_address-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="start_address" id="start_address-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Địa chỉ bắt đầu của hành trình">Địa chỉ Khởi hành</label>
+
+    
+    
+        <span id="start_address-required" class="text-danger required-mark ">*</span>
+        <span id="result-start_address" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-start_address">
+
+
+ 
+<input id="start_address" name="start_address" placeholder="" required="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="500" disabled="">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3 domestic d-none">
+
+    <div id="end_city-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="end_city" id="end_city-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Thành phố kết thúc hành trình">Thành phố Đích</label>
+
+    
+    
+        <span id="end_city-required" class="text-danger required-mark ">*</span>
+        <span id="result-end_city" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-end_city">
+
+
+
+
+
+<select id="end_city" name="end_city" required="" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" disabled="" data-select2-id="end_city" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="176">&nbsp;</option>
+    
+    
+        
+            
+                <option value="CITY_004">HÀ NỘI</option>
+
+            
+                <option value="CITY_008">TP. HỒ CHÍ MINH</option>
+
+            
+                <option value="CITY_020">LÀO CAI</option>
+
+            
+                <option value="CITY_022">SƠN LA</option>
+
+            
+                <option value="CITY_025">LẠNG SƠN</option>
+
+            
+                <option value="CITY_026">CAO BẰNG</option>
+
+            
+                <option value="CITY_027">TUYÊN QUANG</option>
+
+            
+                <option value="CITY_029">YÊN BÁI</option>
+
+            
+                <option value="CITY_030">NINH BÌNH</option>
+
+            
+                <option value="CITY_031">HẢI PHÒNG</option>
+
+            
+                <option value="CITY_033">QUẢNG NINH</option>
+
+            
+                <option value="CITY_036">THÁI BÌNH</option>
+
+            
+                <option value="CITY_037">THANH HÓA</option>
+
+            
+                <option value="CITY_038">NGHỆ AN</option>
+
+            
+                <option value="CITY_039">HÀ TĨNH</option>
+
+            
+                <option value="CITY_052">QUẢNG BÌNH</option>
+
+            
+                <option value="CITY_053">QUẢNG TRỊ</option>
+
+            
+                <option value="CITY_054">HUẾ</option>
+
+            
+                <option value="CITY_055">QUẢNG NGÃI</option>
+
+            
+                <option value="CITY_056">BÌNH ĐỊNH</option>
+
+            
+                <option value="CITY_057">PHÚ YÊN</option>
+
+            
+                <option value="CITY_058">KHÁNH HÒA</option>
+
+            
+                <option value="CITY_059">GIA LAI</option>
+
+            
+                <option value="CITY_060">KON TUM</option>
+
+            
+                <option value="CITY_061">ĐỒNG NAI</option>
+
+            
+                <option value="CITY_062">BÌNH THUẬN</option>
+
+            
+                <option value="CITY_063">LÂM ĐỒNG</option>
+
+            
+                <option value="CITY_064">VŨNG TÀU</option>
+
+            
+                <option value="CITY_066">TÂY NINH</option>
+
+            
+                <option value="CITY_067">ĐỒNG THÁP</option>
+
+            
+                <option value="CITY_068">NINH THUẬN</option>
+
+            
+                <option value="CITY_070">VĨNH LONG</option>
+
+            
+                <option value="CITY_072">LONG AN</option>
+
+            
+                <option value="CITY_073">TIỀN GIANG</option>
+
+            
+                <option value="CITY_074">TRÀ VINH</option>
+
+            
+                <option value="CITY_075">BẾN TRE</option>
+
+            
+                <option value="CITY_076">AN GIANG</option>
+
+            
+                <option value="CITY_077">KIÊN GIANG</option>
+
+            
+                <option value="CITY_079">SÓC TRĂNG</option>
+
+            
+                <option value="CITY_210">PHÚ THỌ</option>
+
+            
+                <option value="CITY_211">VĨNH PHÚC</option>
+
+            
+                <option value="CITY_218">HÒA BÌNH</option>
+
+            
+                <option value="CITY_219">HÀ GIANG</option>
+
+            
+                <option value="CITY_230">ĐIỆN BIÊN</option>
+
+            
+                <option value="CITY_231">LAI CHÂU</option>
+
+            
+                <option value="CITY_240">BẮC GIANG</option>
+
+            
+                <option value="CITY_241">BẮC NINH</option>
+
+            
+                <option value="CITY_280">THÁI NGUYÊN</option>
+
+            
+                <option value="CITY_281">BẮC KẠN</option>
+
+            
+                <option value="CITY_320">HẢI DƯƠNG</option>
+
+            
+                <option value="CITY_321">HƯNG YÊN</option>
+
+            
+                <option value="CITY_350">NAM ĐỊNH</option>
+
+            
+                <option value="CITY_351">HÀ NAM</option>
+
+            
+                <option value="CITY_500">DẮK LẮK</option>
+
+            
+                <option value="CITY_501">ĐẮK NÔNG</option>
+
+            
+                <option value="CITY_510">QUẢNG NAM</option>
+
+            
+                <option value="CITY_511">TP. ĐÀ NẴNG</option>
+
+            
+                <option value="CITY_650">BÌNH DƯƠNG</option>
+
+            
+                <option value="CITY_651">BÌNH PHƯỚC</option>
+
+            
+                <option value="CITY_710">CẦN THƠ</option>
+
+            
+                <option value="CITY_711">HẬU GIANG</option>
+
+            
+                <option value="CITY_780">CÀ MAU</option>
+
+            
+                <option value="CITY_781">BẠC LIÊU</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--disabled" dir="ltr" data-select2-id="175" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="true" aria-labelledby="select2-end_city-container"><span class="select2-selection__rendered" id="select2-end_city-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="end_address-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="end_address" id="end_address-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Địa chỉ nơi kết thúc hành trình">Địa chỉ Đích</label>
+
+    
+    
+        <span id="end_address-required" class="text-danger required-mark ">*</span>
+        <span id="result-end_address" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-end_address">
+
+
+ 
+<input id="end_address" name="end_address" placeholder="" required="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="500" disabled="">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3">
+
+    <div id="issue_date-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="issue_date" id="issue_date-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Ngày đơn này được cấp">Ngày cấp</label>
+
+    
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-issue_date">
+
+
+ 
+<input id="issue_date" placeholder="" required="" readonly="" disabled="" autocomplete="off" type="text" class="
+        form-control
+        border-warning
+        
+        
+                   valid-if-hidden     " value="17/01/2026">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="date_range-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="date_range" id="date_range-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="- Bấm chọn Từ ngày (ngày bắt đầu khởi hành) – Đến ngày (ngày về kết thúc chuyến hanh trình), hệ thống sẽ tự động tính số ngày.
+- Hoặc bấm chọn từ ngày, khung Số ngày bấm tổng số ngày khách muốn mua bảo hiểm, hệ thống sẽ tự động tính ra ngày về ở khung Đến ngày.">Thời hạn Bảo hiểm</label>
+
+    
+    
+        <span id="date_range-required" class="text-danger required-mark ">*</span>
+        <span id="result-date_range" class="float-right control-result"></span>
+
+    
+    
+            <span id="total-date_range" class="padding-top-5 float-right">Tổng cộng <strong class="text-info">6</strong> ngày</span>
+
+            <input type="hidden" id="date-range-type-date_range" value="1">
+
+            <input type="hidden" id="date-from-date_range" name="date_from_date_range" value="2026-01-17">
+
+            <input type="hidden" id="date-to-date_range" name="date_to_date_range" value="2026-01-22">
+
+            <input type="hidden" id="days-date_range" name="days_date_range" value="6">
+        
+
+
+<div class="input-group border-warning" id="input-group-date_range">
+
+
+
+
+<input id="date_range" name="date_range" placeholder="" required="" autocomplete="off" type="text" class="
+        form-control
+        border-warning
+        
+        
+          date-range-picker           valid-if-hidden     " value="" data-min-date="2026-01-15" data-min-date-limit="331" data-min-date-limit-value="2026-12-12" data-days-included="1">
+
+
+    <div class="input-group-append">
+
+        <button type="button" id="btn-date_range-alt" class="form-control border-warning  btn btn-default btn-daterange-alt" data-id="date_range">
+            <i class="fa fa-calendar"></i>
+        </button>
+
+    </div>
+
+
+
+    </div>
+
+
+        <div id="input-group-date_range-alt" class="input-group d-none">
+
+            <input type="text" class="form-control border-warning  date-range-date-picker" id="date_range-date-from-picker" value="" data-id="date_range" data-min-date="2026-01-15">
+
+            <input type="number" min="1" max="999999999999" class="form-control border-warning " id="date_range-days-picker" value="1">
+
+            <div class="input-group-append">
+
+                <button type="button" class="btn btn-default border-warning  date-range-button-picker" data-id="date_range" id="btn-date_range-yes">
+                    <i class="fa fa-calendar"></i>
+                </button>
+
+            </div>
+
+        </div>
+    
+
+ </div> 
+
+
+
+</div>
+
+<div class="row mb-3">
+
+    <div id="product-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="product" id="product-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Gồm
+- Gói bảo hiểm Bon Voyage (quyền lợi cao)
+- Gói bảo hiểm Travel Flex (Có thể tùy chọn nhiều quyền lợi khác nhau)
+- Gói bảo hiểm nội địa (cho hành trình trong nội bộ Việt Nam)
+- Gói bảo hiểm nội địa cho đoàn (cho hành trình trong nội bộ Việt Nam, giá rẻ nhưng quyền lợi cũng thấp)
+- Gói bảo hiểm quốc tế cho đoàn (cho hành trình quốc tế, giá rẻ hơn Bon Voyge &amp; Travel Flex nhưng quyền lợi cũng thấp hơn)
+- :annual">Sản phẩm</label>
+
+    
+    
+        <span id="product-required" class="text-danger required-mark ">*</span>
+        <span id="result-product" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-product">
+
+
+
+
+
+<select id="product" name="product" required="" class="form-control select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="product" tabindex="-1" aria-hidden="true">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="1">Bon Voyage</option>
+
+            
+                <option value="2" data-select2-id="178">Travel Flex</option>
+
+            
+                <option value="3">Domestic</option>
+
+            
+                <option value="4">Domestic Group</option>
+
+            
+                <option value="5">International Group</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="177" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-product-container"><span class="select2-selection__rendered" id="select2-product-container" role="textbox" aria-readonly="true" title="Travel Flex">Travel Flex</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="plan-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="plan" id="plan-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Chi tiết về hạng mức bảo hiểm. Bảo hiểm xe ô tô thuê: tính thêm phí 100.000 VND/ ngày nếu chủ hợp đồng chọn mua kèm. Quyền lợi: 500.000.000VND">Gói Bảo hiểm</label>
+
+    
+    
+        <span id="plan-required" class="text-danger required-mark ">*</span>
+        <span id="result-plan" class="float-right control-result"><b class="text-info">628,000</b> VND / người</span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-plan">
+
+
+
+
+
+<select id="plan" name="plan" required="" class="form-control has_car_rental select2 valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" tabindex="-1" aria-hidden="true" data-select2-id="plan"><option value="" data-select2-id="180"></option><option value="338" data-select2-id="477">AA1AC - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (338)</option><option value="534" data-select2-id="478">AA1AN - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (534)</option><option value="341" data-select2-id="479">AA1NC - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (341)</option><option value="571" data-select2-id="480">AA1NN - Y tế hạng A, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (571)</option><option value="344" data-select2-id="481">AA2AC - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (344)</option><option value="544" data-select2-id="482">AA2AN - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (544)</option><option value="351" data-select2-id="483">AA2NC - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (351)</option><option value="579" data-select2-id="484">AA2NN - Y tế hạng A, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (579)</option><option value="369" data-select2-id="485">AA3AC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (369)</option><option value="553" data-select2-id="486">AA3AN - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (553)</option><option value="372" data-select2-id="487">AA3NC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (372)</option><option value="588" data-select2-id="488">AA3NN - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (588)</option><option value="375" data-select2-id="489">AA4AC - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (375)</option><option value="562" data-select2-id="490">AA4AN - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (562)</option><option value="378" data-select2-id="491">AA4NC - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (378)</option><option value="597" data-select2-id="492">AA4NN - Y tế hạng A, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (597)</option><option value="333" data-select2-id="493">AE1AC - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (333)</option><option value="535" data-select2-id="494">AE1AN - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (535)</option><option value="356" data-select2-id="495">AE1NC - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (356)</option><option value="570" data-select2-id="496">AE1NN - Y tế hạng A, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (570)</option><option value="336" data-select2-id="497">AE2AC - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (336)</option><option value="543" data-select2-id="498">AE2AN - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (543)</option><option value="359" data-select2-id="499">AE2NC - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (359)</option><option value="580" data-select2-id="500">AE2NN - Y tế hạng A, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (580)</option><option value="347" data-select2-id="501">AE3AC - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (347)</option><option value="552" data-select2-id="502">AE3AN - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (552)</option><option value="362" data-select2-id="503">AE3NC - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (362)</option><option value="589" data-select2-id="504">AE3NN - Y tế hạng A, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (589)</option><option value="353" data-select2-id="505">AE4AC - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (353)</option><option value="561" data-select2-id="506">AE4AN - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (561)</option><option value="365" data-select2-id="507">AE4NC - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (365)</option><option value="598" data-select2-id="508">AE4NN - Y tế hạng A, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (598)</option><option value="804" data-select2-id="509">AW1AC - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (804)</option><option value="533" data-select2-id="510">AW1AN - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (533)</option><option value="261" data-select2-id="511">AW1NC - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (261)</option><option value="569" data-select2-id="512">AW1NN - Y tế hạng A, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (569)</option><option value="239" data-select2-id="513">AW2AC - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (239)</option><option value="542" data-select2-id="514">AW2AN - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (542)</option><option value="263" data-select2-id="515">AW2NC - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (263)</option><option value="578" data-select2-id="516">AW2NN - Y tế hạng A, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (578)</option><option value="746" data-select2-id="517">AW3AC - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (746)</option><option value="551" data-select2-id="518">AW3AN - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (551)</option><option value="265" data-select2-id="519">AW3NC - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (265)</option><option value="587" data-select2-id="520">AW3NN - Y tế hạng A, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (587)</option><option value="693" data-select2-id="521">AW4AC - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (693)</option><option value="560" data-select2-id="522">AW4AN - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng A, Không Thuê xe, Mã Phiên bản 2 (560)</option><option value="267" data-select2-id="523">AW4NC - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (267)</option><option value="596" data-select2-id="524">AW4NN - Y tế hạng A, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (596)</option><option value="339" data-select2-id="525">BA1BC - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (339)</option><option value="538" data-select2-id="526">BA1BN - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (538)</option><option value="342" data-select2-id="527">BA1NC - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (342)</option><option value="574" data-select2-id="528">BA1NN - Y tế hạng B, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (574)</option><option value="346" data-select2-id="529">BA2BC - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (346)</option><option value="547" data-select2-id="530">BA2BN - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (547)</option><option value="352" data-select2-id="531">BA2NC - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (352)</option><option value="582" data-select2-id="532">BA2NN - Y tế hạng B, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (582)</option><option value="370" data-select2-id="533">BA3BC - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (370)</option><option value="556" data-select2-id="534">BA3BN - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (556)</option><option value="373" data-select2-id="535">BA3NC - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (373)</option><option value="591" data-select2-id="536">BA3NN - Y tế hạng B, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (591)</option><option value="376" data-select2-id="537">BA4BC - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (376)</option><option value="565" data-select2-id="538">BA4BN - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (565)</option><option value="379" data-select2-id="539">BA4NC - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (379)</option><option value="600" data-select2-id="540">BA4NN - Y tế hạng B, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (600)</option><option value="334" data-select2-id="541">BE1BC - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (334)</option><option value="537" data-select2-id="542">BE1BN - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (537)</option><option value="357" data-select2-id="543">BE1NC - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (357)</option><option value="573" data-select2-id="544">BE1NN - Y tế hạng B, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (573)</option><option value="337" data-select2-id="545">BE2BC - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (337)</option><option value="546" data-select2-id="546">BE2BN - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (546)</option><option value="360" data-select2-id="547">BE2NC - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (360)</option><option value="583" data-select2-id="548">BE2NN - Y tế hạng B, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (583)</option><option value="349" data-select2-id="549">BE3BC - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (349)</option><option value="555" data-select2-id="550">BE3BN - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (555)</option><option value="363" data-select2-id="551">BE3NC - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (363)</option><option value="592" data-select2-id="552">BE3NN - Y tế hạng B, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (592)</option><option value="354" data-select2-id="553">BE4BC - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (354)</option><option value="564" data-select2-id="554">BE4BN - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (564)</option><option value="366" data-select2-id="555">BE4NC - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (366)</option><option value="601" data-select2-id="556">BE4NN - Y tế hạng B, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (601)</option><option value="747" data-select2-id="557">BW1BC - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (747)</option><option value="536" data-select2-id="558">BW1BN - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (536)</option><option value="269" data-select2-id="559">BW1NC - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (269)</option><option value="572" data-select2-id="560">BW1NN - Y tế hạng B, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (572)</option><option value="545" data-select2-id="561">BW2BC - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (545)</option><option value="738" data-select2-id="562">BW2BN - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (738)</option><option value="271" data-select2-id="563">BW2NC - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (271)</option><option value="581" data-select2-id="564">BW2NN - Y tế hạng B, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (581)</option><option value="247" data-select2-id="565">BW3BC - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (247)</option><option value="554" data-select2-id="566">BW3BN - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (554)</option><option value="273" data-select2-id="567">BW3NC - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (273)</option><option value="590" data-select2-id="568">BW3NN - Y tế hạng B, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (590)</option><option value="248" data-select2-id="569">BW4BC - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng B, Có Thuê xe, Mã Phiên bản 1 (248)</option><option value="563" data-select2-id="570">BW4BN - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng B, Không Thuê xe, Mã Phiên bản 2 (563)</option><option value="275" data-select2-id="571">BW4NC - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (275)</option><option value="599" data-select2-id="572">BW4NN - Y tế hạng B, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (599)</option><option value="340" data-select2-id="573">CA1CC - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (340)</option><option value="541" data-select2-id="574">CA1CN - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (541)</option><option value="343" data-select2-id="575">CA1NC - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (343)</option><option value="577" data-select2-id="576">CA1NN - Y tế hạng C, Châu Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (577)</option><option value="348" data-select2-id="577">CA2CC - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (348)</option><option value="550" data-select2-id="578">CA2CN - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (550)</option><option value="368" data-select2-id="579">CA2NC - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (368)</option><option value="585" data-select2-id="580">CA2NN - Y tế hạng C, Châu Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (585)</option><option value="371" data-select2-id="581">CA3CC - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (371)</option><option value="559" data-select2-id="582">CA3CN - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (559)</option><option value="374" data-select2-id="583">CA3NC - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (374)</option><option value="594" data-select2-id="584">CA3NN - Y tế hạng C, Châu Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (594)</option><option value="377" data-select2-id="585">CA4CC - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (377)</option><option value="568" data-select2-id="586">CA4CN - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (568)</option><option value="380" data-select2-id="587">CA4NC - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (380)</option><option value="603" data-select2-id="588">CA4NN - Y tế hạng C, Châu Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (603)</option><option value="335" data-select2-id="589">CE1CC - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (335)</option><option value="540" data-select2-id="590">CE1CN - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (540)</option><option value="358" data-select2-id="591">CE1NC - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (358)</option><option value="576" data-select2-id="592">CE1NN - Y tế hạng C, Đông nam Á, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (576)</option><option value="345" data-select2-id="593">CE2CC - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (345)</option><option value="549" data-select2-id="594">CE2CN - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (549)</option><option value="361" data-select2-id="595">CE2NC - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (361)</option><option value="586" data-select2-id="596">CE2NN - Y tế hạng C, Đông nam Á, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (586)</option><option value="350" data-select2-id="597">CE3CC - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (350)</option><option value="558" data-select2-id="598">CE3CN - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (558)</option><option value="364" data-select2-id="599">CE3NC - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (364)</option><option value="595" data-select2-id="600">CE3NN - Y tế hạng C, Đông nam Á, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (595)</option><option value="355" data-select2-id="601">CE4CC - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (355)</option><option value="567" data-select2-id="602">CE4CN - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (567)</option><option value="367" data-select2-id="603">CE4NC - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (367)</option><option value="604" data-select2-id="604">CE4NN - Y tế hạng C, Đông nam Á, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (604)</option><option value="424" data-select2-id="605">CW1CC - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (424)</option><option value="539" data-select2-id="606">CW1CN - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (539)</option><option value="744" data-select2-id="607">CW1NC - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (744)</option><option value="575" data-select2-id="608">CW1NN - Y tế hạng C, Toàn cầu, Tai nạn 400 triệu, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (575)</option><option value="805" data-select2-id="609">CW2CC - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (805)</option><option value="548" data-select2-id="610">CW2CN - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (548)</option><option value="279" data-select2-id="611">CW2NC - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (279)</option><option value="584" data-select2-id="612">CW2NN - Y tế hạng C, Toàn cầu, Tai nạn 1 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (584)</option><option value="255" data-select2-id="613">CW3CC - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (255)</option><option value="557" data-select2-id="614">CW3CN - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (557)</option><option value="281" data-select2-id="615">CW3NC - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (281)</option><option value="593" data-select2-id="616">CW3NN - Y tế hạng C, Toàn cầu, Tai nạn 2 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (593)</option><option value="256" data-select2-id="617">CW4CC - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng C, Có Thuê xe, Mã Phiên bản 1 (256)</option><option value="566" data-select2-id="618">CW4CN - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Với Sự cố hạng C, Không Thuê xe, Mã Phiên bản 2 (566)</option><option value="283" data-select2-id="619">CW4NC - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Có Thuê xe, Mã Phiên bản 1 (283)</option><option value="602" data-select2-id="620">CW4NN - Y tế hạng C, Toàn cầu, Tai nạn 5 tỷ, Không bao gồm Sự cố, Không Thuê xe, Mã Phiên bản 2 (602)</option></select><span class="select2 select2-container select2-container--bootstrap4 select2-container--below" dir="ltr" data-select2-id="179" style="width: 286.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-plan-container"><span class="select2-selection__rendered" id="select2-plan-container" role="textbox" aria-readonly="true" title="AA3AC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (369)">AA3AC - Y tế hạng A, Châu Á, Tai nạn 2 tỷ, Với Sự cố hạng A, Có Thuê xe, Mã Phiên bản 1 (369)</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    <div class="input-group-append">
+
+        
+            <button type="button" id="btn-modal-plan" class="form-control border-warning has_car_rental btn btn-default" data-toggle="modal" data-target="#modal-plan">
+                <i class="fa fa-search"></i>
+            </button>
+
+        
+        
+
+    </div>
+
+
+</div>
+
+
+
+ </div> 
+
+
+
+</div>
+
+
+<div class="row mb-3">
+
+    <div id="branch-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="branch" id="branch-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Chi nhánh của công ty bán bảo hiểm">Chi nhánh</label>
+
+    
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-branch">
+
+
+
+
+
+<select id="branch" required="" class="form-control select2 readonly valid-if-hidden select2-hidden-accessible" disabled="" data-all="0" data-parents="" data-select2-id="branch" tabindex="-1" aria-hidden="true">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="H09" selected="" data-select2-id="183">H09 - BHV Hồ Chí Minh</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--disabled" dir="ltr" data-select2-id="182" style="width: 307px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="true" aria-labelledby="select2-branch-container"><span class="select2-selection__rendered" id="select2-branch-container" role="textbox" aria-readonly="true" title="H09 - BHV Hồ Chí Minh">H09 - BHV Hồ Chí Minh</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </div> 
+
+
+
+    <div id="agent-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="agent" id="agent-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Người môi giới bán bảo hiểm">Người môi giới</label>
+
+    
+    
+        <span id="agent-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-agent" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-agent">
+
+
+ 
+<input id="agent" name="agent" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="255">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3  d-none ">
+
+    
+    <div id="message_file-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="message_file" id="message_file-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Dùng để tính ngày phát hành nếu tạo đơn trễ, đồng thời cũng để làm bằng chứng">Tin nhắn</label>
+
+    
+    
+        <span id="message_file-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-message_file" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-message_file">
+
+
+
+
+<input type="hidden" class="old-message_file" name="old_message_file" value="[]">
+
+
+
+<input type="text" class="
+        form-control
+        border-warning
+        
+          file-input-display           valid-if-hidden     " id="input-message_file" name="input_message_file" placeholder="" for="message_file" readonly="">
+
+
+    <div class="input-group-append">
+        <button type="button" id="btn-clear-message_file" class="btn btn-default btn-clear-file border-warning">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+
+<input id="message_file" name="message_file" type="file" class="file-input valid-if-hidden d-none ">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+    <div id="itinerary-wrapper" class="input-wrapper col-md-6 d-none">
+
+    
+        <label for="itinerary" id="itinerary-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Hành trình (ghép từ mã sân bay những nơi đi qua, không được có 2 mã sân bay kế cận trùng nhau)">Hành trình</label>
+
+    
+    
+        <span id="itinerary-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-itinerary" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-itinerary">
+
+
+ 
+<input id="itinerary" name="itinerary" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        
+         valid-if-hidden     " value="" maxlength="100">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3">
+
+    <div id="note-wrapper" class="input-wrapper col-md-12 ">
+
+    
+        <label for="note" id="note-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Ghi chú (nếu có)">Ghi chú</label>
+
+    
+    
+        <span id="note-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-note" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-note">
+
+
+ 
+<textarea id="note" name="note" placeholder="" rows="7" class="
+        form-control
+        border-warning
+        allow-enter
+        
+                                        
+         valid-if-hidden     "></textarea>
+
+ </div>
+
+
+
+ </div> 
+
+ 
+</div>
+
+<div class="row mb-3 d-none">
+
+    <div id="inv_amount-wrapper" class="input-wrapper col-md-6 ">
+
+    
+        <label for="inv_amount" id="inv_amount-label" class="col-form-label text-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Số tiền trên hóa đơn">Số tiền trên hóa đơn</label>
+
+    
+    
+        <span id="inv_amount-required" class="text-danger required-mark  d-none ">*</span>
+        <span id="result-inv_amount" class="float-right control-result"></span>
+
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-inv_amount">
+
+
+ 
+<input id="inv_amount" name="inv_amount" placeholder="" type="number" min="0" class="
+        form-control
+        border-warning
+        
+        
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+</div>
+    <br>
+
+<div class="item">
+
+    <div class="card">
+
+        <div class="card-header bg-info text-white">
+
+            <div class="float-left">
+                <h1>Những người được bảo hiểm</h1>
+            </div>
+
+            
+                <div class="float-right">
+
+                    <div class="row text-right">
+
+                        <div id="import_members-wrapper" class="input-wrapper col-md-10 header-input ">
+
+    
+    
+    
+
+
+<div class="input-group border-warning" id="input-group-import_members">
+
+
+
+
+<input type="hidden" class="old-import_members" name="old_import_members" value="[]">
+
+
+    <div class="input-group-prepend">
+
+        <a id="import_members-template" href="https://paris.pacificcross.com.vn/xlsx/import/member/vi/template_car.xlsx" class="btn btn-default btn-template-file border-warning">
+            <i class="fa fa-download"></i>
+        </a>
+
+    </div>
+
+
+
+<input type="text" class="
+        form-control
+        border-warning
+        border-info
+          file-input-display           valid-if-hidden     " id="input-import_members" name="input_import_members" placeholder="Nhập người được bảo hiểm từ file Excel" for="import_members" readonly="">
+
+
+    <div class="input-group-append">
+        <button type="button" id="btn-clear-import_members" class="btn btn-default btn-clear-file border-warning">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+
+<input id="import_members" name="import_members" data-template="https://paris.pacificcross.com.vn/xlsx/import/member/vi/template" type="file" class="file-input valid-if-hidden d-none " accept=".xlsx">
+
+  </div>
+
+
+
+ </div> 
+
+ 
+                        <h1 class="col-md-1" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Thêm người được bảo hiểm">
+                            <a id="person-add"><i class="fa fa-plus text-white"></i></a>
+                        </h1>
+
+                    </div>
+
+                </div>
+
+            
+            <input type="hidden" id="member-count" name="member_count" value="1">
+            <input type="hidden" id="member-row-deleted" name="member_row_deleted">
+
+            <div class="clearfix"></div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-striped table-bordered">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="text-center"><i class="fa fa-cog"></i></th>
+
+                        <th class="text-center memb_type-wrapper non-domestic-group-annual d-none" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Bắt buộc phải có ít nhất 1 người chính, có thể có 1 vơ/chồng và ít nhất 1 con">
+
+    Loại Thành viên
+
+    <span id="header-memb_type-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="
+        text-center
+        name-wrapper
+        
+    " data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tên đầy đủ của người được bảo hiểm">
+
+    Họ tên
+
+    <span id="header-name-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="
+        text-center
+        dob-wrapper
+        
+    " data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tuổi sẽ được tính tự động">
+
+    Ngày sinh
+
+    <span id="header-dob-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="
+        text-center
+        age-wrapper
+        
+    " data-toggle="tooltip" data-html="true" data-placement="bottom" title="Tự động tính khi đã có ngày khởi hành và ngày sinh của người được bảo hiểm">
+
+    Tuổi
+
+    <span id="header-age-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="
+        text-center
+        gender-wrapper
+        
+    " data-toggle="tooltip" data-html="true" data-placement="bottom" title="Giới tính của người được bảo hiểm (vợ chồng phải khác giới tính)">
+
+    Giới tính
+
+    <span id="header-gender-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="text-center country-wrapper non-domestic-annual" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Quốc gia cư trú của người được bảo hiểm (sẽ không được bảo hiểm ở quốc gia này)">
+
+    Nước Cư trú
+
+    <span id="header-country-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="
+        text-center
+        personal_id-wrapper
+        
+    " data-toggle="tooltip" data-html="true" data-placement="bottom" title="Bắt buộc nếu người được bảo hiểm trên 18 tuổi">
+
+    CMND/Hộ chiếu
+
+    <span id="header-personal_id-required" class="text-info required-mark ">*</span>
+
+</th>
+
+                        <th class="text-center tel_no-wrapper non-domestic-group" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Có thể nhập số điện thoại của người được bảo hiểm hoặc bất cứ ai liên hệ">
+
+    Số Điện thoại
+
+    <span id="header-tel_no-required" class="text-danger required-mark  d-none ">*</span>
+
+</th>
+
+                        <th class="text-center email-wrapper non-domestic-group" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Có thể nhập thư điện tử của người được bảo hiểm hoặc bất cứ ai liên hệ">
+
+    Địa chỉ Thư điện tử
+
+    <span id="header-email-required" class="text-danger required-mark  d-none ">*</span>
+
+</th>
+
+                        <th class="text-center beneficiary-wrapper non-domestic-group" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Người thụ hưởng nếu người được bảo hiểm gặp bất trắc">
+
+    Người thụ hưởng
+
+    <span id="header-beneficiary-required" class="text-danger required-mark  d-none ">*</span>
+
+</th>
+
+                        <th class="text-center relationship-wrapper non-domestic-group" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Quan hệ giữa người thụ hưởng và người được bảo hiểm (bắt buộc phải có nếu có chỉ định người thụ hưởng)">
+
+    Quan hệ
+
+    <span id="header-relationship-required" class="text-danger required-mark  d-none ">*</span>
+
+</th>
+
+                        <th class="text-center pct-wrapper non-domestic-group" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Phần trăm quyền lợi người thụ hưởng được nhận (bắt buộc phải có nếu có chỉ định người thụ hưởng)">
+
+    % cho người thụ hưởng
+
+    <span id="header-pct-required" class="text-danger required-mark  d-none ">*</span>
+
+</th>
+
+                        <th class="text-center car_rental-wrapper" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Người được bảo hiểm có chọn thuê xe không?">
+
+    Thuê xe
+
+    <span id="header-car_rental-required" class="text-danger required-mark ">*</span>
+
+</th>
+
+                        <th class="text-center car_rental_date-wrapper" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Ngày bắt đầu thuê xe (bắt buộc phải có nếu có chọn thuê xe)">
+
+    Ngày thuê xe
+
+    <span id="header-car_rental_date-required" class="text-info required-mark ">*</span>
+
+</th>
+
+                        <th class="text-center car_rental_days-wrapper" data-toggle="tooltip" data-html="true" data-placement="bottom" title="Số ngày thuê xe (bắt buộc phải có nếu có chọn thuê xe)">
+
+    Số ngày thuê xe
+
+    <span id="header-car_rental_days-required" class="text-info required-mark ">*</span>
+
+</th>
+
+                        
+                    </tr>
+
+                </thead>
+
+                <tbody id="insured-persons">
+                    
+    
+        
+            <tr id="person-1" class="new-person">
+
+                <td class="text-center"><a class="del-button" data-id="1"><i class="fa fa-minus text-dark"></i></a></td>
+
+                <td class="min-width-150px input-wrapper memb_type-wrapper non-domestic-group-annual d-none">
+
+
+<div class="input-group border-warning" id="input-group-memb_type_1">
+
+
+
+
+
+<select id="memb_type_1" data-id="1" name="memb_type_1" required="" class="form-control select2 memb_type valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" disabled="" data-select2-id="memb_type_1" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="185">&nbsp;</option>
+    
+    
+        
+            
+                <option value="MBR_TYPE_A">Người chính</option>
+
+            
+                <option value="MBR_TYPE_S">Vợ chồng</option>
+
+            
+                <option value="MBR_TYPE_C">Con</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4 select2-container--disabled" dir="ltr" data-select2-id="184" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="true" aria-labelledby="select2-memb_type_1-container"><span class="select2-selection__rendered" id="select2-memb_type_1-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                <td class="min-width-450px input-wrapper name-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-name_1">
+
+
+ 
+<input id="name_1" data-id="1" name="name_1" placeholder="" required="" data-original="" data-edited="0" type="text" class="
+        form-control
+        border-warning
+        
+                                        name
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper dob-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-dob_1">
+
+
+ 
+<input id="dob_1" data-id="1" name="dob_1" placeholder="" required="" data-original="" data-edited="0" data-max-date="2025-12-06" type="text" class="
+        form-control
+        border-warning
+        
+                                        dob
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper age-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-age_1">
+
+
+ 
+<input id="age_1" data-id="1" name="age_1" placeholder="" required="" readonly="" type="number" min="0" max="100" class="
+        form-control
+        border-warning
+        
+        age
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper gender-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-gender_1">
+
+
+
+
+
+<select id="gender_1" data-id="1" name="gender_1" required="" class="form-control select2 gender valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="gender_1" tabindex="-1" aria-hidden="true">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="F">Nữ</option>
+
+            
+                <option value="M">Nam</option>
+
+            
+                <option value="" selected="" data-select2-id="187"></option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="186" style="width: 75.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-gender_1-container"><span class="select2-selection__rendered" id="select2-gender_1-container" role="textbox" aria-readonly="true"></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                <td class="min-width-150px input-wrapper country-wrapper non-domestic-annual">
+
+
+<div class="input-group border-warning" id="input-group-country_1">
+
+
+
+
+
+<select id="country_1" data-id="1" name="country_1" required="" class="form-control select2 country valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="country_1" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="189">&nbsp;</option>
+    
+    
+        
+            
+                <option value="AFGHANISTAN">AFGHANISTAN</option>
+
+            
+                <option value="ALBANIA">ALBANIA</option>
+
+            
+                <option value="ALGERIA">ALGERIA</option>
+
+            
+                <option value="AMERICAN SAMOA">AMERICAN SAMOA</option>
+
+            
+                <option value="ANDORRA">ANDORRA</option>
+
+            
+                <option value="ANGOLA">ANGOLA</option>
+
+            
+                <option value="ANGUILLA">ANGUILLA</option>
+
+            
+                <option value="ANTARCTICA">ANTARCTICA</option>
+
+            
+                <option value="ANTIGUA AND BARBUDA">ANTIGUA AND BARBUDA</option>
+
+            
+                <option value="ARGENTINE REPUBLIC">ARGENTINE REPUBLIC</option>
+
+            
+                <option value="ARMENIA">ARMENIA</option>
+
+            
+                <option value="ARUBA">ARUBA</option>
+
+            
+                <option value="ASCENSION">ASCENSION</option>
+
+            
+                <option value="AUSTRALIA">AUSTRALIA</option>
+
+            
+                <option value="AUSTRALIAN EXTERNAL TERRITORIES">AUSTRALIAN EXTERNAL TERRITORIES</option>
+
+            
+                <option value="AUSTRIA">AUSTRIA</option>
+
+            
+                <option value="AZERBAIJANI REPUBLIC">AZERBAIJANI REPUBLIC</option>
+
+            
+                <option value="BAHAMAS">BAHAMAS</option>
+
+            
+                <option value="BAHRAIN">BAHRAIN</option>
+
+            
+                <option value="BANGLADESH">BANGLADESH</option>
+
+            
+                <option value="BARBADOS">BARBADOS</option>
+
+            
+                <option value="BELARUS">BELARUS</option>
+
+            
+                <option value="BELGIUM">BELGIUM</option>
+
+            
+                <option value="BELIZE">BELIZE</option>
+
+            
+                <option value="BENIN">BENIN</option>
+
+            
+                <option value="BERMUDA">BERMUDA</option>
+
+            
+                <option value="BHUTAN">BHUTAN</option>
+
+            
+                <option value="BOLIVIA">BOLIVIA</option>
+
+            
+                <option value="BONAIRE">BONAIRE</option>
+
+            
+                <option value="BOSNIA AND HERZEGOVINA">BOSNIA AND HERZEGOVINA</option>
+
+            
+                <option value="BOTSWANA">BOTSWANA</option>
+
+            
+                <option value="BRAZIL">BRAZIL</option>
+
+            
+                <option value="BRITISH VIRGIN ISLANDS">BRITISH VIRGIN ISLANDS</option>
+
+            
+                <option value="BRUNEI DARUSSALAM">BRUNEI DARUSSALAM</option>
+
+            
+                <option value="BULGARIA">BULGARIA</option>
+
+            
+                <option value="BURKINA FASO">BURKINA FASO</option>
+
+            
+                <option value="BURUNDI">BURUNDI</option>
+
+            
+                <option value="CAMBODIA">CAMBODIA</option>
+
+            
+                <option value="CAMEROON">CAMEROON</option>
+
+            
+                <option value="CANADA">CANADA</option>
+
+            
+                <option value="CAPE VERDE">CAPE VERDE</option>
+
+            
+                <option value="CAYMAN ISLANDS">CAYMAN ISLANDS</option>
+
+            
+                <option value="CENTRAL AFRICAN REPUBLIC">CENTRAL AFRICAN REPUBLIC</option>
+
+            
+                <option value="CHAD">CHAD</option>
+
+            
+                <option value="CHILE">CHILE</option>
+
+            
+                <option value="CHINA">CHINA</option>
+
+            
+                <option value="CHRISTMAS ISLAND">CHRISTMAS ISLAND</option>
+
+            
+                <option value="COCOS (KEELING) ISLANDS">COCOS (KEELING) ISLANDS</option>
+
+            
+                <option value="COLOMBIA">COLOMBIA</option>
+
+            
+                <option value="COMOROS">COMOROS</option>
+
+            
+                <option value="CONGO">CONGO</option>
+
+            
+                <option value="COOK ISLANDS">COOK ISLANDS</option>
+
+            
+                <option value="COSTA RICA">COSTA RICA</option>
+
+            
+                <option value="COTE D'IVOIRE">COTE D'IVOIRE</option>
+
+            
+                <option value="CROATIA">CROATIA</option>
+
+            
+                <option value="CUBA">CUBA</option>
+
+            
+                <option value="CURACAO">CURACAO</option>
+
+            
+                <option value="CYPRUS">CYPRUS</option>
+
+            
+                <option value="CZECH REPUBLIC">CZECH REPUBLIC</option>
+
+            
+                <option value="DEMO. REP. OF THE CONGO">DEMO. REP. OF THE CONGO</option>
+
+            
+                <option value="DEMOCRATIC PEOPLE'S REP. OF KOREA">DEMOCRATIC PEOPLE'S REP. OF KOREA</option>
+
+            
+                <option value="DENMARK">DENMARK</option>
+
+            
+                <option value="DIEGO GARCIA">DIEGO GARCIA</option>
+
+            
+                <option value="DJIBOUTI">DJIBOUTI</option>
+
+            
+                <option value="DOMINICA">DOMINICA</option>
+
+            
+                <option value="DOMINICAN REPUBLIC">DOMINICAN REPUBLIC</option>
+
+            
+                <option value="EAST TIMOR">EAST TIMOR</option>
+
+            
+                <option value="ECUADOR">ECUADOR</option>
+
+            
+                <option value="EGYPT">EGYPT</option>
+
+            
+                <option value="EL SALVADOR">EL SALVADOR</option>
+
+            
+                <option value="EQUATORIAL GUINEA">EQUATORIAL GUINEA</option>
+
+            
+                <option value="ERITREA">ERITREA</option>
+
+            
+                <option value="ESTONIA">ESTONIA</option>
+
+            
+                <option value="ETHIOPIA">ETHIOPIA</option>
+
+            
+                <option value="FALKLAND ISLANDS">FALKLAND ISLANDS</option>
+
+            
+                <option value="FAROE ISLANDS">FAROE ISLANDS</option>
+
+            
+                <option value="FIJI">FIJI</option>
+
+            
+                <option value="FINLAND">FINLAND</option>
+
+            
+                <option value="FRANCE">FRANCE</option>
+
+            
+                <option value="FRENCH GUIANA">FRENCH GUIANA</option>
+
+            
+                <option value="FRENCH POLYNESIA">FRENCH POLYNESIA</option>
+
+            
+                <option value="GABONESE REPUBLIC">GABONESE REPUBLIC</option>
+
+            
+                <option value="GAMBIA">GAMBIA</option>
+
+            
+                <option value="GEORGIA">GEORGIA</option>
+
+            
+                <option value="GERMANY">GERMANY</option>
+
+            
+                <option value="GHANA">GHANA</option>
+
+            
+                <option value="GIBRALTAR">GIBRALTAR</option>
+
+            
+                <option value="GREECE">GREECE</option>
+
+            
+                <option value="GREENLAND">GREENLAND</option>
+
+            
+                <option value="GRENADA">GRENADA</option>
+
+            
+                <option value="GUADELOUPE">GUADELOUPE</option>
+
+            
+                <option value="GUAM">GUAM</option>
+
+            
+                <option value="GUATEMALA">GUATEMALA</option>
+
+            
+                <option value="GUINEA">GUINEA</option>
+
+            
+                <option value="GUINEA-BISSAU">GUINEA-BISSAU</option>
+
+            
+                <option value="GUYANA">GUYANA</option>
+
+            
+                <option value="HAITI">HAITI</option>
+
+            
+                <option value="HONDURAS">HONDURAS</option>
+
+            
+                <option value="HONG KONG">HONG KONG</option>
+
+            
+                <option value="HUNGARY">HUNGARY</option>
+
+            
+                <option value="ICELAND">ICELAND</option>
+
+            
+                <option value="INDIA">INDIA</option>
+
+            
+                <option value="INDONESIA">INDONESIA</option>
+
+            
+                <option value="IRAN">IRAN</option>
+
+            
+                <option value="IRAQ">IRAQ</option>
+
+            
+                <option value="IRELAND">IRELAND</option>
+
+            
+                <option value="ISLE OF MAN">ISLE OF MAN</option>
+
+            
+                <option value="ISRAEL">ISRAEL</option>
+
+            
+                <option value="ITALY">ITALY</option>
+
+            
+                <option value="JAMAICA">JAMAICA</option>
+
+            
+                <option value="JAPAN">JAPAN</option>
+
+            
+                <option value="JORDAN">JORDAN</option>
+
+            
+                <option value="KAZAKHSTAN">KAZAKHSTAN</option>
+
+            
+                <option value="KENYA">KENYA</option>
+
+            
+                <option value="KIRIBATI">KIRIBATI</option>
+
+            
+                <option value="KOREA">KOREA</option>
+
+            
+                <option value="KUWAIT">KUWAIT</option>
+
+            
+                <option value="KYRGYZ REPUBLIC">KYRGYZ REPUBLIC</option>
+
+            
+                <option value="LAOS">LAOS</option>
+
+            
+                <option value="LATVIA">LATVIA</option>
+
+            
+                <option value="LEBANON">LEBANON</option>
+
+            
+                <option value="LESOTHO">LESOTHO</option>
+
+            
+                <option value="LIBERIA">LIBERIA</option>
+
+            
+                <option value="LIBYA">LIBYA</option>
+
+            
+                <option value="LIECHTENSTEIN">LIECHTENSTEIN</option>
+
+            
+                <option value="LITHUANIA">LITHUANIA</option>
+
+            
+                <option value="LUXEMBOURG">LUXEMBOURG</option>
+
+            
+                <option value="MACAU">MACAU</option>
+
+            
+                <option value="MADAGASCAR">MADAGASCAR</option>
+
+            
+                <option value="MALAWI">MALAWI</option>
+
+            
+                <option value="MALAYSIA">MALAYSIA</option>
+
+            
+                <option value="MALDIVES">MALDIVES</option>
+
+            
+                <option value="MALI">MALI</option>
+
+            
+                <option value="MALTA">MALTA</option>
+
+            
+                <option value="MARSHALL ISLANDS">MARSHALL ISLANDS</option>
+
+            
+                <option value="MARTINIQUE">MARTINIQUE</option>
+
+            
+                <option value="MAURITANIA">MAURITANIA</option>
+
+            
+                <option value="MAURITIUS">MAURITIUS</option>
+
+            
+                <option value="MAYOTTE">MAYOTTE</option>
+
+            
+                <option value="MEXICO">MEXICO</option>
+
+            
+                <option value="MICRONESIA">MICRONESIA</option>
+
+            
+                <option value="MOLDOVA">MOLDOVA</option>
+
+            
+                <option value="MONACO">MONACO</option>
+
+            
+                <option value="MONGOLIA">MONGOLIA</option>
+
+            
+                <option value="MONTENEGRO">MONTENEGRO</option>
+
+            
+                <option value="MONTSERRAT">MONTSERRAT</option>
+
+            
+                <option value="MOROCCO">MOROCCO</option>
+
+            
+                <option value="MOZAMBIQUE">MOZAMBIQUE</option>
+
+            
+                <option value="MYANMAR">MYANMAR</option>
+
+            
+                <option value="NAMIBIA">NAMIBIA</option>
+
+            
+                <option value="NAURU">NAURU</option>
+
+            
+                <option value="NEPAL">NEPAL</option>
+
+            
+                <option value="NETHERLANDS">NETHERLANDS</option>
+
+            
+                <option value="NETHERLANDS ANTILLES">NETHERLANDS ANTILLES</option>
+
+            
+                <option value="NEW CALEDONIA">NEW CALEDONIA</option>
+
+            
+                <option value="NEW ZEALAND">NEW ZEALAND</option>
+
+            
+                <option value="NICARAGUA">NICARAGUA</option>
+
+            
+                <option value="NIGER">NIGER</option>
+
+            
+                <option value="NIGERIA">NIGERIA</option>
+
+            
+                <option value="NIUE">NIUE</option>
+
+            
+                <option value="NORFOLK ISLAND">NORFOLK ISLAND</option>
+
+            
+                <option value="NORTHERN MARIANA ISLANDS">NORTHERN MARIANA ISLANDS</option>
+
+            
+                <option value="NORWAY">NORWAY</option>
+
+            
+                <option value="OMAN">OMAN</option>
+
+            
+                <option value="PAKISTAN">PAKISTAN</option>
+
+            
+                <option value="PALAU">PALAU</option>
+
+            
+                <option value="PALESTINE">PALESTINE</option>
+
+            
+                <option value="PANAMA">PANAMA</option>
+
+            
+                <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+
+            
+                <option value="PARAGUAY">PARAGUAY</option>
+
+            
+                <option value="PERU">PERU</option>
+
+            
+                <option value="PHILIPPINES">PHILIPPINES</option>
+
+            
+                <option value="POLAND">POLAND</option>
+
+            
+                <option value="PORTUGAL">PORTUGAL</option>
+
+            
+                <option value="PUERTO RICO">PUERTO RICO</option>
+
+            
+                <option value="QATAR">QATAR</option>
+
+            
+                <option value="REUNION">REUNION</option>
+
+            
+                <option value="ROMANIA">ROMANIA</option>
+
+            
+                <option value="RUSSIAN FEDERATION">RUSSIAN FEDERATION</option>
+
+            
+                <option value="RWANDESE REPUBLIC">RWANDESE REPUBLIC</option>
+
+            
+                <option value="SAINT HELENA">SAINT HELENA</option>
+
+            
+                <option value="SAINT KITTS AND NEVIS">SAINT KITTS AND NEVIS</option>
+
+            
+                <option value="SAINT LUCIA">SAINT LUCIA</option>
+
+            
+                <option value="SAINT PIERRE AND MIQUELON">SAINT PIERRE AND MIQUELON</option>
+
+            
+                <option value="SAIPAN">SAIPAN</option>
+
+            
+                <option value="SAMOA">SAMOA</option>
+
+            
+                <option value="SAN MARINO">SAN MARINO</option>
+
+            
+                <option value="SAO TOME AND PRINCIPE">SAO TOME AND PRINCIPE</option>
+
+            
+                <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+
+            
+                <option value="SENEGAL">SENEGAL</option>
+
+            
+                <option value="SERBIA">SERBIA</option>
+
+            
+                <option value="SEYCHELLES">SEYCHELLES</option>
+
+            
+                <option value="SIERRA LEONE">SIERRA LEONE</option>
+
+            
+                <option value="SINGAPORE">SINGAPORE</option>
+
+            
+                <option value="SLOVAK REPUBLIC">SLOVAK REPUBLIC</option>
+
+            
+                <option value="SLOVENIA">SLOVENIA</option>
+
+            
+                <option value="SOLOMON ISLANDS">SOLOMON ISLANDS</option>
+
+            
+                <option value="SOMALI DEMO. REPUBLIC">SOMALI DEMO. REPUBLIC</option>
+
+            
+                <option value="SOUTH AFRICA">SOUTH AFRICA</option>
+
+            
+                <option value="SOUTH SUDAN">SOUTH SUDAN</option>
+
+            
+                <option value="SPAIN">SPAIN</option>
+
+            
+                <option value="SRI LANKA">SRI LANKA</option>
+
+            
+                <option value="ST. VINCENT &amp; THE GRENADINES">ST. VINCENT &amp; THE GRENADINES</option>
+
+            
+                <option value="SUDAN">SUDAN</option>
+
+            
+                <option value="SURINAME">SURINAME</option>
+
+            
+                <option value="SVALBARD AND JAN MAYEN">SVALBARD AND JAN MAYEN</option>
+
+            
+                <option value="SWAZILAND">SWAZILAND</option>
+
+            
+                <option value="SWEDEN">SWEDEN</option>
+
+            
+                <option value="SWITZERLAND">SWITZERLAND</option>
+
+            
+                <option value="SYRIAN ARAB REPUBLIC">SYRIAN ARAB REPUBLIC</option>
+
+            
+                <option value="TAIWAN">TAIWAN</option>
+
+            
+                <option value="TAJIKISTAN">TAJIKISTAN</option>
+
+            
+                <option value="TANZANIA">TANZANIA</option>
+
+            
+                <option value="THAILAND">THAILAND</option>
+
+            
+                <option value="THE FORMER YUGO. REP. OF MACEDONIA">THE FORMER YUGO. REP. OF MACEDONIA</option>
+
+            
+                <option value="TINIAN">TINIAN</option>
+
+            
+                <option value="TOGOLESE REPUBLIC">TOGOLESE REPUBLIC</option>
+
+            
+                <option value="TOKELAU">TOKELAU</option>
+
+            
+                <option value="TONGA">TONGA</option>
+
+            
+                <option value="TRINIDAD AND TOBAGO">TRINIDAD AND TOBAGO</option>
+
+            
+                <option value="TUNISIA">TUNISIA</option>
+
+            
+                <option value="TURKEY">TURKEY</option>
+
+            
+                <option value="TURKMENISTAN">TURKMENISTAN</option>
+
+            
+                <option value="TURKS AND CAICOS ISLANDS">TURKS AND CAICOS ISLANDS</option>
+
+            
+                <option value="TUVALU">TUVALU</option>
+
+            
+                <option value="U.A.E.">U.A.E.</option>
+
+            
+                <option value="U.K.">U.K.</option>
+
+            
+                <option value="U.S.A.">U.S.A.</option>
+
+            
+                <option value="UGANDA">UGANDA</option>
+
+            
+                <option value="UKRAINE">UKRAINE</option>
+
+            
+                <option value="UNITED STATES MINOR OUTLYING ISLANDS">UNITED STATES MINOR OUTLYING ISLANDS</option>
+
+            
+                <option value="UNITED STATES VIRGIN ISLANDS">UNITED STATES VIRGIN ISLANDS</option>
+
+            
+                <option value="URUGUAY">URUGUAY</option>
+
+            
+                <option value="UZBEKISTAN">UZBEKISTAN</option>
+
+            
+                <option value="VANUATU">VANUATU</option>
+
+            
+                <option value="VATICAN CITY STATE">VATICAN CITY STATE</option>
+
+            
+                <option value="VENEZUELA">VENEZUELA</option>
+
+            
+                <option value="VIETNAM">VIETNAM</option>
+
+            
+                <option value="WALLIS AND FUTUNA">WALLIS AND FUTUNA</option>
+
+            
+                <option value="YEMEN">YEMEN</option>
+
+            
+                <option value="ZAMBIA">ZAMBIA</option>
+
+            
+                <option value="ZIMBABWE">ZIMBABWE</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="188" style="width: 75.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-country_1-container"><span class="select2-selection__rendered" id="select2-country_1-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                <td class="min-width-150px input-wrapper personal_id-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-personal_id_1">
+
+
+ 
+<input id="personal_id_1" data-id="1" name="personal_id_1" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        personal_id
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-450px input-wrapper tel_no-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-tel_no_1">
+
+
+ 
+<input id="tel_no_1" data-id="1" name="tel_no_1" placeholder="" type="text" class="
+        form-control
+        border-warning
+        tel-no
+        
+        tel_no
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-450px input-wrapper email-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-email_1">
+
+
+ 
+<input id="email_1" data-id="1" name="email_1" placeholder="" type="email" class="
+        form-control
+        border-warning
+        
+        email
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-450px input-wrapper beneficiary-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-beneficiary_1">
+
+
+ 
+<input id="beneficiary_1" data-id="1" name="beneficiary_1" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        beneficiary
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper relationship-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-relationship_1">
+
+
+
+
+
+<select id="relationship_1" data-id="1" name="relationship_1" class="form-control select2 relationship valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="relationship_1" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="191">&nbsp;</option>
+    
+    
+        
+            
+                <option value="RELATION_F">Cha</option>
+
+            
+                <option value="RELATION_M">Mẹ</option>
+
+            
+                <option value="RELATION_S">Vợ chồng</option>
+
+            
+                <option value="RELATION_C">Con</option>
+
+            
+                <option value="RELATION_O">Người khác</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="190" style="width: 75.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-relationship_1-container"><span class="select2-selection__rendered" id="select2-relationship_1-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                <td class="min-width-150px input-wrapper pct-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-pct_1">
+
+
+ 
+<input id="pct_1" data-id="1" name="pct_1" placeholder="" type="number" min="0" max="100" class="
+        form-control
+        border-warning
+        
+        pct
+         valid-if-hidden     " value="100">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper car_rental-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_1">
+
+
+
+
+
+<select id="car_rental_1" data-id="1" name="car_rental_1" required="" class="form-control select2 car_rental valid-if-hidden select2-hidden-accessible" data-all="0" data-parents="" data-select2-id="car_rental_1" tabindex="-1" aria-hidden="true">
+
+            <option value="" data-select2-id="193">&nbsp;</option>
+    
+    
+        
+            
+                <option value="YN_Y">Có</option>
+
+            
+                <option value="YN_N">Không</option>
+
+            
+        
+    
+</select><span class="select2 select2-container select2-container--bootstrap4" dir="ltr" data-select2-id="192" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-car_rental_1-container"><span class="select2-selection__rendered" id="select2-car_rental_1-container" role="textbox" aria-readonly="true" title="&nbsp;">&nbsp;</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                <td class="min-width-150px input-wrapper car_rental_date-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_date_1">
+
+
+ 
+<input id="car_rental_date_1" data-id="1" name="car_rental_date_1" placeholder="" autocomplete="off" type="text" class="
+        form-control
+        border-warning
+        
+        car_rental_date
+          date-picker           valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                <td class="min-width-150px input-wrapper car_rental_days-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_days_1">
+
+
+ 
+<input id="car_rental_days_1" data-id="1" name="car_rental_days_1" placeholder="" type="number" min="0" class="
+        form-control
+        border-warning
+        
+        car_rental_days
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+            </tr>
+
+        
+    
+                </tbody>
+
+                <tfoot id="person-row" class="d-none">
+
+                    <tr id="person-xxx" class="new-person">
+
+                        <td class="text-center"><a class="del-button" data-id="xxx"><i class="fa fa-minus text-dark"></i></a></td>
+
+                        <td class="min-width-150px input-wrapper memb_type-wrapper non-domestic-group-annual d-none">
+
+
+<div class="input-group border-warning" id="input-group-memb_type_xxx">
+
+
+
+
+
+<select id="memb_type_xxx" data-id="xxx" name="memb_type_xxx" required="" class="
+        form-control
+        
+        select2-delay
+        memb_type
+                                 valid-if-hidden     " data-all="0" data-parents="" disabled="">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="MBR_TYPE_A">Người chính</option>
+
+            
+                <option value="MBR_TYPE_S">Vợ chồng</option>
+
+            
+                <option value="MBR_TYPE_C">Con</option>
+
+            
+        
+    
+</select>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                        <td class="min-width-450px input-wrapper name-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-name_xxx">
+
+
+ 
+<input id="name_xxx" data-id="xxx" name="name_xxx" placeholder="" required="" data-original="" data-edited="0" type="text" class="
+        form-control
+        border-warning
+        
+                                        name
+         valid-if-hidden     " value="" maxlength="100">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper dob-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-dob_xxx">
+
+
+ 
+<input id="dob_xxx" data-id="xxx" name="dob_xxx" placeholder="" required="" data-original="" data-edited="0" data-max-date="2025-12-06" type="text" class="
+        form-control
+        border-warning
+        
+                                        dob
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper age-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-age_xxx">
+
+
+ 
+<input id="age_xxx" data-id="xxx" name="age_xxx" placeholder="" required="" readonly="" type="number" min="0" max="100" class="
+        form-control
+        border-warning
+        
+        age
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper gender-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-gender_xxx">
+
+
+
+
+
+<select id="gender_xxx" data-id="xxx" name="gender_xxx" required="" class="
+        form-control
+        
+        select2-delay
+        gender
+                                 valid-if-hidden     " data-all="0" data-parents="">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="F">Nữ</option>
+
+            
+                <option value="M">Nam</option>
+
+            
+                <option value="" selected=""></option>
+
+            
+        
+    
+</select>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                        <td class="min-width-150px input-wrapper country-wrapper non-domestic-annual">
+
+
+<div class="input-group border-warning" id="input-group-country_xxx">
+
+
+
+
+
+<select id="country_xxx" data-id="xxx" name="country_xxx" required="" class="
+        form-control
+        
+        select2-delay
+        country
+                                 valid-if-hidden     " data-all="0" data-parents="">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="AFGHANISTAN">AFGHANISTAN</option>
+
+            
+                <option value="ALBANIA">ALBANIA</option>
+
+            
+                <option value="ALGERIA">ALGERIA</option>
+
+            
+                <option value="AMERICAN SAMOA">AMERICAN SAMOA</option>
+
+            
+                <option value="ANDORRA">ANDORRA</option>
+
+            
+                <option value="ANGOLA">ANGOLA</option>
+
+            
+                <option value="ANGUILLA">ANGUILLA</option>
+
+            
+                <option value="ANTARCTICA">ANTARCTICA</option>
+
+            
+                <option value="ANTIGUA AND BARBUDA">ANTIGUA AND BARBUDA</option>
+
+            
+                <option value="ARGENTINE REPUBLIC">ARGENTINE REPUBLIC</option>
+
+            
+                <option value="ARMENIA">ARMENIA</option>
+
+            
+                <option value="ARUBA">ARUBA</option>
+
+            
+                <option value="ASCENSION">ASCENSION</option>
+
+            
+                <option value="AUSTRALIA">AUSTRALIA</option>
+
+            
+                <option value="AUSTRALIAN EXTERNAL TERRITORIES">AUSTRALIAN EXTERNAL TERRITORIES</option>
+
+            
+                <option value="AUSTRIA">AUSTRIA</option>
+
+            
+                <option value="AZERBAIJANI REPUBLIC">AZERBAIJANI REPUBLIC</option>
+
+            
+                <option value="BAHAMAS">BAHAMAS</option>
+
+            
+                <option value="BAHRAIN">BAHRAIN</option>
+
+            
+                <option value="BANGLADESH">BANGLADESH</option>
+
+            
+                <option value="BARBADOS">BARBADOS</option>
+
+            
+                <option value="BELARUS">BELARUS</option>
+
+            
+                <option value="BELGIUM">BELGIUM</option>
+
+            
+                <option value="BELIZE">BELIZE</option>
+
+            
+                <option value="BENIN">BENIN</option>
+
+            
+                <option value="BERMUDA">BERMUDA</option>
+
+            
+                <option value="BHUTAN">BHUTAN</option>
+
+            
+                <option value="BOLIVIA">BOLIVIA</option>
+
+            
+                <option value="BONAIRE">BONAIRE</option>
+
+            
+                <option value="BOSNIA AND HERZEGOVINA">BOSNIA AND HERZEGOVINA</option>
+
+            
+                <option value="BOTSWANA">BOTSWANA</option>
+
+            
+                <option value="BRAZIL">BRAZIL</option>
+
+            
+                <option value="BRITISH VIRGIN ISLANDS">BRITISH VIRGIN ISLANDS</option>
+
+            
+                <option value="BRUNEI DARUSSALAM">BRUNEI DARUSSALAM</option>
+
+            
+                <option value="BULGARIA">BULGARIA</option>
+
+            
+                <option value="BURKINA FASO">BURKINA FASO</option>
+
+            
+                <option value="BURUNDI">BURUNDI</option>
+
+            
+                <option value="CAMBODIA">CAMBODIA</option>
+
+            
+                <option value="CAMEROON">CAMEROON</option>
+
+            
+                <option value="CANADA">CANADA</option>
+
+            
+                <option value="CAPE VERDE">CAPE VERDE</option>
+
+            
+                <option value="CAYMAN ISLANDS">CAYMAN ISLANDS</option>
+
+            
+                <option value="CENTRAL AFRICAN REPUBLIC">CENTRAL AFRICAN REPUBLIC</option>
+
+            
+                <option value="CHAD">CHAD</option>
+
+            
+                <option value="CHILE">CHILE</option>
+
+            
+                <option value="CHINA">CHINA</option>
+
+            
+                <option value="CHRISTMAS ISLAND">CHRISTMAS ISLAND</option>
+
+            
+                <option value="COCOS (KEELING) ISLANDS">COCOS (KEELING) ISLANDS</option>
+
+            
+                <option value="COLOMBIA">COLOMBIA</option>
+
+            
+                <option value="COMOROS">COMOROS</option>
+
+            
+                <option value="CONGO">CONGO</option>
+
+            
+                <option value="COOK ISLANDS">COOK ISLANDS</option>
+
+            
+                <option value="COSTA RICA">COSTA RICA</option>
+
+            
+                <option value="COTE D'IVOIRE">COTE D'IVOIRE</option>
+
+            
+                <option value="CROATIA">CROATIA</option>
+
+            
+                <option value="CUBA">CUBA</option>
+
+            
+                <option value="CURACAO">CURACAO</option>
+
+            
+                <option value="CYPRUS">CYPRUS</option>
+
+            
+                <option value="CZECH REPUBLIC">CZECH REPUBLIC</option>
+
+            
+                <option value="DEMO. REP. OF THE CONGO">DEMO. REP. OF THE CONGO</option>
+
+            
+                <option value="DEMOCRATIC PEOPLE'S REP. OF KOREA">DEMOCRATIC PEOPLE'S REP. OF KOREA</option>
+
+            
+                <option value="DENMARK">DENMARK</option>
+
+            
+                <option value="DIEGO GARCIA">DIEGO GARCIA</option>
+
+            
+                <option value="DJIBOUTI">DJIBOUTI</option>
+
+            
+                <option value="DOMINICA">DOMINICA</option>
+
+            
+                <option value="DOMINICAN REPUBLIC">DOMINICAN REPUBLIC</option>
+
+            
+                <option value="EAST TIMOR">EAST TIMOR</option>
+
+            
+                <option value="ECUADOR">ECUADOR</option>
+
+            
+                <option value="EGYPT">EGYPT</option>
+
+            
+                <option value="EL SALVADOR">EL SALVADOR</option>
+
+            
+                <option value="EQUATORIAL GUINEA">EQUATORIAL GUINEA</option>
+
+            
+                <option value="ERITREA">ERITREA</option>
+
+            
+                <option value="ESTONIA">ESTONIA</option>
+
+            
+                <option value="ETHIOPIA">ETHIOPIA</option>
+
+            
+                <option value="FALKLAND ISLANDS">FALKLAND ISLANDS</option>
+
+            
+                <option value="FAROE ISLANDS">FAROE ISLANDS</option>
+
+            
+                <option value="FIJI">FIJI</option>
+
+            
+                <option value="FINLAND">FINLAND</option>
+
+            
+                <option value="FRANCE">FRANCE</option>
+
+            
+                <option value="FRENCH GUIANA">FRENCH GUIANA</option>
+
+            
+                <option value="FRENCH POLYNESIA">FRENCH POLYNESIA</option>
+
+            
+                <option value="GABONESE REPUBLIC">GABONESE REPUBLIC</option>
+
+            
+                <option value="GAMBIA">GAMBIA</option>
+
+            
+                <option value="GEORGIA">GEORGIA</option>
+
+            
+                <option value="GERMANY">GERMANY</option>
+
+            
+                <option value="GHANA">GHANA</option>
+
+            
+                <option value="GIBRALTAR">GIBRALTAR</option>
+
+            
+                <option value="GREECE">GREECE</option>
+
+            
+                <option value="GREENLAND">GREENLAND</option>
+
+            
+                <option value="GRENADA">GRENADA</option>
+
+            
+                <option value="GUADELOUPE">GUADELOUPE</option>
+
+            
+                <option value="GUAM">GUAM</option>
+
+            
+                <option value="GUATEMALA">GUATEMALA</option>
+
+            
+                <option value="GUINEA">GUINEA</option>
+
+            
+                <option value="GUINEA-BISSAU">GUINEA-BISSAU</option>
+
+            
+                <option value="GUYANA">GUYANA</option>
+
+            
+                <option value="HAITI">HAITI</option>
+
+            
+                <option value="HONDURAS">HONDURAS</option>
+
+            
+                <option value="HONG KONG">HONG KONG</option>
+
+            
+                <option value="HUNGARY">HUNGARY</option>
+
+            
+                <option value="ICELAND">ICELAND</option>
+
+            
+                <option value="INDIA">INDIA</option>
+
+            
+                <option value="INDONESIA">INDONESIA</option>
+
+            
+                <option value="IRAN">IRAN</option>
+
+            
+                <option value="IRAQ">IRAQ</option>
+
+            
+                <option value="IRELAND">IRELAND</option>
+
+            
+                <option value="ISLE OF MAN">ISLE OF MAN</option>
+
+            
+                <option value="ISRAEL">ISRAEL</option>
+
+            
+                <option value="ITALY">ITALY</option>
+
+            
+                <option value="JAMAICA">JAMAICA</option>
+
+            
+                <option value="JAPAN">JAPAN</option>
+
+            
+                <option value="JORDAN">JORDAN</option>
+
+            
+                <option value="KAZAKHSTAN">KAZAKHSTAN</option>
+
+            
+                <option value="KENYA">KENYA</option>
+
+            
+                <option value="KIRIBATI">KIRIBATI</option>
+
+            
+                <option value="KOREA">KOREA</option>
+
+            
+                <option value="KUWAIT">KUWAIT</option>
+
+            
+                <option value="KYRGYZ REPUBLIC">KYRGYZ REPUBLIC</option>
+
+            
+                <option value="LAOS">LAOS</option>
+
+            
+                <option value="LATVIA">LATVIA</option>
+
+            
+                <option value="LEBANON">LEBANON</option>
+
+            
+                <option value="LESOTHO">LESOTHO</option>
+
+            
+                <option value="LIBERIA">LIBERIA</option>
+
+            
+                <option value="LIBYA">LIBYA</option>
+
+            
+                <option value="LIECHTENSTEIN">LIECHTENSTEIN</option>
+
+            
+                <option value="LITHUANIA">LITHUANIA</option>
+
+            
+                <option value="LUXEMBOURG">LUXEMBOURG</option>
+
+            
+                <option value="MACAU">MACAU</option>
+
+            
+                <option value="MADAGASCAR">MADAGASCAR</option>
+
+            
+                <option value="MALAWI">MALAWI</option>
+
+            
+                <option value="MALAYSIA">MALAYSIA</option>
+
+            
+                <option value="MALDIVES">MALDIVES</option>
+
+            
+                <option value="MALI">MALI</option>
+
+            
+                <option value="MALTA">MALTA</option>
+
+            
+                <option value="MARSHALL ISLANDS">MARSHALL ISLANDS</option>
+
+            
+                <option value="MARTINIQUE">MARTINIQUE</option>
+
+            
+                <option value="MAURITANIA">MAURITANIA</option>
+
+            
+                <option value="MAURITIUS">MAURITIUS</option>
+
+            
+                <option value="MAYOTTE">MAYOTTE</option>
+
+            
+                <option value="MEXICO">MEXICO</option>
+
+            
+                <option value="MICRONESIA">MICRONESIA</option>
+
+            
+                <option value="MOLDOVA">MOLDOVA</option>
+
+            
+                <option value="MONACO">MONACO</option>
+
+            
+                <option value="MONGOLIA">MONGOLIA</option>
+
+            
+                <option value="MONTENEGRO">MONTENEGRO</option>
+
+            
+                <option value="MONTSERRAT">MONTSERRAT</option>
+
+            
+                <option value="MOROCCO">MOROCCO</option>
+
+            
+                <option value="MOZAMBIQUE">MOZAMBIQUE</option>
+
+            
+                <option value="MYANMAR">MYANMAR</option>
+
+            
+                <option value="NAMIBIA">NAMIBIA</option>
+
+            
+                <option value="NAURU">NAURU</option>
+
+            
+                <option value="NEPAL">NEPAL</option>
+
+            
+                <option value="NETHERLANDS">NETHERLANDS</option>
+
+            
+                <option value="NETHERLANDS ANTILLES">NETHERLANDS ANTILLES</option>
+
+            
+                <option value="NEW CALEDONIA">NEW CALEDONIA</option>
+
+            
+                <option value="NEW ZEALAND">NEW ZEALAND</option>
+
+            
+                <option value="NICARAGUA">NICARAGUA</option>
+
+            
+                <option value="NIGER">NIGER</option>
+
+            
+                <option value="NIGERIA">NIGERIA</option>
+
+            
+                <option value="NIUE">NIUE</option>
+
+            
+                <option value="NORFOLK ISLAND">NORFOLK ISLAND</option>
+
+            
+                <option value="NORTHERN MARIANA ISLANDS">NORTHERN MARIANA ISLANDS</option>
+
+            
+                <option value="NORWAY">NORWAY</option>
+
+            
+                <option value="OMAN">OMAN</option>
+
+            
+                <option value="PAKISTAN">PAKISTAN</option>
+
+            
+                <option value="PALAU">PALAU</option>
+
+            
+                <option value="PALESTINE">PALESTINE</option>
+
+            
+                <option value="PANAMA">PANAMA</option>
+
+            
+                <option value="PAPUA NEW GUINEA">PAPUA NEW GUINEA</option>
+
+            
+                <option value="PARAGUAY">PARAGUAY</option>
+
+            
+                <option value="PERU">PERU</option>
+
+            
+                <option value="PHILIPPINES">PHILIPPINES</option>
+
+            
+                <option value="POLAND">POLAND</option>
+
+            
+                <option value="PORTUGAL">PORTUGAL</option>
+
+            
+                <option value="PUERTO RICO">PUERTO RICO</option>
+
+            
+                <option value="QATAR">QATAR</option>
+
+            
+                <option value="REUNION">REUNION</option>
+
+            
+                <option value="ROMANIA">ROMANIA</option>
+
+            
+                <option value="RUSSIAN FEDERATION">RUSSIAN FEDERATION</option>
+
+            
+                <option value="RWANDESE REPUBLIC">RWANDESE REPUBLIC</option>
+
+            
+                <option value="SAINT HELENA">SAINT HELENA</option>
+
+            
+                <option value="SAINT KITTS AND NEVIS">SAINT KITTS AND NEVIS</option>
+
+            
+                <option value="SAINT LUCIA">SAINT LUCIA</option>
+
+            
+                <option value="SAINT PIERRE AND MIQUELON">SAINT PIERRE AND MIQUELON</option>
+
+            
+                <option value="SAIPAN">SAIPAN</option>
+
+            
+                <option value="SAMOA">SAMOA</option>
+
+            
+                <option value="SAN MARINO">SAN MARINO</option>
+
+            
+                <option value="SAO TOME AND PRINCIPE">SAO TOME AND PRINCIPE</option>
+
+            
+                <option value="SAUDI ARABIA">SAUDI ARABIA</option>
+
+            
+                <option value="SENEGAL">SENEGAL</option>
+
+            
+                <option value="SERBIA">SERBIA</option>
+
+            
+                <option value="SEYCHELLES">SEYCHELLES</option>
+
+            
+                <option value="SIERRA LEONE">SIERRA LEONE</option>
+
+            
+                <option value="SINGAPORE">SINGAPORE</option>
+
+            
+                <option value="SLOVAK REPUBLIC">SLOVAK REPUBLIC</option>
+
+            
+                <option value="SLOVENIA">SLOVENIA</option>
+
+            
+                <option value="SOLOMON ISLANDS">SOLOMON ISLANDS</option>
+
+            
+                <option value="SOMALI DEMO. REPUBLIC">SOMALI DEMO. REPUBLIC</option>
+
+            
+                <option value="SOUTH AFRICA">SOUTH AFRICA</option>
+
+            
+                <option value="SOUTH SUDAN">SOUTH SUDAN</option>
+
+            
+                <option value="SPAIN">SPAIN</option>
+
+            
+                <option value="SRI LANKA">SRI LANKA</option>
+
+            
+                <option value="ST. VINCENT &amp; THE GRENADINES">ST. VINCENT &amp; THE GRENADINES</option>
+
+            
+                <option value="SUDAN">SUDAN</option>
+
+            
+                <option value="SURINAME">SURINAME</option>
+
+            
+                <option value="SVALBARD AND JAN MAYEN">SVALBARD AND JAN MAYEN</option>
+
+            
+                <option value="SWAZILAND">SWAZILAND</option>
+
+            
+                <option value="SWEDEN">SWEDEN</option>
+
+            
+                <option value="SWITZERLAND">SWITZERLAND</option>
+
+            
+                <option value="SYRIAN ARAB REPUBLIC">SYRIAN ARAB REPUBLIC</option>
+
+            
+                <option value="TAIWAN">TAIWAN</option>
+
+            
+                <option value="TAJIKISTAN">TAJIKISTAN</option>
+
+            
+                <option value="TANZANIA">TANZANIA</option>
+
+            
+                <option value="THAILAND">THAILAND</option>
+
+            
+                <option value="THE FORMER YUGO. REP. OF MACEDONIA">THE FORMER YUGO. REP. OF MACEDONIA</option>
+
+            
+                <option value="TINIAN">TINIAN</option>
+
+            
+                <option value="TOGOLESE REPUBLIC">TOGOLESE REPUBLIC</option>
+
+            
+                <option value="TOKELAU">TOKELAU</option>
+
+            
+                <option value="TONGA">TONGA</option>
+
+            
+                <option value="TRINIDAD AND TOBAGO">TRINIDAD AND TOBAGO</option>
+
+            
+                <option value="TUNISIA">TUNISIA</option>
+
+            
+                <option value="TURKEY">TURKEY</option>
+
+            
+                <option value="TURKMENISTAN">TURKMENISTAN</option>
+
+            
+                <option value="TURKS AND CAICOS ISLANDS">TURKS AND CAICOS ISLANDS</option>
+
+            
+                <option value="TUVALU">TUVALU</option>
+
+            
+                <option value="U.A.E.">U.A.E.</option>
+
+            
+                <option value="U.K.">U.K.</option>
+
+            
+                <option value="U.S.A.">U.S.A.</option>
+
+            
+                <option value="UGANDA">UGANDA</option>
+
+            
+                <option value="UKRAINE">UKRAINE</option>
+
+            
+                <option value="UNITED STATES MINOR OUTLYING ISLANDS">UNITED STATES MINOR OUTLYING ISLANDS</option>
+
+            
+                <option value="UNITED STATES VIRGIN ISLANDS">UNITED STATES VIRGIN ISLANDS</option>
+
+            
+                <option value="URUGUAY">URUGUAY</option>
+
+            
+                <option value="UZBEKISTAN">UZBEKISTAN</option>
+
+            
+                <option value="VANUATU">VANUATU</option>
+
+            
+                <option value="VATICAN CITY STATE">VATICAN CITY STATE</option>
+
+            
+                <option value="VENEZUELA">VENEZUELA</option>
+
+            
+                <option value="VIETNAM">VIETNAM</option>
+
+            
+                <option value="WALLIS AND FUTUNA">WALLIS AND FUTUNA</option>
+
+            
+                <option value="YEMEN">YEMEN</option>
+
+            
+                <option value="ZAMBIA">ZAMBIA</option>
+
+            
+                <option value="ZIMBABWE">ZIMBABWE</option>
+
+            
+        
+    
+</select>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                        <td class="min-width-150px input-wrapper personal_id-wrapper  ">
+
+
+<div class="input-group border-warning" id="input-group-personal_id_xxx">
+
+
+ 
+<input id="personal_id_xxx" data-id="xxx" name="personal_id_xxx" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        personal_id
+         valid-if-hidden     " value="" maxlength="20">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-450px input-wrapper tel_no-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-tel_no_xxx">
+
+
+ 
+<input id="tel_no_xxx" data-id="xxx" name="tel_no_xxx" placeholder="" type="text" class="
+        form-control
+        border-warning
+        tel-no
+        
+        tel_no
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-450px input-wrapper email-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-email_xxx">
+
+
+ 
+<input id="email_xxx" data-id="xxx" name="email_xxx" placeholder="" type="email" class="
+        form-control
+        border-warning
+        
+        email
+         valid-if-hidden     " value="" maxlength="255">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-450px input-wrapper beneficiary-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-beneficiary_xxx">
+
+
+ 
+<input id="beneficiary_xxx" data-id="xxx" name="beneficiary_xxx" placeholder="" type="text" class="
+        form-control
+        border-warning
+        
+                                        beneficiary
+         valid-if-hidden     " value="" maxlength="80">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper relationship-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-relationship_xxx">
+
+
+
+
+
+<select id="relationship_xxx" data-id="xxx" name="relationship_xxx" class="
+        form-control
+        
+        select2-delay
+        relationship
+                                 valid-if-hidden     " data-all="0" data-parents="">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="RELATION_F">Cha</option>
+
+            
+                <option value="RELATION_M">Mẹ</option>
+
+            
+                <option value="RELATION_S">Vợ chồng</option>
+
+            
+                <option value="RELATION_C">Con</option>
+
+            
+                <option value="RELATION_O">Người khác</option>
+
+            
+        
+    
+</select>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                        <td class="min-width-150px input-wrapper pct-wrapper non-domestic-group">
+
+
+<div class="input-group border-warning" id="input-group-pct_xxx">
+
+
+ 
+<input id="pct_xxx" data-id="xxx" name="pct_xxx" placeholder="" type="number" min="0" max="100" class="
+        form-control
+        border-warning
+        
+        pct
+         valid-if-hidden     " value="100">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper car_rental-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_xxx">
+
+
+
+
+
+<select id="car_rental_xxx" data-id="xxx" name="car_rental_xxx" required="" class="
+        form-control
+        
+        select2-delay
+        car_rental
+                                 valid-if-hidden     " data-all="0" data-parents="">
+
+            <option value="">&nbsp;</option>
+    
+    
+        
+            
+                <option value="YN_Y">Có</option>
+
+            
+                <option value="YN_N">Không</option>
+
+            
+        
+    
+</select>
+
+
+
+    </div>
+
+
+
+ </td> 
+
+
+
+                        <td class="min-width-150px input-wrapper car_rental_date-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_date_xxx">
+
+
+ 
+<input id="car_rental_date_xxx" data-id="xxx" name="car_rental_date_xxx" placeholder="" autocomplete="off" type="text" class="
+        form-control
+        border-warning
+        
+        car_rental_date
+          date-picker           valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        <td class="min-width-150px input-wrapper car_rental_days-wrapper">
+
+
+<div class="input-group border-warning" id="input-group-car_rental_days_xxx">
+
+
+ 
+<input id="car_rental_days_xxx" data-id="xxx" name="car_rental_days_xxx" placeholder="" type="number" min="1" class="
+        form-control
+        border-warning
+        
+        car_rental_days
+         valid-if-hidden     " value="">
+
+  </div>
+
+
+
+ </td> 
+
+ 
+                        
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+        
+    </div>
+
+</div>
+
+    <div class="modal fade  " id="modal-save" aria-labelledby="modal-save-label" aria-hidden="true" tabindex="-1" role="dialog">
+
+
+<div class="modal-dialog "> 
+
+<div class="modal-content"> 
+
+
+    
+    <div class="modal-header">
+        <h3 class="modal-title text-danger" id="modal-save-label">Cảnh báo</h3> 
+    </div>
+<!-- end mhead -->
+
+
+    
+    <div class="modal-body">
+ <h4 class="text-left" id="modal-save-message">Bạn có thực sự muốn tạo ĐƠN CHÍNH THỨC?</h4> </div>
+<!-- end mbody -->
+ 
+
+
+    
+    <div class="modal-footer">
+ <button type="button" class="btn btn-danger" id="btn-save-yes">Có</button> <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+</div>
+<!-- end mfoot -->
+
+
+ </div></div></div>
+<!-- end modal -->
+ </div>
+
+        <div class="card-footer">
+
+            <div class="text-center tour-button">
+
+                <a class="btn btn-secondary" href="https://paris.pacificcross.com.vn/cert">Quay lại</a>
+
+                
+                
+
+    <input type="hidden" id="button" name="button">
+
+    <button id="btn-create" type="button" class="btn btn-info center-block" data-toggle="modal" data-target="#modal-save">
+        Tạo đơn chính thức    </button>
+
+    <button id="btn-quote" type="button" class="btn btn-success center-block">
+        Báo giá    </button>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+                                    </div>

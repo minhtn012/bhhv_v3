@@ -1,0 +1,464 @@
+[
+    {
+        "name": "_token",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "is-quote",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "cert-no",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "last_update",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "use-ph-info-for-invoice",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "pnr_no",
+        "type": "text",
+        "label": "Mã Chuyến bay",
+        "required": false
+    },
+    {
+        "name": "poho_title",
+        "type": "select",
+        "label": "Chức danh Chủ Hợp đồng",
+        "required": false
+    },
+    {
+        "name": "ref_no",
+        "type": "text",
+        "label": "Mã Liên hệ",
+        "required": false
+    },
+    {
+        "name": "policyholder",
+        "type": "text",
+        "label": "Chủ Hợp đồng",
+        "required": true
+    },
+    {
+        "name": "pocy_type",
+        "type": "select",
+        "label": "Loại Hợp đồng",
+        "required": true
+    },
+    {
+        "name": "poho_type",
+        "type": "select",
+        "label": "Loại Chủ hợp đồng",
+        "required": true
+    },
+    {
+        "name": "email",
+        "type": "email",
+        "label": "Địa chỉ Thư điện tử",
+        "required": true
+    },
+    {
+        "name": "tel_no",
+        "type": "text",
+        "label": "Số Điện thoại",
+        "required": true
+    },
+    {
+        "name": "inv_tax",
+        "type": "text",
+        "label": "Mã số thuế/CCCD/Hộ chiếu",
+        "required": false
+    },
+    {
+        "name": "address",
+        "type": "text",
+        "label": "Địa chỉ Cư trú",
+        "required": true
+    },
+    {
+        "name": "inv_company",
+        "type": "text",
+        "label": "Công ty trên Hóa đơn",
+        "required": true
+    },
+    {
+        "name": "inv_address",
+        "type": "text",
+        "label": "Địa chỉ trên Hóa đơn",
+        "required": true
+    },
+    {
+        "name": "country_address",
+        "type": "select",
+        "label": "Nước Cư trú",
+        "required": false
+    },
+    {
+        "name": "start_country",
+        "type": "select",
+        "label": "Nước Xuất phát",
+        "required": true
+    },
+    {
+        "name": "start_city",
+        "type": "select",
+        "label": "Thành phố Khởi hành",
+        "required": true
+    },
+    {
+        "name": "start_address",
+        "type": "text",
+        "label": "Địa chỉ Khởi hành",
+        "required": true
+    },
+    {
+        "name": "end_city",
+        "type": "select",
+        "label": "Thành phố Đích",
+        "required": true
+    },
+    {
+        "name": "end_address",
+        "type": "text",
+        "label": "Địa chỉ Đích",
+        "required": true
+    },
+    {
+        "name": "issue_date",
+        "type": "text",
+        "label": "Ngày cấp",
+        "required": true
+    },
+    {
+        "name": "date-range-type-date_range",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "date-from-date_range",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "date-to-date_range",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "days-date_range",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "date_range",
+        "type": "text",
+        "label": "Thời hạn Bảo hiểm",
+        "required": true
+    },
+    {
+        "name": "date_range-date-from-picker",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "date_range-days-picker",
+        "type": "number",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "product",
+        "type": "select",
+        "label": "Sản phẩm",
+        "required": true
+    },
+    {
+        "name": "plan",
+        "type": "select",
+        "label": "Gói Bảo hiểm",
+        "required": true
+    },
+    {
+        "name": "branch",
+        "type": "select",
+        "label": "Chi nhánh",
+        "required": true
+    },
+    {
+        "name": "agent",
+        "type": "text",
+        "label": "Người môi giới",
+        "required": false
+    },
+    {
+        "name": "old_message_file",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "input-message_file",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "message_file",
+        "type": "file",
+        "label": "Tin nhắn",
+        "required": false
+    },
+    {
+        "name": "itinerary",
+        "type": "text",
+        "label": "Hành trình",
+        "required": false
+    },
+    {
+        "name": "note",
+        "type": "textarea",
+        "label": "Ghi chú",
+        "required": false
+    },
+    {
+        "name": "inv_amount",
+        "type": "number",
+        "label": "Số tiền trên hóa đơn",
+        "required": false
+    },
+    {
+        "name": "old_import_members",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "input-import_members",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "import_members",
+        "type": "file",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "member-count",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "member-row-deleted",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "memb_type_1",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "name_1",
+        "type": "text",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "dob_1",
+        "type": "text",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "age_1",
+        "type": "number",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "gender_1",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "country_1",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "personal_id_1",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "tel_no_1",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "email_1",
+        "type": "email",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "beneficiary_1",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "relationship_1",
+        "type": "select",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "pct_1",
+        "type": "number",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "car_rental_1",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "car_rental_date_1",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "car_rental_days_1",
+        "type": "number",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "memb_type_xxx",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "name_xxx",
+        "type": "text",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "dob_xxx",
+        "type": "text",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "age_xxx",
+        "type": "number",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "gender_xxx",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "country_xxx",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "personal_id_xxx",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "tel_no_xxx",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "email_xxx",
+        "type": "email",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "beneficiary_xxx",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "relationship_xxx",
+        "type": "select",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "pct_xxx",
+        "type": "number",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "car_rental_xxx",
+        "type": "select",
+        "label": "",
+        "required": true
+    },
+    {
+        "name": "car_rental_date_xxx",
+        "type": "text",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "car_rental_days_xxx",
+        "type": "number",
+        "label": "",
+        "required": false
+    },
+    {
+        "name": "button",
+        "type": "hidden",
+        "label": "",
+        "required": false
+    }
+]

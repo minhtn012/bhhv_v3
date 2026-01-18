@@ -10,11 +10,13 @@ services:
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin
+      - CAR_BRANDS_PATH=/data/car_brands
     networks:
       - db_network
       - traefik-network
     volumes:
       - ./scripts:/app/scripts
+      - ./db_json/car_brands:/data/car_brands
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bhhv.rule=Host(`bhhv.minhtn.space`)"
