@@ -66,35 +66,92 @@ export async function POST(request: NextRequest) {
 
     // Map rows to insured persons
     const insuredPersons = rows.map((row) => {
-      // Expected columns: Name, DOB, Gender, Country, Personal ID, Tel, Email, Relationship
-      // Support both English and Vietnamese headers
-      const name = (row['Name'] || row['Ho ten'] || '') as string;
-      const dob = (row['DOB'] || row['Ngay sinh'] || '') as string;
-      const genderRaw = ((row['Gender'] || row['Gioi tinh'] || 'M') as string).toUpperCase();
-      const country = (row['Country'] || row['Quoc gia'] || 'VIETNAM') as string;
-      const personalId = (row['Personal ID'] || row['CCCD'] || row['So CMND'] || '') as string;
-      const telNo = (row['Tel'] || row['SDT'] || '') as string;
+      // Support Vietnamese headers with diacritics from template_PCV.xlsx
+      const name = (
+        row['Họ tên *'] || row['Họ tên'] ||
+        row['Name'] || row['Ho ten'] || ''
+      ) as string;
+
+      const dobRaw = row['Ngày sinh *'] || row['Ngày sinh'] ||
+        row['DOB'] || row['Ngay sinh'] || '';
+
+      // Handle Excel date serial number
+      let dob = '';
+      if (typeof dobRaw === 'number') {
+        // Excel serial date: convert to YYYY-MM-DD
+        const excelEpoch = new Date(1899, 11, 30);
+        const date = new Date(excelEpoch.getTime() + dobRaw * 86400000);
+        dob = date.toISOString().split('T')[0];
+      } else {
+        dob = String(dobRaw || '');
+      }
+
+      const genderRaw = (
+        row['Giới tính * (Nam/Nữ)'] || row['Giới tính'] ||
+        row['Gender'] || row['Gioi tinh'] || 'M'
+      ) as string;
+
+      const country = (
+        row['Nước Cư trú *'] || row['Nước Cư trú'] ||
+        row['Country'] || row['Quoc gia'] || 'VIETNAM'
+      ) as string;
+
+      const personalId = (
+        row['CMND/Hộ chiếu'] || row['CMND'] || row['Hộ chiếu'] ||
+        row['Personal ID'] || row['CCCD'] || row['So CMND'] || ''
+      ) as string;
+
+      const telNo = (
+        row['Số Điện thoại'] || row['SĐT'] ||
+        row['Tel'] || row['SDT'] || ''
+      ) as string;
+
       const email = (row['Email'] || '') as string;
-      const relationship = (row['Relationship'] || row['Quan he'] || 'RELATION_O') as string;
+
+      const beneficiary = (
+        row['Người Thụ hưởng'] || row['Beneficiary'] || ''
+      ) as string;
+
+      const relationshipRaw = (
+        row['Quan hệ (Cha/Mẹ/Vợ chồng/Con/Người khác)'] || row['Quan hệ'] ||
+        row['Relationship'] || row['Quan he'] || 'Người khác'
+      ) as string;
+
+      const pct = (
+        row['% cho Người Thụ hưởng'] || row['%'] || 100
+      ) as number;
 
       // Parse gender
-      const gender = (genderRaw === 'F' || genderRaw === 'NU' || genderRaw === 'NỮ') ? 'F' : 'M';
+      const genderUpper = String(genderRaw).toUpperCase();
+      const gender = (genderUpper === 'F' || genderUpper === 'NỮ' || genderUpper === 'NU' || genderRaw === 'Nữ') ? 'F' : 'M';
+
+      // Map relationship to UI expected values (from TRAVEL_RELATIONSHIP_LABELS)
+      const relationshipMap: Record<string, string> = {
+        'Cha': 'RELATION_F',
+        'Mẹ': 'RELATION_M',
+        'Vợ chồng': 'RELATION_S',
+        'Vợ': 'RELATION_S',
+        'Chồng': 'RELATION_S',
+        'Con': 'RELATION_C',
+        'Người khác': 'RELATION_O',
+      };
+      const relationship = relationshipMap[relationshipRaw] || 'RELATION_O';
 
       // Calculate age
       const age = calculateAge(dob);
 
       return {
-        name,
+        name: String(name).trim(),
         dob,
         age,
         gender,
-        country,
-        personalId,
-        telNo,
-        email,
-        beneficiary: '',
+        country: String(country).toUpperCase(),
+        personalId: String(personalId).trim(),
+        telNo: String(telNo).trim(),
+        email: String(email).trim(),
+        beneficiary: String(beneficiary).trim(),
         relationship,
-        pct: 100,
+        pct: Number(pct) || 100,
         carRental: false,
         carRentalDate: '',
         carRentalDays: 0
