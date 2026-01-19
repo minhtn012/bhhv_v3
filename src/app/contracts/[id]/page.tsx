@@ -96,6 +96,9 @@ interface Contract {
   // BHV contract number sau khi confirm thành công
   bhvContractNumber?: string;
 
+  // Ghi chú nội bộ
+  ghiChu?: string;
+
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -443,6 +446,14 @@ export default function ContractDetailPage() {
               <CustomerInfoSection contract={contract} />
               <VehicleInfoSection contract={contract} />
               <InsurancePackageSection contract={contract} />
+
+              {/* Ghi chú nội bộ - chỉ hiển thị nếu có */}
+              {contract.ghiChu && (
+                <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold text-white mb-3">Ghi chú nội bộ</h3>
+                  <p className="text-gray-300 whitespace-pre-wrap">{contract.ghiChu}</p>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}

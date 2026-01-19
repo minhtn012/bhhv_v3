@@ -128,7 +128,10 @@ interface Contract {
   mucKhauTru: number;
   
   status: 'nhap' | 'cho_duyet' | 'khach_duyet' | 'ra_hop_dong' | 'huy';
-  
+
+  // Ghi chú nội bộ
+  ghiChu?: string;
+
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -418,7 +421,10 @@ export default function EditContractPage() {
       phiVatChatGoc: contractData.vatChatPackage.phiVatChatGoc || contractData.vatChatPackage.phiVatChat,
       phiTruocKhiGiam: contractData.phiTruocKhiGiam || contractData.tongPhi,
       phiSauKhiGiam: contractData.phiSauKhiGiam || contractData.tongPhi,
-      totalAmount: contractData.tongPhi
+      totalAmount: contractData.tongPhi,
+
+      // Ghi chú nội bộ
+      ghiChu: contractData.ghiChu || ''
     });
 
     // Initialize car data if available
@@ -761,7 +767,9 @@ export default function EditContractPage() {
         phiTruocKhiGiam: phiTruocKhiGiam,
         phiSauKhiGiam: phiSauKhiGiam,
         tongPhi: phiSauKhiGiam,
-        extraPackages: formData.extraPackages || []
+        extraPackages: formData.extraPackages || [],
+        // Ghi chú nội bộ
+        ghiChu: formData.ghiChu || ''
       };
 
       const response = await fetch(`/api/contracts/${contractId}`, {
