@@ -8,6 +8,7 @@ export const PACIFIC_CROSS_API = {
   CERT_PATH: '/cert',
   HISTORY_PATH_SUFFIX: '/history',
   PDF_PATH_TEMPLATE: '/cert/pdf/{certId}/USD/nosign/preview', // Quote PDF preview URL
+  PDF_DOWNLOAD_TEMPLATE: '/cert/pdf/{certId}/USD/sign/download', // Signed PDF download URL
 } as const;
 
 // Product IDs (from Pacific Cross portal)

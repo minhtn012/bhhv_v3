@@ -210,6 +210,14 @@ export function generateQuotePdfUrl(certId: string): string {
 }
 
 /**
+ * Generate signed PDF download URL from certId
+ */
+export function generatePdfDownloadUrl(certId: string): string {
+  const pdfPath = PACIFIC_CROSS_API.PDF_DOWNLOAD_TEMPLATE.replace('{certId}', certId);
+  return `${PACIFIC_CROSS_API.BASE_URL}${pdfPath}`;
+}
+
+/**
  * Get product name from product ID
  */
 export function getProductName(productId: number): string {
