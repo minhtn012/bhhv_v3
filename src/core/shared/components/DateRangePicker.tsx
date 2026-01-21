@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
+import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
 export interface DateRangeValue {
   startDate: string;
@@ -42,14 +43,10 @@ function formatDateDisplay(dateStr: string): string {
 }
 
 /**
- * Calculate days between two dates
+ * Calculate days between two dates (uses shared utility)
  */
 function calculateDaysDifference(startDate: string, endDate: string): number {
-  if (!startDate || !endDate) return 0;
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const diff = end.getTime() - start.getTime();
-  return Math.round(diff / (1000 * 60 * 60 * 24));
+  return calculateInsuranceDays(startDate, endDate);
 }
 
 /**

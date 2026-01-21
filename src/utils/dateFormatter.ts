@@ -118,3 +118,29 @@ export function parseDateString(dateStr: string): Date | null {
 
   return date;
 }
+
+/**
+ * Calculate insurance days between two dates (inclusive of both start and end dates)
+ *
+ * @param dateFrom - Start date (ISO string YYYY-MM-DD or Date object)
+ * @param dateTo - End date (ISO string YYYY-MM-DD or Date object)
+ * @returns Number of days including both start and end dates
+ *
+ * @example
+ * calculateInsuranceDays('2025-01-01', '2025-01-02') // 2 (includes both days)
+ * calculateInsuranceDays('2025-01-01', '2025-01-01') // 1 (same day)
+ */
+export function calculateInsuranceDays(
+  dateFrom: string | Date,
+  dateTo: string | Date
+): number {
+  const from = typeof dateFrom === 'string' ? new Date(dateFrom) : dateFrom;
+  const to = typeof dateTo === 'string' ? new Date(dateTo) : dateTo;
+
+  if (isNaN(from.getTime()) || isNaN(to.getTime())) return 0;
+
+  const diffTime = Math.abs(to.getTime() - from.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays + 1; // Include both start and end dates
+}

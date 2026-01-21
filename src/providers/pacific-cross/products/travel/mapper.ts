@@ -5,6 +5,7 @@
 
 import type { TravelContractFormData } from './types';
 import { TRAVEL_PRODUCT_LABELS } from './constants';
+import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
 /**
  * Format date to DD/MM/YYYY for Pacific Cross
@@ -36,11 +37,7 @@ export function formatDateRange(dateFrom: string, dateTo: string): string {
  * Calculate number of days between two dates (inclusive)
  */
 export function calculateDays(dateFrom: string, dateTo: string): number {
-  const start = new Date(dateFrom);
-  const end = new Date(dateTo);
-  const diffMs = end.getTime() - start.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  return diffDays + 1; // Include both start and end days
+  return calculateInsuranceDays(dateFrom, dateTo);
 }
 
 /**

@@ -12,6 +12,7 @@ import {
   TRAVEL_COUNTRIES,
 } from '@/providers/pacific-cross/products/travel/constants';
 import type { TravelInsuredPerson } from '@/types/travel';
+import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
 export default function NewTravelContractPage() {
   const router = useRouter();
@@ -96,11 +97,8 @@ export default function NewTravelContractPage() {
   // Calculate days when dates change
   useEffect(() => {
     if (period.dateFrom && period.dateTo) {
-      const from = new Date(period.dateFrom);
-      const to = new Date(period.dateTo);
-      const diffTime = Math.abs(to.getTime() - from.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setPeriod(prev => ({ ...prev, days: diffDays }));
+      const days = calculateInsuranceDays(period.dateFrom, period.dateTo);
+      setPeriod(prev => ({ ...prev, days }));
     }
   }, [period.dateFrom, period.dateTo]);
 

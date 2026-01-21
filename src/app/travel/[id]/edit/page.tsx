@@ -6,6 +6,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
 import ProductPlanSelector from '@/components/travel/ProductPlanSelector';
 import type { TravelInsuredPerson } from '@/types/travel';
+import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
 export default function EditTravelContractPage() {
   const router = useRouter();
@@ -109,11 +110,8 @@ export default function EditTravelContractPage() {
 
   useEffect(() => {
     if (period.dateFrom && period.dateTo) {
-      const from = new Date(period.dateFrom);
-      const to = new Date(period.dateTo);
-      const diffTime = Math.abs(to.getTime() - from.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setPeriod(prev => ({ ...prev, days: diffDays }));
+      const days = calculateInsuranceDays(period.dateFrom, period.dateTo);
+      setPeriod(prev => ({ ...prev, days }));
     }
   }, [period.dateFrom, period.dateTo]);
 
