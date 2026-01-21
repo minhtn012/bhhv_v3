@@ -4,7 +4,7 @@
  */
 
 import type { TravelContractFormData } from './types';
-import { TRAVEL_PRODUCT_LABELS } from './constants';
+import { TRAVEL_PRODUCT_LABELS, PACIFIC_CROSS_API } from './constants';
 import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
 /**
@@ -197,6 +197,16 @@ export function parseCertIdFromRedirect(redirectUrl: string): {
     };
   }
   return null;
+}
+
+/**
+ * Generate quote PDF URL from certId
+ * @param certId Format: {number}::{hash} (e.g., 306485::4nlL9SEOiP)
+ * @returns Full PDF URL
+ */
+export function generateQuotePdfUrl(certId: string): string {
+  const pdfPath = PACIFIC_CROSS_API.PDF_PATH_TEMPLATE.replace('{certId}', certId);
+  return `${PACIFIC_CROSS_API.BASE_URL}${pdfPath}`;
 }
 
 /**

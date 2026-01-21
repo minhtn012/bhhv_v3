@@ -617,6 +617,35 @@ export class PacificCrossApiClient extends BaseApiClient {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
     }
   }
+
+  /**
+   * Fetch PDF from Pacific Cross with authenticated session
+   */
+  async fetchPdf(pdfUrl: string): Promise<ApiResponse<ArrayBuffer>> {
+    try {
+      if (!this.sessionCookies) {
+        return { success: false, error: 'Not authenticated' };
+      }
+
+      const response = await fetch(pdfUrl, {
+        headers: {
+          'Cookie': this.sessionCookies,
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+          'Accept': 'application/pdf,*/*',
+        },
+      });
+
+      if (!response.ok) {
+        return { success: false, error: `PDF fetch failed: ${response.status}` };
+      }
+
+      const buffer = await response.arrayBuffer();
+      return { success: true, data: buffer };
+    } catch (error) {
+      logErr(error, { operation: 'PC_FETCH_PDF_ERROR' });
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+  }
 }
 
 // Export default instance

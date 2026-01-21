@@ -41,6 +41,7 @@ interface TravelContract {
     relationship: string;
   }>;
   totalPremium: number;
+  quotePdfUrl?: string;
   refNo?: string;
   pnrNo?: string;
   itinerary?: string;
@@ -203,7 +204,9 @@ export default function TravelContractDetailPage() {
     return colors[status] || 'bg-gray-500/20 text-gray-300';
   };
 
-  const canEdit = contract && (contract.status === 'nhap' || currentUser?.role === 'admin');
+  // Travel allows edit in nhap, cho_duyet, khach_duyet (unlike vehicle insurance)
+  const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet'];
+  const canEdit = contract && (editableStatuses.includes(contract.status) || currentUser?.role === 'admin');
 
   if (loading) {
     return (
@@ -417,6 +420,19 @@ export default function TravelContractDetailPage() {
                   <p className="text-3xl font-bold text-green-400">{formatCurrency(contract.totalPremium)}</p>
                   <p className="text-gray-400 text-sm mt-2">/ {contract.period.days} ngày</p>
                 </div>
+                {contract.quotePdfUrl && (
+                  <a
+                    href={contract.quotePdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full mt-4 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Xem báo giá PDF
+                  </a>
+                )}
               </div>
 
               {/* Status History */}
@@ -444,6 +460,7 @@ export default function TravelContractDetailPage() {
           </div>
         </div>
       </div>
+
     </DashboardLayout>
   );
 }

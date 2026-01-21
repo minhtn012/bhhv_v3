@@ -99,6 +99,7 @@ export interface ITravelContract extends Document {
   // Pacific Cross data
   pacificCrossCertId?: string;
   pacificCrossCertNo?: number;
+  quotePdfUrl?: string;
 
   // Workflow
   status: TravelContractStatus;
@@ -199,6 +200,7 @@ const travelContractSchema = new Schema({
   // Pacific Cross data
   pacificCrossCertId: { type: String, trim: true, index: true },
   pacificCrossCertNo: { type: Number },
+  quotePdfUrl: { type: String, trim: true },
 
   // Workflow status
   status: {
@@ -256,9 +258,9 @@ travelContractSchema.statics.getStatusText = function(status: string): string {
   return getTravelStatusText(status);
 };
 
-// Instance method: can edit
+// Instance method: can edit (travel allows edit even after customer approval)
 travelContractSchema.methods.canEdit = function(): boolean {
-  return this.status === 'nhap' || this.status === 'cho_duyet';
+  return this.status === 'nhap' || this.status === 'cho_duyet' || this.status === 'khach_duyet';
 };
 
 // Instance method: can change status

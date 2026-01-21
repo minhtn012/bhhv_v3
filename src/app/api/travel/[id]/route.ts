@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
+import { generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
 
 // GET /api/travel/[id] - Get single contract
 export async function GET(
@@ -35,7 +36,20 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ contract });
+    // Always regenerate quotePdfUrl from certId to ensure correct format
+    const extendedContract = contract as typeof contract & { pacificCrossCertId?: string; quotePdfUrl?: string };
+    if (extendedContract.pacificCrossCertId) {
+      const correctUrl = generateQuotePdfUrl(extendedContract.pacificCrossCertId);
+      if (extendedContract.quotePdfUrl !== correctUrl) {
+        extendedContract.quotePdfUrl = correctUrl;
+        await TravelContract.updateOne(
+          { _id: id },
+          { $set: { quotePdfUrl: correctUrl } }
+        );
+      }
+    }
+
+    return NextResponse.json({ contract: extendedContract });
 
   } catch (error: unknown) {
     // Logged via logError if needed

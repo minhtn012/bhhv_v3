@@ -85,9 +85,10 @@ export default function EditTravelContractPage() {
       if (response.ok) {
         const contract = data.contract;
 
-        // Check if editable
-        if (contract.status !== 'nhap') {
-          setError('Chỉ có thể sửa hợp đồng ở trạng thái Nháp');
+        // Check if editable (travel allows edit in nhap, cho_duyet, khach_duyet)
+        const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet'];
+        if (!editableStatuses.includes(contract.status)) {
+          setError('Chỉ có thể sửa hợp đồng ở trạng thái Nháp, Chờ duyệt, hoặc Khách duyệt');
           setCanEdit(false);
           return;
         }

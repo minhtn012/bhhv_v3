@@ -3,7 +3,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
-import { mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
+import { mapTravelToPacificCrossFormat, generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
 import { logError, logInfo, logDebug } from '@/lib/errorLogger';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
@@ -154,9 +154,12 @@ export async function POST(
       additionalInfo: { certId: quoteResponse.certId, certNo: quoteResponse.certNo }
     });
 
-    // Update contract with Pacific Cross cert ID
+    // Update contract with Pacific Cross cert ID and PDF URL
     contract.pacificCrossCertId = quoteResponse.certId;
     contract.pacificCrossCertNo = quoteResponse.certNo;
+    if (quoteResponse.certId) {
+      contract.quotePdfUrl = generateQuotePdfUrl(quoteResponse.certId);
+    }
 
     // Fetch premium from edit page
     let totalPremium = 0;
@@ -187,12 +190,14 @@ export async function POST(
       message: 'Tao bao gia thanh cong',
       certId: quoteResponse.certId,
       certNo: quoteResponse.certNo,
+      quotePdfUrl: contract.quotePdfUrl,
       totalPremium,
       contract: {
         id: contract._id,
         contractNumber: contract.contractNumber,
         status: contract.status,
-        totalPremium
+        totalPremium,
+        quotePdfUrl: contract.quotePdfUrl
       }
     });
 
