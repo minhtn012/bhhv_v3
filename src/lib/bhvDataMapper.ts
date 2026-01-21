@@ -10,7 +10,7 @@ import carKind from '@db/car_kind.json';
 import carDeduction from '@db/car_deduction.json';
 import carTypeEngine from '@db/car_type_engine.json';
 import carGoal from '@db/input-drl_goal.json';
-import allCarDetails from '@db/all_car_details.json';
+import { allCarBrands } from './car-brands-loader';
 import carTypeInsurance from '@db/car_type_insturance.json';
 import carWeightGood from '@db/car_weight_good.json';
 
@@ -186,7 +186,7 @@ export function mapCarAutomaker(carBrand: string): string {
  * Map car model to model UUID
  */
 export function mapCarModel(carBrand: string, carModel: string): string {
-  const brand = allCarDetails.find(item => item.brand_name === carBrand);
+  const brand = allCarBrands.find(item => item.brand_name === carBrand);
   if (brand) {
     const model = brand.models.find(m => m.model_name === carModel);
     return model?.model_id || "";
@@ -198,7 +198,7 @@ export function mapCarModel(carBrand: string, carModel: string): string {
  * Map body style to UUID
  */
 export function mapCarBodyStyle(carBrand: string, carModel: string, carBodyStyle: string): string {
-  const brand = allCarDetails.find(item => item.brand_name === carBrand);
+  const brand = allCarBrands.find(item => item.brand_name === carBrand);
   if (brand) {
     const model = brand.models.find(m => m.model_name === carModel);
     if (model) {
@@ -213,7 +213,7 @@ export function mapCarBodyStyle(carBrand: string, carModel: string, carBodyStyle
  * Map car model year variant to UUID
  */
 export function mapCarModelYear(carBrand: string, carModel: string, carModelYear: string): string {
-  const brand = allCarDetails.find(item => item.brand_name === carBrand);
+  const brand = allCarBrands.find(item => item.brand_name === carBrand);
   if (brand) {
     const model = brand.models.find(m => m.model_name === carModel);
     if (model) {
