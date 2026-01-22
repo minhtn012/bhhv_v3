@@ -23,6 +23,19 @@ export interface ContractFormData {
   userType: 'ca_nhan' | 'cong_ty';
   buyerPaymentDate?: string;
 
+  // BHV Customer Selection (optional)
+  buyerCustomerCode?: string;
+  buyerCustomerName?: string;
+  buyerPartnerCode?: string;
+  buyerPartnerName?: string;
+  buyerAgencyCode?: string;
+  buyerAgencyName?: string;
+
+  // Company-specific fields (only when userType === 'cong_ty')
+  maSoThue?: string;
+  nguoiLienHe?: string;
+  quanHeNganSach?: string;
+
   // Address
   diaChi: string;
   selectedProvince: string;
@@ -119,12 +132,24 @@ export interface ContractPayload {
   diaChi: string;
   loaiKhachHang: 'ca_nhan' | 'cong_ty';
 
+  // Company-specific fields
+  maSoThue?: string;
+  nguoiLienHe?: string;
+  quanHeNganSach?: string;
+
   // Buyer information
   buyerEmail: string;
   buyerPhone: string;
   buyerGender: 'nam' | 'nu' | 'khac';
   buyerCitizenId: string;
   buyerPaymentDate?: string;
+  // BHV Customer Selection
+  buyerCustomerCode?: string;
+  buyerCustomerName?: string;
+  buyerPartnerCode?: string;
+  buyerPartnerName?: string;
+  buyerAgencyCode?: string;
+  buyerAgencyName?: string;
   selectedProvince: string;
   selectedProvinceText: string;
   selectedDistrictWard: string;
@@ -287,12 +312,26 @@ export function transformFormToContract(
     diaChi: diaChi,
     loaiKhachHang: formData.userType,
 
+    // Company-specific fields (only for doanh nghiệp)
+    ...(formData.userType === 'cong_ty' && {
+      maSoThue: formData.maSoThue,
+      nguoiLienHe: formData.nguoiLienHe,
+      quanHeNganSach: formData.quanHeNganSach,
+    }),
+
     // Buyer information
     buyerEmail: formData.email,
     buyerPhone: formData.soDienThoai,
     buyerGender: formData.gioiTinh,
-    buyerCitizenId: formData.cccd,
+    buyerCitizenId: formData.userType === 'cong_ty' ? '' : formData.cccd, // Use MST for company, not CCCD
     buyerPaymentDate: formData.buyerPaymentDate || '',
+    // BHV Customer Selection
+    buyerCustomerCode: formData.buyerCustomerCode || '',
+    buyerCustomerName: formData.buyerCustomerName || '',
+    buyerPartnerCode: formData.buyerPartnerCode || '',
+    buyerPartnerName: formData.buyerPartnerName || '',
+    buyerAgencyCode: formData.buyerAgencyCode || '',
+    buyerAgencyName: formData.buyerAgencyName || '',
     selectedProvince: formData.selectedProvince,
     selectedProvinceText: formData.selectedProvinceText,
     selectedDistrictWard: formData.selectedDistrictWard,

@@ -14,9 +14,14 @@ export interface BaseContractFormData {
   chuXe: string;               // Owner name
   email: string;               // Email
   soDienThoai: string;         // Phone
-  cccd: string;                // Citizen ID
+  cccd: string;                // Citizen ID (for individual)
   userType: 'ca_nhan' | 'cong_ty';
   buyerPaymentDate: string;    // Payment date (DD/MM/YYYY)
+
+  // Company-specific fields (only when userType === 'cong_ty')
+  maSoThue: string;            // Tax ID (10 or 13 digits)
+  nguoiLienHe: string;         // Contact person name
+  quanHeNganSach: string;      // Budget relationship
   
   // Address Structure (actual form fields)
   diaChi: string;               // Main address (from vehicle registration)
@@ -75,6 +80,14 @@ export interface BaseContractFormData {
 
   // Ghi chú nội bộ
   ghiChu?: string;
+
+  // BHV Customer Selection (optional - for BHV online integration)
+  buyerCustomerCode?: string;    // Khách hàng code (e.g., "0312395674")
+  buyerCustomerName?: string;    // Khách hàng name
+  buyerPartnerCode?: string;     // Đối tác code (e.g., "VPBANK.PHI")
+  buyerPartnerName?: string;     // Đối tác name
+  buyerAgencyCode?: string;      // Đại lý code (e.g., "T00121")
+  buyerAgencyName?: string;      // Đại lý name
 }
 
 // Specialized type definitions using Pick utility
@@ -86,10 +99,13 @@ export type VehicleFormData = Pick<BaseContractFormData,
 
 export type BuyerFormData = Pick<BaseContractFormData,
   'chuXe' | 'email' | 'soDienThoai' | 'cccd' | 'userType' | 'buyerPaymentDate' |
+  'maSoThue' | 'nguoiLienHe' | 'quanHeNganSach' |
   'selectedProvince' | 'selectedProvinceText' | 'selectedDistrictWard' |
   'selectedDistrictWardText' | 'specificAddress' |
   'newSelectedProvince' | 'newSelectedProvinceText' | 'newSelectedDistrictWard' |
-  'newSelectedDistrictWardText' | 'newSpecificAddress'
+  'newSelectedDistrictWardText' | 'newSpecificAddress' |
+  'buyerCustomerCode' | 'buyerCustomerName' | 'buyerPartnerCode' |
+  'buyerPartnerName' | 'buyerAgencyCode' | 'buyerAgencyName'
 >;
 
 export type InsuranceCalculationFormData = Pick<BaseContractFormData,
@@ -125,7 +141,12 @@ export const defaultContractFormData: BaseContractFormData = {
   cccd: '',
   userType: 'ca_nhan',
   buyerPaymentDate: '',
-  
+
+  // Company-specific fields
+  maSoThue: '',
+  nguoiLienHe: '',
+  quanHeNganSach: '',
+
   // Address Structure
   diaChi: '',
   selectedProvince: '',

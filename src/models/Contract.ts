@@ -10,11 +10,23 @@ export interface IContract extends Document {
   diaChi: string;
   loaiKhachHang?: 'ca_nhan' | 'cong_ty'; // Loại khách hàng: cá nhân hoặc công ty
 
+  // Thông tin doanh nghiệp (chỉ khi loaiKhachHang === 'cong_ty')
+  maSoThue?: string;        // Mã số thuế doanh nghiệp (10 hoặc 13 số)
+  nguoiLienHe?: string;     // Tên người liên hệ/người mua hàng
+  quanHeNganSach?: string;  // Quan hệ ngân sách
+
   // Thông tin người mua (buyer information)
   buyerEmail?: string;
   buyerPhone?: string;
   buyerCitizenId?: string;
   buyerPaymentDate?: string; // Ngày thanh toán hợp đồng (DD/MM/YYYY)
+  // BHV Customer Selection (optional - for BHV online integration)
+  buyerCustomerCode?: string;  // Khách hàng code
+  buyerCustomerName?: string;  // Khách hàng name
+  buyerPartnerCode?: string;   // Đối tác code
+  buyerPartnerName?: string;   // Đối tác name
+  buyerAgencyCode?: string;    // Đại lý code
+  buyerAgencyName?: string;    // Đại lý name
   selectedProvince?: string; // province_code
   selectedProvinceText?: string; // province_name for display
   selectedDistrictWard?: string; // district/ward id
@@ -180,6 +192,28 @@ const contractSchema = new Schema<IContract>({
     default: 'ca_nhan'
   },
 
+  // Thông tin doanh nghiệp (chỉ khi loaiKhachHang === 'cong_ty')
+  maSoThue: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function(v: string) {
+        // Only validate if value exists and is a company
+        if (!v) return true;
+        return /^[0-9]{10}([0-9]{3})?$/.test(v); // 10 or 13 digits
+      },
+      message: 'Mã số thuế phải có 10 hoặc 13 chữ số'
+    }
+  },
+  nguoiLienHe: {
+    type: String,
+    trim: true
+  },
+  quanHeNganSach: {
+    type: String,
+    trim: true
+  },
+
   // Thông tin người mua (buyer information)
   buyerEmail: {
     type: String,
@@ -194,6 +228,31 @@ const contractSchema = new Schema<IContract>({
     trim: true
   },
   buyerPaymentDate: {
+    type: String,
+    trim: true
+  },
+  // BHV Customer Selection
+  buyerCustomerCode: {
+    type: String,
+    trim: true
+  },
+  buyerCustomerName: {
+    type: String,
+    trim: true
+  },
+  buyerPartnerCode: {
+    type: String,
+    trim: true
+  },
+  buyerPartnerName: {
+    type: String,
+    trim: true
+  },
+  buyerAgencyCode: {
+    type: String,
+    trim: true
+  },
+  buyerAgencyName: {
     type: String,
     trim: true
   },

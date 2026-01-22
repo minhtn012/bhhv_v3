@@ -3,6 +3,7 @@ import FieldError from './FieldError';
 import useBuyerLocation from '@/hooks/useBuyerLocation';
 import Spinner from '@/components/ui/Spinner';
 import SearchableSelect from '@/components/SearchableSelect';
+import BhvCustomerSelectionSection from './BhvCustomerSelectionSection';
 import { BuyerFormData } from '@/types/contract';
 
 // Extended form data for local UI state management
@@ -18,6 +19,17 @@ interface ExtendedBuyerFormData extends BuyerFormData {
   newSelectedDistrictWardText: string;
   newSpecificAddress: string;
   buyerPaymentDate: string;
+  // Company-specific fields
+  maSoThue: string;
+  nguoiLienHe: string;
+  quanHeNganSach: string;
+  // BHV Customer Selection fields
+  buyerCustomerCode?: string;
+  buyerCustomerName?: string;
+  buyerPartnerCode?: string;
+  buyerPartnerName?: string;
+  buyerAgencyCode?: string;
+  buyerAgencyName?: string;
 }
 
 interface BuyerInfoFormProps {
@@ -195,9 +207,17 @@ export default function BuyerInfoForm({
       errors.soDienThoai = 'Số điện thoại phải có 10 chữ số và bắt đầu bằng 03-09';
     }
 
-    // Optional: Validate CCCD format if provided
-    if (formData.cccd && !/^[0-9]{12}$/.test(formData.cccd)) {
-      errors.cccd = 'Căn cước công dân phải có đúng 12 chữ số';
+    // Validate based on customer type
+    if (formData.userType === 'cong_ty') {
+      // Validate MST for company (10 or 13 digits)
+      if (formData.maSoThue && !/^[0-9]{10}([0-9]{3})?$/.test(formData.maSoThue)) {
+        errors.maSoThue = 'Mã số thuế phải có 10 hoặc 13 chữ số';
+      }
+    } else {
+      // Validate CCCD for individual (12 digits)
+      if (formData.cccd && !/^[0-9]{12}$/.test(formData.cccd)) {
+        errors.cccd = 'Căn cước công dân phải có đúng 12 chữ số';
+      }
     }
 
     // Optional: Validate address length if provided
@@ -217,10 +237,33 @@ export default function BuyerInfoForm({
   };
 
   return (
-    <div>
-      <h2 className="text-xl lg:text-lg font-semibold text-white mb-6 lg:mb-4">Thông tin người mua</h2>
-      
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="space-y-6">
+      {/* BHV Customer Selection - Same level as buyer info */}
+      <BhvCustomerSelectionSection
+        customerCode={formData.buyerCustomerCode || ''}
+        customerName={formData.buyerCustomerName || ''}
+        partnerCode={formData.buyerPartnerCode || ''}
+        partnerName={formData.buyerPartnerName || ''}
+        agencyCode={formData.buyerAgencyCode || ''}
+        agencyName={formData.buyerAgencyName || ''}
+        onCustomerChange={(code, name) => {
+          onFormInputChange('buyerCustomerCode', code);
+          onFormInputChange('buyerCustomerName', name);
+        }}
+        onPartnerChange={(code, name) => {
+          onFormInputChange('buyerPartnerCode', code);
+          onFormInputChange('buyerPartnerName', name);
+        }}
+        onAgencyChange={(code, name) => {
+          onFormInputChange('buyerAgencyCode', code);
+          onFormInputChange('buyerAgencyName', name);
+        }}
+      />
+
+      {/* Buyer Information Section */}
+      <div>
+        <h2 className="text-xl lg:text-lg font-semibold text-white mb-6 lg:mb-4">Thông tin người mua</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Họ tên và Loại khách hàng (same row) */}
         <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Họ tên (editable, pre-filled from extracted data) */}
@@ -303,21 +346,38 @@ export default function BuyerInfoForm({
           <FieldError fieldName="soDienThoai" errors={combinedErrors} />
         </div>
 
-        {/* Số căn cước công dân */}
-        <div>
-          <label className="block text-white font-medium mb-2">Căn cước công dân</label>
-          <input
-            type="text"
-            value={formData.cccd}
-            onChange={(e) => onFormInputChange('cccd', e.target.value)}
-            className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
-              combinedErrors.cccd ? 'border-red-500' : 'border-slate-500/30'
-            }`}
-            placeholder="123456789012"
-            maxLength={12}
-          />
-          <FieldError fieldName="cccd" errors={combinedErrors} />
-        </div>
+        {/* Conditional: CCCD for individual, MST for company */}
+        {formData.userType === 'cong_ty' ? (
+          <div>
+            <label className="block text-white font-medium mb-2">Mã số thuế</label>
+            <input
+              type="text"
+              value={formData.maSoThue || ''}
+              onChange={(e) => onFormInputChange('maSoThue', e.target.value)}
+              className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+                combinedErrors.maSoThue ? 'border-red-500' : 'border-slate-500/30'
+              }`}
+              placeholder="0123456789 hoặc 0123456789123"
+              maxLength={13}
+            />
+            <FieldError fieldName="maSoThue" errors={combinedErrors} />
+          </div>
+        ) : (
+          <div>
+            <label className="block text-white font-medium mb-2">Căn cước công dân</label>
+            <input
+              type="text"
+              value={formData.cccd || ''}
+              onChange={(e) => onFormInputChange('cccd', e.target.value)}
+              className={`w-full bg-slate-700/50 border rounded-xl px-4 py-3 text-white min-h-[48px] ${
+                combinedErrors.cccd ? 'border-red-500' : 'border-slate-500/30'
+              }`}
+              placeholder="123456789012"
+              maxLength={12}
+            />
+            <FieldError fieldName="cccd" errors={combinedErrors} />
+          </div>
+        )}
 
         {/* Ngày thanh toán */}
         <div>
@@ -350,6 +410,32 @@ export default function BuyerInfoForm({
           />
           <FieldError fieldName="buyerPaymentDate" errors={combinedErrors} />
         </div>
+
+        {/* Company-specific fields (only for doanh nghiệp) */}
+        {formData.userType === 'cong_ty' && (
+          <>
+            <div>
+              <label className="block text-white font-medium mb-2">Người liên hệ</label>
+              <input
+                type="text"
+                value={formData.nguoiLienHe || ''}
+                onChange={(e) => onFormInputChange('nguoiLienHe', e.target.value)}
+                className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-3 text-white min-h-[48px]"
+                placeholder="Tên người mua hàng/liên hệ"
+              />
+            </div>
+            <div>
+              <label className="block text-white font-medium mb-2">Quan hệ ngân sách</label>
+              <input
+                type="text"
+                value={formData.quanHeNganSach || ''}
+                onChange={(e) => onFormInputChange('quanHeNganSach', e.target.value)}
+                className="w-full bg-slate-700/50 border border-slate-500/30 rounded-xl px-4 py-3 text-white min-h-[48px]"
+                placeholder="Đơn vị quan hệ ngân sách"
+              />
+            </div>
+          </>
+        )}
 
         {/* Tỉnh/Thành phố */}
         <div>
@@ -430,6 +516,7 @@ export default function BuyerInfoForm({
           />
           <FieldError fieldName="specificAddress" errors={combinedErrors} />
           <p className="text-xs text-white/50 mt-1">Tự động điền từ thông tin trích xuất (phần đầu của địa chỉ)</p>
+        </div>
         </div>
       </div>
 

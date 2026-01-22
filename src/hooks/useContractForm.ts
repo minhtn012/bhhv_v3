@@ -81,6 +81,14 @@ const initialState: ContractFormState = {
   newSelectedDistrictWardText: '',
   newSpecificAddress: '',
 
+  // BHV Customer Selection (optional)
+  buyerCustomerCode: '',
+  buyerCustomerName: '',
+  buyerPartnerCode: '',
+  buyerPartnerName: '',
+  buyerAgencyCode: '',
+  buyerAgencyName: '',
+
   // Vehicle Information
   bienSo: '',
   soKhung: '',

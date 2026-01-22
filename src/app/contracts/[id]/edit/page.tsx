@@ -56,6 +56,13 @@ interface Contract {
   buyerPhone?: string;
   buyerCitizenId?: string;
   buyerPaymentDate?: string;
+  // BHV Customer Selection
+  buyerCustomerCode?: string;
+  buyerCustomerName?: string;
+  buyerPartnerCode?: string;
+  buyerPartnerName?: string;
+  buyerAgencyCode?: string;
+  buyerAgencyName?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;
@@ -157,6 +164,14 @@ export default function EditContractPage() {
     cccd: '',
     userType: 'ca_nhan',
     buyerPaymentDate: '',
+
+    // BHV Customer Selection
+    buyerCustomerCode: '',
+    buyerCustomerName: '',
+    buyerPartnerCode: '',
+    buyerPartnerName: '',
+    buyerAgencyCode: '',
+    buyerAgencyName: '',
 
     // Address Structure (from BaseContractFormData)
     diaChi: '',
@@ -362,6 +377,14 @@ export default function EditContractPage() {
       cccd: contractData.buyerCitizenId || '',
       userType: contractData.loaiKhachHang || 'ca_nhan',
       buyerPaymentDate: contractData.buyerPaymentDate || '',
+
+      // BHV Customer Selection
+      buyerCustomerCode: contractData.buyerCustomerCode || '',
+      buyerCustomerName: contractData.buyerCustomerName || '',
+      buyerPartnerCode: contractData.buyerPartnerCode || '',
+      buyerPartnerName: contractData.buyerPartnerName || '',
+      buyerAgencyCode: contractData.buyerAgencyCode || '',
+      buyerAgencyName: contractData.buyerAgencyName || '',
 
       // Address Structure (BaseContractFormData)
       diaChi: contractData.diaChi,
@@ -716,6 +739,13 @@ export default function EditContractPage() {
         buyerPhone: formData.soDienThoai,
         buyerCitizenId: formData.cccd,
         buyerPaymentDate: formData.buyerPaymentDate,
+        // BHV Customer Selection
+        buyerCustomerCode: formData.buyerCustomerCode || '',
+        buyerCustomerName: formData.buyerCustomerName || '',
+        buyerPartnerCode: formData.buyerPartnerCode || '',
+        buyerPartnerName: formData.buyerPartnerName || '',
+        buyerAgencyCode: formData.buyerAgencyCode || '',
+        buyerAgencyName: formData.buyerAgencyName || '',
         selectedProvince: formData.selectedProvince,
         selectedProvinceText: formData.selectedProvinceText,
         selectedDistrictWard: formData.selectedDistrictWard,
@@ -927,6 +957,13 @@ export default function EditContractPage() {
                     cccd: formData.cccd,
                     userType: formData.userType,
                     buyerPaymentDate: formData.buyerPaymentDate,
+                    // BHV Customer Selection
+                    buyerCustomerCode: formData.buyerCustomerCode,
+                    buyerCustomerName: formData.buyerCustomerName,
+                    buyerPartnerCode: formData.buyerPartnerCode,
+                    buyerPartnerName: formData.buyerPartnerName,
+                    buyerAgencyCode: formData.buyerAgencyCode,
+                    buyerAgencyName: formData.buyerAgencyName,
                     selectedProvince: formData.selectedProvince,
                     selectedProvinceText: formData.selectedProvinceText,
                     selectedDistrictWard: formData.selectedDistrictWard,

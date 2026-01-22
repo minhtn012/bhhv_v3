@@ -18,6 +18,13 @@ interface Contract {
   buyerPhone?: string;
   buyerCitizenId?: string;
   buyerPaymentDate?: string;
+  // BHV Customer Selection
+  buyerCustomerCode?: string;
+  buyerCustomerName?: string;
+  buyerPartnerCode?: string;
+  buyerPartnerName?: string;
+  buyerAgencyCode?: string;
+  buyerAgencyName?: string;
   selectedProvince?: string;
   selectedProvinceText?: string;
   selectedDistrictWard?: string;
@@ -68,6 +75,41 @@ export default function CustomerInfoSection({ contract }: CustomerInfoSectionPro
             <label className="block text-gray-300 text-sm mb-1">Ngày thanh toán</label>
             <p className="text-white">{formatDateVN(contract.buyerPaymentDate)}</p>
           </div>
+        )}
+        {/* BHV Customer Selection Info */}
+        {(contract.buyerCustomerName || contract.buyerPartnerName || contract.buyerAgencyName) && (
+          <>
+            <div className="md:col-span-2 lg:col-span-3 border-t border-white/10 pt-4 mt-2">
+              <label className="block text-gray-300 text-sm mb-3 font-semibold">Thông tin BHV Online</label>
+            </div>
+            {contract.buyerCustomerName && (
+              <div>
+                <label className="block text-gray-300 text-sm mb-1">Khách hàng</label>
+                <p className="text-white">{contract.buyerCustomerName}</p>
+                {contract.buyerCustomerCode && (
+                  <p className="text-xs text-white/40">Mã: {contract.buyerCustomerCode}</p>
+                )}
+              </div>
+            )}
+            {contract.buyerPartnerName && (
+              <div>
+                <label className="block text-gray-300 text-sm mb-1">Đối tác</label>
+                <p className="text-white">{contract.buyerPartnerName}</p>
+                {contract.buyerPartnerCode && (
+                  <p className="text-xs text-white/40">Mã: {contract.buyerPartnerCode}</p>
+                )}
+              </div>
+            )}
+            {contract.buyerAgencyName && (
+              <div>
+                <label className="block text-gray-300 text-sm mb-1">Đại lý</label>
+                <p className="text-white">{contract.buyerAgencyName}</p>
+                {contract.buyerAgencyCode && (
+                  <p className="text-xs text-white/40">Mã: {contract.buyerAgencyCode}</p>
+                )}
+              </div>
+            )}
+          </>
         )}
         {contract.selectedProvinceText && (
           <div>

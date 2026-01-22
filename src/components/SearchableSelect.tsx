@@ -207,7 +207,7 @@ export default function SearchableSelect({
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option, index) => (
               <div
-                key={option.id}
+                key={`${option.id}-${index}`}
                 onMouseDown={(e) => {
                   e.preventDefault(); // Prevent blur from happening
                   handleSelect(option.name);

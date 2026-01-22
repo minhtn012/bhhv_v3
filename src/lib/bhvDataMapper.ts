@@ -19,10 +19,20 @@ const BHV_CONSTANTS = {
   PRODUCT_ID: "3588e406-6f89-4a14-839b-64460bbcea67",
   CAR_YEAR_BUY: "53d91be0-a641-4309-bd6b-e76befbe4e70",
   GET_FEE_MODE: "tu_dong",
-  KIND_CUSTOMER: "bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1",
+  KIND_CUSTOMER_PERSONAL: "bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d1",  // Cá nhân
+  KIND_CUSTOMER_BUSINESS: "bd8c75bc-eeb5-42ba-a5d0-e8ca9a573d2",  // Doanh nghiệp
   CHK_AGREE_TERM: "1",
   CHK_ADD_VIETNAM: "vietnam"
 };
+
+/**
+ * Get kind_customer UUID based on customer type
+ */
+export function getKindCustomer(loaiKhachHang?: string): string {
+  return loaiKhachHang === 'cong_ty'
+    ? BHV_CONSTANTS.KIND_CUSTOMER_BUSINESS
+    : BHV_CONSTANTS.KIND_CUSTOMER_PERSONAL;
+}
 
 /**
  * Format date for BHV API (DD/MM/YYYY)
@@ -385,7 +395,7 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     car_year_buy: BHV_CONSTANTS.CAR_YEAR_BUY,
     car_kind: mapCarKind(contract.loaiHinhKinhDoanh),
     get_fee_mode: BHV_CONSTANTS.GET_FEE_MODE,
-    kind_customer: BHV_CONSTANTS.KIND_CUSTOMER,
+    kind_customer: getKindCustomer(contract.loaiKhachHang),
     chk_agree_term: BHV_CONSTANTS.CHK_AGREE_TERM,
     chk_add_vietnam: BHV_CONSTANTS.CHK_ADD_VIETNAM,
 
@@ -417,14 +427,15 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data (buyer - người mua bảo hiểm) - uses NEW address
-    buyer_customer_code: "",
-    buyer_partner_code: "",
-    buyer_agency_code: "",
-    buyer_fullname: contract.chuXe, // Owner name from contract
+    // For company: buyer_identity_card = maSoThue, for individual: buyerCitizenId (CCCD)
+    buyer_customer_code: contract.buyerCustomerCode || "",
+    buyer_partner_code: contract.buyerPartnerCode || "",
+    buyer_agency_code: contract.buyerAgencyCode || "",
+    buyer_fullname: contract.chuXe,
     buyer_email: contract.buyerEmail,
     buyer_phone: contract.buyerPhone,
-    buyer_gender: contract.buyerGender?.toUpperCase(),
-    buyer_identity_card: contract.buyerCitizenId,
+    buyer_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
+    buyer_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     buyer_city: contract.newSelectedProvince,
     buyer_district: contract.newSelectedDistrictWard,
     buyer_address: contract.newSpecificAddress,
@@ -434,9 +445,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
     owner_vehicle_email: contract.buyerEmail,
-    owner_vehicle_identity_card: contract.buyerCitizenId,
+    owner_vehicle_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     owner_vehicle_phone: contract.buyerPhone,
-    owner_vehicle_gender: contract.buyerGender?.toUpperCase(),
+    owner_vehicle_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
     owner_vehicle_city: contract.selectedProvince,
     owner_vehicle_district: contract.selectedDistrictWard,
     owner_vehicle_address: contract.specificAddress,
@@ -445,17 +456,17 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
-    beneficiary_identity_card: contract.buyerCitizenId,
+    beneficiary_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     beneficiary_phone: contract.buyerPhone,
     beneficiary_city: contract.newSelectedProvince,
     beneficiary_district: contract.newSelectedDistrictWard,
     beneficiary_address: contract.newSpecificAddress,
 
-    // Additional missing fields
+    // Company-specific fields (only for doanh nghiệp)
     tax_content_kind: "nvbh_shd_bks",
     tax_content_option_noi_dung_dac_biet_noidung: "",
-    buyer_company_hoten: "",
-    buyer_company_qhns: "",
+    buyer_company_hoten: contract.loaiKhachHang === 'cong_ty' ? (contract.nguoiLienHe || "") : "",
+    buyer_company_qhns: contract.loaiKhachHang === 'cong_ty' ? (contract.quanHeNganSach || "") : "",
     buyer_passport: "",
 
     // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
@@ -525,7 +536,7 @@ export function transformContractToBhvFormat(contract: any): any {
     car_year_buy: BHV_CONSTANTS.CAR_YEAR_BUY,
     car_kind: mapCarKind(contract.loaiHinhKinhDoanh),
     get_fee_mode: BHV_CONSTANTS.GET_FEE_MODE,
-    kind_customer: BHV_CONSTANTS.KIND_CUSTOMER,
+    kind_customer: getKindCustomer(contract.loaiKhachHang),
     chk_agree_term: BHV_CONSTANTS.CHK_AGREE_TERM,
     chk_add_vietnam: BHV_CONSTANTS.CHK_ADD_VIETNAM,
 
@@ -557,14 +568,15 @@ export function transformContractToBhvFormat(contract: any): any {
     request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data (buyer - người mua bảo hiểm) - uses NEW address
-    buyer_customer_code: "",
-    buyer_partner_code: "",
-    buyer_agency_code: "",
-    buyer_fullname: contract.chuXe, // Owner name from contract
+    // For company: buyer_identity_card = maSoThue, for individual: buyerCitizenId (CCCD)
+    buyer_customer_code: contract.buyerCustomerCode || "",
+    buyer_partner_code: contract.buyerPartnerCode || "",
+    buyer_agency_code: contract.buyerAgencyCode || "",
+    buyer_fullname: contract.chuXe,
     buyer_email: contract.buyerEmail,
     buyer_phone: contract.buyerPhone,
-    buyer_gender: contract.buyerGender?.toUpperCase(),
-    buyer_identity_card: contract.buyerCitizenId,
+    buyer_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
+    buyer_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     buyer_city: contract.newSelectedProvince,
     buyer_district: contract.newSelectedDistrictWard,
     buyer_address: contract.newSpecificAddress,
@@ -574,9 +586,9 @@ export function transformContractToBhvFormat(contract: any): any {
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
     owner_vehicle_email: contract.buyerEmail,
-    owner_vehicle_identity_card: contract.buyerCitizenId,
+    owner_vehicle_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     owner_vehicle_phone: contract.buyerPhone,
-    owner_vehicle_gender: contract.buyerGender?.toUpperCase(),
+    owner_vehicle_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
     owner_vehicle_city: contract.selectedProvince,
     owner_vehicle_district: contract.selectedDistrictWard,
     owner_vehicle_address: contract.specificAddress,
@@ -585,17 +597,17 @@ export function transformContractToBhvFormat(contract: any): any {
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
-    beneficiary_identity_card: contract.buyerCitizenId,
+    beneficiary_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
     beneficiary_phone: contract.buyerPhone,
     beneficiary_city: contract.newSelectedProvince,
     beneficiary_district: contract.newSelectedDistrictWard,
     beneficiary_address: contract.newSpecificAddress,
 
-    // Additional missing fields
+    // Company-specific fields (only for doanh nghiệp)
     tax_content_kind: "nvbh_shd_bks",
     tax_content_option_noi_dung_dac_biet_noidung: "",
-    buyer_company_hoten: "",
-    buyer_company_qhns: "",
+    buyer_company_hoten: contract.loaiKhachHang === 'cong_ty' ? (contract.nguoiLienHe || "") : "",
+    buyer_company_qhns: contract.loaiKhachHang === 'cong_ty' ? (contract.quanHeNganSach || "") : "",
     buyer_passport: "",
 
     // Dates (formatted for BHV API - DD/MM/YYYY HH:mm)
