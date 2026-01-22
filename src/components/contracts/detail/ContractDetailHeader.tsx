@@ -30,8 +30,10 @@ interface ContractDetailHeaderProps {
 const canChangeStatus = (fromStatus: string, toStatus: string, currentUser: User | null): boolean => {
   switch (fromStatus) {
     case 'nhap':
-      return ['cho_duyet', 'huy'].includes(toStatus);
+      // Skip cho_duyet, go directly to khach_duyet
+      return ['khach_duyet', 'huy'].includes(toStatus);
     case 'cho_duyet':
+      // Legacy: allow old contracts to progress
       return ['khach_duyet', 'huy'].includes(toStatus);
     case 'khach_duyet':
       return currentUser?.role === 'admin' && toStatus === 'ra_hop_dong';
@@ -45,9 +47,7 @@ const canChangeStatus = (fromStatus: string, toStatus: string, currentUser: User
 
 const getAvailableStatusTransitions = (contract: Contract, currentUser: User | null): Array<{status: string, label: string}> => {
   const transitions = [];
-  if (canChangeStatus(contract.status, 'cho_duyet', currentUser)) {
-    transitions.push({ status: 'cho_duyet', label: 'Gửi chờ duyệt' });
-  }
+  // Removed: cho_duyet step - skip directly to khach_duyet
   if (canChangeStatus(contract.status, 'khach_duyet', currentUser)) {
     transitions.push({ status: 'khach_duyet', label: 'Khách đã duyệt' });
   }
@@ -57,7 +57,7 @@ const getAvailableStatusTransitions = (contract: Contract, currentUser: User | n
   if (canChangeStatus(contract.status, 'huy', currentUser)) {
     transitions.push({ status: 'huy', label: 'Hủy hợp đồng' });
   }
-  
+
   return transitions;
 };
 
