@@ -88,11 +88,14 @@ export const ContractSchema = z.object({
   // Company-specific fields
   loaiKhachHang: z.enum(['ca_nhan', 'cong_ty']).optional().default('ca_nhan'),
 
-  maSoThue: z.string()
-    .transform((val) => val === '' ? undefined : val)
-    .pipe(z.string()
-      .regex(/^[0-9]{10}([0-9]{3})?$/, 'Mã số thuế phải có 10 hoặc 13 chữ số')
-      .optional()),
+  maSoThue: z.preprocess(
+    (val) => (val === undefined || val === null ? '' : val),
+    z.string()
+      .transform((val) => val === '' ? undefined : val)
+      .pipe(z.string()
+        .regex(/^[0-9]{10}([0-9]{3})?$/, 'Mã số thuế phải có 10 hoặc 13 chữ số')
+        .optional())
+  ),
 
   nguoiLienHe: z.string()
     .transform((val) => val === '' ? undefined : val)
