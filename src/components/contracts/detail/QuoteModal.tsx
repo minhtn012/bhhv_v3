@@ -115,7 +115,7 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
     }
   }, [isVisible, contract]);
 
-  const downloadQuote = async () => {
+  const downloadQuote = async (hideRate: boolean = false) => {
     if (!contract) return;
 
     const quoteElement = document.getElementById('quote-content-to-download');
@@ -153,6 +153,24 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
         clonedElement.style.position = 'absolute';
         clonedElement.style.left = '-9999px';
         clonedElement.style.top = '0';
+
+        // Hide rate row if requested
+        if (hideRate) {
+          const rateRow = clonedElement.querySelector('#q-tyLePhi')?.closest('tr');
+          if (rateRow) {
+            rateRow.remove();
+            // Adjust rowSpan of DKBS column from 4 to 3
+            const dkbsCell = clonedElement.querySelector('#q-dkbs');
+            if (dkbsCell) {
+              dkbsCell.setAttribute('rowspan', '3');
+            }
+            const dkbsLabelCell = dkbsCell?.previousElementSibling;
+            if (dkbsLabelCell) {
+              dkbsLabelCell.setAttribute('rowspan', '3');
+            }
+          }
+        }
+
         document.body.appendChild(clonedElement);
 
         window.html2canvas(clonedElement, {
@@ -167,7 +185,8 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
           document.body.removeChild(clonedElement);
 
           const link = document.createElement('a');
-          link.download = `BaoGia_${contract!.contractNumber.replace(/\s/g, '')}.png`;
+          const suffix = hideRate ? '_KhongTyLe' : '';
+          link.download = `BaoGia_${contract!.contractNumber.replace(/\s/g, '')}${suffix}.png`;
           link.href = canvas.toDataURL('image/png');
           link.click();
         }).catch((error: unknown) => {
@@ -188,7 +207,7 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div id="quote-content-to-download" className="p-4 bg-white">
+        <div id="quote-content-to-download" className="bg-white" style={{ padding: '24px' }}>
           <header className="text-center mb-4">
             <div className="flex items-center justify-center gap-4 mb-2">
               <img 
@@ -295,7 +314,13 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
             Đóng
           </button>
           <button
-            onClick={downloadQuote}
+            onClick={() => downloadQuote(true)}
+            className="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700"
+          >
+            Tải (Ẩn tỷ lệ phí)
+          </button>
+          <button
+            onClick={() => downloadQuote(false)}
             className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700"
           >
             Tải xuống (PNG)
