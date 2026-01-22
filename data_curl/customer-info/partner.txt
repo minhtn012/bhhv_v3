@@ -1,0 +1,21 @@
+fetch("https://my.bhv.com.vn/3f2fb62a-662a-4911-afad-d0ec4925f29e", {
+  "headers": {
+    "accept": "application/json, text/javascript, */*; q=0.01",
+    "accept-language": "en-US,en;q=0.9,vi;q=0.8,lb;q=0.7",
+    "cache-control": "no-cache",
+    "content-type": "application/json; charset=UTF-8",
+    "pragma": "no-cache",
+    "sec-ch-ua": "\"Not(A:Brand\";v=\"8\", \"Chromium\";v=\"144\", \"Google Chrome\";v=\"144\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-requested-with": "XMLHttpRequest"
+  },
+  "referrer": "https://my.bhv.com.vn/bao-hiem-xe-co-gioi",
+  "body": "{\"action_name\":\"shared/load/partner/data\",\"data\":\"null\",\"d_info\":{}}",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});

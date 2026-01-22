@@ -1,0 +1,17 @@
+curl 'https://paris.pacificcross.com.vn/cert/306839::5jr62TLmjH' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: en-US,en;q=0.9,vi;q=0.8,lb;q=0.7' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -b 'submitted=eyJpdiI6IlE5cFN6OHEvQTlkZVc0N01IUmRwVlE9PSIsInZhbHVlIjoiWVNaK0dkRC92b3JHbDlSWGVJS2tFVkNqa1V2dmV5UHpscFN4TVF5NklSRGVOYlB5L3FkZE4yYjNiYk04aUNOaSIsIm1hYyI6IjM2ZWQxNTE2MDdkNzUwNGM2ZjQxNTM2NzA0Njc5ZDI1YjYwZGU1NWRlMjc4Mzk4YjA1MTRlODZhMjUyM2MwNzQiLCJ0YWciOiIifQ%3D%3D; XSRF-TOKEN=eyJpdiI6IktEN2tDZGxVclBXMjRSeHdaYmNFTWc9PSIsInZhbHVlIjoiaHBkWmZBTUJFbFpiNFF5Wm1KWmhSdDZHdmhUa3VqNGIyZTdaQWhpeW4rUXEwcXZJaFNxbUlsMjBsZ1NKTlpYNytQOFpoZVZVVlBKNWVUd0Z5NThrcXBLbXVuZGplZC96VkxQekNialNTcTlsNms4MmN4cTlsdkoycS9yTEdzeVciLCJtYWMiOiJlNzc3MjYwOWNjYWE5NjkyOWUwMTE3NThjZGVhNWQ4MmFhNDZlYzkxODdlMGVjY2EwN2NiZGNlZjI4MjM4MWU3IiwidGFnIjoiIn0%3D; pcv_travel_portal_session=eyJpdiI6Iis4UjE0OTljMm9NdHNBTmJXWXI5V1E9PSIsInZhbHVlIjoiQnVsRXBYYnkwTnNHT1NEYmowaURyYktvUlNpUWVlVHB6REhpSnV1c2x6cjFlQnZWUitsdWVGck1qZTFzSnFxUWZscFNLcTNKTnI2Ky9RVFFDSm5oWDlKNFN4UkxDbGlwaXRqK2c2ejIyOHdUcDI4Q3Z4VitPTm9aRU9yZGRJdVQiLCJtYWMiOiJhMjMxOGY2YzBjNjBlMGM1OGY4YTI2YzhhZjc2YzhhNDNiNDBiYzllZmZiNTg1Yjk0NDdlN2E2ODdiNjdmZTU5IiwidGFnIjoiIn0%3D' \
+  -H 'Pragma: no-cache' \
+  -H 'Referer: https://paris.pacificcross.com.vn/cert/create?product=2' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"'
