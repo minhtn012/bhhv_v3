@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 import { CarSelection } from '@/types/car';
 import { type BaseContractFormData } from '@/types/contract';
-import carEngineTypes from '@db/car_type_engine.json';
 
 export default function useFormValidation(requireFullInfo: boolean = false) {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -128,21 +127,7 @@ export default function useFormValidation(requireFullInfo: boolean = false) {
       otherwise: (schema) => schema.nullable().notRequired()
     }),
     loaiDongCo: Yup.string().required('Vui lòng chọn loại động cơ'),
-    giaTriPin: Yup.string().when('loaiDongCo', {
-      is: (loaiDongCo: string) => {
-        if (!loaiDongCo) return false;
-        const selectedEngine = carEngineTypes.find(engine => engine.value === loaiDongCo);
-        return selectedEngine && (selectedEngine.name.includes('Hybrid') || selectedEngine.name.includes('điện'));
-      },
-      then: (schema) => schema
-        .required('Vui lòng nhập giá trị pin khi chọn động cơ hybrid hoặc điện')
-        .test('valid-battery-price', 'Giá trị pin phải lớn hơn 0', function(value) {
-          if (!value) return false;
-          const price = parseCurrency(value);
-          return !isNaN(price) && price > 0;
-        }),
-      otherwise: (schema) => schema.notRequired()
-    }),
+    giaTriPin: Yup.string().notRequired(),
     
     // // Package Selection & Insurance fields
     // selectedPackageIndex: Yup.number()

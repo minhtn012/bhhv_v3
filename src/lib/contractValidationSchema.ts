@@ -85,6 +85,23 @@ export const ContractSchema = z.object({
       .regex(/^[0-9]{12}$/, 'CCCD phải có đúng 12 chữ số')
       .optional()),
 
+  // Company-specific fields
+  loaiKhachHang: z.enum(['ca_nhan', 'cong_ty']).optional().default('ca_nhan'),
+
+  maSoThue: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .pipe(z.string()
+      .regex(/^[0-9]{10}([0-9]{3})?$/, 'Mã số thuế phải có 10 hoặc 13 chữ số')
+      .optional()),
+
+  nguoiLienHe: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+
+  quanHeNganSach: z.string()
+    .transform((val) => val === '' ? undefined : val)
+    .optional(),
+
   buyerPaymentDate: z.string()
     .transform((val) => val === '' ? undefined : val)
     .pipe(z.string()
@@ -257,24 +274,6 @@ export const ContractSchema = z.object({
     {
       message: 'Vui lòng chọn loại TNDS khi bao gồm bảo hiểm TNDS',
       path: ['tndsCategory'],
-    }
-  )
-  // Custom validation: Battery value required for EV/Hybrid
-  .refine(
-    (data) => {
-      const isElectric = data.loaiDongCo &&
-        (data.loaiDongCo.toLowerCase().includes('hybrid') ||
-         data.loaiDongCo.toLowerCase().includes('dien') ||
-         data.loaiDongCo.toLowerCase().includes('điện'));
-
-      if (isElectric && (!data.giaTriPin || data.giaTriPin <= 0)) {
-        return false;
-      }
-      return true;
-    },
-    {
-      message: 'Giá trị pin là bắt buộc cho xe hybrid/điện',
-      path: ['giaTriPin'],
     }
   )
   // Custom validation: trongTai required for cargo vehicles
