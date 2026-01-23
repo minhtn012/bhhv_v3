@@ -159,19 +159,23 @@ export default function BuyerInfoForm({
     }
   }, [formData.newSelectedProvince, newDistrictsWards.length, newLoadDistrictsWards]);
 
-  // Auto-detect company type based on name
+  // Track if company type was already auto-suggested to avoid re-suggesting after user override
+  const [hasAutoSuggestedCompany, setHasAutoSuggestedCompany] = useState(false);
+
+  // Auto-suggest company type based on name (once only, user can override)
   useEffect(() => {
-    if (formData.chuXe) {
+    if (formData.chuXe && !hasAutoSuggestedCompany) {
       const nameLower = formData.chuXe.toLowerCase();
       const companyKeywords = ['tnhh', 'công ty', 'cong ty', 'cty', 'ctcp', 'cổ phần', 'co phan'];
 
       const isCompany = companyKeywords.some(keyword => nameLower.includes(keyword));
 
-      if (isCompany && formData.userType !== 'cong_ty') {
+      if (isCompany) {
         onFormInputChange('userType', 'cong_ty');
+        setHasAutoSuggestedCompany(true);
       }
     }
-  }, [formData.chuXe, formData.userType, onFormInputChange]);
+  }, [formData.chuXe, hasAutoSuggestedCompany, onFormInputChange]);
 
   // Clear local errors when field values change
   useEffect(() => {

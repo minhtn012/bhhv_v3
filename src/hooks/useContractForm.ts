@@ -18,6 +18,7 @@ export interface ContractFormState extends BaseContractFormData {
   customRates: number[];
   selectedNNTXPackage: string;
   tinhTrang: 'cap_moi' | 'tai_tuc';
+  gioiTinh: 'nam' | 'nu';
 
   // Calculated fees (auto-updated)
   phiVatChatGoc: number;
@@ -65,6 +66,11 @@ const initialState: ContractFormState = {
   gioiTinh: 'nam',
   userType: 'ca_nhan',
   buyerPaymentDate: '',
+
+  // Company-specific fields (only when userType === 'cong_ty')
+  maSoThue: '',
+  nguoiLienHe: '',
+  quanHeNganSach: '',
 
   // Address Structure
   diaChi: '',
