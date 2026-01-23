@@ -702,12 +702,16 @@ contractSchema.methods.canEdit = function(): boolean {
 // Instance method để kiểm tra có thể thay đổi trạng thái không
 contractSchema.methods.canChangeStatus = function(newStatus: string, userRole: string): boolean {
   const currentStatus = this.status;
-  
-  // Logic workflow
+
+  // Logic workflow (đã bỏ bước cho_duyet)
+  // nhap → khach_duyet hoặc huy
+  // cho_duyet (legacy) → khach_duyet hoặc huy
+  // khach_duyet → ra_hop_dong (admin only)
   switch (currentStatus) {
     case 'nhap':
-      return newStatus === 'cho_duyet' || newStatus === 'huy';
+      return newStatus === 'khach_duyet' || newStatus === 'huy';
     case 'cho_duyet':
+      // Legacy: hợp đồng cũ ở trạng thái cho_duyet vẫn có thể chuyển
       return newStatus === 'khach_duyet' || newStatus === 'huy';
     case 'khach_duyet':
       return userRole === 'admin' && newStatus === 'ra_hop_dong';
