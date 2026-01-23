@@ -427,7 +427,7 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data (buyer - người mua bảo hiểm) - uses NEW address
-    // For company: buyer_identity_card = maSoThue, for individual: buyerCitizenId (CCCD)
+    // Identity card is optional: MST for company, CCCD for individual
     buyer_customer_code: contract.buyerCustomerCode || "",
     buyer_partner_code: contract.buyerPartnerCode || "",
     buyer_agency_code: contract.buyerAgencyCode || "",
@@ -435,7 +435,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     buyer_email: contract.buyerEmail,
     buyer_phone: contract.buyerPhone,
     buyer_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
-    buyer_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { buyer_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { buyer_identity_card: contract.buyerCitizenId }),
     buyer_city: contract.newSelectedProvince,
     buyer_district: contract.newSelectedDistrictWard,
     buyer_address: contract.newSpecificAddress,
@@ -445,7 +447,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
     owner_vehicle_email: contract.buyerEmail,
-    owner_vehicle_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { owner_vehicle_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { owner_vehicle_identity_card: contract.buyerCitizenId }),
     owner_vehicle_phone: contract.buyerPhone,
     owner_vehicle_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
     owner_vehicle_city: contract.selectedProvince,
@@ -456,7 +460,9 @@ export function transformContractToBhvConfirmFormat(contract: any, saleCode: str
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
-    beneficiary_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { beneficiary_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { beneficiary_identity_card: contract.buyerCitizenId }),
     beneficiary_phone: contract.buyerPhone,
     beneficiary_city: contract.newSelectedProvince,
     beneficiary_district: contract.newSelectedDistrictWard,
@@ -568,7 +574,7 @@ export function transformContractToBhvFormat(contract: any): any {
     request_change_fees: calculateRequestChangeFees(contract),
 
     // Customer data (buyer - người mua bảo hiểm) - uses NEW address
-    // For company: buyer_identity_card = maSoThue, for individual: buyerCitizenId (CCCD)
+    // Identity card is optional: MST for company, CCCD for individual
     buyer_customer_code: contract.buyerCustomerCode || "",
     buyer_partner_code: contract.buyerPartnerCode || "",
     buyer_agency_code: contract.buyerAgencyCode || "",
@@ -576,7 +582,9 @@ export function transformContractToBhvFormat(contract: any): any {
     buyer_email: contract.buyerEmail,
     buyer_phone: contract.buyerPhone,
     buyer_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
-    buyer_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { buyer_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { buyer_identity_card: contract.buyerCitizenId }),
     buyer_city: contract.newSelectedProvince,
     buyer_district: contract.newSelectedDistrictWard,
     buyer_address: contract.newSpecificAddress,
@@ -586,7 +594,9 @@ export function transformContractToBhvFormat(contract: any): any {
     owner_vehicle_relationship: "1b9eb913-b96b-45e8-9fc4-80f0d46d3ab1",
     owner_vehicle_fullname: contract.chuXe,
     owner_vehicle_email: contract.buyerEmail,
-    owner_vehicle_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { owner_vehicle_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { owner_vehicle_identity_card: contract.buyerCitizenId }),
     owner_vehicle_phone: contract.buyerPhone,
     owner_vehicle_gender: contract.loaiKhachHang === 'cong_ty' ? "" : contract.buyerGender?.toUpperCase(),
     owner_vehicle_city: contract.selectedProvince,
@@ -597,7 +607,9 @@ export function transformContractToBhvFormat(contract: any): any {
     chk_beneficiary: "100",
     beneficiary_fullname: contract.chuXe,
     beneficiary_email: contract.buyerEmail,
-    beneficiary_identity_card: contract.loaiKhachHang === 'cong_ty' ? contract.maSoThue : contract.buyerCitizenId,
+    // Only include identity_card if value exists
+    ...(contract.loaiKhachHang === 'cong_ty' && contract.maSoThue && { beneficiary_identity_card: contract.maSoThue }),
+    ...(contract.loaiKhachHang !== 'cong_ty' && contract.buyerCitizenId && { beneficiary_identity_card: contract.buyerCitizenId }),
     beneficiary_phone: contract.buyerPhone,
     beneficiary_city: contract.newSelectedProvince,
     beneficiary_district: contract.newSelectedDistrictWard,
