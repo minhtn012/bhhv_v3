@@ -136,8 +136,8 @@ export default function EditTravelContractPage() {
     setSaving(true);
     setError('');
 
-    // Validate phone number
-    if (!owner.telNo || !validatePhone(owner.telNo)) {
+    // Validate phone number if provided
+    if (owner.telNo && !validatePhone(owner.telNo)) {
       setError('Số điện thoại không hợp lệ');
       setPhoneError('SĐT không hợp lệ (VD: 0912345678 hoặc +84912345678)');
       setSaving(false);
@@ -247,14 +247,13 @@ export default function EditTravelContractPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại <span className="text-orange-400">*</span></label>
+                <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
                 <input
                   type="tel"
                   value={owner.telNo}
                   onChange={(e) => handlePhoneChange(e.target.value)}
                   placeholder="0912345678"
                   className={`${inputClass} ${phoneError ? 'border-red-500/50' : ''}`}
-                  required
                 />
                 {phoneError && <p className="text-red-400 text-xs mt-1">{phoneError}</p>}
               </div>

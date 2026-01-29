@@ -7,21 +7,13 @@ import { mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/product
 import { logError, logInfo, logDebug } from '@/lib/errorLogger';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
-// POST /api/travel/[id]/confirm - Confirm contract on Pacific Cross (admin only)
+// POST /api/travel/[id]/confirm - Confirm contract on Pacific Cross
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = requireAuth(request);
-
-    // Admin only
-    if (user.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Admin only' },
-        { status: 403 }
-      );
-    }
 
     await connectToDatabase();
 
