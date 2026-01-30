@@ -374,6 +374,10 @@ export default function TravelContractDetailPage() {
                     <p className="text-gray-400 text-sm">Địa chỉ</p>
                     <p className="text-white">{contract.owner.address}</p>
                   </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Nước xuất phát</p>
+                    <p className="text-white">{contract.owner.startCountry}</p>
+                  </div>
                 </div>
               </div>
 

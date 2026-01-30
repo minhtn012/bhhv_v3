@@ -115,9 +115,13 @@ export default function useFormValidation(requireFullInfo: boolean = false) {
         return !isNaN(price) && price > 0;
       }),
     trongTai: Yup.mixed().when('loaiHinhKinhDoanh', {
-      is: (loaiHinh: string) => loaiHinh?.includes('cho_hang') || loaiHinh?.includes('dau_keo'),
+      is: (loaiHinh: string) =>
+        loaiHinh?.includes('cho_hang') ||
+        loaiHinh?.includes('dau_keo') ||
+        loaiHinh?.includes('pickup') ||
+        loaiHinh?.includes('kd_grab_be'),
       then: (schema) => schema
-        .required('Vui lòng nhập trọng tải cho xe tải')
+        .required('Vui lòng nhập trọng tải')
         .test('is-number', 'Trọng tải phải là số', (value) => {
           return value !== '' && !isNaN(Number(value));
         })

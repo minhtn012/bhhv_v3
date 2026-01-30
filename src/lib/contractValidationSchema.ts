@@ -279,12 +279,14 @@ export const ContractSchema = z.object({
       path: ['tndsCategory'],
     }
   )
-  // Custom validation: trongTai required for cargo vehicles
+  // Custom validation: trongTai required for cargo/pickup/grab vehicles
   .refine(
     (data) => {
       const requiresTrongTai = data.loaiHinhKinhDoanh &&
         (data.loaiHinhKinhDoanh.includes('cho_hang') ||
-         data.loaiHinhKinhDoanh.includes('dau_keo'));
+         data.loaiHinhKinhDoanh.includes('dau_keo') ||
+         data.loaiHinhKinhDoanh.includes('pickup') ||
+         data.loaiHinhKinhDoanh.includes('kd_grab_be'));
 
       if (requiresTrongTai && (!data.trongTai || data.trongTai <= 0)) {
         return false;
@@ -292,7 +294,7 @@ export const ContractSchema = z.object({
       return true;
     },
     {
-      message: 'Trọng tải là bắt buộc cho xe tải/đầu kéo',
+      message: 'Trọng tải là bắt buộc',
       path: ['trongTai'],
     }
   );

@@ -59,29 +59,60 @@ export async function POST(request: NextRequest) {
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_GEMINI}:generateContent?key=${apiKey}`;
 
-    const prompt = `Ban la chuyen gia OCR phan tich giay to tuy than Viet Nam (CCCD, CMND, Ho chieu/Passport).
+    const prompt = `You are an expert OCR system for INTERNATIONAL TRAVEL DOCUMENTS (Passports, Visas, Resident Cards, ID Cards from ANY country).
 
-NHIEM VU: Trich xuat thong tin ca nhan tu anh giay to.
+TASK: Extract personal information from travel document images with HIGH ACCURACY.
 
-CAC TRUONG CAN TRICH XUAT:
-- hoTen: Ho va ten day du (co dau tieng Viet)
-- hoTenKhongDau: Ho ten khong dau (nhu tren passport)
-- ngaySinh: Ngay sinh (dd/mm/yyyy)
-- gioiTinh: Gioi tinh (Nam/Nu)
-- quocTich: Quoc tich
-- soCCCD: So CCCD/CMND (12 so)
-- soHoChieu: So ho chieu (neu la passport)
-- ngayCapHC: Ngay cap ho chieu
-- ngayHetHanHC: Ngay het han ho chieu
-- noiCapHC: Noi cap ho chieu
-- diaChi: Dia chi thuong tru (tren CCCD)
+DOCUMENT TYPES TO RECOGNIZE:
+- International Passports (any country: USA, Japan, Australia, Philippines, New Zealand, etc.)
+- Visas (tourist, work, student visas)
+- Resident Cards / Green Cards
+- National ID Cards
 
-HUONG DAN:
-- Neu la CCCD: Uu tien lay soCCCD, hoTen, ngaySinh, gioiTinh, diaChi
-- Neu la Passport: Uu tien lay soHoChieu, hoTenKhongDau, ngaySinh, gioiTinh, quocTich
-- Neu khong tim thay thong tin: de null
-- Chi tra ve JSON object, khong giai thich
-- Tra ve dung 1 JSON object (khong phai array)`;
+FIELDS TO EXTRACT:
+- documentType: "PASSPORT" | "VISA" | "RESIDENT_CARD" | "ID_CARD"
+- issuingCountry: Country that issued the document (e.g., "AUSTRALIA", "JAPAN", "USA", "PHILIPPINES")
+- hoTenKhongDau: Full name in LATIN characters WITHOUT diacritics (SURNAME + GIVEN NAMES). Format: "SURNAME GIVEN_NAMES"
+- ngaySinh: Date of birth in dd/mm/yyyy format
+- gioiTinh: Gender - "M" for Male, "F" for Female
+- quocTich: Nationality/Citizenship - ONLY extract if explicitly labeled "Nationality" or "Citizenship". Return null if not found.
+- soHoChieu: Passport/Document number (or USCIS# for Green Cards)
+- ngayCapHC: Date of issue in dd/mm/yyyy format
+- ngayHetHanHC: Date of expiry in dd/mm/yyyy format
+- noiCapHC: Place of issue (if available)
+- noiSinh: Place/Country of Birth - DIFFERENT from nationality!
+
+CRITICAL INSTRUCTIONS:
+1. **COUNTRY OF BIRTH ≠ NATIONALITY**:
+   - "Country of Birth" / "Place of Birth" → goes to noiSinh field
+   - "Nationality" / "Citizenship" → goes to quocTich field
+   - These are DIFFERENT! A person born in Vietnam can be Australian citizen.
+   - For RESIDENT CARDS (e.g., US Green Card): Card holder is NOT a citizen of issuing country. Leave quocTich as null.
+   - For PASSPORTS: If no explicit "Nationality" field, use issuingCountry as nationality (passport = citizen of that country).
+
+2. **MRZ PRIORITY**: If Machine Readable Zone (MRZ) is visible at bottom of document, PRIORITIZE extracting data from MRZ as it's most accurate:
+   - Line 1: Document type, country code, surname, given names
+   - Line 2: Document number, nationality, DOB (YYMMDD), sex, expiry (YYMMDD)
+
+3. **DATE FORMAT CONVERSION**: Convert ALL dates to dd/mm/yyyy format:
+   - "20 NOV 1998" → "20/11/1998"
+   - "04 SEP 25" → "04/09/2025"
+   - "25 SEP 1976" → "25/09/1976"
+   - "07/14/27" (US format MM/DD/YY) → "14/07/2027"
+   - MRZ format "940610" (YYMMDD) → "10/06/1994"
+
+4. **NAME HANDLING**:
+   - Combine Surname + Given names + Middle name into hoTenKhongDau
+   - Remove ALL diacritics (e.g., "NGUYỄN" → "NGUYEN")
+   - Format: "SURNAME GIVEN_NAMES" (e.g., "FLORES RAQUEL MELENDRES")
+
+5. **COUNTRY CODES**: Use full country name in UPPERCASE:
+   - AUS → AUSTRALIA, JPN → JAPAN, USA → USA, PHL → PHILIPPINES, NZL → NEW ZEALAND, VNM → VIETNAM
+
+6. Return null for any field not found in the document
+
+OUTPUT: Return ONLY a valid JSON object, no explanation.`;
+
 
     // Process each image and collect results
     const results: Array<{

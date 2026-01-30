@@ -12,8 +12,12 @@
 // Types
 // ============================================================================
 
-/** Raw OCR output structure (flat fields from ocr-config.json bao-hiem-du-lich) */
+/** Raw OCR output structure for international travel documents */
 export interface TravelOCROutput {
+  // Document info
+  documentType: 'PASSPORT' | 'VISA' | 'RESIDENT_CARD' | 'ID_CARD' | null;
+  issuingCountry: string | null;
+
   // Personal info
   hoTen: string | null;
   hoTenKhongDau: string | null;
@@ -27,8 +31,9 @@ export interface TravelOCROutput {
   ngayCapHC: string | null;
   ngayHetHanHC: string | null;
   noiCapHC: string | null;
+  noiSinh: string | null;
 
-  // Address
+  // Address (for CCCD/ID cards)
   diaChi: string | null;
 }
 
@@ -92,47 +97,74 @@ export function cleanPhoneNumber(phone: string | null | undefined): string {
 
 /**
  * Map nationality/country to country code
- * @param nationality - Vietnamese nationality text
+ * Handles international passport nationalities
+ * @param nationality - Nationality text from passport
  * @returns Country code (default: VIETNAM)
  */
 export function mapCountryCode(nationality: string | null | undefined): string {
   if (!nationality) return 'VIETNAM';
-  const normalized = nationality.toLowerCase().trim();
+  const normalized = nationality.toUpperCase().trim();
 
-  // Common countries mapping
+  // Direct match for already-formatted country codes
+  const directCountries = [
+    'VIETNAM', 'USA', 'JAPAN', 'KOREA', 'CHINA', 'THAILAND', 'SINGAPORE',
+    'MALAYSIA', 'INDONESIA', 'PHILIPPINES', 'AUSTRALIA', 'FRANCE',
+    'GERMANY', 'UK', 'NEW ZEALAND', 'CANADA', 'INDIA', 'TAIWAN',
+  ];
+  if (directCountries.includes(normalized)) {
+    return normalized;
+  }
+
+  // Extended mapping for variations
   const countryMap: Record<string, string> = {
-    'vietnam': 'VIETNAM',
-    'việt nam': 'VIETNAM',
-    'vn': 'VIETNAM',
-    'usa': 'USA',
-    'united states': 'USA',
-    'america': 'USA',
-    'japan': 'JAPAN',
-    'nhật bản': 'JAPAN',
-    'korea': 'KOREA',
-    'hàn quốc': 'KOREA',
-    'china': 'CHINA',
-    'trung quốc': 'CHINA',
-    'thailand': 'THAILAND',
-    'thái lan': 'THAILAND',
-    'singapore': 'SINGAPORE',
-    'malaysia': 'MALAYSIA',
-    'indonesia': 'INDONESIA',
-    'philippines': 'PHILIPPINES',
-    'australia': 'AUSTRALIA',
-    'france': 'FRANCE',
-    'pháp': 'FRANCE',
-    'germany': 'GERMANY',
-    'đức': 'GERMANY',
-    'uk': 'UK',
-    'england': 'UK',
-    'anh': 'UK',
+    // Vietnam
+    'vietnamese': 'VIETNAM', 'viet nam': 'VIETNAM', 'vnm': 'VIETNAM', 'vn': 'VIETNAM',
+    // USA
+    'american': 'USA', 'united states': 'USA', 'america': 'USA',
+    // Japan
+    'japanese': 'JAPAN', 'nhật bản': 'JAPAN', 'jpn': 'JAPAN',
+    // Korea
+    'korean': 'KOREA', 'south korea': 'KOREA', 'hàn quốc': 'KOREA', 'kor': 'KOREA',
+    // China
+    'chinese': 'CHINA', 'trung quốc': 'CHINA', 'chn': 'CHINA',
+    // Thailand
+    'thai': 'THAILAND', 'thái lan': 'THAILAND', 'tha': 'THAILAND',
+    // Singapore
+    'singaporean': 'SINGAPORE', 'sgp': 'SINGAPORE',
+    // Malaysia
+    'malaysian': 'MALAYSIA', 'mys': 'MALAYSIA',
+    // Indonesia
+    'indonesian': 'INDONESIA', 'idn': 'INDONESIA',
+    // Philippines
+    'filipino': 'PHILIPPINES', 'pilipino': 'PHILIPPINES', 'phl': 'PHILIPPINES',
+    // Australia
+    'australian': 'AUSTRALIA', 'aus': 'AUSTRALIA',
+    // New Zealand
+    'new zealander': 'NEW ZEALAND', 'kiwi': 'NEW ZEALAND', 'nzl': 'NEW ZEALAND',
+    // France
+    'french': 'FRANCE', 'pháp': 'FRANCE', 'fra': 'FRANCE',
+    // Germany
+    'german': 'GERMANY', 'đức': 'GERMANY', 'deu': 'GERMANY',
+    // UK
+    'british': 'UK', 'england': 'UK', 'gbr': 'UK', 'anh': 'UK',
+    // Canada
+    'canadian': 'CANADA', 'can': 'CANADA',
+    // India
+    'indian': 'INDIA', 'ind': 'INDIA',
+    // Taiwan
+    'taiwanese': 'TAIWAN', 'twn': 'TAIWAN',
   };
 
+  const normalizedLower = normalized.toLowerCase();
   for (const [key, code] of Object.entries(countryMap)) {
-    if (normalized.includes(key)) {
+    if (normalizedLower.includes(key)) {
       return code;
     }
+  }
+
+  // Return as-is if already uppercase and reasonable
+  if (/^[A-Z\s]+$/.test(normalized) && normalized.length <= 20) {
+    return normalized;
   }
 
   return 'VIETNAM';
@@ -158,18 +190,32 @@ export function getPreferredPersonalId(
 
 /**
  * Transform OCR output to travel insurance form data
+ * Optimized for international passports and travel documents
  * @param ocr - Raw OCR output from Gemini
  * @returns Partial form data structure for merging with form state
  */
 export function mapOCRToTravelForm(ocr: Partial<TravelOCROutput>): TravelFormData {
+  // For international passports, prefer passport number over CCCD
+  const personalId = ocr.soHoChieu || ocr.soCCCD || '';
+
+  // Determine nationality based on document type:
+  // - Passport: use quocTich, fallback to issuingCountry (passport holder = citizen)
+  // - Resident Card: use quocTich only (resident ≠ citizen), do NOT use issuingCountry
+  // - Visa: use quocTich from MRZ nationality field
+  let nationality = ocr.quocTich;
+  if (!nationality && ocr.documentType === 'PASSPORT' && ocr.issuingCountry) {
+    nationality = ocr.issuingCountry;
+  }
+  const country = mapCountryCode(nationality);
+
   return {
     insuredPerson: {
       name: ocr.hoTenKhongDau || ocr.hoTen || '',
       dob: convertDateFormat(ocr.ngaySinh),
       gender: convertGender(ocr.gioiTinh),
-      country: mapCountryCode(ocr.quocTich),
-      personalId: getPreferredPersonalId(ocr.soCCCD, ocr.soHoChieu),
-      address: ocr.diaChi || '',
+      country,
+      personalId,
+      address: ocr.diaChi || ocr.noiSinh || '',
     },
   };
 }
