@@ -336,6 +336,7 @@ export default function NewTravelContractPage() {
             <h2 className="text-lg font-semibold text-white mb-4">Chọn gói bảo hiểm</h2>
             <ProductPlanSelector
               selectedPlan={plan}
+              days={period.days}
               onPlanChange={(planId, carRental) => {
                 setPlan(planId);
                 setHasCarRental(carRental);

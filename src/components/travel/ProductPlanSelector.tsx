@@ -13,8 +13,17 @@ interface Plan {
   carRental: string;
 }
 
+interface PriceRecord {
+  plan_id: number;
+  code: string;
+  days_from: number;
+  days_to: number;
+  price: number;
+}
+
 interface Props {
   selectedPlan: number;
+  days: number;
   onPlanChange: (plan: number, hasCarRental: boolean) => void;
 }
 
@@ -61,8 +70,9 @@ function parsePlanCode(planName: string) {
   };
 }
 
-export default function ProductPlanSelector({ selectedPlan, onPlanChange }: Props) {
+export default function ProductPlanSelector({ selectedPlan, days, onPlanChange }: Props) {
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [prices, setPrices] = useState<PriceRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,6 +127,7 @@ export default function ProductPlanSelector({ selectedPlan, onPlanChange }: Prop
           };
         });
         setPlans(parsedPlans);
+        setPrices(data.prices || []);
       } else {
         setError(data.error || 'Không thể tải danh sách gói');
       }
@@ -138,6 +149,21 @@ export default function ProductPlanSelector({ selectedPlan, onPlanChange }: Prop
       p.carRental === filters.carRental
     );
   }, [plans, filters]);
+
+  // Get price for selected plan based on days
+  const selectedPrice = useMemo(() => {
+    if (!selectedPlan || days <= 0) return null;
+    return prices.find(p =>
+      p.plan_id === selectedPlan &&
+      days >= p.days_from &&
+      days <= p.days_to
+    );
+  }, [prices, selectedPlan, days]);
+
+  // Format currency
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN').format(price) + ' VND';
+  };
 
   // When filters change → update selected plan
   useEffect(() => {
@@ -226,19 +252,31 @@ export default function ProductPlanSelector({ selectedPlan, onPlanChange }: Prop
 
       {/* Selected Plan Display */}
       <div className={`p-4 rounded-xl border ${matchingPlan ? 'bg-green-900/20 border-green-500/40' : 'bg-red-900/20 border-red-500/40'}`}>
-        <div className="flex items-center gap-2 mb-2">
-          {matchingPlan ? (
-            <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            {matchingPlan ? (
+              <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            )}
+            <span className={`font-medium ${matchingPlan ? 'text-green-400' : 'text-red-400'}`}>
+              {matchingPlan ? 'Gói bảo hiểm đã chọn' : 'Không tìm thấy gói phù hợp'}
+            </span>
+          </div>
+          {/* Price Display */}
+          {selectedPrice && days > 0 && (
+            <div className="text-right">
+              <span className="text-2xl font-bold text-yellow-400">{formatPrice(selectedPrice.price)}</span>
+              <span className="text-slate-400 text-sm ml-1">/ người ({days} ngày)</span>
+            </div>
           )}
-          <span className={`font-medium ${matchingPlan ? 'text-green-400' : 'text-red-400'}`}>
-            {matchingPlan ? 'Gói bảo hiểm đã chọn' : 'Không tìm thấy gói phù hợp'}
-          </span>
+          {!selectedPrice && days > 0 && matchingPlan && (
+            <span className="text-slate-400 text-sm">Chọn ngày để xem giá</span>
+          )}
         </div>
         {selectedPlanDetails && (
           <p className="text-white text-sm">{selectedPlanDetails.PLAN_NAME}</p>

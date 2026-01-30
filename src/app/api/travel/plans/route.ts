@@ -8,7 +8,15 @@ interface TravelPlan {
   text: string;
 }
 
-// GET /api/travel/plans - Get travel insurance plans
+interface TravelPrice {
+  plan_id: number;
+  code: string;
+  days_from: number;
+  days_to: number;
+  price: number;
+}
+
+// GET /api/travel/plans - Get travel insurance plans and prices
 export async function GET(request: NextRequest) {
   try {
     const user = requireAuth(request);
@@ -17,6 +25,11 @@ export async function GET(request: NextRequest) {
     const plansPath = path.join(process.cwd(), 'db_json', 'travel_plans.json');
     const plansData = fs.readFileSync(plansPath, 'utf-8');
     const plans: TravelPlan[] = JSON.parse(plansData);
+
+    // Read prices from JSON file
+    const pricesPath = path.join(process.cwd(), 'db_json', 'travel_prices.json');
+    const pricesData = fs.readFileSync(pricesPath, 'utf-8');
+    const prices: TravelPrice[] = JSON.parse(pricesData);
 
     // Optional: Filter by product query param (if needed in future)
     const { searchParams } = new URL(request.url);
@@ -30,6 +43,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       plans: mappedPlans,
+      prices,
       count: mappedPlans.length,
       ...(productParam && { filteredByProduct: productParam })
     });
