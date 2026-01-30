@@ -158,16 +158,27 @@ export default function QuoteModal({ contract, isVisible, onClose }: QuoteModalP
         if (hideRate) {
           const rateRow = clonedElement.querySelector('#q-tyLePhi')?.closest('tr');
           if (rateRow) {
+            // Get DKBS cells before removing the row (they are in this row)
+            const dkbsLabelCell = rateRow.querySelector('td[rowspan="4"]');
+            const dkbsContentCell = clonedElement.querySelector('#q-dkbs');
+
+            // Get the next row (Bảo Hiểm Vật Chất Xe row)
+            const nextRow = rateRow.nextElementSibling as HTMLTableRowElement;
+
+            if (nextRow && dkbsLabelCell && dkbsContentCell) {
+              // Clone the cells and update rowspan to 3
+              const clonedLabelCell = dkbsLabelCell.cloneNode(true) as HTMLElement;
+              const clonedContentCell = dkbsContentCell.cloneNode(true) as HTMLElement;
+              clonedLabelCell.setAttribute('rowspan', '3');
+              clonedContentCell.setAttribute('rowspan', '3');
+
+              // Append to next row
+              nextRow.appendChild(clonedLabelCell);
+              nextRow.appendChild(clonedContentCell);
+            }
+
+            // Now remove the rate row
             rateRow.remove();
-            // Adjust rowSpan of DKBS column from 4 to 3
-            const dkbsCell = clonedElement.querySelector('#q-dkbs');
-            if (dkbsCell) {
-              dkbsCell.setAttribute('rowspan', '3');
-            }
-            const dkbsLabelCell = dkbsCell?.previousElementSibling;
-            if (dkbsLabelCell) {
-              dkbsLabelCell.setAttribute('rowspan', '3');
-            }
           }
         }
 
