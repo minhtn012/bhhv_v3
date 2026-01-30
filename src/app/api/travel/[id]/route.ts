@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
-import { generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
+import { generateQuotePdfUrl, mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
+import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
+import { logInfo, logError, logDebug } from '@/lib/errorLogger';
+import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
 // GET /api/travel/[id] - Get single contract
 export async function GET(
@@ -149,13 +152,97 @@ export async function PUT(
 
     await contract.save();
 
+    // Sync to Pacific Cross if certId exists
+    let syncResult = null;
+    const certId = contract.pacificCrossCertId;
+    console.log('[TRAVEL_SYNC] Checking certId:', certId);
+
+    if (certId) {
+      console.log('[TRAVEL_SYNC] Starting sync to Pacific Cross...');
+      logInfo('Syncing travel contract to Pacific Cross', {
+        operation: 'TRAVEL_UPDATE_SYNC',
+        contractId: id,
+        additionalInfo: { certId }
+      });
+
+      try {
+        const envCheck = PacificCrossApiClient.validateEnv();
+        console.log('[TRAVEL_SYNC] Env check:', envCheck);
+
+        if (envCheck.valid) {
+          const client = new PacificCrossApiClient();
+          const username = process.env.PACIFIC_CROSS_USERNAME!;
+          const password = process.env.PACIFIC_CROSS_PASSWORD!;
+
+          console.log('[TRAVEL_SYNC] Authenticating with Pacific Cross...');
+          const authResponse = await client.authenticate(username, password);
+          console.log('[TRAVEL_SYNC] Auth result:', authResponse.success, authResponse.error);
+
+          if (authResponse.success) {
+            // Build payload for Pacific Cross
+            const formData: TravelContractFormData = {
+              owner: contract.owner,
+              period: contract.period,
+              product: contract.product,
+              plan: contract.plan,
+              insuredPersons: contract.insuredPersons,
+              refNo: contract.refNo || '',
+              pnrNo: contract.pnrNo || '',
+              itinerary: contract.itinerary || '',
+              note: contract.note || ''
+            };
+
+            // Note: updateCertificate will get fresh CSRF token from edit page internally
+            const payload = mapTravelToPacificCrossFormat(formData, '', true);
+
+            console.log('[TRAVEL_SYNC] Calling updateCertificate with certId:', certId);
+            console.log('[TRAVEL_SYNC] Payload keys:', Object.keys(payload));
+            logDebug('TRAVEL_UPDATE_SYNC: Calling updateCertificate', { certId });
+            const updateResponse = await client.updateCertificate(certId, payload);
+            console.log('[TRAVEL_SYNC] Update response:', updateResponse.success, updateResponse.error);
+
+            if (updateResponse.success) {
+              logInfo('Pacific Cross sync successful', {
+                operation: 'TRAVEL_UPDATE_SYNC_SUCCESS',
+                contractId: id
+              });
+
+              // Fetch updated premium
+              const premiumResult = await client.getCertificatePremium(contract.pacificCrossCertId);
+              if (premiumResult.success && premiumResult.premium) {
+                contract.totalPremium = premiumResult.premium;
+                await contract.save();
+              }
+
+              syncResult = { success: true, premium: premiumResult.premium };
+            } else {
+              logError(new Error('Pacific Cross sync failed'), {
+                operation: 'TRAVEL_UPDATE_SYNC_FAILED',
+                contractId: id,
+                additionalInfo: { error: updateResponse.error }
+              });
+              syncResult = { success: false, error: updateResponse.error };
+            }
+          }
+        }
+      } catch (syncError) {
+        logError(syncError, {
+          operation: 'TRAVEL_UPDATE_SYNC_ERROR',
+          contractId: id
+        });
+        syncResult = { success: false, error: 'Sync error' };
+      }
+    }
+
     return NextResponse.json({
       message: 'Cap nhat hop dong thanh cong',
       contract: {
         id: contract._id,
         contractNumber: contract.contractNumber,
-        status: contract.status
-      }
+        status: contract.status,
+        totalPremium: contract.totalPremium
+      },
+      pacificCrossSync: syncResult
     });
 
   } catch (error: unknown) {

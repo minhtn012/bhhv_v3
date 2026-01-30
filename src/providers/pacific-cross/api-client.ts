@@ -53,6 +53,9 @@ export class PacificCrossApiClient extends BaseApiClient {
   private static readonly MAX_CSRF_RETRIES = 3;
   private static readonly CSRF_RETRY_DELAY = 1000;
 
+  // Store member IDs parsed from edit page (e.g., { id_1: "672282", id_2: "672283" })
+  private memberIds: Record<string, string> | null = null;
+
   constructor(baseUrl?: string) {
     super(baseUrl || process.env.PACIFIC_CROSS_BASE_URL || PacificCrossApiClient.DEFAULT_BASE_URL);
   }
@@ -602,9 +605,13 @@ export class PacificCrossApiClient extends BaseApiClient {
       }
 
       if (count > 0) {
+        // Also extract policyholder for verification
+        const policyholderMatch = html.match(/name="policyholder"[^>]*value="([^"]*)"/);
+        const policyholder = policyholderMatch ? policyholderMatch[1] : 'N/A';
+
         logInfo('PC_GET_PREMIUM: Premium extracted', {
           operation: 'PC_GET_PREMIUM_SUCCESS',
-          additionalInfo: { totalPremium, memberCount: count }
+          additionalInfo: { totalPremium, memberCount: count, policyholder }
         });
         return { success: true, premium: totalPremium };
       }
@@ -615,6 +622,206 @@ export class PacificCrossApiClient extends BaseApiClient {
     } catch (error) {
       logErr(error, { operation: 'PC_GET_PREMIUM_ERROR' });
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+  }
+
+  /**
+   * Get CSRF token from certificate edit page
+   */
+  async refreshCsrfTokenFromEditPage(certId: string): Promise<boolean> {
+    try {
+      const url = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}/edit`;
+      logDebug('PC_CSRF_EDIT: Fetching edit page', { url });
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getDefaultHeaders(),
+      });
+
+      // Update cookies
+      const newCookies = this.parseCookiesFromHeaders(response.headers);
+      if (newCookies) {
+        this.sessionCookies = newCookies;
+      }
+
+      const html = await response.text();
+      const token = this.extractCsrfToken(html);
+
+      if (token) {
+        this.csrfToken = token;
+
+        // Parse member IDs from edit page (e.g., id="id_1" value="672282")
+        this.memberIds = {};
+        const memberIdPattern = /name="id_(\d+)"[^>]*value="(\d+)"/g;
+        let match;
+        while ((match = memberIdPattern.exec(html)) !== null) {
+          const memberIndex = match[1];
+          const memberId = match[2];
+          this.memberIds[`id_${memberIndex}`] = memberId;
+        }
+
+        logDebug('PC_CSRF_EDIT: Token obtained', {
+          tokenLength: token.length,
+          memberIds: this.memberIds
+        });
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      logDebug('PC_CSRF_EDIT: Error', { error: error instanceof Error ? error.message : 'Unknown' });
+      return false;
+    }
+  }
+
+  /**
+   * Update existing certificate on Pacific Cross
+   * Uses POST with _method=PUT (Laravel convention)
+   */
+  async updateCertificate(
+    certId: string,
+    payload: Record<string, string | undefined>
+  ): Promise<PacificCrossQuoteResponse> {
+    const operation = 'PC_UPDATE_CERT';
+
+    logInfo('Pacific Cross certificate update started', {
+      operation,
+      additionalInfo: { certId, payloadKeys: Object.keys(payload) }
+    });
+
+    try {
+      // Get fresh CSRF token from edit page
+      const csrfRefreshed = await this.refreshCsrfTokenFromEditPage(certId);
+      if (!csrfRefreshed || !this.csrfToken) {
+        logErr(new Error('Failed to get CSRF token from edit page'), { operation });
+        return {
+          success: false,
+          error: 'Failed to get CSRF token from edit page',
+        };
+      }
+
+      // Build payload with _method first (field order matters for Laravel)
+      const now = new Date();
+      const lastUpdate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+      // Create ordered payload - _method must be first
+      const formPayload: Record<string, string | undefined> = {
+        _method: 'PUT',
+        _token: this.csrfToken,
+        is_quote: '1',
+        last_update: lastUpdate,
+      };
+
+      // Add remaining fields from payload (skip fields we already set above)
+      for (const [key, value] of Object.entries(payload)) {
+        if (key !== '_token' && key !== 'is_quote' && key !== 'last_update') {
+          formPayload[key] = value;
+        }
+      }
+
+      // Add member IDs parsed from edit page (critical for update to work)
+      if (this.memberIds) {
+        for (const [key, value] of Object.entries(this.memberIds)) {
+          formPayload[key] = value;
+        }
+      }
+
+      logDebug(`${operation}: Building payload`, {
+        certId,
+        lastUpdate,
+        tokenLength: this.csrfToken.length,
+        fieldCount: Object.keys(formPayload).length,
+        memberIds: this.memberIds,
+      });
+
+      const boundary = 'WebKitFormBoundary' + Math.random().toString(36).substring(2);
+      const body = this.buildMultipartBody(formPayload, boundary);
+
+      const certUrl = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}`;
+
+      logDebug(`${operation}: Request details`, {
+        url: certUrl,
+        bodyLength: body.length,
+        bodyPreview: body.substring(0, 800),
+      });
+
+      const response = await fetch(certUrl, {
+        method: 'POST',
+        headers: {
+          ...this.getDefaultHeaders(),
+          'Content-Type': `multipart/form-data; boundary=----${boundary}`,
+          'Origin': this.baseUrl,
+          'Referer': `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}/edit`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Sec-Fetch-User': '?1',
+        },
+        body,
+        redirect: 'manual',
+      });
+
+      logDebug(`${operation}: Response received`, {
+        status: response.status,
+        location: response.headers.get('location'),
+        headers: Object.fromEntries(response.headers.entries()),
+      });
+
+      // Update cookies
+      const newCookies = this.parseCookiesFromHeaders(response.headers);
+      if (newCookies) {
+        this.sessionCookies = newCookies;
+      }
+
+      // Check for redirect (success) - redirects back to cert view/edit
+      const locationHeader = response.headers.get('location');
+      // Extract certNo from certId for comparison (e.g., 306485 from 306485::4nlL9SEOiP)
+      const certNo = certId.split('::')[0];
+
+      // Log response body for debugging (302 could be success or validation error)
+      const responseText = await response.text();
+      const hasValidationErrors = responseText.includes('alert-danger') || responseText.includes('validation-error') || responseText.includes('is-invalid');
+
+      logDebug(`${operation}: Response body analysis`, {
+        hasValidationErrors,
+        bodyLength: responseText.length,
+        // Check for old values still present (validation failed)
+        bodyPreview: responseText.substring(0, 500),
+      });
+
+      if (response.status === 302 && locationHeader && locationHeader.includes(`/cert/${certNo}`) && !hasValidationErrors) {
+        logInfo('Pacific Cross certificate updated successfully', {
+          operation: `${operation}_SUCCESS`,
+          additionalInfo: { certId, redirectUrl: locationHeader }
+        });
+        return {
+          success: true,
+          certId: certId,
+          redirectUrl: locationHeader,
+        };
+      }
+
+      // Failed - log response body for debugging
+      logErr(new Error('Certificate update failed'), {
+        operation: `${operation}_FAILED`,
+        additionalInfo: {
+          status: response.status,
+          location: locationHeader,
+          responsePreview: responseText.substring(0, 1000),
+        }
+      });
+
+      return {
+        success: false,
+        error: `Update failed - status ${response.status}`,
+        rawResponse: responseText,
+      };
+
+    } catch (error) {
+      logErr(error, { operation: `${operation}_ERROR` });
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
     }
   }
 
