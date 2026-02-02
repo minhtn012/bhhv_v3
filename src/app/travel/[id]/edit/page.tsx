@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
 import ProductPlanSelector from '@/components/travel/ProductPlanSelector';
-import { TRAVEL_COUNTRIES } from '@/providers/pacific-cross/products/travel/constants';
+import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
 import type { TravelInsuredPerson } from '@/types/travel';
 import { calculateInsuranceDays } from '@/utils/dateFormatter';
 
@@ -271,16 +271,12 @@ export default function EditTravelContractPage() {
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Nước xuất phát <span className="text-orange-400">*</span></label>
-                <select
+                <SearchableCountrySelect
                   value={owner.startCountry}
-                  onChange={(e) => setOwner({...owner, startCountry: e.target.value})}
+                  onChange={(value) => setOwner({...owner, startCountry: value})}
                   className={inputClass}
                   required
-                >
-                  {Object.entries(TRAVEL_COUNTRIES).map(([key, value]) => (
-                    <option key={key} value={value} className="bg-slate-800">{value}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
           </section>

@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { TravelInsuredPerson } from '@/types/travel';
-import { TRAVEL_RELATIONSHIP_LABELS, TRAVEL_COUNTRIES } from '@/providers/pacific-cross/products/travel/constants';
+import { TRAVEL_RELATIONSHIP_LABELS } from '@/providers/pacific-cross/products/travel/constants';
+import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
 
 // Car rental options
 const CAR_RENTAL_OPTIONS = [
@@ -165,15 +166,11 @@ export default function InsuredPersonForm({
         {/* Country */}
         <div>
           <label className="block text-sm text-slate-400 mb-1.5">Quốc tịch</label>
-          <select
+          <SearchableCountrySelect
             value={person.country || 'VIETNAM'}
-            onChange={(e) => handleChange('country', e.target.value)}
+            onChange={(value) => handleChange('country', value)}
             className={inputClass()}
-          >
-            {Object.entries(TRAVEL_COUNTRIES).map(([key, value]) => (
-              <option key={key} value={value}>{value}</option>
-            ))}
-          </select>
+          />
         </div>
 
         {/* Personal ID */}
