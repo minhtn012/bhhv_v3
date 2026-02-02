@@ -638,6 +638,8 @@ export class PacificCrossApiClient extends BaseApiClient {
         headers: this.getDefaultHeaders(),
       });
 
+      logDebug('PC_CSRF_EDIT: Edit page response', { status: response.status });
+
       // Update cookies
       const newCookies = this.parseCookiesFromHeaders(response.headers);
       if (newCookies) {
@@ -645,6 +647,8 @@ export class PacificCrossApiClient extends BaseApiClient {
       }
 
       const html = await response.text();
+      logDebug('PC_CSRF_EDIT: Edit page HTML', { length: html.length });
+
       const token = this.extractCsrfToken(html);
 
       if (token) {
@@ -660,16 +664,25 @@ export class PacificCrossApiClient extends BaseApiClient {
           this.memberIds[`id_${memberIndex}`] = memberId;
         }
 
-        logDebug('PC_CSRF_EDIT: Token obtained', {
-          tokenLength: token.length,
-          memberIds: this.memberIds
+        const memberIdMatches = html.match(/name="id_\d+"[^>]*value="\d+"/g)?.slice(0, 3) || [];
+        logInfo('PC_CSRF_EDIT: Token obtained', {
+          operation: 'PC_CSRF_EDIT_SUCCESS',
+          additionalInfo: {
+            tokenLength: token.length,
+            memberIds: this.memberIds,
+            memberIdMatches
+          }
         });
         return true;
       }
 
+      logErr(new Error('CSRF token not found in edit page'), {
+        operation: 'PC_CSRF_EDIT_FAILED',
+        additionalInfo: { htmlLength: html.length, htmlPreview: html.substring(0, 500) }
+      });
       return false;
     } catch (error) {
-      logDebug('PC_CSRF_EDIT: Error', { error: error instanceof Error ? error.message : 'Unknown' });
+      logErr(error, { operation: 'PC_CSRF_EDIT_ERROR' });
       return false;
     }
   }
@@ -739,6 +752,20 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       const certUrl = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}`;
 
+      // Log key fields being sent
+      const policyholderInBody = body.match(/name="policyholder"[\s\S]*?\r\n\r\n(.*?)\r\n/);
+      logInfo('PC_UPDATE_CERT: Request payload', {
+        operation: 'PC_UPDATE_CERT_PAYLOAD',
+        additionalInfo: {
+          certId,
+          policyholder: formPayload.policyholder,
+          policyholderInBody: policyholderInBody ? policyholderInBody[1] : 'NOT_FOUND',
+          email: formPayload.email,
+          memberIds: this.memberIds,
+          bodyLength: body.length,
+        }
+      });
+
       logDebug(`${operation}: Request details`, {
         url: certUrl,
         bodyLength: body.length,
@@ -781,10 +808,22 @@ export class PacificCrossApiClient extends BaseApiClient {
       const responseText = await response.text();
       const hasValidationErrors = responseText.includes('alert-danger') || responseText.includes('validation-error') || responseText.includes('is-invalid');
 
+      // Log response body analysis with more detail
+      const responsePolicyholderMatch = responseText.match(/name="policyholder"[^>]*value="([^"]*)"/);
+      logInfo('PC_UPDATE_CERT: Response analysis', {
+        operation: 'PC_UPDATE_CERT_RESPONSE',
+        additionalInfo: {
+          status: response.status,
+          location: locationHeader,
+          hasValidationErrors,
+          bodyLength: responseText.length,
+          responsePolicyholder: responsePolicyholderMatch ? responsePolicyholderMatch[1] : null,
+        }
+      });
+
       logDebug(`${operation}: Response body analysis`, {
         hasValidationErrors,
         bodyLength: responseText.length,
-        // Check for old values still present (validation failed)
         bodyPreview: responseText.substring(0, 500),
       });
 

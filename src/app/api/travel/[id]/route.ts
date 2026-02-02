@@ -155,28 +155,25 @@ export async function PUT(
     // Sync to Pacific Cross if certId exists
     let syncResult = null;
     const certId = contract.pacificCrossCertId;
-    console.log('[TRAVEL_SYNC] Checking certId:', certId);
 
     if (certId) {
-      console.log('[TRAVEL_SYNC] Starting sync to Pacific Cross...');
-      logInfo('Syncing travel contract to Pacific Cross', {
-        operation: 'TRAVEL_UPDATE_SYNC',
+      logInfo('TRAVEL_SYNC: Starting sync', {
+        operation: 'TRAVEL_UPDATE_SYNC_START',
         contractId: id,
         additionalInfo: { certId }
       });
 
       try {
         const envCheck = PacificCrossApiClient.validateEnv();
-        console.log('[TRAVEL_SYNC] Env check:', envCheck);
+        logDebug('TRAVEL_SYNC: Env check', envCheck);
 
         if (envCheck.valid) {
           const client = new PacificCrossApiClient();
           const username = process.env.PACIFIC_CROSS_USERNAME!;
           const password = process.env.PACIFIC_CROSS_PASSWORD!;
 
-          console.log('[TRAVEL_SYNC] Authenticating with Pacific Cross...');
           const authResponse = await client.authenticate(username, password);
-          console.log('[TRAVEL_SYNC] Auth result:', authResponse.success, authResponse.error);
+          logDebug('TRAVEL_SYNC: Auth result', { success: authResponse.success, error: authResponse.error });
 
           if (authResponse.success) {
             // Build payload for Pacific Cross
@@ -195,11 +192,26 @@ export async function PUT(
             // Note: updateCertificate will get fresh CSRF token from edit page internally
             const payload = mapTravelToPacificCrossFormat(formData, '', true);
 
-            console.log('[TRAVEL_SYNC] Calling updateCertificate with certId:', certId);
-            console.log('[TRAVEL_SYNC] Payload keys:', Object.keys(payload));
-            logDebug('TRAVEL_UPDATE_SYNC: Calling updateCertificate', { certId });
+            logInfo('TRAVEL_SYNC: Calling updateCertificate', {
+              operation: 'TRAVEL_UPDATE_PAYLOAD',
+              contractId: id,
+              additionalInfo: {
+                certId,
+                policyholder: payload.policyholder,
+                email: payload.email,
+                address: payload.address,
+              }
+            });
             const updateResponse = await client.updateCertificate(certId, payload);
-            console.log('[TRAVEL_SYNC] Update response:', updateResponse.success, updateResponse.error);
+            logInfo('TRAVEL_SYNC: Update response', {
+              operation: 'TRAVEL_UPDATE_RESULT',
+              contractId: id,
+              additionalInfo: {
+                success: updateResponse.success,
+                error: updateResponse.error,
+                hasRawResponse: !!updateResponse.rawResponse,
+              }
+            });
 
             if (updateResponse.success) {
               logInfo('Pacific Cross sync successful', {
