@@ -43,7 +43,12 @@ class Logger {
 
     if (this.isDevelopment) return true;
 
-    // Production: only log warn and error
+    // Check LOG_LEVEL at runtime (not inlined by Next.js build)
+    const logLevel = process.env.LOG_LEVEL;
+    if (logLevel === 'debug') return true;
+    if (logLevel === 'info' && ['error', 'warn', 'info'].includes(level)) return true;
+
+    // Production default: only log warn and error
     return ['error', 'warn'].includes(level);
   }
 
@@ -84,10 +89,13 @@ class Logger {
     }
   }
 
+  private shouldConsoleLog(): boolean {
+    return this.isDevelopment || !!process.env.LOG_LEVEL;
+  }
+
   error(message: string, context?: LogContext) {
     if (!this.shouldLog('error')) return;
-    // Only show in console for development
-    if (this.isDevelopment) {
+    if (this.shouldConsoleLog()) {
       console.error(this.formatMessage('error', message, context));
     }
     this.saveToDatabase('error', message, context);
@@ -95,7 +103,7 @@ class Logger {
 
   warn(message: string, context?: LogContext) {
     if (!this.shouldLog('warn')) return;
-    if (this.isDevelopment) {
+    if (this.shouldConsoleLog()) {
       console.warn(this.formatMessage('warn', message, context));
     }
     this.saveToDatabase('warn', message, context);
@@ -103,7 +111,7 @@ class Logger {
 
   info(message: string, context?: LogContext) {
     if (!this.shouldLog('info')) return;
-    if (this.isDevelopment) {
+    if (this.shouldConsoleLog()) {
       console.log(this.formatMessage('info', message, context));
     }
     this.saveToDatabase('info', message, context);
@@ -111,7 +119,7 @@ class Logger {
 
   debug(message: string, context?: LogContext) {
     if (!this.shouldLog('debug')) return;
-    if (this.isDevelopment) {
+    if (this.shouldConsoleLog()) {
       console.log(this.formatMessage('debug', message, context));
     }
     this.saveToDatabase('debug', message, context);
