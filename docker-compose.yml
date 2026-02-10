@@ -10,6 +10,7 @@ services:
     environment:
       - NODE_ENV=production
       - LOG_LEVEL=debug
+      - TZ=Asia/Ho_Chi_Minh
       - MONGODB_URI=mongodb://admin:MongoPass123!@shared_mongodb:27017/bhhv_prod?authSource=admin
       - CAR_BRANDS_PATH=/data/car_brands
     networks:
