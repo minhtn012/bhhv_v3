@@ -806,28 +806,84 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       // Log response body for debugging (302 could be success or validation error)
       const responseText = await response.text();
-      const hasValidationErrors = responseText.includes('alert-danger') || responseText.includes('validation-error') || responseText.includes('is-invalid');
-
-      // Log response body analysis with more detail
-      const responsePolicyholderMatch = responseText.match(/name="policyholder"[^>]*value="([^"]*)"/);
-      logInfo('PC_UPDATE_CERT: Response analysis', {
-        operation: 'PC_UPDATE_CERT_RESPONSE',
-        additionalInfo: {
-          status: response.status,
-          location: locationHeader,
-          hasValidationErrors,
-          bodyLength: responseText.length,
-          responsePolicyholder: responsePolicyholderMatch ? responsePolicyholderMatch[1] : null,
-        }
-      });
 
       logDebug(`${operation}: Response body analysis`, {
-        hasValidationErrors,
         bodyLength: responseText.length,
         bodyPreview: responseText.substring(0, 500),
       });
 
-      if (response.status === 302 && locationHeader && locationHeader.includes(`/cert/${certNo}`) && !hasValidationErrors) {
+      // 302 redirect - need to follow and check for validation errors
+      if (response.status === 302 && locationHeader && locationHeader.includes(`/cert/${certNo}`)) {
+        // Follow the redirect to check for validation errors (Laravel flashes errors to session)
+        logDebug(`${operation}: Following redirect to verify update`, { location: locationHeader });
+
+        const redirectResponse = await fetch(locationHeader, {
+          method: 'GET',
+          headers: this.getDefaultHeaders(),
+        });
+
+        // Update cookies from redirect response
+        const redirectCookies = this.parseCookiesFromHeaders(redirectResponse.headers);
+        if (redirectCookies) {
+          this.sessionCookies = redirectCookies;
+        }
+
+        const redirectHtml = await redirectResponse.text();
+
+        // Check for Laravel validation errors on the redirected page
+        const hasValidationErrors = redirectHtml.includes('alert-danger')
+          || redirectHtml.includes('is-invalid')
+          || redirectHtml.includes('validation-error');
+
+        // Extract error messages if any
+        let validationErrors: string[] = [];
+        if (hasValidationErrors) {
+          const alertMatch = redirectHtml.match(/<div[^>]*class="[^"]*alert-danger[^"]*"[^>]*>([\s\S]*?)<\/div>/gi);
+          if (alertMatch) {
+            validationErrors = alertMatch.map(m => m.replace(/<[^>]+>/g, '').trim());
+          }
+          const liMatch = redirectHtml.match(/<ul[^>]*>\s*((?:<li[^>]*>[\s\S]*?<\/li>\s*)+)<\/ul>/i);
+          if (liMatch) {
+            const items = liMatch[1].match(/<li[^>]*>([\s\S]*?)<\/li>/gi);
+            if (items) {
+              validationErrors.push(...items.map(m => m.replace(/<[^>]+>/g, '').trim()));
+            }
+          }
+        }
+
+        // Verify actual saved data by reading policyholder from the page
+        // After following redirect, flashed input is consumed - form shows DB values
+        const savedPolicyholder = redirectHtml.match(/name="policyholder"[^>]*value="([^"]*)"/);
+        const sentPolicyholder = formPayload.policyholder;
+
+        logInfo('PC_UPDATE_CERT: Verification after redirect', {
+          operation: 'PC_UPDATE_CERT_VERIFY',
+          additionalInfo: {
+            hasValidationErrors,
+            validationErrors: validationErrors.slice(0, 5),
+            savedPolicyholder: savedPolicyholder ? savedPolicyholder[1] : null,
+            sentPolicyholder,
+            dataMatch: savedPolicyholder ? savedPolicyholder[1] === sentPolicyholder : null,
+            redirectLocation: locationHeader,
+          }
+        });
+
+        if (hasValidationErrors) {
+          logErr(new Error('Pacific Cross update rejected with validation errors'), {
+            operation: `${operation}_VALIDATION_FAILED`,
+            additionalInfo: {
+              certId,
+              validationErrors,
+              redirectUrl: locationHeader,
+            }
+          });
+          return {
+            success: false,
+            error: `Validation failed: ${validationErrors.join('; ') || 'Unknown validation error'}`,
+            rawResponse: redirectHtml,
+          };
+        }
+
         logInfo('Pacific Cross certificate updated successfully', {
           operation: `${operation}_SUCCESS`,
           additionalInfo: { certId, redirectUrl: locationHeader }
@@ -839,7 +895,7 @@ export class PacificCrossApiClient extends BaseApiClient {
         };
       }
 
-      // Failed - log response body for debugging
+      // Non-302 response - unexpected
       logErr(new Error('Certificate update failed'), {
         operation: `${operation}_FAILED`,
         additionalInfo: {
