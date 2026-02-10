@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
 import { TRAVEL_PRODUCT_LABELS } from '@/providers/pacific-cross/products/travel/constants';
+import { validateFamilyPlan } from '@/utils/travel-family-validation';
 import mongoose from 'mongoose';
 
 // GET /api/travel - List travel contracts
@@ -129,6 +130,38 @@ export async function POST(request: NextRequest) {
       if (dateFrom < tomorrow) {
         return NextResponse.json(
           { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Family plan validation
+    if (data.owner?.pocyType === 'Family') {
+      // Ensure all persons have memberType
+      const missingMemberType = data.insuredPersons?.some(
+        (p: { memberType?: string }) => !p.memberType
+      );
+      if (missingMemberType) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Tất cả người được bảo hiểm phải có loại thành viên'
+          },
+          { status: 400 }
+        );
+      }
+
+      // Validate family composition
+      const referenceDate = new Date(data.period?.dateFrom);
+      const validation = validateFamilyPlan(data.insuredPersons, referenceDate);
+
+      if (!validation.valid) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Lỗi cấu hình gói Gia đình',
+            details: validation.errors
+          },
           { status: 400 }
         );
       }

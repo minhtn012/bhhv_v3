@@ -13,6 +13,7 @@ export type TravelProductType =
 export type TravelPolicyType = 'Individual' | 'Family' | 'Group';
 export type TravelHolderType = 'POHO_TYPE_E' | 'POHO_TYPE_G'; // E=Individual, G=Group
 export type TravelGender = 'M' | 'F';
+export type FamilyMemberType = 'MBR_TYPE_A' | 'MBR_TYPE_S' | 'MBR_TYPE_C'; // A=Primary, S=Spouse, C=Child
 
 export type TravelRelationship =
   | 'RELATION_F'  // Father
@@ -36,6 +37,7 @@ export interface TravelInsuredPerson {
   carRental?: boolean;
   carRentalDate?: string;
   carRentalDays?: number;
+  memberType?: FamilyMemberType;  // Required for Family plan
 }
 
 export interface TravelContractOwner {

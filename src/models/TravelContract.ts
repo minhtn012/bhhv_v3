@@ -26,6 +26,11 @@ const InsuredPersonSchema = new Schema({
   carRental: { type: Boolean, default: false },
   carRentalDate: { type: String },
   carRentalDays: { type: Number },
+  memberType: {
+    type: String,
+    enum: ['MBR_TYPE_A', 'MBR_TYPE_S', 'MBR_TYPE_C'],
+    required: false
+  },
 }, { _id: false });
 
 /**

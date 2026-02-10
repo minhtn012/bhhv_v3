@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { TravelInsuredPerson } from '@/types/travel';
-import { TRAVEL_RELATIONSHIP_LABELS } from '@/providers/pacific-cross/products/travel/constants';
+import { TRAVEL_RELATIONSHIP_LABELS, TRAVEL_MEMBER_TYPE_LABELS } from '@/providers/pacific-cross/products/travel/constants';
 import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
 
 // Car rental options
@@ -16,6 +16,7 @@ interface Props {
   person: Partial<TravelInsuredPerson>;
   imageUrl?: string; // CCCD image from OCR
   showCarRental?: boolean; // Show car rental fields when plan includes car rental
+  pocyType?: 'Individual' | 'Family'; // Contract type - show memberType for Family
   onChange: (index: number, person: Partial<TravelInsuredPerson>) => void;
   onRemove: (index: number) => void;
   canRemove: boolean;
@@ -27,6 +28,7 @@ export default function InsuredPersonForm({
   person,
   imageUrl,
   showCarRental = false,
+  pocyType = 'Individual',
   onChange,
   onRemove,
   canRemove,
@@ -224,6 +226,27 @@ export default function InsuredPersonForm({
             ))}
           </select>
         </div>
+
+        {/* Member Type - only show for Family plan */}
+        {pocyType === 'Family' && (
+          <div>
+            <label className="block text-sm text-slate-400 mb-1.5">
+              Loại thành viên <span className="text-orange-400">*</span>
+            </label>
+            <select
+              value={person.memberType || 'MBR_TYPE_A'}
+              onChange={(e) => handleChange('memberType', e.target.value)}
+              className={inputClass(!!errors[`memberType_${index}`])}
+            >
+              {Object.entries(TRAVEL_MEMBER_TYPE_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+            {errors[`memberType_${index}`] && (
+              <p className="text-red-400 text-xs mt-1">{errors[`memberType_${index}`]}</p>
+            )}
+          </div>
+        )}
 
         {/* Car Rental Fields - only show when plan has car rental */}
         {showCarRental && (

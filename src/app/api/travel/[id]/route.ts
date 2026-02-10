@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth';
 import { generateQuotePdfUrl, mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { logInfo, logError, logDebug } from '@/lib/errorLogger';
+import { validateFamilyPlan } from '@/utils/travel-family-validation';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
 // GET /api/travel/[id] - Get single contract
@@ -123,6 +124,38 @@ export async function PUT(
       if (dateFrom < tomorrow) {
         return NextResponse.json(
           { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Family plan validation
+    if (data.owner?.pocyType === 'Family') {
+      // Ensure all persons have memberType
+      const missingMemberType = data.insuredPersons?.some(
+        (p: { memberType?: string }) => !p.memberType
+      );
+      if (missingMemberType) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Tất cả người được bảo hiểm phải có loại thành viên'
+          },
+          { status: 400 }
+        );
+      }
+
+      // Validate family composition
+      const referenceDate = new Date(data.period?.dateFrom);
+      const validation = validateFamilyPlan(data.insuredPersons, referenceDate);
+
+      if (!validation.valid) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Lỗi cấu hình gói Gia đình',
+            details: validation.errors
+          },
           { status: 400 }
         );
       }

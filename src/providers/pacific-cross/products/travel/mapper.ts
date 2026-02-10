@@ -63,6 +63,7 @@ export function mapInsuredPerson(
 ): Record<string, string> {
   const suffix = `_${index + 1}`;
   return {
+    [`memb_type${suffix}`]: person.memberType || 'MBR_TYPE_A',
     [`name${suffix}`]: person.name,
     [`dob${suffix}`]: formatDateForPC(person.dob),
     [`age${suffix}`]: person.age.toString(),
@@ -138,8 +139,8 @@ export function mapTravelToPacificCrossFormat(
     ['input_import_members', ''],
     // Note: 'import_members' (actual file) is added by buildMultipartBody
 
-    // Member count
-    ['member_count', data.insuredPersons.length.toString()],
+    // Member count - Family plan charges for 2 people regardless of actual count
+    ['member_count', (data.owner.pocyType === 'Family' ? 2 : data.insuredPersons.length).toString()],
     ['member_row_deleted', ''],
   ];
 
@@ -154,6 +155,7 @@ export function mapTravelToPacificCrossFormat(
   // Add template fields (for new row in UI)
   const templateSuffix = '_xxx';
   orderedFields.push(
+    [`memb_type${templateSuffix}`, ''],
     [`name${templateSuffix}`, ''],
     [`dob${templateSuffix}`, ''],
     [`age${templateSuffix}`, ''],

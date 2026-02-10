@@ -7,8 +7,10 @@ import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
 import ProductPlanSelector from '@/components/travel/ProductPlanSelector';
 import TravelOCRUpload from '@/components/travel/TravelOCRUpload';
 import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
-import type { TravelInsuredPerson } from '@/types/travel';
+import ContractTypeSelector from '@/components/travel/ContractTypeSelector';
+import type { TravelInsuredPerson, TravelPolicyType } from '@/types/travel';
 import { calculateInsuranceDays } from '@/utils/dateFormatter';
+import { validateFamilyPlan, getDefaultMemberType } from '@/utils/travel-family-validation';
 
 export default function NewTravelContractPage() {
   const router = useRouter();
@@ -29,10 +31,19 @@ export default function NewTravelContractPage() {
   }, [router]);
 
   // Form state
-  const [owner, setOwner] = useState({
+  const [owner, setOwner] = useState<{
+    policyholder: string;
+    pocyType: TravelPolicyType;
+    pohoType: 'POHO_TYPE_E' | 'POHO_TYPE_G';
+    email: string;
+    telNo: string;
+    address: string;
+    countryAddress: string;
+    startCountry: string;
+  }>({
     policyholder: '',
-    pocyType: 'Individual' as const,
-    pohoType: 'POHO_TYPE_E' as const,
+    pocyType: 'Individual',
+    pohoType: 'POHO_TYPE_E',
     email: '',
     telNo: '',
     address: '',
@@ -97,6 +108,25 @@ export default function NewTravelContractPage() {
     }
   }, [period.dateFrom, period.dateTo]);
 
+  // Add days to a date string (YYYY-MM-DD format)
+  const addDays = (dateStr: string, days: number): string => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0];
+  };
+
+  // Handle days change - calculate dateTo from dateFrom + days
+  const handleDaysChange = (newDays: number) => {
+    if (newDays < 1 || !period.dateFrom) return;
+    // Inclusive: if days=10, add 9 days to get 10th day
+    const newDateTo = addDays(period.dateFrom, newDays - 1);
+    setPeriod(prev => ({
+      ...prev,
+      days: newDays,
+      dateTo: newDateTo,
+    }));
+  };
+
   const addInsuredPerson = useCallback(() => {
     setInsuredPersons(prev => [
       ...prev,
@@ -112,6 +142,32 @@ export default function NewTravelContractPage() {
 
   const updateInsuredPerson = useCallback((index: number, person: Partial<TravelInsuredPerson>) => {
     setInsuredPersons(prev => prev.map((p, i) => i === index ? person : p));
+  }, []);
+
+  // Handle contract type change (Individual <-> Family)
+  const handleContractTypeChange = useCallback((newType: 'Individual' | 'Family') => {
+    setOwner(prev => ({ ...prev, pocyType: newType }));
+
+    if (newType === 'Family') {
+      // Auto-assign memberTypes based on age
+      setInsuredPersons(prev => {
+        let hasPrimary = false;
+        return prev.map(person => {
+          const age = person.age || 0;
+          const memberType = getDefaultMemberType(age, hasPrimary);
+          if (memberType === 'MBR_TYPE_A') hasPrimary = true;
+          return { ...person, memberType };
+        });
+      });
+    } else {
+      // Remove memberTypes for Individual
+      setInsuredPersons(prev =>
+        prev.map(person => {
+          const { memberType, ...rest } = person;
+          return rest;
+        })
+      );
+    }
   }, []);
 
   const handleExcelImport = async (file: File) => {
@@ -166,6 +222,20 @@ export default function NewTravelContractPage() {
       const hasAtLeastOneCarRental = insuredPersons.some(p => p.carRental === true);
       if (!hasAtLeastOneCarRental) {
         setError('Gói bảo hiểm có thuê xe, phải có ít nhất 1 người chọn thuê xe');
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Family plan validation
+    if (owner.pocyType === 'Family') {
+      const referenceDate = new Date(period.dateFrom);
+      const validation = validateFamilyPlan(
+        insuredPersons as TravelInsuredPerson[],
+        referenceDate
+      );
+      if (!validation.valid) {
+        setError(validation.errors.join('. '));
         setLoading(false);
         return;
       }
@@ -277,6 +347,10 @@ export default function NewTravelContractPage() {
                   required
                 />
               </div>
+              <ContractTypeSelector
+                value={owner.pocyType as 'Individual' | 'Family'}
+                onChange={handleContractTypeChange}
+              />
             </div>
           </section>
 
@@ -319,9 +393,11 @@ export default function NewTravelContractPage() {
                 <label className="block text-sm text-slate-400 mb-1.5">Số ngày</label>
                 <input
                   type="number"
-                  value={period.days}
-                  readOnly
-                  className={inputClass + ' bg-slate-600/50'}
+                  value={period.days || ''}
+                  onChange={(e) => handleDaysChange(parseInt(e.target.value) || 0)}
+                  min={1}
+                  disabled={!period.dateFrom}
+                  className={inputClass + (!period.dateFrom ? ' bg-slate-600/50 cursor-not-allowed' : '')}
                 />
               </div>
             </div>
@@ -339,6 +415,16 @@ export default function NewTravelContractPage() {
               }}
             />
           </section>
+
+          {/* Family Plan Info */}
+          {owner.pocyType === 'Family' && (
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+              <p className="text-blue-400 text-sm">
+                <span className="font-medium">Gói Gia đình:</span> Phí bảo hiểm tính cho 2 người,
+                áp dụng cho cả gia đình bao gồm bố/mẹ và con dưới 18 tuổi.
+              </p>
+            </div>
+          )}
 
           {/* Insured Persons Section */}
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
@@ -382,6 +468,7 @@ export default function NewTravelContractPage() {
                   person={person}
                   imageUrl={personImageUrls[index]}
                   showCarRental={hasCarRental}
+                  pocyType={owner.pocyType as 'Individual' | 'Family'}
                   onChange={updateInsuredPerson}
                   onRemove={removeInsuredPerson}
                   canRemove={insuredPersons.length > 1}

@@ -80,6 +80,19 @@ export const TRAVEL_RELATIONSHIP_LABELS: Record<string, string> = {
   'RELATION_O': 'Nguoi khac',
 };
 
+// Member types for Family plan
+export const TRAVEL_MEMBER_TYPES = {
+  PRIMARY: 'MBR_TYPE_A',
+  SPOUSE: 'MBR_TYPE_S',
+  CHILD: 'MBR_TYPE_C',
+} as const;
+
+export const TRAVEL_MEMBER_TYPE_LABELS: Record<string, string> = {
+  'MBR_TYPE_A': 'Người chính',
+  'MBR_TYPE_S': 'Vợ/Chồng',
+  'MBR_TYPE_C': 'Con',
+};
+
 // Common countries (subset - full list in db_json/travel_countries.json)
 export const TRAVEL_COUNTRIES = {
   VIETNAM: 'VIETNAM',
