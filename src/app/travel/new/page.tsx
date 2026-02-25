@@ -7,6 +7,7 @@ import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
 import ProductPlanSelector from '@/components/travel/ProductPlanSelector';
 import TravelOCRUpload from '@/components/travel/TravelOCRUpload';
 import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
+import AutocompleteInput from '@/components/travel/AutocompleteInput';
 import ContractTypeSelector from '@/components/travel/ContractTypeSelector';
 import type { TravelInsuredPerson, TravelPolicyType } from '@/types/travel';
 import { calculateInsuranceDays } from '@/utils/dateFormatter';
@@ -300,35 +301,31 @@ export default function NewTravelContractPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Họ tên <span className="text-orange-400">*</span></label>
-                <input
-                  type="text"
-                  name="policyholder"
-                  autoComplete="name"
+                <AutocompleteInput
+                  field="owner.policyholder"
                   value={owner.policyholder}
-                  onChange={(e) => setOwner({...owner, policyholder: e.target.value})}
+                  onChange={(v) => setOwner({...owner, policyholder: v})}
                   className={inputClass}
                   required
                 />
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Email</label>
-                <input
+                <AutocompleteInput
+                  field="owner.email"
                   type="email"
-                  name="email"
-                  autoComplete="email"
                   value={owner.email}
-                  onChange={(e) => setOwner({...owner, email: e.target.value})}
+                  onChange={(v) => setOwner({...owner, email: v})}
                   className={inputClass}
                 />
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
-                <input
+                <AutocompleteInput
+                  field="owner.telNo"
                   type="tel"
-                  name="telNo"
-                  autoComplete="tel"
                   value={owner.telNo}
-                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  onChange={(v) => handlePhoneChange(v)}
                   placeholder="0912345678"
                   className={`${inputClass} ${phoneError ? 'border-red-500/50' : ''}`}
                 />
@@ -336,12 +333,10 @@ export default function NewTravelContractPage() {
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm text-slate-400 mb-1.5">Địa chỉ <span className="text-orange-400">*</span></label>
-                <input
-                  type="text"
-                  name="address"
-                  autoComplete="street-address"
+                <AutocompleteInput
+                  field="owner.address"
                   value={owner.address}
-                  onChange={(e) => setOwner({...owner, address: e.target.value})}
+                  onChange={(v) => setOwner({...owner, address: v})}
                   className={inputClass}
                   required
                 />

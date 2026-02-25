@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TravelInsuredPerson } from '@/types/travel';
 import { TRAVEL_RELATIONSHIP_LABELS, TRAVEL_MEMBER_TYPE_LABELS } from '@/providers/pacific-cross/products/travel/constants';
 import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
+import AutocompleteInput from '@/components/travel/AutocompleteInput';
 
 // Car rental options
 const CAR_RENTAL_OPTIONS = [
@@ -114,12 +115,10 @@ export default function InsuredPersonForm({
           <label className="block text-sm text-slate-400 mb-1.5">
             Họ tên <span className="text-orange-400">*</span>
           </label>
-          <input
-            type="text"
-            name={`insured_name_${index}`}
-            autoComplete="name"
+          <AutocompleteInput
+            field="insuredPersons.name"
             value={person.name || ''}
-            onChange={(e) => handleChange('name', e.target.value)}
+            onChange={(v) => handleChange('name', v)}
             className={inputClass(!!errors[`name_${index}`])}
             placeholder="Nguyen Van A"
           />
@@ -182,12 +181,10 @@ export default function InsuredPersonForm({
           <label className="block text-sm text-slate-400 mb-1.5">
             CCCD/Hộ chiếu <span className="text-orange-400">*</span>
           </label>
-          <input
-            type="text"
-            name={`insured_personalId_${index}`}
-            autoComplete="on"
+          <AutocompleteInput
+            field="insuredPersons.personalId"
             value={person.personalId || ''}
-            onChange={(e) => handleChange('personalId', e.target.value)}
+            onChange={(v) => handleChange('personalId', v)}
             className={inputClass(!!errors[`personalId_${index}`])}
             placeholder="012345678901"
           />
@@ -196,12 +193,11 @@ export default function InsuredPersonForm({
         {/* Tel */}
         <div>
           <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
-          <input
+          <AutocompleteInput
+            field="insuredPersons.telNo"
             type="tel"
-            name={`insured_telNo_${index}`}
-            autoComplete="tel"
             value={person.telNo || ''}
-            onChange={(e) => handleChange('telNo', e.target.value)}
+            onChange={(v) => handleChange('telNo', v)}
             className={inputClass()}
             placeholder="0901234567"
           />
@@ -210,12 +206,11 @@ export default function InsuredPersonForm({
         {/* Email */}
         <div>
           <label className="block text-sm text-slate-400 mb-1.5">Email</label>
-          <input
+          <AutocompleteInput
+            field="insuredPersons.email"
             type="email"
-            name={`insured_email_${index}`}
-            autoComplete="email"
             value={person.email || ''}
-            onChange={(e) => handleChange('email', e.target.value)}
+            onChange={(v) => handleChange('email', v)}
             className={inputClass()}
             placeholder="email@example.com"
           />
