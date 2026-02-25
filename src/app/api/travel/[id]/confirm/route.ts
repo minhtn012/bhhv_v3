@@ -3,7 +3,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
-import { mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
+import { mapTravelToPacificCrossFormat, generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
 import { logError, logInfo, logDebug } from '@/lib/errorLogger';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
@@ -126,10 +126,21 @@ export async function POST(
       );
     }
 
+    // Update cert_id if Pacific Cross returned a new one (quotation → official cert)
+    const oldCertId = contract.pacificCrossCertId;
+    if (confirmResponse.certId && confirmResponse.certId !== oldCertId) {
+      contract.pacificCrossCertId = confirmResponse.certId;
+      contract.pacificCrossCertNo = confirmResponse.certNo;
+      contract.quotePdfUrl = generateQuotePdfUrl(confirmResponse.certId);
+    }
+
     logInfo('Travel contract confirmed successfully', {
       operation: 'TRAVEL_CONFIRM_SUCCESS',
       contractId: id,
-      additionalInfo: { certId: contract.pacificCrossCertId }
+      additionalInfo: {
+        oldCertId,
+        newCertId: confirmResponse.certId || oldCertId,
+      }
     });
 
     // Update contract status
@@ -141,7 +152,7 @@ export async function POST(
 
     return NextResponse.json({
       message: 'Ra hop dong thanh cong',
-      certId: contract.pacificCrossCertId,
+      certId: confirmResponse.certId || contract.pacificCrossCertId,
       contract: {
         id: contract._id,
         contractNumber: contract.contractNumber,
