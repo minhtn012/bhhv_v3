@@ -116,6 +116,8 @@ export default function InsuredPersonForm({
           </label>
           <input
             type="text"
+            name={`insured_name_${index}`}
+            autoComplete="name"
             value={person.name || ''}
             onChange={(e) => handleChange('name', e.target.value)}
             className={inputClass(!!errors[`name_${index}`])}
@@ -182,6 +184,8 @@ export default function InsuredPersonForm({
           </label>
           <input
             type="text"
+            name={`insured_personalId_${index}`}
+            autoComplete="on"
             value={person.personalId || ''}
             onChange={(e) => handleChange('personalId', e.target.value)}
             className={inputClass(!!errors[`personalId_${index}`])}
@@ -194,6 +198,8 @@ export default function InsuredPersonForm({
           <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
           <input
             type="tel"
+            name={`insured_telNo_${index}`}
+            autoComplete="tel"
             value={person.telNo || ''}
             onChange={(e) => handleChange('telNo', e.target.value)}
             className={inputClass()}
@@ -206,6 +212,8 @@ export default function InsuredPersonForm({
           <label className="block text-sm text-slate-400 mb-1.5">Email</label>
           <input
             type="email"
+            name={`insured_email_${index}`}
+            autoComplete="email"
             value={person.email || ''}
             onChange={(e) => handleChange('email', e.target.value)}
             className={inputClass()}

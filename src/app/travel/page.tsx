@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
-import { TRAVEL_STATUS_LABELS, TRAVEL_PRODUCT_LABELS } from '@/providers/pacific-cross/products/travel/constants';
+import { TRAVEL_STATUS_LABELS } from '@/providers/pacific-cross/products/travel/constants';
 
 interface TravelContract {
   _id: string;
@@ -94,6 +94,11 @@ export default function TravelContractsPage() {
     });
   };
 
+  const formatShortDate = (dateString: string) => {
+    const [y, m, d] = dateString.split('-');
+    return `${d}/${m}/${y}`;
+  };
+
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
       nhap: 'bg-gray-500/20 text-gray-300',
@@ -127,6 +132,22 @@ export default function TravelContractsPage() {
   const clearAllFilters = () => {
     setStatusFilter([]);
     setPagination(p => ({ ...p, page: 1 }));
+  };
+
+  const handleClone = async (contractId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm('Nhân bản hợp đồng này? (Thông tin người được BH sẽ để trống)')) return;
+    try {
+      const response = await fetch(`/api/travel/${contractId}/clone`, { method: 'POST' });
+      const data = await response.json();
+      if (response.ok) {
+        router.push(`/travel/${data.contract.id}/edit`);
+      } else {
+        setError(data.error || 'Không thể nhân bản hợp đồng');
+      }
+    } catch {
+      setError('Lỗi kết nối server');
+    }
   };
 
   const statuses = ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong', 'huy'];
@@ -270,9 +291,7 @@ export default function TravelContractsPage() {
                     <tr className="border-b border-white/10">
                       <th className="text-left py-3 px-4 text-white font-medium">Mã HĐ</th>
                       <th className="text-left py-3 px-4 text-white font-medium">Chủ HĐ</th>
-                      <th className="text-left py-3 px-4 text-white font-medium">Sản phẩm</th>
-                      <th className="text-left py-3 px-4 text-white font-medium">Thời hạn</th>
-                      <th className="text-left py-3 px-4 text-white font-medium">Số người</th>
+                      <th className="text-left py-3 px-4 text-white font-medium">Thời gian</th>
                       <th className="text-left py-3 px-4 text-white font-medium">Phí BH</th>
                       <th className="text-left py-3 px-4 text-white font-medium">Trạng thái</th>
                       <th className="text-left py-3 px-4 text-white font-medium">Thao tác</th>
@@ -287,9 +306,7 @@ export default function TravelContractsPage() {
                       >
                         <td className="py-3 px-4 text-white font-mono text-sm">{contract.contractNumber}</td>
                         <td className="py-3 px-4 text-gray-300">{contract.owner.policyholder}</td>
-                        <td className="py-3 px-4 text-gray-300">{TRAVEL_PRODUCT_LABELS[contract.product]}</td>
-                        <td className="py-3 px-4 text-gray-300">{contract.period.days} ngày</td>
-                        <td className="py-3 px-4 text-gray-300">{contract.insuredPersons.length}</td>
+                        <td className="py-3 px-4 text-gray-300 text-sm whitespace-nowrap">{formatShortDate(contract.period.dateFrom)} - {formatShortDate(contract.period.dateTo)} ({contract.period.days})</td>
                         <td className="py-3 px-4 text-green-300 font-medium">
                           {formatCurrency(contract.totalPremium)}
                         </td>
@@ -323,6 +340,17 @@ export default function TravelContractsPage() {
                                 </svg>
                               </button>
                             )}
+                            {currentUser?.role === 'user' && (
+                              <button
+                                onClick={(e) => handleClone(contract._id, e)}
+                                className="text-purple-400 hover:text-purple-300 p-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                                title="Nhân bản"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -347,21 +375,13 @@ export default function TravelContractsPage() {
                       {getStatusBadge(contract.status)}
                     </div>
                     <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                      <div>
-                        <span className="text-gray-400 block">Sản phẩm</span>
-                        <span className="text-white">{TRAVEL_PRODUCT_LABELS[contract.product]}</span>
+                      <div className="col-span-2">
+                        <span className="text-gray-400 block">Thời gian</span>
+                        <span className="text-white">{formatShortDate(contract.period.dateFrom)} - {formatShortDate(contract.period.dateTo)} ({contract.period.days})</span>
                       </div>
                       <div>
                         <span className="text-gray-400 block">Phí BH</span>
                         <span className="text-green-300 font-medium">{formatCurrency(contract.totalPremium)}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block">Thời hạn</span>
-                        <span className="text-white">{contract.period.days} ngày</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block">Số người</span>
-                        <span className="text-white">{contract.insuredPersons.length}</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between pt-3 border-t border-white/10">
@@ -385,6 +405,14 @@ export default function TravelContractsPage() {
                             className="text-green-400 hover:text-green-300 text-sm font-medium"
                           >
                             Sửa
+                          </button>
+                        )}
+                        {currentUser?.role === 'user' && (
+                          <button
+                            onClick={(e) => handleClone(contract._id, e)}
+                            className="text-purple-400 hover:text-purple-300 text-sm font-medium"
+                          >
+                            Nhân bản
                           </button>
                         )}
                       </div>

@@ -168,6 +168,25 @@ export default function TravelContractDetailPage() {
     }
   };
 
+  const handleClone = async () => {
+    if (!confirm('Nhân bản hợp đồng này? (Thông tin người được BH sẽ để trống)')) return;
+    setActionLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/travel/${params.id}/clone`, { method: 'POST' });
+      const data = await response.json();
+      if (response.ok) {
+        router.push(`/travel/${data.contract.id}/edit`);
+      } else {
+        setError(data.error || 'Không thể nhân bản hợp đồng');
+      }
+    } catch {
+      setError('Lỗi kết nối server');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -275,6 +294,18 @@ export default function TravelContractDetailPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                     Sửa
+                  </button>
+                )}
+                {currentUser?.role === 'user' && (
+                  <button
+                    onClick={handleClone}
+                    disabled={actionLoading}
+                    className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-medium py-2 px-4 rounded-xl transition-all duration-200 disabled:opacity-50 flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Nhân bản
                   </button>
                 )}
                 {/* Step 1: Gửi báo giá - create quote on Pacific Cross */}

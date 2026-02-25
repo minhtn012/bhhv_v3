@@ -303,6 +303,8 @@ export default function EditTravelContractPage() {
                 <label className="block text-sm text-slate-400 mb-1.5">Họ tên <span className="text-orange-400">*</span></label>
                 <input
                   type="text"
+                  name="policyholder"
+                  autoComplete="name"
                   value={owner.policyholder}
                   onChange={(e) => setOwner({...owner, policyholder: e.target.value})}
                   className={inputClass}
@@ -313,6 +315,8 @@ export default function EditTravelContractPage() {
                 <label className="block text-sm text-slate-400 mb-1.5">Email</label>
                 <input
                   type="email"
+                  name="email"
+                  autoComplete="email"
                   value={owner.email}
                   onChange={(e) => setOwner({...owner, email: e.target.value})}
                   className={inputClass}
@@ -322,6 +326,8 @@ export default function EditTravelContractPage() {
                 <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
                 <input
                   type="tel"
+                  name="telNo"
+                  autoComplete="tel"
                   value={owner.telNo}
                   onChange={(e) => handlePhoneChange(e.target.value)}
                   placeholder="0912345678"
@@ -333,8 +339,19 @@ export default function EditTravelContractPage() {
                 <label className="block text-sm text-slate-400 mb-1.5">Địa chỉ <span className="text-orange-400">*</span></label>
                 <input
                   type="text"
+                  name="address"
+                  autoComplete="street-address"
                   value={owner.address}
                   onChange={(e) => setOwner({...owner, address: e.target.value})}
+                  className={inputClass}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-slate-400 mb-1.5">Nước cư trú <span className="text-orange-400">*</span></label>
+                <SearchableCountrySelect
+                  value={owner.countryAddress}
+                  onChange={(value) => setOwner({...owner, countryAddress: value})}
                   className={inputClass}
                   required
                 />
@@ -377,7 +394,7 @@ export default function EditTravelContractPage() {
                   className={inputClass}
                   required
                 />
-                <p className="text-slate-500 text-xs mt-1">Từ ngày mai trở đi</p>
+                <p className="text-slate-500 text-xs mt-1">Từ ngày hôm nay</p>
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Đến ngày <span className="text-orange-400">*</span></label>
