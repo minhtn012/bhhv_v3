@@ -43,10 +43,10 @@ export async function POST(
       );
     }
 
-    logInfo('Travel confirm contract started', {
+    logDebug('Travel confirm contract started', {
       operation: 'TRAVEL_CONFIRM_START',
       contractId: id,
-      additionalInfo: { product: contract.product, certId: contract.pacificCrossCertId }
+      product: contract.product, certId: contract.pacificCrossCertId
     });
 
     // Authenticate with Pacific Cross
@@ -137,10 +137,8 @@ export async function POST(
     logInfo('Travel contract confirmed successfully', {
       operation: 'TRAVEL_CONFIRM_SUCCESS',
       contractId: id,
-      additionalInfo: {
-        oldCertId,
-        newCertId: confirmResponse.certId || oldCertId,
-      }
+      oldCertId,
+      newCertId: confirmResponse.certId || oldCertId,
     });
 
     // Update contract status

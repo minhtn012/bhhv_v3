@@ -4,7 +4,7 @@ import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
 import { generateQuotePdfUrl, mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
-import { logInfo, logError, logDebug } from '@/lib/errorLogger';
+import { logError, logDebug } from '@/lib/errorLogger';
 import { validateFamilyPlan } from '@/utils/travel-family-validation';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
@@ -190,10 +190,10 @@ export async function PUT(
     const certId = contract.pacificCrossCertId;
 
     if (certId) {
-      logInfo('TRAVEL_SYNC: Starting sync', {
+      logDebug('TRAVEL_SYNC: Starting sync', {
         operation: 'TRAVEL_UPDATE_SYNC_START',
         contractId: id,
-        additionalInfo: { certId }
+        certId
       });
 
       try {
@@ -225,29 +225,25 @@ export async function PUT(
             // Note: updateCertificate will get fresh CSRF token from edit page internally
             const payload = mapTravelToPacificCrossFormat(formData, '', true);
 
-            logInfo('TRAVEL_SYNC: Calling updateCertificate', {
+            logDebug('TRAVEL_SYNC: Calling updateCertificate', {
               operation: 'TRAVEL_UPDATE_PAYLOAD',
               contractId: id,
-              additionalInfo: {
-                certId,
-                policyholder: payload.policyholder,
-                email: payload.email,
-                address: payload.address,
-              }
+              certId,
+              policyholder: payload.policyholder,
+              email: payload.email,
+              address: payload.address,
             });
             const updateResponse = await client.updateCertificate(certId, payload);
-            logInfo('TRAVEL_SYNC: Update response', {
+            logDebug('TRAVEL_SYNC: Update response', {
               operation: 'TRAVEL_UPDATE_RESULT',
               contractId: id,
-              additionalInfo: {
-                success: updateResponse.success,
-                error: updateResponse.error,
-                hasRawResponse: !!updateResponse.rawResponse,
-              }
+              success: updateResponse.success,
+              error: updateResponse.error,
+              hasRawResponse: !!updateResponse.rawResponse,
             });
 
             if (updateResponse.success) {
-              logInfo('Pacific Cross sync successful', {
+              logDebug('Pacific Cross sync successful', {
                 operation: 'TRAVEL_UPDATE_SYNC_SUCCESS',
                 contractId: id
               });

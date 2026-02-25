@@ -129,9 +129,9 @@ export class PacificCrossApiClient extends BaseApiClient {
    * 2. POST login credentials
    */
   async authenticate(username: string, password: string): Promise<ApiResponse<{ cookies?: string }>> {
-    logInfo('Pacific Cross authentication started', {
+    logDebug('Pacific Cross authentication started', {
       operation: 'PC_AUTH_START',
-      additionalInfo: { baseUrl: this.baseUrl, username }
+      baseUrl: this.baseUrl, username
     });
 
     try {
@@ -210,9 +210,9 @@ export class PacificCrossApiClient extends BaseApiClient {
       // Check for redirect (success) or error
       const locationHeader = loginResponse.headers.get('location');
       if (loginResponse.status === 302 && locationHeader && !locationHeader.includes('login')) {
-        logInfo('Pacific Cross authentication successful', {
+        logDebug('Pacific Cross authentication successful', {
           operation: 'PC_AUTH_SUCCESS',
-          additionalInfo: { redirectTo: locationHeader }
+          redirectTo: locationHeader
         });
         return {
           success: true,
@@ -299,9 +299,9 @@ export class PacificCrossApiClient extends BaseApiClient {
     const operation = isQuote ? 'PC_CREATE_QUOTE' : 'PC_CREATE_CONTRACT';
     const product = payload.product || '2';
 
-    logInfo(`Pacific Cross ${isQuote ? 'quote' : 'contract'} creation started`, {
+    logDebug(`Pacific Cross ${isQuote ? 'quote' : 'contract'} creation started`, {
       operation,
-      additionalInfo: { isQuote, payloadKeys: Object.keys(payload) }
+      isQuote, payloadKeys: Object.keys(payload)
     });
 
     try {
@@ -380,9 +380,9 @@ export class PacificCrossApiClient extends BaseApiClient {
       if (response.status === 302 && locationHeader) {
         const certInfo = this.extractCertIdFromUrl(locationHeader);
         if (certInfo) {
-          logInfo(`Pacific Cross ${isQuote ? 'quote' : 'contract'} created successfully`, {
+          logDebug(`Pacific Cross ${isQuote ? 'quote' : 'contract'} created successfully`, {
             operation: `${operation}_SUCCESS`,
-            additionalInfo: { certId: certInfo.certId, certNo: certInfo.certNo }
+            certId: certInfo.certId, certNo: certInfo.certNo
           });
           return {
             success: true,
@@ -539,9 +539,9 @@ export class PacificCrossApiClient extends BaseApiClient {
 
         if (token) {
           this.csrfToken = token;
-          logInfo('Pacific Cross CSRF token refreshed', {
+          logDebug('Pacific Cross CSRF token refreshed', {
             operation: 'PC_CSRF_REFRESH_SUCCESS',
-            additionalInfo: { attempt, tokenLength: token.length }
+            attempt, tokenLength: token.length
           });
           return true;
         }
@@ -609,9 +609,9 @@ export class PacificCrossApiClient extends BaseApiClient {
         const policyholderMatch = html.match(/name="policyholder"[^>]*value="([^"]*)"/);
         const policyholder = policyholderMatch ? policyholderMatch[1] : 'N/A';
 
-        logInfo('PC_GET_PREMIUM: Premium extracted', {
+        logDebug('PC_GET_PREMIUM: Premium extracted', {
           operation: 'PC_GET_PREMIUM_SUCCESS',
-          additionalInfo: { totalPremium, memberCount: count, policyholder }
+          totalPremium, memberCount: count, policyholder
         });
         return { success: true, premium: totalPremium };
       }
@@ -665,13 +665,11 @@ export class PacificCrossApiClient extends BaseApiClient {
         }
 
         const memberIdMatches = html.match(/name="id_\d+"[^>]*value="\d+"/g)?.slice(0, 3) || [];
-        logInfo('PC_CSRF_EDIT: Token obtained', {
+        logDebug('PC_CSRF_EDIT: Token obtained', {
           operation: 'PC_CSRF_EDIT_SUCCESS',
-          additionalInfo: {
-            tokenLength: token.length,
-            memberIds: this.memberIds,
-            memberIdMatches
-          }
+          tokenLength: token.length,
+          memberIds: this.memberIds,
+          memberIdMatches
         });
         return true;
       }
@@ -697,9 +695,9 @@ export class PacificCrossApiClient extends BaseApiClient {
   ): Promise<PacificCrossQuoteResponse> {
     const operation = 'PC_UPDATE_CERT';
 
-    logInfo('Pacific Cross certificate update started', {
+    logDebug('Pacific Cross certificate update started', {
       operation,
-      additionalInfo: { certId, payloadKeys: Object.keys(payload) }
+      certId, payloadKeys: Object.keys(payload)
     });
 
     try {
@@ -754,16 +752,14 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       // Log key fields being sent
       const policyholderInBody = body.match(/name="policyholder"[\s\S]*?\r\n\r\n(.*?)\r\n/);
-      logInfo('PC_UPDATE_CERT: Request payload', {
+      logDebug('PC_UPDATE_CERT: Request payload', {
         operation: 'PC_UPDATE_CERT_PAYLOAD',
-        additionalInfo: {
-          certId,
-          policyholder: formPayload.policyholder,
-          policyholderInBody: policyholderInBody ? policyholderInBody[1] : 'NOT_FOUND',
-          email: formPayload.email,
-          memberIds: this.memberIds,
-          bodyLength: body.length,
-        }
+        certId,
+        policyholder: formPayload.policyholder,
+        policyholderInBody: policyholderInBody ? policyholderInBody[1] : 'NOT_FOUND',
+        email: formPayload.email,
+        memberIds: this.memberIds,
+        bodyLength: body.length,
       });
 
       logDebug(`${operation}: Request details`, {
@@ -856,16 +852,14 @@ export class PacificCrossApiClient extends BaseApiClient {
         const savedPolicyholder = redirectHtml.match(/name="policyholder"[^>]*value="([^"]*)"/);
         const sentPolicyholder = formPayload.policyholder;
 
-        logInfo('PC_UPDATE_CERT: Verification after redirect', {
+        logDebug('PC_UPDATE_CERT: Verification after redirect', {
           operation: 'PC_UPDATE_CERT_VERIFY',
-          additionalInfo: {
-            hasValidationErrors,
-            validationErrors: validationErrors.slice(0, 5),
-            savedPolicyholder: savedPolicyholder ? savedPolicyholder[1] : null,
-            sentPolicyholder,
-            dataMatch: savedPolicyholder ? savedPolicyholder[1] === sentPolicyholder : null,
-            redirectLocation: locationHeader,
-          }
+          hasValidationErrors,
+          validationErrors: validationErrors.slice(0, 5),
+          savedPolicyholder: savedPolicyholder ? savedPolicyholder[1] : null,
+          sentPolicyholder,
+          dataMatch: savedPolicyholder ? savedPolicyholder[1] === sentPolicyholder : null,
+          redirectLocation: locationHeader,
         });
 
         if (hasValidationErrors) {
@@ -884,9 +878,9 @@ export class PacificCrossApiClient extends BaseApiClient {
           };
         }
 
-        logInfo('Pacific Cross certificate updated successfully', {
+        logDebug('Pacific Cross certificate updated successfully', {
           operation: `${operation}_SUCCESS`,
-          additionalInfo: { certId, redirectUrl: locationHeader }
+          certId, redirectUrl: locationHeader
         });
         return {
           success: true,

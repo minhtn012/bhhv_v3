@@ -4,7 +4,7 @@ import TravelContract from '@/models/TravelContract';
 import { requireAuth } from '@/lib/auth';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { mapTravelToPacificCrossFormat, generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
-import { logError, logInfo, logDebug } from '@/lib/errorLogger';
+import { logError, logDebug } from '@/lib/errorLogger';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
 // POST /api/travel/[id]/submit - Create quote on Pacific Cross
@@ -46,10 +46,10 @@ export async function POST(
       );
     }
 
-    logInfo('Travel submit quote started', {
+    logDebug('Travel submit quote started', {
       operation: 'TRAVEL_SUBMIT_START',
       contractId: id,
-      additionalInfo: { product: contract.product, plan: contract.plan }
+      product: contract.product, plan: contract.plan
     });
 
     // Validate env at call time
@@ -148,10 +148,10 @@ export async function POST(
       );
     }
 
-    logInfo('Travel quote created successfully', {
+    logDebug('Travel quote created successfully', {
       operation: 'TRAVEL_SUBMIT_SUCCESS',
       contractId: id,
-      additionalInfo: { certId: quoteResponse.certId, certNo: quoteResponse.certNo }
+      certId: quoteResponse.certId, certNo: quoteResponse.certNo
     });
 
     // Update contract with Pacific Cross cert ID and PDF URL
@@ -169,10 +169,10 @@ export async function POST(
 
       if (premiumResult.success && premiumResult.premium) {
         totalPremium = premiumResult.premium;
-        logInfo('TRAVEL_SUBMIT: Premium fetched', {
+        logDebug('TRAVEL_SUBMIT: Premium fetched', {
           operation: 'TRAVEL_SUBMIT_PREMIUM',
           contractId: id,
-          additionalInfo: { totalPremium }
+          totalPremium
         });
       } else {
         logDebug('TRAVEL_SUBMIT: Premium fetch failed', { error: premiumResult.error });
