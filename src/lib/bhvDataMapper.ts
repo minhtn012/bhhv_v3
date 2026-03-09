@@ -159,6 +159,12 @@ export function getKindConfig(loaiHinhKinhDoanh: string): {
  * Map vehicle weight to weight category UUID
  */
 export function mapCarWeightGoods(trongTai: number): string {
+  // No weight specified → "Không quy định"
+  if (!trongTai || trongTai <= 0) {
+    const item = carWeightGood.find(w => w.name === "Không quy định");
+    return item?.value || "";
+  }
+
   // Weight in kg, convert to tons for comparison
   const weightInTons = trongTai / 1000;
 
