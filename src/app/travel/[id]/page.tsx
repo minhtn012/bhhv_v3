@@ -224,7 +224,7 @@ export default function TravelContractDetailPage() {
   };
 
   // Travel allows edit in nhap, cho_duyet, khach_duyet (unlike vehicle insurance)
-  const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet'];
+  const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong'];
   const canEdit = contract && (editableStatuses.includes(contract.status) || currentUser?.role === 'admin');
 
   if (loading) {

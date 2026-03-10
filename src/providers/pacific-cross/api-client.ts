@@ -6,6 +6,7 @@
 import { BaseApiClient, ApiResponse } from '@/core/providers/base-api-client';
 import { PACIFIC_CROSS_API } from './products/travel/constants';
 import { logInfo, logDebug, logError as logErr } from '@/lib/errorLogger';
+import type { PacificCrossEditState } from './products/travel/types';
 
 export interface PacificCrossAuthResponse {
   success: boolean;
@@ -55,6 +56,9 @@ export class PacificCrossApiClient extends BaseApiClient {
 
   // Store member IDs parsed from edit page (e.g., { id_1: "672282", id_2: "672283" })
   private memberIds: Record<string, string> | null = null;
+  // Store is_quote and last_update parsed from edit page
+  private editPageIsQuote: string | null = null;
+  private editPageLastUpdate: string | null = null;
 
   constructor(baseUrl?: string) {
     super(baseUrl || process.env.PACIFIC_CROSS_BASE_URL || PacificCrossApiClient.DEFAULT_BASE_URL);
@@ -664,12 +668,22 @@ export class PacificCrossApiClient extends BaseApiClient {
           this.memberIds[`id_${memberIndex}`] = memberId;
         }
 
+        // Parse is_quote from edit page (hidden input)
+        const isQuoteMatch = html.match(/name="is_quote"[^>]*value="(\d)"/);
+        this.editPageIsQuote = isQuoteMatch ? isQuoteMatch[1] : null;
+
+        // Parse last_update from edit page (hidden input)
+        const lastUpdateMatch = html.match(/name="last_update"[^>]*value="([^"]*)"/);
+        this.editPageLastUpdate = lastUpdateMatch ? lastUpdateMatch[1] : null;
+
         const memberIdMatches = html.match(/name="id_\d+"[^>]*value="\d+"/g)?.slice(0, 3) || [];
         logDebug('PC_CSRF_EDIT: Token obtained', {
           operation: 'PC_CSRF_EDIT_SUCCESS',
           tokenLength: token.length,
           memberIds: this.memberIds,
-          memberIdMatches
+          memberIdMatches,
+          isQuote: this.editPageIsQuote,
+          lastUpdate: this.editPageLastUpdate,
         });
         return true;
       }
@@ -712,14 +726,15 @@ export class PacificCrossApiClient extends BaseApiClient {
       }
 
       // Build payload with _method first (field order matters for Laravel)
-      const now = new Date();
-      const lastUpdate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+      // Use is_quote and last_update from edit page (parsed in refreshCsrfTokenFromEditPage)
+      const isQuote = this.editPageIsQuote ?? '1';
+      const lastUpdate = this.editPageLastUpdate ?? '';
 
       // Create ordered payload - _method must be first
       const formPayload: Record<string, string | undefined> = {
         _method: 'PUT',
         _token: this.csrfToken,
-        is_quote: '1',
+        is_quote: isQuote,
         last_update: lastUpdate,
       };
 
@@ -739,6 +754,7 @@ export class PacificCrossApiClient extends BaseApiClient {
 
       logDebug(`${operation}: Building payload`, {
         certId,
+        isQuote,
         lastUpdate,
         tokenLength: this.csrfToken.length,
         fieldCount: Object.keys(formPayload).length,
@@ -912,6 +928,76 @@ export class PacificCrossApiClient extends BaseApiClient {
         error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
+  }
+
+  /**
+   * Get edit state for a confirmed certificate
+   * Parses JavaScript variables from the edit page HTML to determine edit permissions
+   */
+  async getEditState(certId: string): Promise<PacificCrossEditState> {
+    const url = `${this.baseUrl}${PACIFIC_CROSS_API.CERT_PATH}/${certId}/edit`;
+    logDebug('PC_GET_EDIT_STATE: Fetching edit page', { url });
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: this.getDefaultHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch edit page: HTTP ${response.status}`);
+    }
+
+    // Update cookies
+    const newCookies = this.parseCookiesFromHeaders(response.headers);
+    if (newCookies) {
+      this.sessionCookies = newCookies;
+    }
+
+    const html = await response.text();
+
+    // Parse JavaScript variables from HTML
+    const parseBool = (pattern: RegExp): boolean => {
+      const match = html.match(pattern);
+      return match ? match[1] === 'true' : false;
+    };
+    const parseNum = (pattern: RegExp): number => {
+      const match = html.match(pattern);
+      return match ? parseInt(match[1], 10) : 0;
+    };
+    const parseStr = (pattern: RegExp): string => {
+      const match = html.match(pattern);
+      return match ? match[1] : '';
+    };
+
+    const onEffDate = parseBool(/var\s+onEffDate\s*=\s*(true|false)/);
+    const overEffDate = parseBool(/var\s+overEffDate\s*=\s*(true|false)/);
+    const isPrinted = parseNum(/var\s+isPrinted\s*=\s*(\d+)/);
+    const revised = parseNum(/var\s+revised\s*=\s*(\d+)/);
+    const readOnly = parseBool(/var\s+readOnly\s*=\s*(true|false)/);
+    const userRole = parseStr(/var\s+userRole\s*=\s*["'](\w+)["']/);
+
+    // Extract current plan price from premium input
+    const premiumMatch = html.match(/id="premium_1"[^>]*value="(\d+)"/);
+    const currentPlanPrice = premiumMatch ? parseInt(premiumMatch[1], 10) : undefined;
+
+    const editState: PacificCrossEditState = {
+      onEffDate,
+      overEffDate,
+      isPrinted,
+      revised,
+      readOnly,
+      userRole,
+      canEdit: !readOnly && !overEffDate,
+      canEditDate: !onEffDate,
+      currentPlanPrice,
+    };
+
+    logInfo('PC_GET_EDIT_STATE: Parsed', {
+      operation: 'PC_GET_EDIT_STATE_SUCCESS',
+      additionalInfo: { certId, ...editState }
+    });
+
+    return editState;
   }
 
   /**
