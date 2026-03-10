@@ -265,7 +265,7 @@ travelContractSchema.statics.getStatusText = function(status: string): string {
 
 // Instance method: can edit (travel allows edit even after customer approval)
 travelContractSchema.methods.canEdit = function(): boolean {
-  return this.status === 'nhap' || this.status === 'cho_duyet' || this.status === 'khach_duyet';
+  return ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong'].includes(this.status);
 };
 
 // Instance method: can change status

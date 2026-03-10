@@ -25,6 +25,7 @@ interface Props {
   selectedPlan: number;
   days: number;
   onPlanChange: (plan: number, hasCarRental: boolean) => void;
+  minPlanId?: number; // For confirmed certs: only show plans >= this plan's price
 }
 
 // Filter options
@@ -70,7 +71,7 @@ function parsePlanCode(planName: string) {
   };
 }
 
-export default function ProductPlanSelector({ selectedPlan, days, onPlanChange }: Props) {
+export default function ProductPlanSelector({ selectedPlan, days, onPlanChange, minPlanId }: Props) {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [prices, setPrices] = useState<PriceRecord[]>([]);
   const [loading, setLoading] = useState(false);
@@ -159,6 +160,28 @@ export default function ProductPlanSelector({ selectedPlan, days, onPlanChange }
       days <= p.days_to
     );
   }, [prices, selectedPlan, days]);
+
+  // Min price for upgrade-only filtering (confirmed certs)
+  const minPlanPrice = useMemo(() => {
+    if (!minPlanId || days <= 0) return 0;
+    const priceRecord = prices.find(p =>
+      p.plan_id === minPlanId &&
+      days >= p.days_from &&
+      days <= p.days_to
+    );
+    return priceRecord?.price || 0;
+  }, [prices, minPlanId, days]);
+
+  // Filter plans that are >= min price (for upgrade-only mode)
+  const getPlanPrice = (planId: number): number => {
+    if (days <= 0) return 0;
+    const priceRecord = prices.find(p =>
+      p.plan_id === planId &&
+      days >= p.days_from &&
+      days <= p.days_to
+    );
+    return priceRecord?.price || 0;
+  };
 
   // Format currency
   const formatPrice = (price: number) => {
@@ -313,6 +336,7 @@ export default function ProductPlanSelector({ selectedPlan, days, onPlanChange }
             <div className="max-h-60 overflow-y-auto">
               {plans
                 .filter(p => p.PLAN_NAME.toLowerCase().includes(searchTerm.toLowerCase()))
+                .filter(p => !minPlanPrice || getPlanPrice(p.PLAN_ID) >= minPlanPrice)
                 .map((plan) => (
                   <div
                     key={plan.PLAN_ID}
@@ -324,7 +348,7 @@ export default function ProductPlanSelector({ selectedPlan, days, onPlanChange }
                     {plan.PLAN_NAME}
                   </div>
                 ))}
-              {plans.filter(p => p.PLAN_NAME.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+              {plans.filter(p => p.PLAN_NAME.toLowerCase().includes(searchTerm.toLowerCase())).filter(p => !minPlanPrice || getPlanPrice(p.PLAN_ID) >= minPlanPrice).length === 0 && (
                 <div className="px-4 py-3 text-slate-400 text-sm text-center">Không tìm thấy gói phù hợp</div>
               )}
             </div>

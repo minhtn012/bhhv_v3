@@ -6,7 +6,7 @@ import { generateQuotePdfUrl, mapTravelToPacificCrossFormat } from '@/providers/
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { logError, logDebug } from '@/lib/errorLogger';
 import { validateFamilyPlan } from '@/utils/travel-family-validation';
-import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
+import type { TravelContractFormData, PacificCrossEditState } from '@/providers/pacific-cross/products/travel/types';
 
 // GET /api/travel/[id] - Get single contract
 export async function GET(
@@ -41,7 +41,7 @@ export async function GET(
     }
 
     // Always regenerate quotePdfUrl from certId to ensure correct format
-    const extendedContract = contract as typeof contract & { pacificCrossCertId?: string; quotePdfUrl?: string };
+    const extendedContract = contract as typeof contract & { pacificCrossCertId?: string; quotePdfUrl?: string; status?: string };
     if (extendedContract.pacificCrossCertId) {
       const correctUrl = generateQuotePdfUrl(extendedContract.pacificCrossCertId);
       if (extendedContract.quotePdfUrl !== correctUrl) {
@@ -53,7 +53,26 @@ export async function GET(
       }
     }
 
-    return NextResponse.json({ contract: extendedContract });
+    // Fetch edit state from Pacific Cross for confirmed contracts
+    let editState: PacificCrossEditState | null = null;
+    if (extendedContract.status === 'ra_hop_dong' && extendedContract.pacificCrossCertId) {
+      try {
+        const envCheck = PacificCrossApiClient.validateEnv();
+        if (envCheck.valid) {
+          const client = new PacificCrossApiClient();
+          const username = process.env.PACIFIC_CROSS_USERNAME!;
+          const password = process.env.PACIFIC_CROSS_PASSWORD!;
+          const authResponse = await client.authenticate(username, password);
+          if (authResponse.success) {
+            editState = await client.getEditState(extendedContract.pacificCrossCertId);
+          }
+        }
+      } catch (err) {
+        logError(err, { operation: 'TRAVEL_GET_EDIT_STATE_ERROR', contractId: id });
+      }
+    }
+
+    return NextResponse.json({ contract: extendedContract, editState });
 
   } catch (error: unknown) {
     // Logged via logError if needed
@@ -112,8 +131,80 @@ export async function PUT(
 
     const data = await request.json();
 
+    // For confirmed certs: fetch edit state and apply stricter validation
+    let editState: PacificCrossEditState | null = null;
+    if (contract.status === 'ra_hop_dong' && contract.pacificCrossCertId) {
+      try {
+        const envCheck = PacificCrossApiClient.validateEnv();
+        if (envCheck.valid) {
+          const client = new PacificCrossApiClient();
+          const authResponse = await client.authenticate(
+            process.env.PACIFIC_CROSS_USERNAME!,
+            process.env.PACIFIC_CROSS_PASSWORD!
+          );
+          if (authResponse.success) {
+            editState = await client.getEditState(contract.pacificCrossCertId);
+          }
+        }
+      } catch (err) {
+        logError(err, { operation: 'TRAVEL_PUT_EDIT_STATE_ERROR', contractId: id });
+      }
+
+      if (!editState || !editState.canEdit) {
+        return NextResponse.json(
+          { error: 'Hợp đồng không thể sửa đổi (readOnly hoặc đã hết hạn)' },
+          { status: 400 }
+        );
+      }
+
+      // Rule 1: Validate effective date changes
+      if (data.period?.dateFrom) {
+        if (editState.onEffDate && data.period.dateFrom !== contract.period.dateFrom) {
+          return NextResponse.json(
+            { error: 'Không thể sửa ngày hiệu lực khi đã đến ngày bắt đầu' },
+            { status: 400 }
+          );
+        }
+        if (!editState.onEffDate) {
+          const oldDate = new Date(contract.period.dateFrom);
+          const newDate = new Date(data.period.dateFrom);
+          if (newDate < oldDate) {
+            return NextResponse.json(
+              { error: 'Ngày hiệu lực chỉ được tăng hoặc giữ nguyên' },
+              { status: 400 }
+            );
+          }
+        }
+      }
+
+      // Rule 2: Plan upgrade only (validated by Pacific Cross on sync)
+
+      // Rule 3: Insured person - max 1 identity field change per person
+      if (data.insuredPersons && contract.insuredPersons) {
+        const trackFields = ['name', 'dob', 'gender', 'personalId'] as const;
+        for (let i = 0; i < data.insuredPersons.length; i++) {
+          const oldPerson = contract.insuredPersons[i];
+          if (!oldPerson) continue; // New person added → ok
+          const newPerson = data.insuredPersons[i];
+          let changedFields = 0;
+          for (const field of trackFields) {
+            if (String(oldPerson[field] || '') !== String(newPerson[field] || '')) {
+              changedFields++;
+            }
+          }
+          if (changedFields >= 2) {
+            return NextResponse.json(
+              { error: `Người được BH #${i + 1}: chỉ được sửa tối đa 1 thông tin cá nhân` },
+              { status: 400 }
+            );
+          }
+        }
+      }
+    }
+
     // Validate dates if period is being updated: dateFrom must be >= tomorrow
-    if (data.period?.dateFrom) {
+    // Skip this validation for confirmed certs (date already validated above)
+    if (data.period?.dateFrom && contract.status !== 'ra_hop_dong') {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       tomorrow.setHours(0, 0, 0, 0);

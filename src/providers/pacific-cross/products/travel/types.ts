@@ -87,6 +87,22 @@ export interface PacificCrossResponse {
 }
 
 /**
+ * Pacific Cross edit state for confirmed certificates
+ * Parsed from JavaScript variables on the edit page HTML
+ */
+export interface PacificCrossEditState {
+  onEffDate: boolean;       // Đã tới ngày hiệu lực?
+  overEffDate: boolean;     // Đã qua ngày kết thúc?
+  isPrinted: number;        // Đã in chưa (0/1)
+  revised: number;          // Số lần sửa đổi
+  readOnly: boolean;        // Server bắt read-only?
+  userRole: string;         // "booker" | "admin" | etc.
+  canEdit: boolean;         // Computed: !readOnly && !overEffDate
+  canEditDate: boolean;     // Computed: !onEffDate
+  currentPlanPrice?: number; // Giá plan hiện tại
+}
+
+/**
  * Pacific Cross history entry from GET /cert/{id}/history
  */
 export interface PacificCrossHistoryEntry {

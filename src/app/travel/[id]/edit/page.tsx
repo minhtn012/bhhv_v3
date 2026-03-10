@@ -5,10 +5,12 @@ import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
 import ProductPlanSelector from '@/components/travel/ProductPlanSelector';
+import TravelOCRUpload from '@/components/travel/TravelOCRUpload';
 import SearchableCountrySelect from '@/components/travel/SearchableCountrySelect';
 import AutocompleteInput from '@/components/travel/AutocompleteInput';
 import ContractTypeSelector from '@/components/travel/ContractTypeSelector';
 import type { TravelInsuredPerson, TravelPolicyType } from '@/types/travel';
+import type { PacificCrossEditState } from '@/providers/pacific-cross/products/travel/types';
 import { calculateInsuranceDays } from '@/utils/dateFormatter';
 import { validateFamilyPlan, getDefaultMemberType } from '@/utils/travel-family-validation';
 
@@ -18,6 +20,7 @@ export default function EditTravelContractPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [showOCRModal, setShowOCRModal] = useState(false);
 
   const [owner, setOwner] = useState<{
     policyholder: string;
@@ -49,8 +52,12 @@ export default function EditTravelContractPage() {
   const [plan, setPlan] = useState(534);
   const [hasCarRental, setHasCarRental] = useState(false);
   const [insuredPersons, setInsuredPersons] = useState<Partial<TravelInsuredPerson>[]>([]);
+  // Parallel array for CCCD images from OCR
+  const [personImageUrls, setPersonImageUrls] = useState<string[]>([]);
   const [canEdit, setCanEdit] = useState(false);
   const [phoneError, setPhoneError] = useState('');
+  const [editState, setEditState] = useState<PacificCrossEditState | null>(null);
+  const [originalPersons, setOriginalPersons] = useState<Partial<TravelInsuredPerson>[]>([]);
 
   // Get tomorrow's date in YYYY-MM-DD format for min date constraint
   const getTomorrowDate = () => {
@@ -99,12 +106,22 @@ export default function EditTravelContractPage() {
       if (response.ok) {
         const contract = data.contract;
 
-        // Check if editable (travel allows edit in nhap, cho_duyet, khach_duyet)
-        const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet'];
+        // Check if editable
+        const editableStatuses = ['nhap', 'cho_duyet', 'khach_duyet', 'ra_hop_dong'];
         if (!editableStatuses.includes(contract.status)) {
-          setError('Chỉ có thể sửa hợp đồng ở trạng thái Nháp, Chờ duyệt, hoặc Khách duyệt');
+          setError('Không thể sửa hợp đồng ở trạng thái này');
           setCanEdit(false);
           return;
+        }
+
+        // For confirmed certs: check editState from server
+        if (contract.status === 'ra_hop_dong') {
+          if (!data.editState || !data.editState.canEdit) {
+            setError('Hợp đồng không thể sửa đổi (readOnly hoặc đã hết hạn)');
+            setCanEdit(false);
+            return;
+          }
+          setEditState(data.editState);
         }
 
         setCanEdit(true);
@@ -113,6 +130,8 @@ export default function EditTravelContractPage() {
         setProduct(contract.product);
         setPlan(contract.plan);
         setInsuredPersons(contract.insuredPersons);
+        setOriginalPersons(JSON.parse(JSON.stringify(contract.insuredPersons)));
+        setPersonImageUrls(contract.insuredPersons.map(() => ''));
       } else {
         setError(data.error || 'Không thể tải hợp đồng');
       }
@@ -154,10 +173,12 @@ export default function EditTravelContractPage() {
       ...prev,
       { name: '', dob: '', age: 0, gender: 'M', country: 'VIETNAM', personalId: '', relationship: 'RELATION_O', pct: 100 }
     ]);
+    setPersonImageUrls(prev => [...prev, '']);
   }, []);
 
   const removeInsuredPerson = useCallback((index: number) => {
     setInsuredPersons(prev => prev.filter((_, i) => i !== index));
+    setPersonImageUrls(prev => prev.filter((_, i) => i !== index));
   }, []);
 
   const updateInsuredPerson = useCallback((index: number, person: Partial<TravelInsuredPerson>) => {
@@ -190,6 +211,41 @@ export default function EditTravelContractPage() {
     }
   }, []);
 
+  const handleExcelImport = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/travel/import-excel', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setInsuredPersons(data.insuredPersons);
+        setPersonImageUrls(data.insuredPersons.map(() => ''));
+      } else {
+        setError(data.error);
+      }
+    } catch {
+      setError('Failed to import Excel file');
+    }
+  };
+
+  const handleOCRImport = useCallback((extractedPersons: { imageUrl: string; data: Partial<TravelInsuredPerson> }[]) => {
+    // Filter existing persons that have names (remove empty entries)
+    setInsuredPersons(prev => {
+      const existingWithNames = prev.filter(p => p.name);
+      return [...existingWithNames, ...extractedPersons.map(p => p.data)];
+    });
+    setPersonImageUrls(prev => {
+      const existingWithNames = prev.slice(0, insuredPersons.filter(p => p.name).length);
+      return [...existingWithNames, ...extractedPersons.map(p => p.imageUrl)];
+    });
+    setShowOCRModal(false);
+  }, [insuredPersons]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -201,6 +257,24 @@ export default function EditTravelContractPage() {
       setPhoneError('SĐT không hợp lệ (VD: 0912345678 hoặc +84912345678)');
       setSaving(false);
       return;
+    }
+
+    // Client-side validation for confirmed cert
+    if (editState) {
+      // Check insured person changes (max 1 identity field per person)
+      const trackFields = ['name', 'dob', 'gender', 'personalId'] as const;
+      for (let i = 0; i < insuredPersons.length; i++) {
+        const orig = originalPersons[i];
+        if (!orig) continue;
+        const changed = trackFields.filter(
+          f => String((orig as Record<string, unknown>)[f] || '') !== String((insuredPersons[i] as Record<string, unknown>)[f] || '')
+        );
+        if (changed.length >= 2) {
+          setError(`Người được BH #${i + 1}: chỉ được sửa tối đa 1 thông tin cá nhân`);
+          setSaving(false);
+          return;
+        }
+      }
     }
 
     // Family plan validation
@@ -295,6 +369,19 @@ export default function EditTravelContractPage() {
           </div>
         )}
 
+        {editState && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-6">
+            <h3 className="text-amber-400 font-medium mb-2">Lưu ý sửa đổi hợp đồng đã xác nhận</h3>
+            <ul className="text-amber-300 text-sm space-y-1">
+              {editState.onEffDate && <li>• Không thể sửa ngày hiệu lực (đã đến ngày bắt đầu)</li>}
+              {!editState.onEffDate && <li>• Ngày hiệu lực chỉ được tăng hoặc giữ nguyên</li>}
+              <li>• Chỉ được nâng hạng bảo hiểm (không giảm)</li>
+              <li>• Thông tin người được BH: sửa tối đa 1 field/người</li>
+              <li>• Không thể thêm/xóa người được bảo hiểm</li>
+            </ul>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Owner Section */}
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
@@ -381,15 +468,18 @@ export default function EditTravelContractPage() {
                     setPeriod(prev => ({
                       ...prev,
                       dateFrom: newDateFrom,
-                      // Reset dateTo if it's before new dateFrom
                       dateTo: prev.dateTo && prev.dateTo < newDateFrom ? newDateFrom : prev.dateTo
                     }));
                   }}
-                  min={minDate}
-                  className={inputClass}
+                  min={editState ? period.dateFrom : minDate}
+                  disabled={editState?.onEffDate === true}
+                  className={`${inputClass} ${editState?.onEffDate ? 'opacity-50 cursor-not-allowed' : ''}`}
                   required
                 />
-                <p className="text-slate-500 text-xs mt-1">Từ ngày hôm nay</p>
+                {editState?.onEffDate
+                  ? <p className="text-amber-400 text-xs mt-1">Không thể sửa (đã đến ngày hiệu lực)</p>
+                  : <p className="text-slate-500 text-xs mt-1">Từ ngày hôm nay</p>
+                }
               </div>
               <div>
                 <label className="block text-sm text-slate-400 mb-1.5">Đến ngày <span className="text-orange-400">*</span></label>
@@ -422,6 +512,7 @@ export default function EditTravelContractPage() {
             <ProductPlanSelector
               selectedPlan={plan}
               days={period.days}
+              minPlanId={editState ? plan : undefined}
               onPlanChange={(planId, carRental) => {
                 setPlan(planId);
                 setHasCarRental(carRental);
@@ -443,13 +534,37 @@ export default function EditTravelContractPage() {
           <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">Người được bảo hiểm ({insuredPersons.length})</h2>
-              <button
-                type="button"
-                onClick={addInsuredPerson}
-                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm"
-              >
-                + Thêm người
-              </button>
+              {!editState && (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={addInsuredPerson}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm"
+                  >
+                    + Thêm người
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowOCRModal(true)}
+                    className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm flex items-center gap-1"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    OCR CCCD
+                  </button>
+                  <label className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm cursor-pointer">
+                    Import Excel
+                    <input
+                      type="file"
+                      accept=".xlsx,.xls"
+                      onChange={(e) => e.target.files?.[0] && handleExcelImport(e.target.files[0])}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              )}
             </div>
             <div className="space-y-4">
               {insuredPersons.map((person, index) => (
@@ -457,11 +572,12 @@ export default function EditTravelContractPage() {
                   key={index}
                   index={index}
                   person={person}
+                  imageUrl={personImageUrls[index]}
                   showCarRental={hasCarRental}
                   pocyType={owner.pocyType as 'Individual' | 'Family'}
                   onChange={updateInsuredPerson}
                   onRemove={removeInsuredPerson}
-                  canRemove={insuredPersons.length > 1}
+                  canRemove={insuredPersons.length > 1 && !editState}
                 />
               ))}
             </div>
@@ -479,6 +595,14 @@ export default function EditTravelContractPage() {
             </button>
           </div>
         </form>
+
+        {/* OCR Modal */}
+        {showOCRModal && (
+          <TravelOCRUpload
+            onImport={handleOCRImport}
+            onClose={() => setShowOCRModal(false)}
+          />
+        )}
       </div>
     </DashboardLayout>
   );
