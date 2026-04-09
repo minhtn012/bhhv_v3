@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import BhvAuthSection from '@/components/profile/BhvAuthSection';
+import PcAuthSection from '@/components/profile/PcAuthSection';
 import ProfileInfoSection from '@/components/profile/ProfileInfoSection';
 import ChangePasswordSection from '@/components/profile/ChangePasswordSection';
 
@@ -42,6 +43,15 @@ export default function ProfilePage() {
   });
   const [bhvLoading, setBhvLoading] = useState(false);
 
+  // PC Auth state
+  const [pcAuthData, setPcAuthData] = useState({
+    hasCredentials: false,
+    isConnected: false,
+    username: '',
+    lastConnectionTime: undefined as Date | undefined
+  });
+  const [pcLoading, setPcLoading] = useState(false);
+
   useEffect(() => {
     // Check if user is logged in
     const userData = localStorage.getItem('user');
@@ -57,9 +67,10 @@ export default function ProfilePage() {
     // Also fetch fresh user data from API
     fetchUserProfile();
 
-    // Fetch BHV credentials status if user role is 'user'
+    // Fetch credentials status if user role is 'user'
     if (parsedUser.role === 'user') {
       fetchBhvCredentials();
+      fetchPcCredentials();
     }
   }, [router]);
 
@@ -108,6 +119,28 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error('BHV credentials fetch error:', error);
+    }
+  };
+
+  const fetchPcCredentials = async () => {
+    try {
+      const response = await fetch('/api/users/pc-credentials', {
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPcAuthData({
+          hasCredentials: data.hasCredentials,
+          isConnected: data.isConnected,
+          username: '',
+          lastConnectionTime: data.lastConnectionTime ? new Date(data.lastConnectionTime) : undefined
+        });
+      } else if (response.status === 403) {
+        console.log('User does not have PC credentials access');
+      }
+    } catch (error) {
+      console.error('PC credentials fetch error:', error);
     }
   };
 
@@ -277,6 +310,83 @@ export default function ProfilePage() {
     }
   };
 
+  // PC Auth handlers
+  const handleSavePcCredentials = async (credentials: { username: string; password: string }) => {
+    setPcLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/users/pc-test-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(credentials)
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setPcAuthData(prev => ({
+          ...prev,
+          hasCredentials: true,
+          isConnected: true,
+          username: '',
+          lastConnectionTime: new Date(data.connectionTime)
+        }));
+        setSuccess('Kết nối Pacific Cross thành công! Thông tin đăng nhập đã được lưu.');
+      } else {
+        setError(data.error || 'Không thể xác thực với Pacific Cross.');
+        setPcAuthData(prev => ({
+          ...prev,
+          hasCredentials: false,
+          isConnected: false,
+          username: '',
+          lastConnectionTime: undefined
+        }));
+      }
+    } catch (error) {
+      setError('Lỗi kết nối. Vui lòng thử lại.');
+      setPcAuthData(prev => ({
+        ...prev,
+        hasCredentials: false,
+        isConnected: false,
+        username: '',
+        lastConnectionTime: undefined
+      }));
+    } finally {
+      setPcLoading(false);
+    }
+  };
+
+  const handleRemovePcCredentials = async () => {
+    setPcLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/users/pc-credentials', {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        setPcAuthData({
+          hasCredentials: false,
+          isConnected: false,
+          username: '',
+          lastConnectionTime: undefined
+        });
+        setSuccess('Đã xóa thông tin đăng nhập Pacific Cross.');
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Không thể xóa thông tin đăng nhập Pacific Cross.');
+      }
+    } catch (error) {
+      setError('Lỗi kết nối. Vui lòng thử lại sau.');
+    } finally {
+      setPcLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -322,6 +432,16 @@ export default function ProfilePage() {
             onSaveCredentials={handleSaveBhvCredentials}
             onRemoveCredentials={handleRemoveBhvCredentials}
             isLoading={bhvLoading}
+          />
+        )}
+
+        {/* Pacific Cross Authentication Section - Only for regular users */}
+        {user.role === 'user' && (
+          <PcAuthSection
+            authData={pcAuthData}
+            onSaveCredentials={handleSavePcCredentials}
+            onRemoveCredentials={handleRemovePcCredentials}
+            isLoading={pcLoading}
           />
         )}
 

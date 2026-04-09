@@ -13,6 +13,11 @@ export interface IUser extends Document {
   bhvPassword?: string; // encrypted
   bhvConnectedAt?: Date;
   bhvStatus?: 'connected' | 'disconnected';
+  // Pacific Cross credentials (only for role='user')
+  pcUsername?: string; // encrypted
+  pcPassword?: string; // encrypted
+  pcConnectedAt?: Date;
+  pcStatus?: 'connected' | 'disconnected';
   // Refresh token for session management
   refreshToken?: string;
   refreshTokenExpiry?: Date;
@@ -79,6 +84,24 @@ const userSchema = new Schema<IUser>({
     required: false
   },
   bhvStatus: {
+    type: String,
+    enum: ['connected', 'disconnected'],
+    required: false
+  },
+  // Pacific Cross credentials (optional, only for role='user')
+  pcUsername: {
+    type: String,
+    required: false
+  },
+  pcPassword: {
+    type: String,
+    required: false
+  },
+  pcConnectedAt: {
+    type: Date,
+    required: false
+  },
+  pcStatus: {
     type: String,
     enum: ['connected', 'disconnected'],
     required: false

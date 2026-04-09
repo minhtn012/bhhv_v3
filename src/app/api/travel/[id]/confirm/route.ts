@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { mapTravelToPacificCrossFormat, generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
 import { logError, logInfo, logDebug } from '@/lib/errorLogger';
+import { getPcCredentials } from '@/lib/pc-credentials-helper';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
 // POST /api/travel/[id]/confirm - Confirm contract on Pacific Cross
@@ -50,23 +51,21 @@ export async function POST(
     });
 
     // Authenticate with Pacific Cross
-    const client = new PacificCrossApiClient();
-    const username = process.env.PACIFIC_CROSS_USERNAME;
-    const password = process.env.PACIFIC_CROSS_PASSWORD;
-
-    if (!username || !password) {
+    const pcCreds = await getPcCredentials(user.userId);
+    if (!pcCreds) {
       logError(new Error('Pacific Cross credentials not configured'), {
         operation: 'TRAVEL_CONFIRM_ENV',
         contractId: id
       });
       return NextResponse.json(
-        { error: 'Pacific Cross credentials not configured' },
-        { status: 500 }
+        { error: 'Chưa cấu hình tài khoản Pacific Cross. Vui lòng cập nhật trong Hồ sơ.' },
+        { status: 400 }
       );
     }
 
+    const client = new PacificCrossApiClient();
     logDebug('TRAVEL_CONFIRM: Authenticating', { contractId: id });
-    const authResponse = await client.authenticate(username, password);
+    const authResponse = await client.authenticate(pcCreds.username, pcCreds.password);
     if (!authResponse.success) {
       logError(new Error('Pacific Cross auth failed'), {
         operation: 'TRAVEL_CONFIRM_AUTH',

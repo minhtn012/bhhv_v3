@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth';
 import { generateQuotePdfUrl, mapTravelToPacificCrossFormat } from '@/providers/pacific-cross/products/travel/mapper';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { logError, logDebug } from '@/lib/errorLogger';
+import { getPcCredentials } from '@/lib/pc-credentials-helper';
 import { validateFamilyPlan } from '@/utils/travel-family-validation';
 import type { TravelContractFormData, PacificCrossEditState } from '@/providers/pacific-cross/products/travel/types';
 
@@ -57,12 +58,10 @@ export async function GET(
     let editState: PacificCrossEditState | null = null;
     if (extendedContract.status === 'ra_hop_dong' && extendedContract.pacificCrossCertId) {
       try {
-        const envCheck = PacificCrossApiClient.validateEnv();
-        if (envCheck.valid) {
+        const pcCreds = await getPcCredentials(user.userId);
+        if (pcCreds) {
           const client = new PacificCrossApiClient();
-          const username = process.env.PACIFIC_CROSS_USERNAME!;
-          const password = process.env.PACIFIC_CROSS_PASSWORD!;
-          const authResponse = await client.authenticate(username, password);
+          const authResponse = await client.authenticate(pcCreds.username, pcCreds.password);
           if (authResponse.success) {
             editState = await client.getEditState(extendedContract.pacificCrossCertId);
           }
@@ -135,13 +134,10 @@ export async function PUT(
     let editState: PacificCrossEditState | null = null;
     if (contract.status === 'ra_hop_dong' && contract.pacificCrossCertId) {
       try {
-        const envCheck = PacificCrossApiClient.validateEnv();
-        if (envCheck.valid) {
+        const pcCreds = await getPcCredentials(user.userId);
+        if (pcCreds) {
           const client = new PacificCrossApiClient();
-          const authResponse = await client.authenticate(
-            process.env.PACIFIC_CROSS_USERNAME!,
-            process.env.PACIFIC_CROSS_PASSWORD!
-          );
+          const authResponse = await client.authenticate(pcCreds.username, pcCreds.password);
           if (authResponse.success) {
             editState = await client.getEditState(contract.pacificCrossCertId);
           }
@@ -202,19 +198,18 @@ export async function PUT(
       }
     }
 
-    // Validate dates if period is being updated: dateFrom must be >= tomorrow
+    // Validate dates if period is being updated: dateFrom must be >= today
     // Skip this validation for confirmed certs (date already validated above)
     if (data.period?.dateFrom && contract.status !== 'ra_hop_dong') {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       const dateFrom = new Date(data.period.dateFrom);
       dateFrom.setHours(0, 0, 0, 0);
 
-      if (dateFrom < tomorrow) {
+      if (dateFrom < today) {
         return NextResponse.json(
-          { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { error: 'Ngay hieu luc phai tu ngay hom nay tro di' },
           { status: 400 }
         );
       }
@@ -288,15 +283,13 @@ export async function PUT(
       });
 
       try {
-        const envCheck = PacificCrossApiClient.validateEnv();
-        logDebug('TRAVEL_SYNC: Env check', envCheck);
+        const pcCreds = await getPcCredentials(user.userId);
+        logDebug('TRAVEL_SYNC: Credentials source', { source: pcCreds?.source || 'none' });
 
-        if (envCheck.valid) {
+        if (pcCreds) {
           const client = new PacificCrossApiClient();
-          const username = process.env.PACIFIC_CROSS_USERNAME!;
-          const password = process.env.PACIFIC_CROSS_PASSWORD!;
 
-          const authResponse = await client.authenticate(username, password);
+          const authResponse = await client.authenticate(pcCreds.username, pcCreds.password);
           logDebug('TRAVEL_SYNC: Auth result', { success: authResponse.success, error: authResponse.error });
 
           if (authResponse.success) {

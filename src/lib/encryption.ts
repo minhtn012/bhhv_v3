@@ -110,6 +110,32 @@ export function decryptBhvCredentials(encryptedUsername: string, encryptedPasswo
 }
 
 /**
+ * Encrypt Pacific Cross credentials object
+ */
+export function encryptPcCredentials(username: string, password: string): {
+  encryptedUsername: string;
+  encryptedPassword: string;
+} {
+  return {
+    encryptedUsername: encrypt(username),
+    encryptedPassword: encrypt(password)
+  };
+}
+
+/**
+ * Decrypt Pacific Cross credentials object
+ */
+export function decryptPcCredentials(encryptedUsername: string, encryptedPassword: string): {
+  username: string;
+  password: string;
+} {
+  return {
+    username: decrypt(encryptedUsername),
+    password: decrypt(encryptedPassword)
+  };
+}
+
+/**
  * Validate encryption key strength
  */
 export function validateEncryptionKey(): boolean {

@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth';
 import { PacificCrossApiClient } from '@/providers/pacific-cross/api-client';
 import { mapTravelToPacificCrossFormat, generateQuotePdfUrl } from '@/providers/pacific-cross/products/travel/mapper';
 import { logError, logDebug } from '@/lib/errorLogger';
+import { getPcCredentials } from '@/lib/pc-credentials-helper';
 import type { TravelContractFormData } from '@/providers/pacific-cross/products/travel/types';
 
 // POST /api/travel/[id]/submit - Create quote on Pacific Cross
@@ -68,11 +69,16 @@ export async function POST(
 
     // Authenticate with Pacific Cross
     logDebug('TRAVEL_SUBMIT: Authenticating with Pacific Cross', { contractId: id });
-    const client = new PacificCrossApiClient();
-    const username = process.env.PACIFIC_CROSS_USERNAME!;
-    const password = process.env.PACIFIC_CROSS_PASSWORD!;
+    const pcCreds = await getPcCredentials(user.userId);
+    if (!pcCreds) {
+      return NextResponse.json(
+        { error: 'Chưa cấu hình tài khoản Pacific Cross. Vui lòng cập nhật trong Hồ sơ.' },
+        { status: 400 }
+      );
+    }
 
-    const authResponse = await client.authenticate(username, password);
+    const client = new PacificCrossApiClient();
+    const authResponse = await client.authenticate(pcCreds.username, pcCreds.password);
     if (!authResponse.success) {
       logError(new Error('Pacific Cross auth failed'), {
         operation: 'TRAVEL_SUBMIT_AUTH',
@@ -95,17 +101,16 @@ export async function POST(
       });
     }
 
-    // Validate dates before submit (must be >= tomorrow)
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+    // Validate dates before submit (must be >= today)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     const periodStart = new Date(contract.period.dateFrom);
     periodStart.setHours(0, 0, 0, 0);
 
-    if (periodStart < tomorrow) {
+    if (periodStart < today) {
       return NextResponse.json(
-        { error: 'Ngay hieu luc phai tu ngay mai tro di. Vui long cap nhat ngay truoc khi tao bao gia.' },
+        { error: 'Ngay hieu luc phai tu ngay hom nay tro di. Vui long cap nhat ngay truoc khi tao bao gia.' },
         { status: 400 }
       );
     }
