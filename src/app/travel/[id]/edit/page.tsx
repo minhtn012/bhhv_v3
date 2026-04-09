@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from '@/components/DashboardLayout';
 import InsuredPersonForm from '@/components/travel/InsuredPersonForm';
@@ -56,17 +56,26 @@ export default function EditTravelContractPage() {
   const [personImageUrls, setPersonImageUrls] = useState<string[]>([]);
   const [canEdit, setCanEdit] = useState(false);
   const [phoneError, setPhoneError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const insuredSectionRef = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to element and show error inline
+  const scrollToError = (ref: React.RefObject<HTMLDivElement | null>, message: string) => {
+    setSubmitError(message);
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
   const [editState, setEditState] = useState<PacificCrossEditState | null>(null);
   const [originalPersons, setOriginalPersons] = useState<Partial<TravelInsuredPerson>[]>([]);
 
-  // Get tomorrow's date in YYYY-MM-DD format for min date constraint
-  const getTomorrowDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
+  // Get today's date in YYYY-MM-DD format for min date constraint
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
   };
 
-  const minDate = getTomorrowDate();
+  const minDate = getTodayDate();
 
   // Validate Vietnamese phone number: 10 digits starting with 0, or +84 followed by 9 digits
   const validatePhone = (phone: string): boolean => {
@@ -226,10 +235,10 @@ export default function EditTravelContractPage() {
         setInsuredPersons(data.insuredPersons);
         setPersonImageUrls(data.insuredPersons.map(() => ''));
       } else {
-        setError(data.error);
+        scrollToError(insuredSectionRef, data.error || 'Lỗi import Excel');
       }
     } catch {
-      setError('Failed to import Excel file');
+      scrollToError(insuredSectionRef, 'Lỗi import Excel');
     }
   };
 
@@ -249,12 +258,12 @@ export default function EditTravelContractPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setError('');
+    setSubmitError('');
 
     // Validate phone number if provided
     if (owner.telNo && !validatePhone(owner.telNo)) {
-      setError('Số điện thoại không hợp lệ');
       setPhoneError('SĐT không hợp lệ (VD: 0912345678 hoặc +84912345678)');
+      scrollToError(phoneRef, 'Số điện thoại không hợp lệ');
       setSaving(false);
       return;
     }
@@ -270,7 +279,7 @@ export default function EditTravelContractPage() {
           f => String((orig as Record<string, unknown>)[f] || '') !== String((insuredPersons[i] as Record<string, unknown>)[f] || '')
         );
         if (changed.length >= 2) {
-          setError(`Người được BH #${i + 1}: chỉ được sửa tối đa 1 thông tin cá nhân`);
+          scrollToError(insuredSectionRef, `Người được BH #${i + 1}: chỉ được sửa tối đa 1 thông tin cá nhân`);
           setSaving(false);
           return;
         }
@@ -285,7 +294,7 @@ export default function EditTravelContractPage() {
         referenceDate
       );
       if (!validation.valid) {
-        setError(validation.errors.join('. '));
+        scrollToError(insuredSectionRef, validation.errors.join('. '));
         setSaving(false);
         return;
       }
@@ -309,10 +318,10 @@ export default function EditTravelContractPage() {
       if (response.ok) {
         router.push(`/travel/${params.id}`);
       } else {
-        setError(data.error);
+        scrollToError(submitRef, data.error || 'Có lỗi xảy ra');
       }
     } catch {
-      setError('Connection error');
+      scrollToError(submitRef, 'Lỗi kết nối server');
     } finally {
       setSaving(false);
     }
@@ -407,7 +416,7 @@ export default function EditTravelContractPage() {
                   className={inputClass}
                 />
               </div>
-              <div>
+              <div ref={phoneRef}>
                 <label className="block text-sm text-slate-400 mb-1.5">Số điện thoại</label>
                 <AutocompleteInput
                   field="owner.telNo"
@@ -531,7 +540,7 @@ export default function EditTravelContractPage() {
           )}
 
           {/* Insured Persons Section */}
-          <section className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
+          <section ref={insuredSectionRef} className="bg-slate-800/90 border border-blue-500/40 rounded-2xl p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">Người được bảo hiểm ({insuredPersons.length})</h2>
               {!editState && (
@@ -584,7 +593,12 @@ export default function EditTravelContractPage() {
           </section>
 
           {/* Submit Button */}
-          <div className="fixed bottom-6 right-6 z-50">
+          <div ref={submitRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+            {submitError && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm max-w-sm shadow-xl animate-fade-in">
+                {submitError}
+              </div>
+            )}
             <button
               type="submit"
               disabled={saving}

@@ -60,14 +60,13 @@ export default function NewTravelContractPage() {
 
   const [phoneError, setPhoneError] = useState('');
 
-  // Get tomorrow's date in YYYY-MM-DD format for min date constraint
-  const getTomorrowDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
+  // Get today's date in YYYY-MM-DD format for min date constraint
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
   };
 
-  const minDate = getTomorrowDate();
+  const minDate = getTodayDate();
 
   // Validate Vietnamese phone number: 10 digits starting with 0, or +84 followed by 9 digits
   const validatePhone = (phone: string): boolean => {

@@ -118,18 +118,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate dates: dateFrom must be >= tomorrow
+    // Validate dates: dateFrom must be >= today
     if (data.period?.dateFrom) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       const dateFrom = new Date(data.period.dateFrom);
       dateFrom.setHours(0, 0, 0, 0);
 
-      if (dateFrom < tomorrow) {
+      if (dateFrom < today) {
         return NextResponse.json(
-          { error: 'Ngay hieu luc phai tu ngay mai tro di' },
+          { error: 'Ngay hieu luc phai tu ngay hom nay tro di' },
           { status: 400 }
         );
       }
