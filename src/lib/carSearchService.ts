@@ -107,21 +107,24 @@ class CarSearchService {
     for (const brand of matchingBrands) {
       for (const model of brand.models) {
         const record = toCarRecord(brand, model)
+        const modelNameLower = model.model_name.toLowerCase()
 
         // Check for exact match
-        if (modelLower && model.model_name.toLowerCase() === modelLower) {
+        if (modelLower && modelNameLower === modelLower) {
           results.exactMatch = record
         }
 
-        // Check for regex/partial match
-        if (!modelLower || model.model_name.toLowerCase().includes(modelLower)) {
+        // Check for regex/partial match (both directions)
+        if (!modelLower || modelNameLower.includes(modelLower) || modelLower.includes(modelNameLower)) {
           results.regexSearch.push(record)
         }
 
-        // Check for prefix match
-        if (modelLower && model.model_name.toLowerCase().startsWith(modelLower)) {
-          if (!results.prefixMatch) {
-            results.prefixMatch = record
+        // Check for prefix match (both directions: DB starts with search OR search starts with DB)
+        if (modelLower) {
+          if (modelNameLower.startsWith(modelLower) || modelLower.startsWith(modelNameLower)) {
+            if (!results.prefixMatch) {
+              results.prefixMatch = record
+            }
           }
         }
       }
