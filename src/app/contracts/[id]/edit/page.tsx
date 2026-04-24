@@ -51,6 +51,11 @@ interface Contract {
   diaChi: string;
   loaiKhachHang?: 'ca_nhan' | 'cong_ty';
 
+  // Company-specific fields (only when loaiKhachHang === 'cong_ty')
+  maSoThue?: string;
+  nguoiLienHe?: string;
+  quanHeNganSach?: string;
+
   // Buyer information
   buyerEmail?: string;
   buyerPhone?: string;
@@ -164,6 +169,11 @@ export default function EditContractPage() {
     cccd: '',
     userType: 'ca_nhan',
     buyerPaymentDate: '',
+
+    // Company-specific fields (only when userType === 'cong_ty')
+    maSoThue: '',
+    nguoiLienHe: '',
+    quanHeNganSach: '',
 
     // BHV Customer Selection
     buyerCustomerCode: '',
@@ -377,6 +387,11 @@ export default function EditContractPage() {
       cccd: contractData.buyerCitizenId || '',
       userType: contractData.loaiKhachHang || 'ca_nhan',
       buyerPaymentDate: contractData.buyerPaymentDate || '',
+
+      // Company-specific fields
+      maSoThue: contractData.maSoThue || '',
+      nguoiLienHe: contractData.nguoiLienHe || '',
+      quanHeNganSach: contractData.quanHeNganSach || '',
 
       // BHV Customer Selection
       buyerCustomerCode: contractData.buyerCustomerCode || '',
@@ -734,6 +749,12 @@ export default function EditContractPage() {
         chuXe: formData.chuXe,
         diaChi: formData.diaChi,
         loaiKhachHang: formData.userType,
+        // Company-specific fields (only meaningful when loaiKhachHang === 'cong_ty')
+        ...(formData.userType === 'cong_ty' && {
+          maSoThue: formData.maSoThue,
+          nguoiLienHe: formData.nguoiLienHe,
+          quanHeNganSach: formData.quanHeNganSach,
+        }),
         // Buyer information (mapped from form fields)
         buyerEmail: formData.email,
         buyerPhone: formData.soDienThoai,
@@ -950,31 +971,7 @@ export default function EditContractPage() {
               <div data-section="buyer" className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Thông tin khách hàng</h2>
                 <BuyerInfoForm
-                  formData={{
-                    chuXe: formData.chuXe,
-                    email: formData.email,
-                    soDienThoai: formData.soDienThoai,
-                    cccd: formData.cccd,
-                    userType: formData.userType,
-                    buyerPaymentDate: formData.buyerPaymentDate,
-                    // BHV Customer Selection
-                    buyerCustomerCode: formData.buyerCustomerCode,
-                    buyerCustomerName: formData.buyerCustomerName,
-                    buyerPartnerCode: formData.buyerPartnerCode,
-                    buyerPartnerName: formData.buyerPartnerName,
-                    buyerAgencyCode: formData.buyerAgencyCode,
-                    buyerAgencyName: formData.buyerAgencyName,
-                    selectedProvince: formData.selectedProvince,
-                    selectedProvinceText: formData.selectedProvinceText,
-                    selectedDistrictWard: formData.selectedDistrictWard,
-                    selectedDistrictWardText: formData.selectedDistrictWardText,
-                    specificAddress: formData.specificAddress,
-                    newSelectedProvince: formData.newSelectedProvince,
-                    newSelectedProvinceText: formData.newSelectedProvinceText,
-                    newSelectedDistrictWard: formData.newSelectedDistrictWard,
-                    newSelectedDistrictWardText: formData.newSelectedDistrictWardText,
-                    newSpecificAddress: formData.newSpecificAddress
-                  }}
+                  formData={formData}
                   fieldErrors={fieldErrors}
                   onFormInputChange={handleInputChange}
                   onNext={() => {}} // Not used in edit mode
